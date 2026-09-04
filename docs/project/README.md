@@ -6,7 +6,7 @@ Scope, Goals, Sessions, Steps, and decisions.
 |-----|---------|
 | [project.md](project.md) | Scope — in/out |
 | [goals.md](goals.md) | Goal index |
-| [goals/](goals/) | Per-Goal plans and progress |
+| [goals/](goals/) | Per-Goal plans — [goals/README.md](goals/README.md) |
 | [session.md](session.md) | Current chat focus (temporary) |
 | [features.md](features.md) | Step registry (`F-0xx`) |
 | [roadmap.md](roadmap.md) | Ordered Goals |

@@ -50,6 +50,7 @@ Binding rules. **Docs win over chat.** Conflicts with chat are resolved in favor
 - AI updates docs as part of every Step (within protocol).
 - Every modified source file ⇒ update every tied doc in [../doc-contract.md](../doc-contract.md).
 - Update [../navigation.md](../navigation.md) when folders or major docs appear, move, or are removed.
+- Landmark folders require a `README.md`; navigation must link it ([../PHASE.md](../PHASE.md)).
 - **Alpha structural changes:** also log in [../project/changelog.md](../project/changelog.md).
 - Progress marks: set Step `in progress` before code; clear on Accept or rollback.
 

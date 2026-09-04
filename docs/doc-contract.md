@@ -15,8 +15,9 @@ Every modified artifact ⇒ update every tied doc. Incomplete docs ⇒ incomplet
 
 | Artifact | Tied docs |
 |----------|-----------|
-| Any folder under `docs/` | [navigation.md](navigation.md) |
-| Structural move/rename | [navigation.md](navigation.md), [project/changelog.md](project/changelog.md) |
+| Any folder under `docs/` | [navigation.md](navigation.md), folder `README.md` |
+| New landmark folder (see [PHASE.md](PHASE.md)) | `README.md` in that folder + [navigation.md](navigation.md) link |
+| Structural move/rename | [navigation.md](navigation.md), [project/changelog.md](project/changelog.md), affected folder READMEs |
 | Scope change | [project/project.md](project/project.md), optionally [project/decisions.md](project/decisions.md) |
 | Phase change | [PHASE.md](PHASE.md), [navigation.md](navigation.md), [project/changelog.md](project/changelog.md) |
 | Process rule change | [process/rules.md](process/rules.md), [process/step-procedure.md](process/step-procedure.md), [process/global-prompt.md](process/global-prompt.md), [../AGENTS.md](../AGENTS.md), [../.cursor/rules/](../.cursor/rules/) |

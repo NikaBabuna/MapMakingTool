@@ -10,7 +10,9 @@
 **Phase:** alpha ([PHASE.md](PHASE.md))  
 **Active Goal:** [project/goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md)  
 **Session:** [project/session.md](project/session.md)  
-**Code:** parent + `engine/` (Java 21) — see [engine/architecture.md](engine/architecture.md)
+**Code:** [../engine/README.md](../engine/README.md) · [engine/architecture.md](engine/architecture.md)
+
+Folder indexes are **README.md** in each landmark directory. Prefer those links when entering a folder.
 
 ---
 
@@ -20,12 +22,15 @@
 |----------|-------|
 | Agents | [../AGENTS.md](../AGENTS.md) |
 | Humans | [../README.md](../README.md) |
+| Docs tree | [README.md](README.md) |
 | Process | [process/README.md](process/README.md) |
 | How AI works a Step | [process/step-procedure.md](process/step-procedure.md) |
 
 ---
 
 ## Process (`docs/process/`)
+
+**Folder:** [process/README.md](process/README.md)
 
 | Doc | Status |
 |-----|--------|
@@ -38,6 +43,8 @@
 ---
 
 ## Project (`docs/project/`)
+
+**Folder:** [project/README.md](project/README.md) · Goals: [project/goals/README.md](project/goals/README.md)
 
 | Doc | Status |
 |-----|--------|
@@ -63,18 +70,22 @@
 
 ---
 
-## Engine (`docs/engine/`)
+## Engine docs (`docs/engine/`)
+
+**Folder:** [engine/README.md](engine/README.md) · Specs: [engine/specs/README.md](engine/specs/README.md)
 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
 | [architecture.md](engine/architecture.md) | Active — F-003 events + diagnostics |
-| [specs/](engine/specs/) | Active (see folder README) — specs run ahead of code for F-004+ |
+| [specs/](engine/specs/) | Active — specs run ahead of code for F-004+ |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
 
 ## Product (`docs/product/`)
+
+**Folder:** [product/README.md](product/README.md) · Wiki: [product/wiki/README.md](product/wiki/README.md)
 
 | Doc | Status |
 |-----|--------|
@@ -88,9 +99,10 @@
 
 ## Blockers (`docs/blockers/`)
 
+**Folder:** [blockers/README.md](blockers/README.md)
+
 | Doc | Status |
 |-----|--------|
-| [README.md](blockers/README.md) | Active |
 | [F-001.md](blockers/F-001.md) | done — layout + Maven scaffold |
 | [F-002.md](blockers/F-002.md) | done — Pool + Step loop |
 | [F-003.md](blockers/F-003.md) | done — events + claiming + diagnostics |
@@ -98,11 +110,18 @@
 
 ---
 
-## Root
+## Code & tooling (repo root)
 
-| Path | Purpose |
-|------|---------|
+| Path | README / entry |
+|------|----------------|
+| [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
+| [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
+| [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
+| [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |
+| [../.github/](../.github/) | [README](../.github/README.md) |
+| [../.github/workflows/](../.github/workflows/) | [README](../.github/workflows/README.md) · [ci.yml](../.github/workflows/ci.yml) |
+| [../.cursor/](../.cursor/) | [README](../.cursor/README.md) |
+| [../.cursor/rules/](../.cursor/rules/) | [README](../.cursor/rules/README.md) |
 | [../AGENTS.md](../AGENTS.md) | Agent entry |
-| [../README.md](../README.md) | Human entry |
-| [../.cursor/rules/](../.cursor/rules/) | IDE rules |
-| [../.github/workflows/ci.yml](../.github/workflows/ci.yml) | CI — Maven witness (F-009) |
+
+**Exempt from README:** build output (`target/`), local bootstrap (`.tools/`), Maven wrapper internals (`.mvn/`), intermediate Java namespace segments (`com/`, `java/`, …).

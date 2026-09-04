@@ -30,14 +30,19 @@
 1. Update [navigation.md](navigation.md)
 2. Log under Structure in [project/changelog.md](project/changelog.md)
 3. Non-obvious moves → [project/decisions.md](project/decisions.md)
+4. **Folder README:** every landmark folder has a `README.md` explaining what lives there; [navigation.md](navigation.md) links those READMEs
 
-**Not required yet:** blocker loop for pure doc/layout work; README in every empty folder.
+**Landmark folders** (require README): `docs/` and each docs namespace (`process/`, `project/`, `project/goals/`, `engine/`, `engine/specs/`, `product/`, `product/wiki/`, `blockers/`); code module roots (`engine/`) and owned packages under `engine/src/main/java/.../engine/{pool,event,diag}/`; `.github/`, `.github/workflows/`, `.cursor/`, `.cursor/rules/`.
+
+**Exempt:** `target/`, `.tools/`, `.mvn/`, intermediate Java path segments (`src/`, `main/`, `java/`, `com/`, …).
+
+**Not required yet:** blocker loop for pure doc/layout work.
 
 ---
 
 ## Beta gate (future)
 
-- [ ] [navigation.md](navigation.md) matches disk
+- [ ] [navigation.md](navigation.md) matches disk (including landmark folder READMEs)
 - [ ] [engine/architecture.md](engine/architecture.md) agrees with source layout
 - [ ] No `TBD` in scope or core architecture
 - [ ] Process docs canonical under [process/](process/)
@@ -50,6 +55,7 @@
 - Max three levels under `docs/`
 - kebab-case files; `G-0xx` Goals; `F-0xx` Steps; `ADR-0xx` decisions
 - No empty-authority docs — list *planned* in navigation instead
+- Landmark folders carry a `README.md`; navigation links those READMEs ([PHASE.md](PHASE.md))
 
 ---
 

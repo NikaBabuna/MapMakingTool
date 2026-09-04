@@ -14,9 +14,11 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 
 | | |
 |-|-|
+| [Docs tree](docs/README.md) | Documentation folders |
 | [Active Goal](docs/project/goals/G-001-engine-skeleton.md) | What we are building now |
 | [How AI works](docs/process/step-procedure.md) | Goal / Session / Step |
 | [Product concept](docs/product/concept.md) | Vision (product after G-001) |
+| [Engine module](engine/README.md) | Code module index |
 | [Engine specs](docs/engine/specs/overview.md) | Pool-System Framework |
 | [Navigation](docs/navigation.md) | Full documentation map |
 | [Phase](docs/PHASE.md) | Current phase and change rules |

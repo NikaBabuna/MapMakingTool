@@ -8,4 +8,4 @@ Aethelgard — procedural fantasy world generation.
 | [flows.md](flows.md) | User journeys |
 | [glossary.md](glossary.md) | Domain terminology |
 | [style-guide.md](style-guide.md) | Player-facing feel |
-| [wiki/](wiki/) | Domain and worldbuilding content |
+| [wiki/](wiki/) | Domain and worldbuilding content — [wiki/README.md](wiki/README.md) |
