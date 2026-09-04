@@ -76,6 +76,7 @@ After MARK → `in progress`. After Accept → `done`.
 | [F-003.md](F-003.md) | F-003 | G-001 | done |
 | [F-004.md](F-004.md) | F-004 | G-001 | done |
 | [F-005.md](F-005.md) | F-005 | G-001 | done |
+| [F-006.md](F-006.md) | F-006 | G-001 | done |
 | [F-009.md](F-009.md) | F-009 | G-001 | done |
 
 Update this table when creating or closing a blocker file.

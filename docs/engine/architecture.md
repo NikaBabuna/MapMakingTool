@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-005 claim/finish + determinism)  
+**Status:** active (F-006 User Input / Input View / User View)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,7 +16,7 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — claim/finish + determinism (F-005) |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — user layer (F-006) |
 | **cli** | _(planned)_ | Headless runner (N Steps, settled state) | Not created — F-007 |
 | **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
@@ -50,22 +50,24 @@ product  →  engine  ←  cli
 | Package | Contents | Step |
 |---------|----------|------|
 | `com.aethelgard.engine` | Package root | F-001 |
-| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-004 |
+| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-006 |
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
 | `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
 | `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook, `ClaimFinishBarrier` | F-004–F-005 |
 | `com.aethelgard.engine.merge` | `FieldType`, `FieldSchema`, provenance, `StepOutputBuffer`, `TypedMerge` | F-004 |
+| `com.aethelgard.engine.user` | `UserInput`, `InputKind`, `InputView`, `UserView`, `RecordingUserView` | F-006 |
 
-### Implemented Step order (through F-005)
+### Implemented Step order (through F-006)
 
 ```text
-stepStarted → Pool.update (may emit) → ancestry claim
+stepStarted → stage Input View → Pool.update (reads Input View; may emit)
+  → consume persistent present in view → ancestry claim
   → claiming Systems run Sub-Systems (same Pool snapshot; claim/finish counters)
   → claim/finish barrier (claimCount == finishCount) → typed merge → apply fields
-  → clear event buffer → stepSettled
+  → clear event buffer → User View(settled) → stepSettled
 ```
 
-Systems run **synchronously** and always finish (non-finishing policy deferred past G-001). User View and Input View are **not** in code yet (F-006). Delete Request merge type omitted (open question #4).
+Systems run **synchronously** and always finish (non-finishing policy deferred past G-001). Delete Request merge type omitted (open question #4). No Swing/CLI in `engine`.
 
 ### Pool heartbeat (F-002)
 
@@ -78,7 +80,19 @@ Systems run **synchronously** and always finish (non-finishing policy deferred p
 
 **`stepIndex()` rule:** 0-based index of the last completed Step. `create` completes Step 0 → `0`. Each `advance()` increments by 1.
 
-**Trivial Pool rule:** `value = value + 1` on each `update()`. Domain state replaces this later.
+**Trivial Pool rule:** `value = value + 1` on each `update()`. If Input View has action `nudge` active, also `value += 100` (F-006 skeleton demo). Domain state replaces this later.
+
+### User layer (F-006)
+
+| Type | Role |
+|------|------|
+| `UserInput` | Named-action register; `press` / `release` / `consume`; stages `InputView` |
+| `InputKind` | `PERSISTENT` (latch until consume) / `NON_PERSISTENT` (held at stage only) |
+| `InputView` | Frozen active-action set for one Step's Pool compute |
+| `UserView` | `onSettled(PoolSnapshot)` — read-only frame port |
+| `RecordingUserView` | Test sink (no UI toolkit) |
+
+Wire via `EngineSetup` (`userInput`, `userView`). Defaults: empty `UserInput` + `UserView.noop()`.
 
 ### Events + claiming (F-003)
 
@@ -155,12 +169,14 @@ MapMakingTool/
       diag/
       system/
       merge/
+      user/
     src/test/java/com/aethelgard/engine/
       ScaffoldWitnessTest.java   # F-001
       CiWitnessTest.java          # F-009
       pool/                       # F-002
       event/                      # F-003
-      system/                     # F-004
+      system/                     # F-004–F-005
+      user/                       # F-006
 ```
 
 ---

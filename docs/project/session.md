@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-005 Accepted)
+**Status:** complete (F-006 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-005** (claim/finish barrier + determinism witness).
+Complete **F-006** (User Input / Input View / User View).
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-005** (claim/finish barrier + determinism witness).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-005 | Claim/finish + determinism | done |
+| F-006 | User Input / Input View / User View | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (45 tests)
+- [x] Incremental suite green (51 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-006** (User Input / Input View / User View).
+1. Propose **F-007** (CLI runner).

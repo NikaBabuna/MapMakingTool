@@ -9,7 +9,7 @@
 
 A single Step runs in this order:
 
-> **Code status (through F-005):** items 1–10 are implemented with synchronous System completion and an explicit claim/finish barrier (`claimCount == finishCount` before merge). Items 11–12 (User View / next-Step from System output as events) are F-006+.
+> **Code status (through F-006):** items 1–12 are implemented for the engine skeleton (User View is a callback port; Input View is staged from `UserInput`). CLI/UI adapters are F-007–F-008.
 
 1. The Pool computes. It reads the Input View and configuration from the previous Step, and updates its own state.
 2. While computing, the Pool writes events into a shared buffer visible to every System.

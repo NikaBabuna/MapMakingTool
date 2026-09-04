@@ -65,7 +65,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-005) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-006) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -77,8 +77,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-005 claim/finish + determinism |
-| [specs/](engine/specs/) | Active — specs run ahead of code for F-006+ |
+| [architecture.md](engine/architecture.md) | Active — F-006 user layer |
+| [specs/](engine/specs/) | Active — specs run ahead of code for F-007+ |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
@@ -108,6 +108,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-003.md](blockers/F-003.md) | done — events + claiming + diagnostics |
 | [F-004.md](blockers/F-004.md) | done — Systems + typed merge + provenance |
 | [F-005.md](blockers/F-005.md) | done — claim/finish + determinism |
+| [F-006.md](blockers/F-006.md) | done — User Input / Input View / User View |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
@@ -122,6 +123,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |
 | [../engine/.../system/](../engine/src/main/java/com/aethelgard/engine/system/) | [README](../engine/src/main/java/com/aethelgard/engine/system/README.md) |
 | [../engine/.../merge/](../engine/src/main/java/com/aethelgard/engine/merge/) | [README](../engine/src/main/java/com/aethelgard/engine/merge/README.md) |
+| [../engine/.../user/](../engine/src/main/java/com/aethelgard/engine/user/) | [README](../engine/src/main/java/com/aethelgard/engine/user/README.md) |
 | [../.github/](../.github/) | [README](../.github/README.md) |
 | [../.github/workflows/](../.github/workflows/) | [README](../.github/workflows/README.md) · [ci.yml](../.github/workflows/ci.yml) |
 | [../.cursor/](../.cursor/) | [README](../.cursor/README.md) |

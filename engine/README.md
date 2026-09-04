@@ -18,6 +18,7 @@ Maven artifact `com.aethelgard:engine` — Pool-System Framework (Java 21).
 | `com.aethelgard.engine.diag` | Diagnostics / SLF4J bridge |
 | `com.aethelgard.engine.system` | Systems, Sub-Systems, conflict-resolution hook |
 | `com.aethelgard.engine.merge` | Field types, provenance, typed merge |
+| `com.aethelgard.engine.user` | User Input, Input View, User View |
 
 **Witness:** from repo root, `mvnw.cmd test` / `./mvnw test`.  
 **CI:** [../.github/workflows/README.md](../.github/workflows/README.md).

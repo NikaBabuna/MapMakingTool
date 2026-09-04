@@ -7,6 +7,8 @@
 
 # User-facing layer
 
+> **Code status (through F-006):** `UserInput`, `InputKind`, `InputView`, `UserView`, and `RecordingUserView` are implemented in `engine`. Pool samples Input View at `update`; User View receives settled `PoolSnapshot` after merge. No Swing/OS hooks in engine (F-008).
+
 ## User View
 
 Decoupled from the Pool and System engine. Reads the **settled** Pool once per Step and produces the frame the user sees — by any means. Merge machinery does not apply: relationship to Pool is **read only**.

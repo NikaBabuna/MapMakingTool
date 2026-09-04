@@ -51,7 +51,7 @@ When this Goal is `done`, another agent can trust the engine core and start prod
 
 These must be green by Goal completion (spread across Steps as needed):
 
-- [x] Pool `update` + Step lifecycle order _(spine through F-005: update → claim → Systems → claim/finish → merge → apply → clear; View later)_
+- [x] Pool `update` + Step lifecycle order _(spine through F-006: stage Input View → update → claim → Systems → barrier → merge → apply → clear → User View)_
 - [x] Step 0 from config object
 - [x] Event buffer + category ancestry claiming _(Systems claim via `EventClaimer`; stub claimers remain)_
 - [x] Unmatched events logged
@@ -62,8 +62,8 @@ These must be green by Goal completion (spread across Steps as needed):
 - [x] Claim/finish barrier
 - [x] Determinism: same config + inputs → same Pool after N Steps
 - [x] No same-Step event buffer refill _(System-output → next-Step events still deferred)_
-- [ ] User Input → Input View sampling
-- [ ] User View reads settled Pool only
+- [x] User Input → Input View sampling
+- [x] User View reads settled Pool only
 - [ ] CLI can run N Steps and show settled state
 - [ ] Basic UI can advance/view Steps (headless-safe tests for logic)
 
@@ -82,7 +82,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 | F-003 | Events, category claiming, unmatched-event logging | done |
 | F-004 | Systems + Sub-Systems + typed merge + provenance | done |
 | F-005 | Claim/finish + determinism witness | done |
-| F-006 | User Input / Input View / User View | not started |
+| F-006 | User Input / Input View / User View | done |
 | F-007 | CLI runner | not started |
 | F-008 | Basic UI + close remaining claim checklist gaps | not started |
 | F-009 | CI pipeline (GitHub Actions witness) | done |
@@ -93,7 +93,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 6 / 9 |
-| Framework claim boxes | 11 / 15 |
+| Steps done | 7 / 9 |
+| Framework claim boxes | 13 / 15 |
 
 Update this section at the end of every successful Step.

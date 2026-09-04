@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/Engine.java
- * Purpose: Step loop driver — config bootstrap, events, Systems, barrier, merge, settled snapshots
+ * Purpose: Step loop driver — input staging, events, Systems, barrier, merge, User View
  * Audience: Agents / callers (tests, later CLI/UI)
  * Update when: Step orchestration API changes
  */
@@ -20,6 +20,9 @@ import com.aethelgard.engine.merge.TypedMerge;
 import com.aethelgard.engine.system.ClaimFinishBarrier;
 import com.aethelgard.engine.system.ClaimFinishSnapshot;
 import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.user.InputView;
+import com.aethelgard.engine.user.UserInput;
+import com.aethelgard.engine.user.UserView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +36,8 @@ import java.util.Objects;
  * completes the next Step and increments the index by 1. After create + {@code advance(n)},
  * {@code stepIndex() == n}.
  *
- * <p><b>Step order (F-005):</b> update → claim → run claiming Systems (claim/finish) → barrier →
- * typed merge → apply → clear event buffer → settle. Systems run synchronously and always finish.
+ * <p><b>Step order (F-006):</b> stage Input View → update (reads Input View) → claim → Systems →
+ * barrier → typed merge → apply → clear → User View(settled) → settle.
  */
 public final class Engine {
 
@@ -44,22 +47,29 @@ public final class Engine {
   private final List<EventClaimer> claimers;
   private final List<EngineSystem> systems;
   private final EngineDiagnostics diagnostics;
+  private final UserInput userInput;
+  private final UserView userView;
   private int lastCompletedStepIndex = -1;
   private ClaimResult lastClaimResult = ClaimResult.empty();
   private StepOutputBuffer lastStepOutput = new StepOutputBuffer();
   private ClaimFinishSnapshot lastClaimFinish = ClaimFinishSnapshot.empty();
+  private InputView lastInputView = InputView.empty();
 
   private Engine(
       Pool pool,
       List<Category> emissions,
       List<EventClaimer> claimers,
       List<EngineSystem> systems,
-      EngineDiagnostics diagnostics) {
+      EngineDiagnostics diagnostics,
+      UserInput userInput,
+      UserView userView) {
     this.pool = pool;
     this.emissions = List.copyOf(emissions);
     this.claimers = List.copyOf(claimers);
     this.systems = List.copyOf(systems);
     this.diagnostics = diagnostics;
+    this.userInput = userInput;
+    this.userView = userView;
   }
 
   /**
@@ -71,7 +81,8 @@ public final class Engine {
   }
 
   /**
-   * Creates a run with explicit category tree, claimers, Systems, schema, and diagnostics.
+   * Creates a run with explicit category tree, claimers, Systems, schema, user layer, and
+   * diagnostics.
    *
    * <p>Emission paths in {@code config} are resolved against {@code setup.categoryTree()}.
    */
@@ -86,7 +97,9 @@ public final class Engine {
             emissions,
             setup.claimers(),
             setup.systems(),
-            setup.diagnostics());
+            setup.diagnostics(),
+            setup.userInput(),
+            setup.userView());
     engine.runStep();
     return engine;
   }
@@ -135,6 +148,16 @@ public final class Engine {
     return lastClaimFinish;
   }
 
+  /** Input View sampled at the start of the last completed Step. */
+  public InputView lastInputView() {
+    return lastInputView;
+  }
+
+  /** Shared User Input register for this run (press/release between Steps). */
+  public UserInput userInput() {
+    return userInput;
+  }
+
   /** True when the shared event buffer is empty (expected after settle). */
   public boolean eventBufferEmpty() {
     return eventBuffer.isEmpty();
@@ -148,7 +171,10 @@ public final class Engine {
       throw new IllegalStateException("event buffer not empty at Step start");
     }
 
-    pool.update(eventBuffer, emissions, diagnostics);
+    InputView inputView = userInput.stage();
+    pool.update(eventBuffer, emissions, diagnostics, inputView);
+    userInput.consumePersistentPresentIn(inputView);
+    lastInputView = inputView;
 
     List<EventClaimer> allClaimers = new ArrayList<>(claimers);
     for (EngineSystem system : systems) {
@@ -167,6 +193,7 @@ public final class Engine {
     }
 
     // Same snapshot for every System — independence (F-004).
+    // Note: this snapshot is post-update / pre-merge — not exposed to User View.
     PoolSnapshot snapshotForSystems = pool.snapshot();
     StepOutputBuffer output = new StepOutputBuffer();
     ClaimFinishBarrier barrier = new ClaimFinishBarrier();
@@ -194,6 +221,10 @@ public final class Engine {
     lastClaimResult = result;
     lastStepOutput = output;
     lastClaimFinish = barrier.snapshot();
+
+    PoolSnapshot settled = pool.snapshot();
+    userView.onSettled(settled);
+
     diagnostics.stepSettled(stepIndex);
     lastCompletedStepIndex = stepIndex;
   }
