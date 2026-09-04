@@ -41,9 +41,9 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 
-**Package root:** `com.aethelgard.engine` (+ `.pool` since F-002) · **Java:** 21
+**Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`) · **Java:** 21
 
-**Engine API (F-002):** `Engine.create(EngineConfig)` runs Step 0; `advance` / `advance(n)` continue the loop; `settled()` returns a `PoolSnapshot`. Details: [engine/architecture.md](engine/architecture.md).
+**Engine API:** `Engine.create(config)` / `create(config, setup)` — Step loop with optional scripted events, stub claimers, and diagnostics (ADR-008). Details: [engine/architecture.md](engine/architecture.md).
 
 ---
 

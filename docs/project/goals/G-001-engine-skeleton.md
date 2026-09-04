@@ -53,15 +53,15 @@ These must be green by Goal completion (spread across Steps as needed):
 
 - [x] Pool `update` + Step lifecycle order
 - [x] Step 0 from config object
-- [ ] Event buffer + category ancestry claiming
-- [ ] Unmatched events logged
+- [x] Event buffer + category ancestry claiming
+- [x] Unmatched events logged
 - [ ] System independence (no same-Step System chaining)
 - [ ] Sub-System composition / conflict-resolution hook (as needed for skeleton)
 - [ ] Typed merge: Static, Increment, Constant, Destructive (Delete Request if included)
 - [ ] Provenance on conflicting writes
 - [ ] Claim/finish barrier
 - [ ] Determinism: same config + inputs → same Pool after N Steps
-- [ ] Cross-step consequence only (no same-Step event refill)
+- [x] Cross-step consequence only (no same-Step event refill)
 - [ ] User Input → Input View sampling
 - [ ] User View reads settled Pool only
 - [ ] CLI can run N Steps and show settled state
@@ -79,7 +79,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 |------|--------|--------|
 | F-001 | Decide package/module layout; record in engine architecture; scaffold Maven (tests runnable) | done |
 | F-002 | Pool + Step loop + Step 0 config object | done |
-| F-003 | Events, category claiming, unmatched-event logging | not started |
+| F-003 | Events, category claiming, unmatched-event logging | done |
 | F-004 | Systems + Sub-Systems + typed merge + provenance | not started |
 | F-005 | Claim/finish + determinism witness | not started |
 | F-006 | User Input / Input View / User View | not started |
@@ -93,7 +93,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 3 / 9 |
-| Framework claim boxes | 2 / 15 |
+| Steps done | 4 / 9 |
+| Framework claim boxes | 5 / 15 |
 
 Update this section at the end of every successful Step.

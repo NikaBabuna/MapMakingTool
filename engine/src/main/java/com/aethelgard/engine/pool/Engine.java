@@ -1,12 +1,20 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/Engine.java
- * Purpose: Step loop driver — config bootstrap, advance N Steps, settled snapshots
+ * Purpose: Step loop driver — config bootstrap, events, claiming, settled snapshots
  * Audience: Agents / callers (tests, later CLI/UI)
  * Update when: Step orchestration API changes
  */
 
 package com.aethelgard.engine.pool;
 
+import com.aethelgard.engine.diag.EngineDiagnostics;
+import com.aethelgard.engine.event.Category;
+import com.aethelgard.engine.event.ClaimResult;
+import com.aethelgard.engine.event.EngineEvent;
+import com.aethelgard.engine.event.EventBuffer;
+import com.aethelgard.engine.event.EventClaimer;
+import com.aethelgard.engine.event.EventClaiming;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,24 +28,49 @@ import java.util.Objects;
 public final class Engine {
 
   private final Pool pool;
+  private final EventBuffer eventBuffer = new EventBuffer();
+  private final List<Category> emissions;
+  private final List<EventClaimer> claimers;
+  private final EngineDiagnostics diagnostics;
   private int lastCompletedStepIndex = -1;
+  private ClaimResult lastClaimResult = ClaimResult.empty();
 
-  private Engine(Pool pool) {
+  private Engine(
+      Pool pool,
+      List<Category> emissions,
+      List<EventClaimer> claimers,
+      EngineDiagnostics diagnostics) {
     this.pool = pool;
+    this.emissions = List.copyOf(emissions);
+    this.claimers = List.copyOf(claimers);
+    this.diagnostics = diagnostics;
   }
 
   /**
-   * Creates a run from {@code config}, runs Step 0 (Pool {@code update} once), and returns a
-   * settled engine at {@code stepIndex() == 0}.
+   * Creates a run from {@code config}, runs Step 0, returns settled engine at {@code stepIndex()
+   * == 0}. Uses {@link EngineSetup#defaults()}.
    */
   public static Engine create(EngineConfig config) {
+    return create(config, EngineSetup.defaults());
+  }
+
+  /**
+   * Creates a run with explicit category tree, claimers, and diagnostics.
+   *
+   * <p>Emission paths in {@code config} are resolved against {@code setup.categoryTree()}.
+   */
+  public static Engine create(EngineConfig config, EngineSetup setup) {
     Objects.requireNonNull(config, "config");
-    Engine engine = new Engine(new Pool(config));
+    Objects.requireNonNull(setup, "setup");
+    List<Category> emissions =
+        setup.categoryTree().resolveAll(config.emitCategoryPathsEachUpdate());
+    Engine engine =
+        new Engine(new Pool(config), emissions, setup.claimers(), setup.diagnostics());
     engine.runStep();
     return engine;
   }
 
-  /** Completes one more Step (Pool {@code update} once, then settle). */
+  /** Completes one more Step. */
   public void advance() {
     runStep();
   }
@@ -66,9 +99,40 @@ public final class Engine {
     return pool.snapshot();
   }
 
+  /** Claim / unmatched outcomes from the last completed Step. */
+  public ClaimResult lastClaimResult() {
+    return lastClaimResult;
+  }
+
+  /** True when the shared event buffer is empty (expected after settle). */
+  public boolean eventBufferEmpty() {
+    return eventBuffer.isEmpty();
+  }
+
   private void runStep() {
-    pool.update();
-    // F-003+: event buffer, Systems, merge, View
-    lastCompletedStepIndex++;
+    int stepIndex = lastCompletedStepIndex + 1;
+    diagnostics.stepStarted(stepIndex);
+
+    if (!eventBuffer.isEmpty()) {
+      throw new IllegalStateException("event buffer not empty at Step start");
+    }
+
+    pool.update(eventBuffer, emissions, diagnostics);
+
+    ClaimResult result = EventClaiming.claim(eventBuffer.events(), claimers);
+    for (var entry : result.claimedByClaimer().entrySet()) {
+      EventClaimer claimer = entry.getKey();
+      for (EngineEvent event : entry.getValue()) {
+        diagnostics.eventClaimed(event, claimer);
+      }
+    }
+    for (EngineEvent event : result.unmatched()) {
+      diagnostics.unmatchedEvent(event);
+    }
+
+    eventBuffer.clear();
+    lastClaimResult = result;
+    diagnostics.stepSettled(stepIndex);
+    lastCompletedStepIndex = stepIndex;
   }
 }

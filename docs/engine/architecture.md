@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-002 Pool heartbeat)  
+**Status:** active (F-003 events + diagnostics)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,7 +16,7 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — Pool Step loop (F-002) |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — events + diagnostics (F-003) |
 | **cli** | _(planned)_ | Headless runner (N Steps, settled state) | Not created — F-007 |
 | **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
@@ -31,7 +31,7 @@ product  →  engine  ←  cli
                 ui
 ```
 
-`cli`, `ui`, and `product` may depend on `engine`. **`engine` must never depend on them** (never the reverse). Engine stays free of UI toolkits and CLI libraries on the compile classpath.
+`cli`, `ui`, and `product` may depend on `engine`. **`engine` must never depend on them** (never the reverse). Engine stays free of UI toolkits and CLI libraries on the compile classpath. **SLF4J API** is allowed in `engine`; logging *bindings* are not (ADR-008).
 
 ---
 
@@ -50,24 +50,44 @@ product  →  engine  ←  cli
 | Package | Contents | Step |
 |---------|----------|------|
 | `com.aethelgard.engine` | Package root | F-001 |
-| `com.aethelgard.engine.pool` | `EngineConfig`, `Pool`, `Engine`, `PoolSnapshot` | F-002 |
-
-Further packages (`.event`, `.system`, …) appear when their Step lands.
+| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-003 |
+| `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `ClaimResult` | F-003 |
+| `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics` | F-003 |
 
 ### Pool heartbeat (F-002)
 
 | Type | Role |
 |------|------|
-| `EngineConfig` | Caller-supplied Step 0 seed (ADR-005) |
-| `Pool` | Shared state; `update()` once per Step |
-| `Engine` | Step loop: `create` → Step 0; `advance` / `advance(n)` |
+| `EngineConfig` | Step 0 seed + optional scripted emission paths each update |
+| `Pool` | Shared state; `update()` once per Step (may emit events) |
+| `Engine` | Step loop: update → claim → clear buffer → settle |
 | `PoolSnapshot` | Immutable settled state after a completed Step |
 
 **`stepIndex()` rule:** 0-based index of the last completed Step. `create` completes Step 0 → `0`. Each `advance()` increments by 1.
 
-**Trivial Pool rule (F-002 only):** `value = value + 1` on each `update()`. Domain state replaces this later.
+**Trivial Pool rule:** `value = value + 1` on each `update()`. Domain state replaces this later.
 
-Logging / diagnostics deferred to F-003.
+### Events + claiming (F-003)
+
+| Type | Role |
+|------|------|
+| `Category` / `CategoryTree` | Path hierarchy (`world/combat`); ancestry claiming |
+| `EngineEvent` | Buffer notification with a category |
+| `EventBuffer` | Filled once per Step during Pool compute; cleared on settle |
+| `EventClaimer` | Stub: assigned category; claims self + descendants |
+| `ClaimResult` | Observable claimed / unmatched sets (`Engine.lastClaimResult()`) |
+
+Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `EngineSetup.categoryTree()`.
+
+### Diagnostics (F-003 / ADR-008)
+
+| Type | Role |
+|------|------|
+| `EngineDiagnostics` | Port: step start/settle, emit, claim, unmatched |
+| `Slf4jDiagnostics` | Default — DEBUG lifecycle/emit/claim; WARN unmatched |
+| `RecordingDiagnostics` | Test sink (no stdout scraping) |
+
+Compose with `EngineDiagnostics.compose(...)`. Does not affect Pool determinism.
 
 ---
 
@@ -81,9 +101,12 @@ MapMakingTool/
   engine/
     pom.xml
     src/main/java/com/aethelgard/engine/
-      pool/   # F-002
+      pool/
+      event/
+      diag/
     src/test/java/com/aethelgard/engine/
       pool/
+      event/
 ```
 
 ---

@@ -25,7 +25,7 @@ Goal doc: [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md)
 |----|------|--------|---------|
 | F-001 | Layout + Maven scaffold | done | [F-001.md](../blockers/F-001.md) |
 | F-002 | Pool + Step loop + Step 0 config | done | [F-002.md](../blockers/F-002.md) |
-| F-003 | Events + claiming + unmatched log | not started | — |
+| F-003 | Events + claiming + unmatched log | done | [F-003.md](../blockers/F-003.md) |
 | F-004 | Systems + typed merge + provenance | not started | — |
 | F-005 | Claim/finish + determinism | not started | — |
 | F-006 | User Input / Input View / User View | not started | — |

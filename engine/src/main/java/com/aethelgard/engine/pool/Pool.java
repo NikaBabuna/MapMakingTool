@@ -7,11 +7,16 @@
 
 package com.aethelgard.engine.pool;
 
+import com.aethelgard.engine.diag.EngineDiagnostics;
+import com.aethelgard.engine.event.Category;
+import com.aethelgard.engine.event.EngineEvent;
+import com.aethelgard.engine.event.EventBuffer;
+import java.util.List;
+
 /**
  * Engine Pool: shared state updated once at the start of each Step's computation.
  *
- * <p>F-002 uses a trivial value so the Step spine is testable. Events, Systems, and merge arrive
- * in later Steps.
+ * <p>May emit scripted events into the shared buffer during {@link #update}.
  */
 public final class Pool {
 
@@ -26,11 +31,17 @@ public final class Pool {
   /**
    * Invoked exactly once at the start of each Step's computation.
    *
-   * <p>Trivial rule for F-002: {@code value = value + 1}.
+   * <p>Trivial rule for F-002: {@code value = value + 1}. Then emits configured events (F-003).
    */
-  void update() {
+  void update(
+      EventBuffer buffer, List<Category> emissions, EngineDiagnostics diagnostics) {
     updateCount++;
     value = value + 1;
+    for (Category category : emissions) {
+      EngineEvent event = new EngineEvent(category);
+      buffer.add(event);
+      diagnostics.eventEmitted(event);
+    }
   }
 
   PoolSnapshot snapshot() {

@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-002 Accepted)
+**Status:** complete (F-003 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-002** (Pool + Step loop + Step 0 config).
+Complete **F-003** (events, claiming, unmatched log, logging foundation).
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-002** (Pool + Step loop + Step 0 config).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-002 | Pool + Step loop + Step 0 config | done |
+| F-003 | Events + claiming + logging foundation | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (20 tests)
+- [x] Incremental suite green (28 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Reconcile + propose **F-003** (events + claiming + unmatched log, including logging facade).
+1. Propose **F-004** (Systems + Sub-Systems + typed merge + provenance).

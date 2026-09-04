@@ -87,11 +87,11 @@ class ScaffoldWitnessTest {
   @Test
   @DisplayName("FR-6: engine has no compile-scope UI/CLI/product dependencies")
   void engineHasNoAdapterOrProductCompileDeps() {
-    String compileSection = enginePom;
-    // Strip test-scoped dependencies so we only judge compile classpath intent
+    // Strip all test-scoped dependencies so we only judge compile classpath intent
     String withoutTestDeps =
-        compileSection.replaceAll(
-            "(?s)<dependency>\\s*<groupId>org\\.junit[\\s\\S]*?</dependency>", "");
+        enginePom.replaceAll(
+            "(?s)<dependency>\\s*(?:(?!</dependency>).)*?<scope>test</scope>\\s*</dependency>",
+            "");
 
     assertFalse(
         withoutTestDeps.toLowerCase().contains("javafx"),
@@ -107,6 +107,9 @@ class ScaffoldWitnessTest {
             || withoutTestDeps.contains("<artifactId>cli</artifactId>")
             || withoutTestDeps.contains("<artifactId>ui</artifactId>"),
         "engine must not depend on product/cli/ui modules");
+    assertFalse(
+        withoutTestDeps.toLowerCase().contains("logback"),
+        "engine must not depend on Logback (SLF4J API only)");
   }
 
   @Test

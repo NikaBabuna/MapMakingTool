@@ -48,7 +48,7 @@
 | [features.md](project/features.md) | Active — G-001 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (7 ADRs) |
+| [decisions.md](project/decisions.md) | Active (8 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -93,6 +93,7 @@
 | [README.md](blockers/README.md) | Active |
 | [F-001.md](blockers/F-001.md) | done — layout + Maven scaffold |
 | [F-002.md](blockers/F-002.md) | done — Pool + Step loop |
+| [F-003.md](blockers/F-003.md) | done — events + claiming + diagnostics |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
