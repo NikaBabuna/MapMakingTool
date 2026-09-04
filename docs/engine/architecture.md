@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-001 scaffold)  
+**Status:** active (F-002 Pool heartbeat)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,7 +16,7 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Scaffolded (F-001) |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — Pool Step loop (F-002) |
 | **cli** | _(planned)_ | Headless runner (N Steps, settled state) | Not created — F-007 |
 | **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
@@ -45,13 +45,29 @@ product  →  engine  ←  cli
 
 ---
 
-## Package root
+## Packages
 
-| Root | Module |
-|------|--------|
-| `com.aethelgard.engine` | `engine` |
+| Package | Contents | Step |
+|---------|----------|------|
+| `com.aethelgard.engine` | Package root | F-001 |
+| `com.aethelgard.engine.pool` | `EngineConfig`, `Pool`, `Engine`, `PoolSnapshot` | F-002 |
 
-Subpackages appear when a Step needs them (e.g. `.pool`, `.event`, `.system`, `.merge`, `.input`, `.view`). Do not pre-carve empty packages.
+Further packages (`.event`, `.system`, …) appear when their Step lands.
+
+### Pool heartbeat (F-002)
+
+| Type | Role |
+|------|------|
+| `EngineConfig` | Caller-supplied Step 0 seed (ADR-005) |
+| `Pool` | Shared state; `update()` once per Step |
+| `Engine` | Step loop: `create` → Step 0; `advance` / `advance(n)` |
+| `PoolSnapshot` | Immutable settled state after a completed Step |
+
+**`stepIndex()` rule:** 0-based index of the last completed Step. `create` completes Step 0 → `0`. Each `advance()` increments by 1.
+
+**Trivial Pool rule (F-002 only):** `value = value + 1` on each `update()`. Domain state replaces this later.
+
+Logging / diagnostics deferred to F-003.
 
 ---
 
@@ -59,13 +75,15 @@ Subpackages appear when a Step needs them (e.g. `.pool`, `.event`, `.system`, `.
 
 ```
 MapMakingTool/
-  pom.xml                 # parent aggregator
+  pom.xml
   mvnw / mvnw.cmd
   .mvn/wrapper/
   engine/
     pom.xml
     src/main/java/com/aethelgard/engine/
+      pool/   # F-002
     src/test/java/com/aethelgard/engine/
+      pool/
 ```
 
 ---
