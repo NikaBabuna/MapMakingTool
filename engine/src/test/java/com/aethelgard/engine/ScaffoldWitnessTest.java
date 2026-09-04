@@ -40,11 +40,15 @@ class ScaffoldWitnessTest {
   }
 
   @Test
-  @DisplayName("FR-2: parent is pom packaging with exactly one module: engine")
+  @DisplayName("FR-2: parent is pom packaging; modules are engine then cli (F-007)")
   void parentIsAggregatorWithEngineOnly() {
     assertTrue(parentPom.contains("<packaging>pom</packaging>"), "parent packaging must be pom");
     List<String> modules = captureAll(parentPom, "<module>([^<]+)</module>");
-    assertEquals(List.of("engine"), modules, "F-001 must have exactly the engine module");
+    assertTrue(modules.contains("engine"), "engine module required (F-001)");
+    assertEquals(
+        List.of("engine", "cli"),
+        modules,
+        "aggregator modules: engine (F-001) + cli (F-007); ui/product still later");
   }
 
   @Test

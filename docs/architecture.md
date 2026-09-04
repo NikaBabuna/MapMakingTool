@@ -17,7 +17,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 | Layer | Doc | Status |
 |-------|-----|--------|
-| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-006 user layer |
+| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-007 CLI |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active |
 | **Product** | _(implementation architecture TBD)_ | After G-001 |
 
@@ -35,7 +35,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |------|---------|
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) |
-| `cli/` | Planned — F-007 |
+| `cli/` | Active — F-007 (`com.aethelgard:cli`) |
 | `ui/` | Planned — F-008 |
 | `product/` | Planned — after G-001 |
 

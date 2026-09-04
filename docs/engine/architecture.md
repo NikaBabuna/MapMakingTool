@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-006 User Input / Input View / User View)  
+**Status:** active (F-007 CLI runner)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -17,7 +17,7 @@
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — user layer (F-006) |
-| **cli** | _(planned)_ | Headless runner (N Steps, settled state) | Not created — F-007 |
+| **cli** | `com.aethelgard:cli` | Headless runner (N Steps, settled state) | Active — F-007 |
 | **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
 
@@ -177,8 +177,21 @@ MapMakingTool/
       event/                      # F-003
       system/                     # F-004–F-005
       user/                       # F-006
+  cli/
+    pom.xml
+    src/main/java/com/aethelgard/cli/   # F-007
+    src/test/java/com/aethelgard/cli/
 ```
 
+### CLI (F-007)
+
+| Type | Role |
+|------|------|
+| `CliRunner` | Parse `--steps` / `--initial`; create engine; advance N; format settled report |
+| `Main` | Process entry → `CliRunner` → exit code |
+| `CliOptions` / `CliResult` | Options and exit/output |
+
+Artifact `com.aethelgard:cli` depends on `engine`. Run headlessly from tests via `CliRunner.run(args)`.
 ---
 
 ## Witness

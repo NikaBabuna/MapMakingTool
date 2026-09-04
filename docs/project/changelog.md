@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-04** — F-007: `cli` Maven module — headless N-Step runner.
 - **2026-09-04** — F-006: User Input / Input View / User View (`user` package).
 - **2026-09-04** — F-005: claim/finish barrier + determinism witness.
 - **2026-09-04** — F-004: Systems + Sub-Systems + typed merge + provenance (`system`, `merge` packages).

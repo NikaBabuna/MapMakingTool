@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-006 Accepted)
+**Status:** complete (F-007 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-006** (User Input / Input View / User View).
+Complete **F-007** (CLI runner).
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-006** (User Input / Input View / User View).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-006 | User Input / Input View / User View | done |
+| F-007 | CLI runner | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (51 tests)
+- [x] Incremental suite green (57 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-007** (CLI runner).
+1. Propose **F-008** (basic UI + close remaining claim checklist gaps).

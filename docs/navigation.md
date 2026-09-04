@@ -65,7 +65,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-006) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-007) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -77,8 +77,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-006 user layer |
-| [specs/](engine/specs/) | Active — specs run ahead of code for F-007+ |
+| [architecture.md](engine/architecture.md) | Active — F-007 CLI |
+| [specs/](engine/specs/) | Active — specs run ahead of code for F-008 |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
@@ -109,6 +109,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-004.md](blockers/F-004.md) | done — Systems + typed merge + provenance |
 | [F-005.md](blockers/F-005.md) | done — claim/finish + determinism |
 | [F-006.md](blockers/F-006.md) | done — User Input / Input View / User View |
+| [F-007.md](blockers/F-007.md) | done — CLI runner |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
@@ -118,6 +119,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Path | README / entry |
 |------|----------------|
 | [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
+| [../cli/](../cli/) | [README](../cli/README.md) — headless runner |
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
 | [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
 | [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |
