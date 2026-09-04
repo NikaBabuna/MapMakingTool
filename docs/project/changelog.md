@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-04** — F-005: claim/finish barrier + determinism witness.
 - **2026-09-04** — F-004: Systems + Sub-Systems + typed merge + provenance (`system`, `merge` packages).
 - **2026-09-04** — Landmark folder READMEs required; navigation links them (PHASE + rules).
 - **2026-09-04** — Compliance pass: docs aligned to F-003 code (status labels, claim wording, glossary/spec status notes).

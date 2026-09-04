@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-004 Accepted)
+**Status:** complete (F-005 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-004** (Systems + Sub-Systems + typed merge + provenance).
+Complete **F-005** (claim/finish barrier + determinism witness).
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-004** (Systems + Sub-Systems + typed merge + provenance).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-004 | Systems + typed merge + provenance | done |
+| F-005 | Claim/finish + determinism | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (39 tests)
+- [x] Incremental suite green (45 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-005** (claim/finish + determinism witness).
+1. Propose **F-006** (User Input / Input View / User View).

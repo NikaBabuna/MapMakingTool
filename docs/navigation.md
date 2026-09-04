@@ -65,7 +65,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-004) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-005) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -77,8 +77,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-004 Systems + typed merge |
-| [specs/](engine/specs/) | Active — specs run ahead of code for F-005+ |
+| [architecture.md](engine/architecture.md) | Active — F-005 claim/finish + determinism |
+| [specs/](engine/specs/) | Active — specs run ahead of code for F-006+ |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
@@ -107,6 +107,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-002.md](blockers/F-002.md) | done — Pool + Step loop |
 | [F-003.md](blockers/F-003.md) | done — events + claiming + diagnostics |
 | [F-004.md](blockers/F-004.md) | done — Systems + typed merge + provenance |
+| [F-005.md](blockers/F-005.md) | done — claim/finish + determinism |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---

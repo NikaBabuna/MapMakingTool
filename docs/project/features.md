@@ -27,7 +27,7 @@ Goal doc: [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md)
 | F-002 | Pool + Step loop + Step 0 config | done | [F-002.md](../blockers/F-002.md) |
 | F-003 | Events + claiming + unmatched log | done | [F-003.md](../blockers/F-003.md) |
 | F-004 | Systems + typed merge + provenance | done | [F-004.md](../blockers/F-004.md) |
-| F-005 | Claim/finish + determinism | not started | — |
+| F-005 | Claim/finish + determinism | done | [F-005.md](../blockers/F-005.md) |
 | F-006 | User Input / Input View / User View | not started | — |
 | F-007 | CLI runner | not started | — |
 | F-008 | Basic UI + claim checklist closure | not started | — |

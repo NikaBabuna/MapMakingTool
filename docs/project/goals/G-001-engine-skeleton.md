@@ -51,7 +51,7 @@ When this Goal is `done`, another agent can trust the engine core and start prod
 
 These must be green by Goal completion (spread across Steps as needed):
 
-- [x] Pool `update` + Step lifecycle order _(spine through F-004: update → claim → Systems → merge → apply → clear; claim/finish barrier + View later)_
+- [x] Pool `update` + Step lifecycle order _(spine through F-005: update → claim → Systems → claim/finish → merge → apply → clear; View later)_
 - [x] Step 0 from config object
 - [x] Event buffer + category ancestry claiming _(Systems claim via `EventClaimer`; stub claimers remain)_
 - [x] Unmatched events logged
@@ -59,8 +59,8 @@ These must be green by Goal completion (spread across Steps as needed):
 - [x] Sub-System composition / conflict-resolution hook (as needed for skeleton)
 - [x] Typed merge: Static, Increment, Constant, Destructive (Delete Request if included)
 - [x] Provenance on conflicting writes
-- [ ] Claim/finish barrier
-- [ ] Determinism: same config + inputs → same Pool after N Steps
+- [x] Claim/finish barrier
+- [x] Determinism: same config + inputs → same Pool after N Steps
 - [x] No same-Step event buffer refill _(System-output → next-Step events still deferred)_
 - [ ] User Input → Input View sampling
 - [ ] User View reads settled Pool only
@@ -81,7 +81,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 | F-002 | Pool + Step loop + Step 0 config object | done |
 | F-003 | Events, category claiming, unmatched-event logging | done |
 | F-004 | Systems + Sub-Systems + typed merge + provenance | done |
-| F-005 | Claim/finish + determinism witness | not started |
+| F-005 | Claim/finish + determinism witness | done |
 | F-006 | User Input / Input View / User View | not started |
 | F-007 | CLI runner | not started |
 | F-008 | Basic UI + close remaining claim checklist gaps | not started |
@@ -93,7 +93,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 5 / 9 |
-| Framework claim boxes | 9 / 15 |
+| Steps done | 6 / 9 |
+| Framework claim boxes | 11 / 15 |
 
 Update this section at the end of every successful Step.

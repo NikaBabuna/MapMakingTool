@@ -7,7 +7,7 @@
 
 # Determinism and convergence
 
-A Step's result must not depend on incidental execution order at any of three layers.
+> **Code status (through F-005):** Within-System order, across-System independence, and across-Step no-refill hold under tests. Same config + setup + N Steps → equal settled Pool; System registration order does not change independent field outcomes. Delete Request remains the open gap in the full guarantee.
 
 ## Within a System
 

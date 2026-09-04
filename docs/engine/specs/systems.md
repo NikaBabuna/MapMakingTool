@@ -7,7 +7,7 @@
 
 # Systems and Sub-Systems
 
-> **Code status (through F-004):** `EngineSystem`, `SystemConfig`, `SubSystem`, and `ConflictResolutionSubSystem` are implemented. Systems run synchronously on a shared Pool snapshot. Claim/finish barrier counters remain F-005.
+> **Code status (through F-005):** `EngineSystem`, `SystemConfig`, `SubSystem`, `ConflictResolutionSubSystem`, and `ClaimFinishBarrier` are implemented. Systems run synchronously on a shared Pool snapshot; merge waits until claim count equals finish count.
 
 ## Composition: config as grammar
 

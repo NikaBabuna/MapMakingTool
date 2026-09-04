@@ -9,12 +9,12 @@
 
 Terms for the Pool-System Framework. Product domain terms: [../product/glossary.md](../product/glossary.md).
 
-**Implementation note (through F-004):** Pool, Steps, events, category ancestry, stub claimers, Systems/Sub-Systems, typed merge (Static/Increment/Constant/Destructive), and diagnostics exist in code. Claim/finish barrier and User View/Input remain **spec targets** until F-005–F-006. See [architecture.md](architecture.md).
+**Implementation note (through F-005):** Pool, Steps, events, Systems/Sub-Systems, typed merge, claim/finish barrier, and diagnostics exist in code. User View/Input remain **spec targets** until F-006. See [architecture.md](architecture.md).
 
 | Term | Definition |
 |------|------------|
 | **Pool** | Shared, public state of the simulated world. Engine object with an `update()` method (and other lifecycle methods as needed), invoked at the start of each Step's computation. Holds a typed field map for System merge. |
-| **Step** | One full transaction: Pool computes, emits events, claiming Systems react, outputs merge back into the Pool, event buffer clears. *(Today: update → claim → Systems → merge → apply → clear.)* |
+| **Step** | One full transaction: Pool computes, emits events, claiming Systems react, outputs merge back into the Pool, event buffer clears. *(Today: update → claim → Systems → claim/finish → merge → apply → clear.)* |
 | **Event** | Notification the Pool writes to a shared buffer during computation, carrying a category from the category tree. |
 | **Category Tree** | Hierarchy of event categories. Each System (or stub claimer) is assigned one category at definition time. |
 | **EventClaimer** | Claims by category ancestry. Stub claimers remain for F-003 tests; Systems expose a claimer identity for dispatch. |
@@ -29,6 +29,6 @@ Terms for the Pool-System Framework. Product domain terms: [../product/glossary.
 | **User View** | Independent system that reads the settled Pool at end of Step and produces the frame the user sees. Read-only. *(F-006.)* |
 | **User Input** | Typed register of currently or previously pressed inputs, gathered during a Step. *(F-006.)* |
 | **Input View** | Staged snapshot of User Input the Pool reads during computation. All inputs count as simultaneous at compute time. *(F-006.)* |
-| **Claim / Finish Counters** | Synchronization barrier: count of Systems that claimed an event must match count reporting finished before merge proceeds. *(F-005 — Systems currently finish synchronously.)* |
+| **Claim / Finish Counters** | Synchronization barrier: count of Systems that claimed an event must match count reporting finished before merge proceeds. Observable via `ClaimFinishSnapshot` / `Engine.lastClaimFinish()`. *(Systems finish synchronously in G-001.)* |
 
 Field merge types: [specs/merge-types.md](specs/merge-types.md).

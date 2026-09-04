@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-004 Systems + typed merge)  
+**Status:** active (F-005 claim/finish + determinism)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,7 +16,7 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — Systems + typed merge (F-004) |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — claim/finish + determinism (F-005) |
 | **cli** | _(planned)_ | Headless runner (N Steps, settled state) | Not created — F-007 |
 | **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
@@ -53,18 +53,19 @@ product  →  engine  ←  cli
 | `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-004 |
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
 | `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
-| `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook | F-004 |
+| `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook, `ClaimFinishBarrier` | F-004–F-005 |
 | `com.aethelgard.engine.merge` | `FieldType`, `FieldSchema`, provenance, `StepOutputBuffer`, `TypedMerge` | F-004 |
 
-### Implemented Step order (through F-004)
+### Implemented Step order (through F-005)
 
 ```text
 stepStarted → Pool.update (may emit) → ancestry claim
-  → claiming Systems run Sub-Systems (same Pool snapshot) → Step output buffer
-  → typed merge → apply fields → clear event buffer → stepSettled
+  → claiming Systems run Sub-Systems (same Pool snapshot; claim/finish counters)
+  → claim/finish barrier (claimCount == finishCount) → typed merge → apply fields
+  → clear event buffer → stepSettled
 ```
 
-Systems run **synchronously** to completion. Claim/finish barrier counters, User View, and Input View are **not** in code yet (F-005–F-006). Delete Request merge type omitted (open question #4).
+Systems run **synchronously** and always finish (non-finishing policy deferred past G-001). User View and Input View are **not** in code yet (F-006). Delete Request merge type omitted (open question #4).
 
 ### Pool heartbeat (F-002)
 
@@ -102,6 +103,17 @@ Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `Eng
 | `EngineSystem` | Claims via wrapped `EventClaimer`; runs Sub-Systems; returns OUT_SYS |
 
 **Independence:** every claiming System receives the same post-`update` `PoolSnapshot`; none reads another System's OUT_SYS in that Step.
+
+### Claim/finish barrier (F-005)
+
+| Type | Role |
+|------|------|
+| `ClaimFinishBarrier` | Per-Step claim/finish counters; `requireBalanced()` before merge |
+| `ClaimFinishSnapshot` | Observable after settle (`Engine.lastClaimFinish()`) |
+
+**Rule:** claim count = Systems that claimed ≥1 event; each such System finishes exactly once. Stub `EventClaimer`s do not count. Merge is forbidden unless `claimCount == finishCount`.
+
+**Determinism:** same config + setup + N advances → equal settled Pool; independent Systems may be registered in any order without changing settled fields.
 
 ### Typed merge (F-004)
 

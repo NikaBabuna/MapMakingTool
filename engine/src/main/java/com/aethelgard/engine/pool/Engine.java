@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/Engine.java
- * Purpose: Step loop driver — config bootstrap, events, Systems, merge, settled snapshots
+ * Purpose: Step loop driver — config bootstrap, events, Systems, barrier, merge, settled snapshots
  * Audience: Agents / callers (tests, later CLI/UI)
  * Update when: Step orchestration API changes
  */
@@ -17,6 +17,8 @@ import com.aethelgard.engine.event.EventClaiming;
 import com.aethelgard.engine.merge.ProvenancedWrite;
 import com.aethelgard.engine.merge.StepOutputBuffer;
 import com.aethelgard.engine.merge.TypedMerge;
+import com.aethelgard.engine.system.ClaimFinishBarrier;
+import com.aethelgard.engine.system.ClaimFinishSnapshot;
 import com.aethelgard.engine.system.EngineSystem;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,8 @@ import java.util.Objects;
  * completes the next Step and increments the index by 1. After create + {@code advance(n)},
  * {@code stepIndex() == n}.
  *
- * <p><b>Step order (F-004):</b> update → claim → run claiming Systems → typed merge → apply →
- * clear event buffer → settle. Systems run synchronously (claim/finish barrier is F-005).
+ * <p><b>Step order (F-005):</b> update → claim → run claiming Systems (claim/finish) → barrier →
+ * typed merge → apply → clear event buffer → settle. Systems run synchronously and always finish.
  */
 public final class Engine {
 
@@ -45,6 +47,7 @@ public final class Engine {
   private int lastCompletedStepIndex = -1;
   private ClaimResult lastClaimResult = ClaimResult.empty();
   private StepOutputBuffer lastStepOutput = new StepOutputBuffer();
+  private ClaimFinishSnapshot lastClaimFinish = ClaimFinishSnapshot.empty();
 
   private Engine(
       Pool pool,
@@ -127,6 +130,11 @@ public final class Engine {
     return lastStepOutput;
   }
 
+  /** Claim/finish barrier snapshot from the last completed Step. */
+  public ClaimFinishSnapshot lastClaimFinish() {
+    return lastClaimFinish;
+  }
+
   /** True when the shared event buffer is empty (expected after settle). */
   public boolean eventBufferEmpty() {
     return eventBuffer.isEmpty();
@@ -158,19 +166,25 @@ public final class Engine {
       diagnostics.unmatchedEvent(event);
     }
 
-    // Same snapshot for every System — independence (FR-2).
+    // Same snapshot for every System — independence (F-004).
     PoolSnapshot snapshotForSystems = pool.snapshot();
     StepOutputBuffer output = new StepOutputBuffer();
+    ClaimFinishBarrier barrier = new ClaimFinishBarrier();
+
     for (EngineSystem system : systems) {
       List<EngineEvent> claimed = result.claimedByClaimer().get(system.claimer());
       if (claimed == null || claimed.isEmpty()) {
         continue;
       }
+      barrier.onClaimed(system.id());
       Map<String, Long> outSys = system.run(snapshotForSystems);
       for (var fieldWrite : outSys.entrySet()) {
         output.add(fieldWrite.getKey(), new ProvenancedWrite(system.id(), fieldWrite.getValue()));
       }
+      barrier.onFinished(system.id());
     }
+
+    barrier.requireBalanced();
 
     Map<String, Long> merged =
         TypedMerge.merge(pool.fieldSchema(), pool.fieldValues(), output);
@@ -179,6 +193,7 @@ public final class Engine {
     eventBuffer.clear();
     lastClaimResult = result;
     lastStepOutput = output;
+    lastClaimFinish = barrier.snapshot();
     diagnostics.stepSettled(stepIndex);
     lastCompletedStepIndex = stepIndex;
   }
