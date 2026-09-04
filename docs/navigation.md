@@ -58,7 +58,7 @@
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-001 layout) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-003) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -68,9 +68,9 @@
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-001 scaffold |
-| [specs/](engine/specs/) | Active (see folder README) |
-| [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open |
+| [architecture.md](engine/architecture.md) | Active — F-003 events + diagnostics |
+| [specs/](engine/specs/) | Active (see folder README) — specs run ahead of code for F-004+ |
+| [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
 

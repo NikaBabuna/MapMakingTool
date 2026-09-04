@@ -17,7 +17,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 | Layer | Doc | Status |
 |-------|-----|--------|
-| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-001 scaffold |
+| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-003 events + diagnostics |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active |
 | **Product** | _(implementation architecture TBD)_ | After G-001 |
 

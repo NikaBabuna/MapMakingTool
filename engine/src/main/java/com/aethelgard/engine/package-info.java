@@ -8,8 +8,8 @@
 /**
  * Pool-System Framework root package.
  *
- * <p>Domain types (Pool, Step, events, Systems, merge) arrive in later Steps.
- * Adapters ({@code cli}, {@code ui}) and product code depend on this module;
- * this module must not depend on them.
+ * <p>Implemented under this root: {@code pool}, {@code event}, {@code diag} (through F-003).
+ * Full Systems, typed merge, and User View/Input arrive in later Steps. Adapters ({@code cli},
+ * {@code ui}) and product code depend on this module; this module must not depend on them.
  */
 package com.aethelgard.engine;

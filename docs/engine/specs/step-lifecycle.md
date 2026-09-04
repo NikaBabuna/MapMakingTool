@@ -9,6 +9,8 @@
 
 A single Step runs in this order:
 
+> **Code status (through F-003):** items 1–3 are implemented with stub claimers (no Sub-System execution). Item 9’s “clear event buffer” and the no-refill rule (item 10’s buffer half) hold. Items 4–8 (Sub-Systems, claim/finish, merge apply) and 11–12 (User View / next-Step from System output) are **not** in code yet — F-004–F-006.
+
 1. The Pool computes. It reads the Input View and configuration from the previous Step, and updates its own state.
 2. While computing, the Pool writes events into a shared buffer visible to every System.
 3. Each System checks the buffer against its assigned category. It claims events whose category equals its own or descends from it at any depth.

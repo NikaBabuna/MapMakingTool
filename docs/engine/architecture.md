@@ -51,8 +51,17 @@ product  →  engine  ←  cli
 |---------|----------|------|
 | `com.aethelgard.engine` | Package root | F-001 |
 | `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-003 |
-| `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `ClaimResult` | F-003 |
-| `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics` | F-003 |
+| `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
+| `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
+
+### Implemented Step order (through F-003)
+
+```text
+stepStarted → Pool.update (may emit) → ancestry claim → unmatched diagnostics
+  → clear buffer → stepSettled
+```
+
+**Not yet in code** (specs describe the full loop): Sub-Systems, claim/finish barrier, typed merge apply, User View, Input View. Those belong to F-004–F-006.
 
 ### Pool heartbeat (F-002)
 
@@ -74,7 +83,8 @@ product  →  engine  ←  cli
 | `Category` / `CategoryTree` | Path hierarchy (`world/combat`); ancestry claiming |
 | `EngineEvent` | Buffer notification with a category |
 | `EventBuffer` | Filled once per Step during Pool compute; cleared on settle |
-| `EventClaimer` | Stub: assigned category; claims self + descendants |
+| `EventClaimer` | Stub: assigned category; claims self + descendants (full Systems in F-004) |
+| `EventClaiming` | Ancestry dispatch; multiple claimers may claim the same event |
 | `ClaimResult` | Observable claimed / unmatched sets (`Engine.lastClaimResult()`) |
 
 Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `EngineSetup.categoryTree()`.
@@ -86,6 +96,7 @@ Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `Eng
 | `EngineDiagnostics` | Port: step start/settle, emit, claim, unmatched |
 | `Slf4jDiagnostics` | Default — DEBUG lifecycle/emit/claim; WARN unmatched |
 | `RecordingDiagnostics` | Test sink (no stdout scraping) |
+| `noop()` / `NoopDiagnostics` | Silent sink |
 
 Compose with `EngineDiagnostics.compose(...)`. Does not affect Pool determinism.
 
@@ -98,6 +109,7 @@ MapMakingTool/
   pom.xml
   mvnw / mvnw.cmd
   .mvn/wrapper/
+  .github/workflows/ci.yml
   engine/
     pom.xml
     src/main/java/com/aethelgard/engine/
@@ -105,8 +117,10 @@ MapMakingTool/
       event/
       diag/
     src/test/java/com/aethelgard/engine/
-      pool/
-      event/
+      ScaffoldWitnessTest.java   # F-001
+      CiWitnessTest.java          # F-009
+      pool/                       # F-002
+      event/                      # F-003
 ```
 
 ---

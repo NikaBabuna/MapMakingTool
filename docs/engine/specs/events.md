@@ -7,6 +7,8 @@
 
 # Event model
 
+> **Code status (through F-003):** category tree, event buffer, ancestry claiming via stub `EventClaimer`, unmatched diagnostics, and no same-Step buffer refill are implemented. Claiming Systems that produce OUT_SYS / next-Step events arrive in F-004+.
+
 ## Category tree and ancestry claiming
 
 The Pool writes each event as a notification into a shared buffer — not addressed to a specific System. Every event carries a **category** from the category tree (nested like folders). Each System is assigned one category at definition time and claims any event whose category is its own or a **descendant** at any depth.

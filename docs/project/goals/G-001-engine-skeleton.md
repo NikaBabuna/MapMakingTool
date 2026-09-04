@@ -51,9 +51,9 @@ When this Goal is `done`, another agent can trust the engine core and start prod
 
 These must be green by Goal completion (spread across Steps as needed):
 
-- [x] Pool `update` + Step lifecycle order
+- [x] Pool `update` + Step lifecycle order _(spine through F-003: update → claim → clear; Systems/merge/View later)_
 - [x] Step 0 from config object
-- [x] Event buffer + category ancestry claiming
+- [x] Event buffer + category ancestry claiming _(stub `EventClaimer`; full Systems in F-004)_
 - [x] Unmatched events logged
 - [ ] System independence (no same-Step System chaining)
 - [ ] Sub-System composition / conflict-resolution hook (as needed for skeleton)
@@ -61,7 +61,7 @@ These must be green by Goal completion (spread across Steps as needed):
 - [ ] Provenance on conflicting writes
 - [ ] Claim/finish barrier
 - [ ] Determinism: same config + inputs → same Pool after N Steps
-- [x] Cross-step consequence only (no same-Step event refill)
+- [x] No same-Step event buffer refill _(full System-output → next-Step events deferred to F-004+)_
 - [ ] User Input → Input View sampling
 - [ ] User View reads settled Pool only
 - [ ] CLI can run N Steps and show settled state
