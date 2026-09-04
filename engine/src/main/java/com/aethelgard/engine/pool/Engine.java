@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/Engine.java
- * Purpose: Step loop driver — config bootstrap, events, claiming, settled snapshots
+ * Purpose: Step loop driver — config bootstrap, events, Systems, merge, settled snapshots
  * Audience: Agents / callers (tests, later CLI/UI)
  * Update when: Step orchestration API changes
  */
@@ -14,7 +14,13 @@ import com.aethelgard.engine.event.EngineEvent;
 import com.aethelgard.engine.event.EventBuffer;
 import com.aethelgard.engine.event.EventClaimer;
 import com.aethelgard.engine.event.EventClaiming;
+import com.aethelgard.engine.merge.ProvenancedWrite;
+import com.aethelgard.engine.merge.StepOutputBuffer;
+import com.aethelgard.engine.merge.TypedMerge;
+import com.aethelgard.engine.system.EngineSystem;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,6 +30,9 @@ import java.util.Objects;
  * completed Step. {@link #create} completes Step 0 → index {@code 0}. Each {@link #advance()}
  * completes the next Step and increments the index by 1. After create + {@code advance(n)},
  * {@code stepIndex() == n}.
+ *
+ * <p><b>Step order (F-004):</b> update → claim → run claiming Systems → typed merge → apply →
+ * clear event buffer → settle. Systems run synchronously (claim/finish barrier is F-005).
  */
 public final class Engine {
 
@@ -31,18 +40,22 @@ public final class Engine {
   private final EventBuffer eventBuffer = new EventBuffer();
   private final List<Category> emissions;
   private final List<EventClaimer> claimers;
+  private final List<EngineSystem> systems;
   private final EngineDiagnostics diagnostics;
   private int lastCompletedStepIndex = -1;
   private ClaimResult lastClaimResult = ClaimResult.empty();
+  private StepOutputBuffer lastStepOutput = new StepOutputBuffer();
 
   private Engine(
       Pool pool,
       List<Category> emissions,
       List<EventClaimer> claimers,
+      List<EngineSystem> systems,
       EngineDiagnostics diagnostics) {
     this.pool = pool;
     this.emissions = List.copyOf(emissions);
     this.claimers = List.copyOf(claimers);
+    this.systems = List.copyOf(systems);
     this.diagnostics = diagnostics;
   }
 
@@ -55,7 +68,7 @@ public final class Engine {
   }
 
   /**
-   * Creates a run with explicit category tree, claimers, and diagnostics.
+   * Creates a run with explicit category tree, claimers, Systems, schema, and diagnostics.
    *
    * <p>Emission paths in {@code config} are resolved against {@code setup.categoryTree()}.
    */
@@ -65,7 +78,12 @@ public final class Engine {
     List<Category> emissions =
         setup.categoryTree().resolveAll(config.emitCategoryPathsEachUpdate());
     Engine engine =
-        new Engine(new Pool(config), emissions, setup.claimers(), setup.diagnostics());
+        new Engine(
+            new Pool(config, setup.fieldSchema()),
+            emissions,
+            setup.claimers(),
+            setup.systems(),
+            setup.diagnostics());
     engine.runStep();
     return engine;
   }
@@ -104,6 +122,11 @@ public final class Engine {
     return lastClaimResult;
   }
 
+  /** Provenanced System writes from the last completed Step (before merge apply). */
+  public StepOutputBuffer lastStepOutput() {
+    return lastStepOutput;
+  }
+
   /** True when the shared event buffer is empty (expected after settle). */
   public boolean eventBufferEmpty() {
     return eventBuffer.isEmpty();
@@ -119,7 +142,12 @@ public final class Engine {
 
     pool.update(eventBuffer, emissions, diagnostics);
 
-    ClaimResult result = EventClaiming.claim(eventBuffer.events(), claimers);
+    List<EventClaimer> allClaimers = new ArrayList<>(claimers);
+    for (EngineSystem system : systems) {
+      allClaimers.add(system.claimer());
+    }
+
+    ClaimResult result = EventClaiming.claim(eventBuffer.events(), allClaimers);
     for (var entry : result.claimedByClaimer().entrySet()) {
       EventClaimer claimer = entry.getKey();
       for (EngineEvent event : entry.getValue()) {
@@ -130,8 +158,27 @@ public final class Engine {
       diagnostics.unmatchedEvent(event);
     }
 
+    // Same snapshot for every System — independence (FR-2).
+    PoolSnapshot snapshotForSystems = pool.snapshot();
+    StepOutputBuffer output = new StepOutputBuffer();
+    for (EngineSystem system : systems) {
+      List<EngineEvent> claimed = result.claimedByClaimer().get(system.claimer());
+      if (claimed == null || claimed.isEmpty()) {
+        continue;
+      }
+      Map<String, Long> outSys = system.run(snapshotForSystems);
+      for (var fieldWrite : outSys.entrySet()) {
+        output.add(fieldWrite.getKey(), new ProvenancedWrite(system.id(), fieldWrite.getValue()));
+      }
+    }
+
+    Map<String, Long> merged =
+        TypedMerge.merge(pool.fieldSchema(), pool.fieldValues(), output);
+    pool.applyFields(merged);
+
     eventBuffer.clear();
     lastClaimResult = result;
+    lastStepOutput = output;
     diagnostics.stepSettled(stepIndex);
     lastCompletedStepIndex = stepIndex;
   }

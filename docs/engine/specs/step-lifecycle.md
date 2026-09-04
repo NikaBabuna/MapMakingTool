@@ -9,7 +9,7 @@
 
 A single Step runs in this order:
 
-> **Code status (through F-003):** items 1–3 are implemented with stub claimers (no Sub-System execution). Item 9’s “clear event buffer” and the no-refill rule (item 10’s buffer half) hold. Items 4–8 (Sub-Systems, claim/finish, merge apply) and 11–12 (User View / next-Step from System output) are **not** in code yet — F-004–F-006.
+> **Code status (through F-004):** items 1–5 and 7–10 (Systems, Sub-System conflict order, OUT_SYS, typed merge apply, clear buffer, no same-Step refill) are implemented with **synchronous** System completion. Item 6 (claim/finish barrier counters) is F-005. Items 11–12 (User View / next-Step from System output as events) are F-006+.
 
 1. The Pool computes. It reads the Input View and configuration from the previous Step, and updates its own state.
 2. While computing, the Pool writes events into a shared buffer visible to every System.

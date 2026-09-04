@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-003 Accepted)
+**Status:** complete (F-004 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-003** (events, claiming, unmatched log, logging foundation).
+Complete **F-004** (Systems + Sub-Systems + typed merge + provenance).
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-003** (events, claiming, unmatched log, logging foundation).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-003 | Events + claiming + logging foundation | done |
+| F-004 | Systems + typed merge + provenance | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (28 tests)
+- [x] Incremental suite green (39 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-004** (Systems + Sub-Systems + typed merge + provenance).
+1. Propose **F-005** (claim/finish + determinism witness).

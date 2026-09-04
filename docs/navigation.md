@@ -65,7 +65,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-003) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-004) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -77,8 +77,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-003 events + diagnostics |
-| [specs/](engine/specs/) | Active — specs run ahead of code for F-004+ |
+| [architecture.md](engine/architecture.md) | Active — F-004 Systems + typed merge |
+| [specs/](engine/specs/) | Active — specs run ahead of code for F-005+ |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
@@ -106,6 +106,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-001.md](blockers/F-001.md) | done — layout + Maven scaffold |
 | [F-002.md](blockers/F-002.md) | done — Pool + Step loop |
 | [F-003.md](blockers/F-003.md) | done — events + claiming + diagnostics |
+| [F-004.md](blockers/F-004.md) | done — Systems + typed merge + provenance |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
@@ -118,6 +119,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
 | [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
 | [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |
+| [../engine/.../system/](../engine/src/main/java/com/aethelgard/engine/system/) | [README](../engine/src/main/java/com/aethelgard/engine/system/README.md) |
+| [../engine/.../merge/](../engine/src/main/java/com/aethelgard/engine/merge/) | [README](../engine/src/main/java/com/aethelgard/engine/merge/README.md) |
 | [../.github/](../.github/) | [README](../.github/README.md) |
 | [../.github/workflows/](../.github/workflows/) | [README](../.github/workflows/README.md) · [ci.yml](../.github/workflows/ci.yml) |
 | [../.cursor/](../.cursor/) | [README](../.cursor/README.md) |

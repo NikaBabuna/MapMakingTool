@@ -7,6 +7,8 @@
 
 # Merge and type system
 
+> **Code status (through F-004):** Static, Increment, Constant, and Destructive are implemented via `TypedMerge` + `FieldSchema`. Provenance is `ProvenancedWrite(systemId, value)`. Static/Destructive pick-one = lexicographically smallest `systemId`. **Delete Request** is not implemented (open question #4).
+
 Every output field carries a type; the type defines how conflicting writes resolve.
 
 ## Field types

@@ -7,14 +7,14 @@
 
 # `com.aethelgard.engine.pool`
 
-Step loop and Pool heartbeat (F-002+).
+Step loop and Pool heartbeat (F-002+). Systems + merge wired through F-004.
 
 | Type | Role |
 |------|------|
-| `EngineConfig` | Step 0 seed + optional emission paths |
-| `EngineSetup` | Tree, claimers, diagnostics wiring |
-| `Engine` | `create` / `advance` / `settled` / `lastClaimResult` |
-| `Pool` | `update()` once per Step |
-| `PoolSnapshot` | Settled read-out |
+| `EngineConfig` | Step 0 seed + emissions + optional typed field seeds |
+| `EngineSetup` | Tree, claimers, Systems, field schema, diagnostics |
+| `Engine` | `create` / `advance` / `settled` / claim + Step output |
+| `Pool` | `update()` once per Step; typed fields after merge |
+| `PoolSnapshot` | Settled read-out (`value`, `updateCount`, `fields`) |
 
 See [package-info.java](package-info.java) and [docs/engine/architecture.md](../../../../../../../../docs/engine/architecture.md).

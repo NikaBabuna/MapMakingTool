@@ -7,7 +7,7 @@
 
 # Event model
 
-> **Code status (through F-003):** category tree, event buffer, ancestry claiming via stub `EventClaimer`, unmatched diagnostics, and no same-Step buffer refill are implemented. Claiming Systems that produce OUT_SYS / next-Step events arrive in F-004+.
+> **Code status (through F-004):** category tree, event buffer, ancestry claiming (stub claimers and Systems), unmatched diagnostics, System OUT_SYS → typed merge, and no same-Step buffer refill are implemented. Cross-step event chaining from System output remains F-005+.
 
 ## Category tree and ancestry claiming
 

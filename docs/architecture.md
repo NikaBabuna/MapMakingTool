@@ -17,7 +17,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 | Layer | Doc | Status |
 |-------|-----|--------|
-| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-003 events + diagnostics |
+| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-004 Systems + typed merge |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active |
 | **Product** | _(implementation architecture TBD)_ | After G-001 |
 
@@ -41,9 +41,9 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 
-**Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`) · **Java:** 21
+**Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`) · **Java:** 21
 
-**Engine API:** `Engine.create(config)` / `create(config, setup)` — Step loop with optional scripted events, stub claimers, and diagnostics (ADR-008). Details: [engine/architecture.md](engine/architecture.md).
+**Engine API:** `Engine.create(config)` / `create(config, setup)` — Step loop with optional scripted events, stub claimers and/or Systems, field schema, and diagnostics (ADR-008). Details: [engine/architecture.md](engine/architecture.md).
 
 ---
 

@@ -11,6 +11,8 @@ import java.util.Objects;
 
 /**
  * Minimal claimer: assigned one category; claims that category and all descendants.
+ *
+ * <p>Full Systems wrap a claimer via {@link com.aethelgard.engine.system.EngineSystem#claimer()}.
  */
 public final class EventClaimer {
 

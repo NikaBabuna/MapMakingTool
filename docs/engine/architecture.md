@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-003 events + diagnostics)  
+**Status:** active (F-004 Systems + typed merge)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,7 +16,7 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — events + diagnostics (F-003) |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — Systems + typed merge (F-004) |
 | **cli** | _(planned)_ | Headless runner (N Steps, settled state) | Not created — F-007 |
 | **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
@@ -50,27 +50,30 @@ product  →  engine  ←  cli
 | Package | Contents | Step |
 |---------|----------|------|
 | `com.aethelgard.engine` | Package root | F-001 |
-| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-003 |
+| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-004 |
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
 | `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
+| `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook | F-004 |
+| `com.aethelgard.engine.merge` | `FieldType`, `FieldSchema`, provenance, `StepOutputBuffer`, `TypedMerge` | F-004 |
 
-### Implemented Step order (through F-003)
+### Implemented Step order (through F-004)
 
 ```text
-stepStarted → Pool.update (may emit) → ancestry claim → unmatched diagnostics
-  → clear buffer → stepSettled
+stepStarted → Pool.update (may emit) → ancestry claim
+  → claiming Systems run Sub-Systems (same Pool snapshot) → Step output buffer
+  → typed merge → apply fields → clear event buffer → stepSettled
 ```
 
-**Not yet in code** (specs describe the full loop): Sub-Systems, claim/finish barrier, typed merge apply, User View, Input View. Those belong to F-004–F-006.
+Systems run **synchronously** to completion. Claim/finish barrier counters, User View, and Input View are **not** in code yet (F-005–F-006). Delete Request merge type omitted (open question #4).
 
 ### Pool heartbeat (F-002)
 
 | Type | Role |
 |------|------|
-| `EngineConfig` | Step 0 seed + optional scripted emission paths each update |
-| `Pool` | Shared state; `update()` once per Step (may emit events) |
-| `Engine` | Step loop: update → claim → clear buffer → settle |
-| `PoolSnapshot` | Immutable settled state after a completed Step |
+| `EngineConfig` | Step 0 seed + optional scripted emission paths + optional typed field seeds |
+| `Pool` | Shared state; `update()` once per Step; typed fields apply after merge |
+| `Engine` | Step loop driver |
+| `PoolSnapshot` | Immutable settled state (`value`, `updateCount`, `fields`) |
 
 **`stepIndex()` rule:** 0-based index of the last completed Step. `create` completes Step 0 → `0`. Each `advance()` increments by 1.
 
@@ -83,11 +86,33 @@ stepStarted → Pool.update (may emit) → ancestry claim → unmatched diagnost
 | `Category` / `CategoryTree` | Path hierarchy (`world/combat`); ancestry claiming |
 | `EngineEvent` | Buffer notification with a category |
 | `EventBuffer` | Filled once per Step during Pool compute; cleared on settle |
-| `EventClaimer` | Stub: assigned category; claims self + descendants (full Systems in F-004) |
+| `EventClaimer` | Stub or System claim identity; claims self + descendants |
 | `EventClaiming` | Ancestry dispatch; multiple claimers may claim the same event |
 | `ClaimResult` | Observable claimed / unmatched sets (`Engine.lastClaimResult()`) |
 
 Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `EngineSetup.categoryTree()`.
+
+### Systems (F-004)
+
+| Type | Role |
+|------|------|
+| `SystemConfig` | Id, assigned category, Sub-Systems, optional conflict resolver |
+| `SubSystem` | Declared write-ranges; reads Pool snapshot / System staging; writes OUT_SYS staging |
+| `ConflictResolutionSubSystem` | Full conflict-set → deterministic Sub-System order |
+| `EngineSystem` | Claims via wrapped `EventClaimer`; runs Sub-Systems; returns OUT_SYS |
+
+**Independence:** every claiming System receives the same post-`update` `PoolSnapshot`; none reads another System's OUT_SYS in that Step.
+
+### Typed merge (F-004)
+
+| Type | Role |
+|------|------|
+| `FieldSchema` / `FieldType` | STATIC, INCREMENT, CONSTANT, DESTRUCTIVE |
+| `ProvenancedWrite` | `(systemId, value)` entering the Step output buffer |
+| `StepOutputBuffer` | Field → list of provenanced writes |
+| `TypedMerge` | Resolve by type; **Static/Destructive pick-one = lexicographically smallest `systemId`** |
+
+Increment: standing + sum of writes. Constant: keep standing. Delete Request: not implemented.
 
 ### Diagnostics (F-003 / ADR-008)
 
@@ -116,11 +141,14 @@ MapMakingTool/
       pool/
       event/
       diag/
+      system/
+      merge/
     src/test/java/com/aethelgard/engine/
       ScaffoldWitnessTest.java   # F-001
       CiWitnessTest.java          # F-009
       pool/                       # F-002
       event/                      # F-003
+      system/                     # F-004
 ```
 
 ---

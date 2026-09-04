@@ -7,6 +7,8 @@
 
 # Systems and Sub-Systems
 
+> **Code status (through F-004):** `EngineSystem`, `SystemConfig`, `SubSystem`, and `ConflictResolutionSubSystem` are implemented. Systems run synchronously on a shared Pool snapshot. Claim/finish barrier counters remain F-005.
+
 ## Composition: config as grammar
 
 A System is a **System Config** plus Sub-Systems the config selects and wires — like a grammar assembling a vocabulary into a sentence. The same Sub-System pool can compose into different Systems depending only on config.

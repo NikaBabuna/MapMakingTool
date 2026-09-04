@@ -8,6 +8,7 @@
 package com.aethelgard.engine.pool;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,16 +16,25 @@ import java.util.Objects;
  *
  * @param initialValue trivial Pool seed (F-002 heartbeat)
  * @param emitCategoryPathsEachUpdate category paths emitted on every Pool {@code update} (F-003)
+ * @param initialFields typed field seeds (F-004); must match {@link
+ *     com.aethelgard.engine.merge.FieldSchema} keys when used
  */
-public record EngineConfig(long initialValue, List<String> emitCategoryPathsEachUpdate) {
+public record EngineConfig(
+    long initialValue, List<String> emitCategoryPathsEachUpdate, Map<String, Long> initialFields) {
 
   public EngineConfig {
     emitCategoryPathsEachUpdate =
         List.copyOf(Objects.requireNonNullElse(emitCategoryPathsEachUpdate, List.of()));
+    initialFields = Map.copyOf(Objects.requireNonNullElse(initialFields, Map.of()));
   }
 
-  /** Config with no scripted emissions. */
+  /** Config with no scripted emissions and no typed fields. */
   public EngineConfig(long initialValue) {
-    this(initialValue, List.of());
+    this(initialValue, List.of(), Map.of());
+  }
+
+  /** Config with scripted emissions and no typed fields (F-003). */
+  public EngineConfig(long initialValue, List<String> emitCategoryPathsEachUpdate) {
+    this(initialValue, emitCategoryPathsEachUpdate, Map.of());
   }
 }
