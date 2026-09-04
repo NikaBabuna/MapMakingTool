@@ -72,5 +72,6 @@ After MARK → `in progress`. After Accept → `done`.
 | Blocker doc | Step | Goal | Status |
 |-------------|------|------|--------|
 | [F-001.md](F-001.md) | F-001 | G-001 | done |
+| [F-009.md](F-009.md) | F-009 | G-001 | done |
 
 Update this table when creating or closing a blocker file.

@@ -85,6 +85,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 | F-006 | User Input / Input View / User View | not started |
 | F-007 | CLI runner | not started |
 | F-008 | Basic UI + close remaining claim checklist gaps | not started |
+| F-009 | CI pipeline (GitHub Actions witness) | done |
 
 ---
 
@@ -92,7 +93,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 8 |
+| Steps done | 2 / 9 |
 | Framework claim boxes | 0 / 15 |
 
 Update this section at the end of every successful Step.

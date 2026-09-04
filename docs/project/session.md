@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-001 Accepted)
+**Status:** complete (F-009 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-001** (layout + Maven scaffold).
+Complete **F-009** (CI pipeline).
 
 ---
 
@@ -28,18 +28,19 @@ Complete **F-001** (layout + Maven scaffold).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-001 | Layout + Maven scaffold | done |
+| F-009 | CI pipeline | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress` in [features.md](features.md)
-- [x] F-001 witness green (`mvnw.cmd test`, 8 tests)
+- [x] Incremental suite green (13 tests: F-001 + F-009)
 
 ---
 
 ## Next Session (suggested)
 
 1. Reconcile this file + G-001.  
-2. Propose **F-002** (Pool + Step loop + Step 0 config): job + FRs, wait for approval.
+2. Propose **F-002** (Pool + Step loop + Step 0 config): job + FRs, wait for approval.  
+3. Push `main` to `origin` so GitHub Actions runs (if not already pushed).

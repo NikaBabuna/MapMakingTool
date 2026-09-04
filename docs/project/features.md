@@ -31,6 +31,7 @@ Goal doc: [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md)
 | F-006 | User Input / Input View / User View | not started | — |
 | F-007 | CLI runner | not started | — |
 | F-008 | Basic UI + claim checklist closure | not started | — |
+| F-009 | CI pipeline (GitHub Actions) | done | [F-009.md](../blockers/F-009.md) |
 
 ---
 

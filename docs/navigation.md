@@ -92,6 +92,7 @@
 |-----|--------|
 | [README.md](blockers/README.md) | Active |
 | [F-001.md](blockers/F-001.md) | done — layout + Maven scaffold |
+| [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
 
@@ -102,3 +103,4 @@
 | [../AGENTS.md](../AGENTS.md) | Agent entry |
 | [../README.md](../README.md) | Human entry |
 | [../.cursor/rules/](../.cursor/rules/) | IDE rules |
+| [../.github/workflows/ci.yml](../.github/workflows/ci.yml) | CI — Maven witness (F-009) |

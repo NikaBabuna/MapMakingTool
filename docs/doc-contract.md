@@ -57,6 +57,7 @@ Every modified artifact ⇒ update every tied doc. Incomplete docs ⇒ incomplet
 | Path | Tied docs |
 |------|-----------|
 | `pom.xml`, `engine/pom.xml`, `mvnw*` | [engine/architecture.md](engine/architecture.md), [architecture.md](architecture.md), [project/decisions.md](project/decisions.md) (ADR-007) |
+| `.github/workflows/*` | [engine/architecture.md](engine/architecture.md), [../README.md](../README.md), matching `blockers/F-0xx.md` |
 | `engine/src/main/java/**` | [engine/architecture.md](engine/architecture.md), relevant [engine/specs/](engine/specs/) |
 | `engine/src/test/java/**` | Matching `blockers/F-0xx.md` |
 
