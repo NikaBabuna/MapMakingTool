@@ -1,0 +1,76 @@
+# Blockers
+
+Per-**Step** quality bars and **canonical store for approved functional requirements**.
+
+Naming: `F-0xx.md` matching [../project/features.md](../project/features.md).
+
+**Process:** [../process/step-procedure.md](../process/step-procedure.md) · [../process/quality.md](../process/quality.md)
+
+---
+
+## Rules
+
+1. **STORE FRs at APPROVE** — create `F-0xx.md` with the approved FR list **before** MARK and before code.
+2. **TESTS after code** — map each FR to test IDs; implement them.
+3. **INCREMENTAL** — Accept requires this file’s tests **and** every earlier Accepted Step’s tests to stay green.
+4. Chat is not the FR store. The file is.
+
+---
+
+## Template (`F-0xx.md`)
+
+Copy when starting a Step (at STORE):
+
+```markdown
+<!--
+  File: docs/blockers/F-0xx.md
+  Purpose: Approved FRs + test mapping for Step F-0xx
+  Audience: Agents and humans
+  Update when: FRs change (with approval) or tests are added
+-->
+
+# F-0xx — <short name>
+
+**Goal:** G-0xx  
+**Status:** `fr-approved` | `in progress` | `done` | `rolled back`
+
+## Job (approved)
+
+<one paragraph>
+
+## Functional requirements (approved)
+
+| ID | Requirement (measurable) | Status |
+|----|--------------------------|--------|
+| FR-1 | … | pending test |
+| FR-2 | … | pending test |
+
+## Test mapping
+
+| FR | Test ID / class method | Notes |
+|----|------------------------|-------|
+| FR-1 | _(fill after CODE)_ | |
+
+## Incremental note
+
+This Step’s Accept requires the full suite: prior Accepted Steps + tests above.
+
+## Witness
+
+- [ ] New tests green
+- [ ] All prior Step tests green
+- [ ] Docs synced
+```
+
+**Status `fr-approved`:** FRs stored, code not started (or not yet marked in progress).  
+After MARK → `in progress`. After Accept → `done`.
+
+---
+
+## Registry
+
+| Blocker doc | Step | Goal | Status |
+|-------------|------|------|--------|
+| [F-001.md](F-001.md) | F-001 | G-001 | done |
+
+Update this table when creating or closing a blocker file.

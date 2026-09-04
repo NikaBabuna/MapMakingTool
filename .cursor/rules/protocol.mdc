@@ -1,0 +1,32 @@
+---
+description: Repository protocol — Goal/Session/Step; read docs before work
+globs:
+alwaysApply: true
+---
+
+# Aethelgard protocol
+
+Before non-trivial work, read in order:
+
+1. `docs/PHASE.md`
+2. `docs/process/global-prompt.md`
+3. `docs/process/rules.md`
+4. `docs/process/step-procedure.md`
+5. `docs/process/quality.md`
+6. `docs/project/session.md` (reconcile — torn Step ⇒ rollback)
+7. `docs/project/goals.md` + active Goal
+8. `docs/project/project.md`
+9. `docs/navigation.md`
+
+## Rules
+
+- Docs win over chat
+- Scope: `docs/project/project.md` only unless expanded in docs first
+- No code before user approval of job + FRs; store FRs in `docs/blockers/F-0xx.md` before MARK/code
+- Mark Step `in progress` before code; torn progress ⇒ rollback
+- Witness: full incremental suite (this Step + all prior Steps) — markdown is not Accept
+- Sync docs at end of Step; commit after final check when green
+- Explain in clear English what changed and what it means
+
+Active Goal: `docs/project/goals/G-001-engine-skeleton.md`  
+Full checklist: `AGENTS.md`
