@@ -32,7 +32,7 @@
 3. Non-obvious moves → [project/decisions.md](project/decisions.md)
 4. **Folder README:** every landmark folder has a `README.md` explaining what lives there; [navigation.md](navigation.md) links those READMEs
 
-**Landmark folders** (require README): `docs/` and each docs namespace (`process/`, `project/`, `project/goals/`, `engine/`, `engine/specs/`, `product/`, `product/wiki/`, `blockers/`); code module roots (`engine/`, `cli/`) and owned packages under `engine/src/main/java/.../engine/{pool,event,diag,system,merge,user}/`; `.github/`, `.github/workflows/`, `.cursor/`, `.cursor/rules/`.
+**Landmark folders** (require README): `docs/` and each docs namespace (`process/`, `project/`, `project/goals/`, `engine/`, `engine/specs/`, `product/`, `product/wiki/`, `blockers/`); code module roots (`engine/`, `cli/`, `ui/`) and owned packages under `engine/src/main/java/.../engine/{pool,event,diag,system,merge,user}/`; `.github/`, `.github/workflows/`, `.cursor/`, `.cursor/rules/`.
 
 **Exempt:** `target/`, `.tools/`, `.mvn/`, intermediate Java path segments (`src/`, `main/`, `java/`, `com/`, …).
 

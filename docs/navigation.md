@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** [project/goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md)  
+**Active Goal:** [project/goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [engine/architecture.md](engine/architecture.md)
 
@@ -65,7 +65,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-007) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-008 / G-001 done) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -77,8 +77,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-007 CLI |
-| [specs/](engine/specs/) | Active — specs run ahead of code for F-008 |
+| [architecture.md](engine/architecture.md) | Active — F-008 UI; G-001 done |
+| [specs/](engine/specs/) | Active — engine skeleton complete (G-001) |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
@@ -110,6 +110,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-005.md](blockers/F-005.md) | done — claim/finish + determinism |
 | [F-006.md](blockers/F-006.md) | done — User Input / Input View / User View |
 | [F-007.md](blockers/F-007.md) | done — CLI runner |
+| [F-008.md](blockers/F-008.md) | done — basic UI + G-001 closure |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
@@ -120,6 +121,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 |------|----------------|
 | [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
 | [../cli/](../cli/) | [README](../cli/README.md) — headless runner |
+| [../ui/](../ui/) | [README](../ui/README.md) — skeleton Step advance / view |
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
 | [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
 | [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |

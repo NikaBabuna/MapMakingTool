@@ -8,19 +8,19 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-007 Accepted)
+**Status:** complete (F-008 Accepted; G-001 done)
 
 ---
 
 ## Session goal
 
-Complete **F-007** (CLI runner).
+Complete **F-008** (basic UI + G-001 closure).
 
 ---
 
 ## Active Goal
 
-[G-001 — Engine skeleton](goals/G-001-engine-skeleton.md)
+[G-001 — Engine skeleton](goals/G-001-engine-skeleton.md) — **done**
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-007** (CLI runner).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-007 | CLI runner | done |
+| F-008 | Basic UI + G-001 closure | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (57 tests)
+- [x] Incremental suite green (63 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-008** (basic UI + close remaining claim checklist gaps).
+1. Propose next Goal (product world generation on the engine) from [roadmap.md](roadmap.md) / [backlog.md](backlog.md).

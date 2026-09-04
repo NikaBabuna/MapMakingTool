@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-007 CLI runner)  
+**Status:** active (F-008 basic UI; G-001 complete)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -18,7 +18,7 @@
 |--------|----------|------|--------|
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — user layer (F-006) |
 | **cli** | `com.aethelgard:cli` | Headless runner (N Steps, settled state) | Active — F-007 |
-| **ui** | _(planned)_ | Basic Step advance / view | Not created — F-008 |
+| **ui** | `com.aethelgard:ui` | Basic Step advance / view | Active — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
@@ -181,6 +181,10 @@ MapMakingTool/
     pom.xml
     src/main/java/com/aethelgard/cli/   # F-007
     src/test/java/com/aethelgard/cli/
+  ui/
+    pom.xml
+    src/main/java/com/aethelgard/ui/    # F-008
+    src/test/java/com/aethelgard/ui/
 ```
 
 ### CLI (F-007)
@@ -192,11 +196,22 @@ MapMakingTool/
 | `CliOptions` / `CliResult` | Options and exit/output |
 
 Artifact `com.aethelgard:cli` depends on `engine`. Run headlessly from tests via `CliRunner.run(args)`.
+
+### UI (F-008)
+
+| Type | Role |
+|------|------|
+| `UiController` | Headless advance / settled text via User View (no Swing) |
+| `SkeletonFrame` | Swing shell — Advance + settled display (not constructed in tests) |
+| `SkeletonApp` | `main` entry on the EDT |
+
+Artifact `com.aethelgard:ui` depends on `engine`.
+
 ---
 
 ## Witness
 
-From repo root: `mvnw.cmd test` (Windows) or `./mvnw test` (Unix). Incremental suite for G-001 Steps lives under `engine` tests.
+From repo root: `mvnw.cmd test` (Windows) or `./mvnw test` (Unix). Incremental suite for G-001 lives under `engine`, `cli`, and `ui` tests.
 
 ### CI (F-009)
 

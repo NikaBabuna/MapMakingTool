@@ -28,5 +28,5 @@ Before non-trivial work, read in order:
 - Sync docs at end of Step; commit after final check when green
 - Explain in clear English what changed and what it means
 
-Active Goal: `docs/project/goals/G-001-engine-skeleton.md`  
+Active Goal: `docs/project/goals/G-001-engine-skeleton.md` (**done** — propose next Goal)  
 Full checklist: `AGENTS.md`

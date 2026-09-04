@@ -221,11 +221,11 @@ public final class Engine {
     lastClaimResult = result;
     lastStepOutput = output;
     lastClaimFinish = barrier.snapshot();
+    lastCompletedStepIndex = stepIndex;
 
     PoolSnapshot settled = pool.snapshot();
     userView.onSettled(settled);
 
     diagnostics.stepSettled(stepIndex);
-    lastCompletedStepIndex = stepIndex;
   }
 }

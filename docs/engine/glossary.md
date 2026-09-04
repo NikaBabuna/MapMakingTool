@@ -9,7 +9,7 @@
 
 Terms for the Pool-System Framework. Product domain terms: [../product/glossary.md](../product/glossary.md).
 
-**Implementation note (through F-007):** Pool, Steps, events, Systems, merge, claim/finish, user layer, and a headless **CLI** module exist. Basic UI remains F-008. See [architecture.md](architecture.md).
+**Implementation note (through F-008 / G-001 done):** Engine core, CLI, and basic UI modules exist. Product world-gen is next. See [architecture.md](architecture.md).
 
 | Term | Definition |
 |------|------------|

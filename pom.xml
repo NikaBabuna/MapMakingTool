@@ -16,11 +16,12 @@
   <packaging>pom</packaging>
 
   <name>Aethelgard</name>
-  <description>Parent aggregator — engine + cli; ui/product later</description>
+  <description>Parent aggregator — engine + cli + ui; product later</description>
 
   <modules>
     <module>engine</module>
     <module>cli</module>
+    <module>ui</module>
   </modules>
 
   <properties>

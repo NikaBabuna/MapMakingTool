@@ -7,7 +7,7 @@
 
 # G-001 — Engine skeleton
 
-**Status:** in progress  
+**Status:** `done`  
 **Product work:** out of scope until this Goal is done (no tectonics, climate, map worldbuilding, timeline scrub as product features).
 
 ---
@@ -65,7 +65,7 @@ These must be green by Goal completion (spread across Steps as needed):
 - [x] User Input → Input View sampling
 - [x] User View reads settled Pool only
 - [x] CLI can run N Steps and show settled state
-- [ ] Basic UI can advance/view Steps (headless-safe tests for logic)
+- [x] Basic UI can advance/view Steps (headless-safe tests for logic)
 
 ---
 
@@ -84,7 +84,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 | F-005 | Claim/finish + determinism witness | done |
 | F-006 | User Input / Input View / User View | done |
 | F-007 | CLI runner | done |
-| F-008 | Basic UI + close remaining claim checklist gaps | not started |
+| F-008 | Basic UI + close remaining claim checklist gaps | done |
 | F-009 | CI pipeline (GitHub Actions witness) | done |
 
 ---
@@ -93,7 +93,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 8 / 9 |
-| Framework claim boxes | 14 / 15 |
+| Steps done | 9 / 9 |
+| Framework claim boxes | 15 / 15 |
 
 Update this section at the end of every successful Step.

@@ -30,7 +30,7 @@ Goal doc: [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md)
 | F-005 | Claim/finish + determinism | done | [F-005.md](../blockers/F-005.md) |
 | F-006 | User Input / Input View / User View | done | [F-006.md](../blockers/F-006.md) |
 | F-007 | CLI runner | done | [F-007.md](../blockers/F-007.md) |
-| F-008 | Basic UI + claim checklist closure | not started | — |
+| F-008 | Basic UI + claim checklist closure | done | [F-008.md](../blockers/F-008.md) |
 | F-009 | CI pipeline (GitHub Actions) | done | [F-009.md](../blockers/F-009.md) |
 
 ---

@@ -17,7 +17,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 | Layer | Doc | Status |
 |-------|-----|--------|
-| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-007 CLI |
+| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-008 UI; G-001 done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active |
 | **Product** | _(implementation architecture TBD)_ | After G-001 |
 
@@ -25,7 +25,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 ## Current Goal
 
-[G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — Pool-System runnable core before product features.
+[G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **done** (Pool-System runnable core + CLI + basic UI).
 
 ---
 
@@ -36,14 +36,14 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) |
 | `cli/` | Active — F-007 (`com.aethelgard:cli`) |
-| `ui/` | Planned — F-008 |
+| `ui/` | Active — F-008 (`com.aethelgard:ui`) |
 | `product/` | Planned — after G-001 |
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 
 **Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · **Java:** 21
 
-**Engine API:** `Engine.create(config)` / `create(config, setup)` — Step loop with optional scripted events, Systems, field schema, User Input / User View, and diagnostics (ADR-008). Details: [engine/architecture.md](engine/architecture.md).
+**Modules:** `engine`, `cli`, `ui` — product still later.
 
 ---
 

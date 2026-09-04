@@ -9,11 +9,11 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md)
+**Active Goal:** [G-001 Engine skeleton](goals/G-001-engine-skeleton.md) — **done**
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
-| G-001 | Engine skeleton (Pool-System + CLI + basic UI) | in progress | [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md) |
+| G-001 | Engine skeleton (Pool-System + CLI + basic UI) | done | [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 
