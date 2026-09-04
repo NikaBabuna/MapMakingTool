@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-04** — F-002: Pool Step loop + Step 0 config (`com.aethelgard.engine.pool`).
 - **2026-09-04** — F-009: GitHub Actions CI (JDK 21 + `mvnw test` on `main`).
 - **2026-09-04** — F-001: Maven parent + `engine` module, wrapper, package `com.aethelgard.engine`, Java 21 (ADR-007).
 - **2026-09-04** — FRs stored in `blockers/F-0xx.md` at APPROVE; incremental witness (prior Step tests must hold).

@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-04  
-**Status:** complete (F-009 Accepted)
+**Status:** complete (F-002 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-009** (CI pipeline).
+Complete **F-002** (Pool + Step loop + Step 0 config).
 
 ---
 
@@ -28,19 +28,17 @@ Complete **F-009** (CI pipeline).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-009 | CI pipeline | done |
+| F-002 | Pool + Step loop + Step 0 config | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] No Step marked `in progress` in [features.md](features.md)
-- [x] Incremental suite green (13 tests: F-001 + F-009)
+- [x] No Step marked `in progress`
+- [x] Incremental suite green (20 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Reconcile this file + G-001.  
-2. Propose **F-002** (Pool + Step loop + Step 0 config): job + FRs, wait for approval.  
-3. Push `main` to `origin` so GitHub Actions runs (if not already pushed).
+1. Reconcile + propose **F-003** (events + claiming + unmatched log, including logging facade).

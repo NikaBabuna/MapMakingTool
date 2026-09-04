@@ -51,8 +51,8 @@ When this Goal is `done`, another agent can trust the engine core and start prod
 
 These must be green by Goal completion (spread across Steps as needed):
 
-- [ ] Pool `update` + Step lifecycle order
-- [ ] Step 0 from config object
+- [x] Pool `update` + Step lifecycle order
+- [x] Step 0 from config object
 - [ ] Event buffer + category ancestry claiming
 - [ ] Unmatched events logged
 - [ ] System independence (no same-Step System chaining)
@@ -78,7 +78,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 | Step | Intent | Status |
 |------|--------|--------|
 | F-001 | Decide package/module layout; record in engine architecture; scaffold Maven (tests runnable) | done |
-| F-002 | Pool + Step loop + Step 0 config object | not started |
+| F-002 | Pool + Step loop + Step 0 config object | done |
 | F-003 | Events, category claiming, unmatched-event logging | not started |
 | F-004 | Systems + Sub-Systems + typed merge + provenance | not started |
 | F-005 | Claim/finish + determinism witness | not started |
@@ -93,7 +93,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 2 / 9 |
-| Framework claim boxes | 0 / 15 |
+| Steps done | 3 / 9 |
+| Framework claim boxes | 2 / 15 |
 
 Update this section at the end of every successful Step.

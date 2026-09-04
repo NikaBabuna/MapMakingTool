@@ -92,6 +92,7 @@
 |-----|--------|
 | [README.md](blockers/README.md) | Active |
 | [F-001.md](blockers/F-001.md) | done — layout + Maven scaffold |
+| [F-002.md](blockers/F-002.md) | done — Pool + Step loop |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 
 ---
