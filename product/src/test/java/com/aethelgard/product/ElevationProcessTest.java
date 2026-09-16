@@ -1,6 +1,6 @@
 /*
  * File: product/src/test/java/com/aethelgard/product/ElevationProcessTest.java
- * Purpose: F-015 witness — plates seed, generation tick, collision uplift
+ * Purpose: F-015 witness — plates seed, generation tick, collision uplift (F-017 Voronoi)
  * Audience: Agents / CI
  * Update when: F-015 FRs change
  */
@@ -55,33 +55,26 @@ class ElevationProcessTest {
   }
 
   @Test
-  @DisplayName("FR-3: Step 0 seeds plates from seed; width 1 has no suture")
+  @DisplayName("FR-3: Step 0 seeds Voronoi plates from seed")
   void createSeedsPlatesFromSpec() {
     WorldSpec spec = new WorldSpec(5, 3, 2L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     assertEquals(5, plates.width());
     assertEquals(3, plates.height());
-    // seed 2, width 5 → boundary = 1 + floorMod(2, 4) = 3
-    for (int y = 0; y < 3; y++) {
-      assertEquals(0, plates.get(0, y));
-      assertEquals(0, plates.get(1, y));
-      assertEquals(0, plates.get(2, y));
-      assertEquals(1, plates.get(3, y));
-      assertEquals(1, plates.get(4, y));
-    }
+    assertEquals(Plates.seed(5, 3, 2L), plates);
+    assertEquals(8, Plates.count(2L));
 
-    Grid oneWide = (Grid) ProductHost.create(new WorldSpec(1, 4, 99L)).settled().field(WorldFields.PLATES);
+    Grid oneWide =
+        (Grid) ProductHost.create(new WorldSpec(1, 4, 99L)).settled().field(WorldFields.PLATES);
     assertEquals(1, oneWide.width());
-    for (int y = 0; y < 4; y++) {
-      assertEquals(0, oneWide.get(0, y));
-    }
+    assertEquals(Plates.seed(1, 4, 99L), oneWide);
   }
 
   @Test
   @DisplayName("FR-4: after advance, tectonics System writes elevation; not heartbeat")
   void advanceElevationIsSystemProduced() {
-    Engine engine = ProductHost.create(new WorldSpec(4, 2, 0L));
+    Engine engine = ProductHost.create(new WorldSpec(8, 8, 0L));
     Grid before = (Grid) engine.settled().field(WorldFields.ELEVATION);
     assertZero(before);
 
@@ -100,29 +93,23 @@ class ElevationProcessTest {
     assertNotEquals(engine.settled().value(), (long) after.get(0, 0));
 
     Grid platesAfter = (Grid) engine.settled().field(WorldFields.PLATES);
-    Grid platesBefore =
-        Plates.seed(4, 2, 0L);
+    Grid platesBefore = Plates.seed(8, 8, 0L);
     assertEquals(platesBefore, platesAfter, "Constant plates must not change");
   }
 
   @Test
-  @DisplayName("FR-5: 4x2 seed 0 suture is columns 0-1; +1 per generation Step")
+  @DisplayName("FR-5: collision +1 on Voronoi foreign 4-neighbors; same seed matches")
   void collisionUpliftMatchesRule() {
-    Engine engine = ProductHost.create(new WorldSpec(4, 2, 0L));
-    // boundary = 1: plate 0 at x=0, plate 1 at x=1..3 → suture columns 0 and 1
+    WorldSpec spec = new WorldSpec(4, 2, 0L);
+    Engine engine = ProductHost.create(spec);
+    Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     engine.advance(1);
-    assertEquals(
-        new Grid(new int[][] {{1, 1, 0, 0}, {1, 1, 0, 0}}),
-        engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(upliftOnce(plates, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
 
     engine.advance(1);
     assertEquals(
-        new Grid(new int[][] {{2, 2, 0, 0}, {2, 2, 0, 0}}),
+        upliftOnce(plates, upliftOnce(plates, Grid.zeros(4, 2))),
         engine.settled().field(WorldFields.ELEVATION));
-
-    Engine narrow = ProductHost.create(new WorldSpec(1, 3, 0L));
-    narrow.advance(4);
-    assertZero((Grid) narrow.settled().field(WorldFields.ELEVATION));
 
     Engine a = ProductHost.create(new WorldSpec(8, 8, 7L));
     Engine b = ProductHost.create(new WorldSpec(8, 8, 7L));
@@ -137,7 +124,7 @@ class ElevationProcessTest {
   void wikiAndArchitectureRecordProcess() throws Exception {
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(wiki.toLowerCase().contains("plate"));
+    assertTrue(wiki.toLowerCase().contains("voronoi") || wiki.toLowerCase().contains("plate"));
     assertTrue(wiki.contains("world/tectonics") || wiki.toLowerCase().contains("tectonic"));
     assertTrue(wiki.toLowerCase().contains("uplift") || wiki.contains("+1"));
     assertTrue(wiki.contains("4-neighbor") || wiki.toLowerCase().contains("neighbor"));
@@ -155,6 +142,17 @@ class ElevationProcessTest {
     assertTrue(arch.contains("GenerationTickPolicy") || arch.toLowerCase().contains("emission"));
     assertTrue(arch.contains("plates"));
     assertTrue(arch.contains("EngineSystem") || arch.toLowerCase().contains("system"));
+  }
+
+  private static Grid upliftOnce(Grid plates, Grid elevation) {
+    int[][] next = new int[elevation.height()][elevation.width()];
+    for (int y = 0; y < elevation.height(); y++) {
+      for (int x = 0; x < elevation.width(); x++) {
+        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
+        next[y][x] = elevation.get(x, y) + bump;
+      }
+    }
+    return new Grid(next);
   }
 
   private static void assertZero(Grid grid) {

@@ -13,6 +13,8 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-017:** Voronoi 6–15 plate seed (Euclidean nearest site); F-015 two-plate stripe superseded.
+- **2026-09-17** — **G-004** See the world Goal registered; Steps F-017–F-018 planned.
 - **2026-09-17** — **F-016:** headless `WorldDump` + G-003 complete.
 - **2026-09-17** — **F-015:** first generative process (plates layer + collision uplift; ADR-009 category tree authorship).
 - **2026-09-17** — **F-014:** world as Pool state (`WorldSpec`, `Grid`, field `elevation`).

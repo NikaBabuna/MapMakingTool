@@ -8,19 +8,19 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** complete (F-016 Accepted; G-003 done)
+**Status:** complete (F-017 Accepted; G-004 in progress)
 
 ---
 
 ## Session goal
 
-Accept **F-016** and close G-003.
+Accept **F-017** — Voronoi multi-plate seed + wiki; update F-015/F-016 witnesses.
 
 ---
 
 ## Active Goal
 
-**Active Goal:** none  
+**Active Goal:** [G-004 — See the world](goals/G-004-see-the-world.md) — **in progress**  
 **Last completed:** [G-003 — First product world](goals/G-003-first-product-world.md) — **done**
 
 ---
@@ -29,17 +29,17 @@ Accept **F-016** and close G-003.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-016 | Witnessed world + G-003 closure | done |
+| F-017 | Voronoi multi-plate tectonics | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (106 tests)
+- [x] Incremental suite green (112 tests, last Accept F-017)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose next Goal (climate / further generation layers on the G-003 seam).
+1. Propose F-018 job + FRs (512×512 colored map, Advance, loading).

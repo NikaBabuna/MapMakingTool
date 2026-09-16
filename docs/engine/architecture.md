@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-012 EventEmissionPolicy; **G-002 done**; product F-016 / **G-003 done**)  
+**Status:** active (F-012 EventEmissionPolicy; **G-002 done**; product F-017 Voronoi / G-004 in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -19,7 +19,7 @@
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — G-002 host ports |
 | **cli** | `com.aethelgard:cli` | Headless runner (N Steps, settled state) | Active — F-007 |
 | **ui** | `com.aethelgard:ui` | Basic Step advance / view | Active — F-008 |
-| **product** | `com.aethelgard:product` | Aethelgard domain host (`ProductHost`) | Active — F-016 |
+| **product** | `com.aethelgard:product` | Aethelgard domain host (`ProductHost`) | Active — F-017 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
 

@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: partial — high-level modes from concept. **G-003** first product world (elevation slice) is done. Detailed Explore / Guide / Timeline / Inspect steps await later Goals._
+_Status: partial — high-level modes from concept. **G-003** elevation slice is done. **G-004** adds a large colored map view (see + Advance). Detailed Explore / Guide / Timeline / Inspect steps await later Goals._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 

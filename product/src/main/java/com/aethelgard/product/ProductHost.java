@@ -23,7 +23,7 @@ import java.util.Objects;
  * Product entry for constructing an {@link Engine}. Setup is owned here so later Steps can add
  * schema and Systems without callers talking to engine defaults directly.
  *
- * <p>F-015: schema includes {@link WorldFields#ELEVATION} and {@link WorldFields#PLATES}; a
+ * <p>F-015/F-017: schema includes {@link WorldFields#ELEVATION} and {@link WorldFields#PLATES}; a
  * tectonics {@link EngineSystem} runs after Step 0 via {@link GenerationTickPolicy}.
  */
 public final class ProductHost {
@@ -66,8 +66,8 @@ public final class ProductHost {
   }
 
   /**
-   * Creates a run from {@code spec}: seeds {@code elevation} as a zero grid and {@code plates} from
-   * {@code spec.seed()}. Completes Step 0 (no generation tick).
+   * Creates a run from {@code spec}: seeds {@code elevation} as a zero grid and Voronoi {@code plates}
+   * from {@code spec.seed()}. Completes Step 0 (no generation tick).
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */

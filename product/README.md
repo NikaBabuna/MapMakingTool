@@ -13,6 +13,6 @@ Maven artifact `com.aethelgard:product` — Aethelgard world generation on the P
 
 Package root: `com.aethelgard.product`.
 
-`ProductHost` constructs an `Engine` via product `EngineSetup`. Generation: `elevation` + `plates`, `world/tectonics` after Step 0, tectonics System (collision uplift). `WorldDump` prints a settled snapshot (tests + formatter; no product `Main`).
+`ProductHost` constructs an `Engine` via product `EngineSetup`. Generation: `elevation` + Voronoi `plates`, `world/tectonics` after Step 0, tectonics System (collision uplift). `WorldDump` prints a settled snapshot (tests + formatter; no product `Main`).
 
 **Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [wiki/world](../docs/product/wiki/world.md) · [wiki/elevation](../docs/product/wiki/elevation.md)

@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-016 WorldDump; **G-003 done**)  
+**Status:** active (F-017 Voronoi plates; F-016 WorldDump; **G-003 done**, G-004 in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)
@@ -35,15 +35,15 @@ product  →  engine  ←  cli
 
 ---
 
-## Host wiring (F-016)
+## Host wiring (F-017)
 
 `ProductHost` constructs an `Engine` via `EngineSetup`.
 
-| Piece | F-016 |
+| Piece | F-017 |
 |-------|--------|
 | Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.CONSTANT` |
 | Values | Immutable `Grid` of `int` cells |
-| Create | `ProductHost.create(WorldSpec)` seeds **zero** elevation and a two-plate `plates` grid from `seed` |
+| Create | `ProductHost.create(WorldSpec)` seeds **zero** elevation and a **Voronoi** `plates` grid from `seed` (6–15 sites) |
 | Default | `ProductHost.create()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
@@ -51,11 +51,11 @@ product  →  engine  ←  cli
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. |
 | Dump | `WorldDump.of(engine, spec)` — header + elevation + plates; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places the plates suture. It is not a Pool field.
+`WorldSpec.seed` places Voronoi plate sites (`N = 6 + floorMod(seed, 10)`). Each cell takes the nearest site (Euclidean); ties take the lower site index. The seed is not a Pool field.
 
 ---
 
-## Source layout (through F-016)
+## Source layout (through F-017)
 
 ```
 product/
@@ -76,6 +76,7 @@ product/
     ProductHostTest.java
     WorldStateTest.java
     ElevationProcessTest.java
+    VoronoiPlatesTest.java
     WorldDumpTest.java
   src/test/resources/worlds/
     default-n3.txt

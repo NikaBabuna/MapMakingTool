@@ -16,8 +16,9 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field whose value is a `Grid` of the world geometry. |
 | **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are collision uplift. |
-| **Plates** | Layer (`plates`) of integer plate ids; Step-0 two-plate vertical suture from seed. |
-| **Suture** | Vertical contact between plate 0 and plate 1; 4-neighbor collision uplifts both sides. |
+| **Plates** | Layer (`plates`) of integer plate ids; Step-0 Voronoi nearest-site assignment from seed (6–15 sites). |
+| **Suture** | Contact between different plate ids; 4-neighbor collision uplifts both sides. |
+| **Voronoi plates** | Each cell’s plate id is the nearest site (Euclidean); ties take the lower site index. |
 | **Collision uplift** | Generative rule: each generation Step, cells touching a foreign plate gain +1 elevation. |
 | **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0. |

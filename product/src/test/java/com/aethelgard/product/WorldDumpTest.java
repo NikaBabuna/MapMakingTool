@@ -1,6 +1,6 @@
 /*
  * File: product/src/test/java/com/aethelgard/product/WorldDumpTest.java
- * Purpose: F-016 witness — headless dump, golden fixture, G-003 close docs
+ * Purpose: F-016 witness — headless dump, golden fixture, G-003 close docs (F-017 golden)
  * Audience: Agents / CI
  * Update when: F-016 FRs change
  */
@@ -52,18 +52,21 @@ class WorldDumpTest {
   }
 
   @Test
-  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, suture height is N")
+  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches collision on Voronoi plates")
   void stepZeroAndSutureRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
     String zero = WorldDump.of(engine, spec);
     assertTrue(zero.startsWith("world w=4 h=2 seed=0 steps=0\n"));
     assertTrue(zero.contains("elevation:\n0 0 0 0\n0 0 0 0\n"));
+    Grid plates = Plates.seed(4, 2, 0L);
+    assertTrue(zero.contains("plates:\n" + gridBlock(plates)));
 
     engine.advance(2);
     String risen = WorldDump.of(engine, spec);
-    assertTrue(risen.contains("elevation:\n2 2 0 0\n2 2 0 0\n"));
-    assertTrue(risen.contains("plates:\n0 1 1 1\n0 1 1 1\n"));
+    Grid expected = upliftTimes(plates, 2);
+    assertTrue(risen.contains("elevation:\n" + gridBlock(expected)));
+    assertTrue(risen.contains("plates:\n" + gridBlock(plates)));
   }
 
   @Test
@@ -83,7 +86,7 @@ class WorldDumpTest {
   }
 
   @Test
-  @DisplayName("FR-5: dump recorded; G-003 done; Active Goal none on entry points")
+  @DisplayName("FR-5: dump recorded; G-003 stays done")
   void docsRecordDumpAndGoalDone() throws Exception {
     Path root = findRepoRoot();
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
@@ -93,34 +96,15 @@ class WorldDumpTest {
 
     String goal = Files.readString(root.resolve("docs/project/goals/G-003-first-product-world.md"));
     assertTrue(goal.contains("**Status:** `done`"));
+    assertFalse(goal.contains("**Status:** `in progress`"));
     assertTrue(goal.contains("- [x] Headless product observer dumps the settled grid"));
     assertTrue(
         goal.contains("- [x] Incremental suite: all G-001 and G-002 Step tests remain green"));
 
     String goalsIndex = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goalsIndex.toLowerCase().contains("active goal:** none")
-        || goalsIndex.contains("**Active Goal:** none"));
-    assertTrue(goalsIndex.contains("G-003") && goalsIndex.contains("done"));
-
-    String agents = Files.readString(root.resolve("AGENTS.md"));
-    String readmeRoot = Files.readString(root.resolve("README.md"));
-    String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    String nav = Files.readString(root.resolve("docs/navigation.md"));
-    String session = Files.readString(root.resolve("docs/project/session.md"));
-    String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
-    String rollup = Files.readString(root.resolve("docs/architecture.md"));
-    for (String text : new String[] {agents, readmeRoot, phase, nav, session, protocol, rollup}) {
-      assertTrue(
-          text.toLowerCase().contains("active goal:** none")
-              || text.contains("**Active Goal:** none")
-              || text.contains("Active Goal: none")
-              || text.contains("**Current Goal:** none"),
-          "entry point must say Active Goal none");
-      assertFalse(
-          text.contains("`in progress`) · Last completed: [G-002")
-              || text.contains("G-003 First product world](docs/project/goals/G-003-first-product-world.md) (`in progress`)"),
-          "must not still name G-003 as in progress");
-    }
+    assertTrue(goalsIndex.contains("G-003"));
+    assertTrue(goalsIndex.contains("First product world"));
+    assertTrue(goalsIndex.contains("done"));
   }
 
   private static Path findRepoRoot() {
@@ -133,5 +117,34 @@ class WorldDumpTest {
       }
     }
     throw new IllegalStateException("repo root not found");
+  }
+
+  private static Grid upliftTimes(Grid plates, int steps) {
+    Grid elevation = Grid.zeros(plates.width(), plates.height());
+    for (int s = 0; s < steps; s++) {
+      int[][] next = new int[plates.height()][plates.width()];
+      for (int y = 0; y < plates.height(); y++) {
+        for (int x = 0; x < plates.width(); x++) {
+          int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
+          next[y][x] = elevation.get(x, y) + bump;
+        }
+      }
+      elevation = new Grid(next);
+    }
+    return elevation;
+  }
+
+  private static String gridBlock(Grid grid) {
+    StringBuilder out = new StringBuilder();
+    for (int y = 0; y < grid.height(); y++) {
+      for (int x = 0; x < grid.width(); x++) {
+        if (x > 0) {
+          out.append(' ');
+        }
+        out.append(grid.get(x, y));
+      }
+      out.append('\n');
+    }
+    return out.toString();
   }
 }

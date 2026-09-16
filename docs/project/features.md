@@ -60,6 +60,17 @@ Goal doc: [goals/G-003-first-product-world.md](goals/G-003-first-product-world.m
 
 ---
 
+## G-004 — See the world
+
+Goal doc: [goals/G-004-see-the-world.md](goals/G-004-see-the-world.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-017 | Voronoi multi-plate tectonics | done | [F-017.md](../blockers/F-017.md) |
+| F-018 | Large colored map UI + loading | not started | _(store FRs at APPROVE)_ |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` **before** writing code for that Step.  

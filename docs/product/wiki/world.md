@@ -20,7 +20,7 @@ It is not the engine heartbeat counter. It lives in Pool typed fields that `Prod
 - Both must be at least 1.
 - Geometry is shared: every layer has the same width and height.
 
-A `WorldSpec` also records a long **seed**. The seed places the Step-0 **plates** suture. It does not paint elevation.
+A `WorldSpec` also records a long **seed**. The seed places Step-0 **Voronoi plate sites**. It does not paint elevation.
 
 ---
 
@@ -35,7 +35,7 @@ Current layers:
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
 | `elevation` | every cell `0` | collision uplift — [elevation.md](elevation.md) |
-| `plates` | two-plate vertical suture from seed | unchanged (Constant) |
+| `plates` | Voronoi nearest-site ids from seed (6–15 sites) | unchanged (Constant) |
 
 ---
 

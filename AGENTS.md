@@ -4,7 +4,7 @@
 
 Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](docs/process/protocol-overview.md).
 
-**Active Goal:** none · Last completed: [G-003 First product world](docs/project/goals/G-003-first-product-world.md) (`done`)  
+**Active Goal:** [G-004 See the world](docs/project/goals/G-004-see-the-world.md) (`in progress`) · Last completed: [G-003 First product world](docs/project/goals/G-003-first-product-world.md) (`done`)  
 **Current Session:** [docs/project/session.md](docs/project/session.md)
 
 ---

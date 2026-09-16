@@ -8,7 +8,7 @@ Per [../process/rules.md](../process/rules.md): do not leave domain content only
 
 ## Pages
 
-_Status: World / grid / layer (F-014). Elevation process (F-015)._
+_Status: World / grid / layer (F-014). Elevation process (F-017 Voronoi plates)._
 
 | Page | Purpose |
 |------|---------|
