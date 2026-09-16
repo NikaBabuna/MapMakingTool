@@ -49,4 +49,4 @@ At Step 0 this is **initial condition**, not a finished map. Every cell starts a
 
 ## Engine
 
-`ProductHost` wires layers into `EngineSetup`’s field schema and seeds grids through `EngineConfig.initialFields`. Ordinary world rules do not edit `engine` source.
+`ProductHost` wires layers into `EngineSetup`’s field schema and seeds grids through `EngineConfig.initialFields`. `WorldDump` formats a settled snapshot for tests and later observers. Ordinary world rules do not edit `engine` source.

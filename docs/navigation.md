@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** [G-003 First product world](project/goals/G-003-first-product-world.md) (`in progress`) · Last: [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) (**done**)  
+**Active Goal:** none · Last: [G-003 First product world](project/goals/G-003-first-product-world.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -52,7 +52,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals.md](project/goals.md) | Active |
 | [goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) | done |
 | [goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) | done |
-| [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | in progress |
+| [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | done |
 | [session.md](project/session.md) | Active (temporary) |
 | [features.md](project/features.md) | Active — G-001–G-003 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
@@ -67,7 +67,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-015 product generation) |
+| [architecture.md](architecture.md) | Active (roll-up; F-016 WorldDump; G-003 done) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -79,7 +79,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; product F-015 |
+| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; product F-016 / G-003 done |
 | [specs/](engine/specs/) | Active — through G-002 (host-ready) |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open; #2a decided (ADR-009) |
 
@@ -91,10 +91,10 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-015 generation |
+| [architecture.md](product/architecture.md) | Active — F-016 WorldDump |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | Deferred detail — G-003 first product world; Explore/Guide/Timeline await later Goals |
-| [glossary.md](product/glossary.md) | Active — Grid / plates / collision uplift (F-015) |
+| [flows.md](product/flows.md) | Deferred detail — Explore/Guide/Timeline await later Goals (G-003 elevation slice done) |
+| [glossary.md](product/glossary.md) | Active — WorldDump snapshot (F-016) |
 | [style-guide.md](product/style-guide.md) | Deferred |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
@@ -121,6 +121,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-013.md](blockers/F-013.md) | done — product Maven module |
 | [F-014.md](blockers/F-014.md) | done — world as Pool state |
 | [F-015.md](blockers/F-015.md) | done — first generative process |
+| [F-016.md](blockers/F-016.md) | done — witnessed world + G-003 closure |
 
 ---
 

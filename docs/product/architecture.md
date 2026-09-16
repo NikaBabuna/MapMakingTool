@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-015 generation: plates + collision uplift)  
+**Status:** active (F-016 WorldDump; **G-003 done**)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)
@@ -35,11 +35,11 @@ product  →  engine  ←  cli
 
 ---
 
-## Host wiring (F-015)
+## Host wiring (F-016)
 
 `ProductHost` constructs an `Engine` via `EngineSetup`.
 
-| Piece | F-015 |
+| Piece | F-016 |
 |-------|--------|
 | Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.CONSTANT` |
 | Values | Immutable `Grid` of `int` cells |
@@ -49,12 +49,13 @@ product  →  engine  ←  cli
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
 | System | `EngineSystem` id `tectonics`, assigned `world/tectonics`, Sub-System `CollisionUplift` |
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. |
+| Dump | `WorldDump.of(engine, spec)` — header + elevation + plates; canonical golden is DEFAULT + `advance(3)` |
 
 `WorldSpec.seed` places the plates suture. It is not a Pool field.
 
 ---
 
-## Source layout (through F-015)
+## Source layout (through F-016)
 
 ```
 product/
@@ -70,8 +71,12 @@ product/
     Plates.java
     GenerationTickPolicy.java
     CollisionUplift.java
+    WorldDump.java
   src/test/java/com/aethelgard/product/
     ProductHostTest.java
     WorldStateTest.java
     ElevationProcessTest.java
+    WorldDumpTest.java
+  src/test/resources/worlds/
+    default-n3.txt
 ```

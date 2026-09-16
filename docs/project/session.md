@@ -8,20 +8,20 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** complete (F-015 Accepted; G-003 in progress)
+**Status:** complete (F-016 Accepted; G-003 done)
 
 ---
 
 ## Session goal
 
-Accept **F-015**.
+Accept **F-016** and close G-003.
 
 ---
 
 ## Active Goal
 
-**Active Goal:** [G-003 — First product world](goals/G-003-first-product-world.md) — **in progress**  
-**Last completed:** [G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **done**
+**Active Goal:** none  
+**Last completed:** [G-003 — First product world](goals/G-003-first-product-world.md) — **done**
 
 ---
 
@@ -29,17 +29,17 @@ Accept **F-015**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-015 | First generative process | done |
+| F-016 | Witnessed world + G-003 closure | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (101 tests)
+- [x] Incremental suite green (106 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose F-016: witnessed world (determinism fixture, headless dump, close G-003).
+1. Propose next Goal (climate / further generation layers on the G-003 seam).

@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-016:** headless `WorldDump` + G-003 complete.
 - **2026-09-17** — **F-015:** first generative process (plates layer + collision uplift; ADR-009 category tree authorship).
 - **2026-09-17** — **F-014:** world as Pool state (`WorldSpec`, `Grid`, field `elevation`).
 - **2026-09-17** — **F-013:** `product` Maven module (`com.aethelgard:product`, `ProductHost`); G-003 in progress.

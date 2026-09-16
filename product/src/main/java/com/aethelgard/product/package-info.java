@@ -11,5 +11,6 @@
  * <p>Depends on {@code com.aethelgard.engine}. Must not be depended on by the engine. World state
  * is Pool fields {@code elevation} and {@code plates} ({@link com.aethelgard.product.Grid}).
  * Generation is a product {@code EngineSystem} on category {@code world/tectonics}.
+ * {@link com.aethelgard.product.WorldDump} formats a settled snapshot.
  */
 package com.aethelgard.product;

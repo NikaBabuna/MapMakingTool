@@ -9,13 +9,13 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** [G-003 First product world](goals/G-003-first-product-world.md) (`in progress`) · Last completed: [G-002 Engine host readiness](goals/G-002-engine-host-readiness.md)
+**Active Goal:** none · Last completed: [G-003 First product world](goals/G-003-first-product-world.md) (`done`)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
 | G-001 | Engine skeleton (Pool-System + CLI + basic UI) | done | [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md) |
 | G-002 | Engine host readiness (pluggable compute / fields / emissions) | done | [goals/G-002-engine-host-readiness.md](goals/G-002-engine-host-readiness.md) |
-| G-003 | First product world (elevation slice on the host) | in progress | [goals/G-003-first-product-world.md](goals/G-003-first-product-world.md) |
+| G-003 | First product world (elevation slice on the host) | done | [goals/G-003-first-product-world.md](goals/G-003-first-product-world.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 

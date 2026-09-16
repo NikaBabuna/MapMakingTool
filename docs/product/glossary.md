@@ -21,6 +21,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Collision uplift** | Generative rule: each generation Step, cells touching a foreign plate gain +1 elevation. |
 | **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0. |
+| **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid). |
 | **Seed** | Initial configuration that deterministically produces a world variant |
 | **Timeline** | Scrubbable history of world formation from simulation start to present |
 | **Guide mode** | User nudges specific features; simulation resolves the rest consistently |
