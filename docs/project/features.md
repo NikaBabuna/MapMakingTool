@@ -42,7 +42,7 @@ Goal doc: [goals/G-002-engine-host-readiness.md](goals/G-002-engine-host-readine
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-010 | Pluggable Pool compute | done | [F-010.md](../blockers/F-010.md) |
-| F-011 | Wider Pool field carrier | not started | _(create at APPROVE)_ |
+| F-011 | Wider Pool field carrier | done | [F-011.md](../blockers/F-011.md) |
 | F-012 | Pluggable event emission + host closure | not started | _(create at APPROVE)_ |
 
 ---

@@ -47,7 +47,7 @@ Plain English: finish the engine as a **clean host**. The loop stays in engine; 
 |-------|----------|
 | Separation | Product must not require engine edits for new Systems/mechanics; engine never depends on product (ADR-007) |
 | Skeleton demo | Heartbeat + `nudge` + scripted emissions stay available as **defaults** for regression; not hardwired as the only path |
-| Field carrier | Widen beyond `Long`; exact type locked in **F-011** FRs; Increment remains numeric (`Long`) |
+| Field carrier | Widen to `Object`; pluggable `FieldMergeType`; defaults via `FieldType` enum; Increment remains numeric (`Long`) — **F-011** |
 | Emissions | Pluggable policy/compute; scripted `emitCategoryPathsEachUpdate` remains default behavior |
 | Corrections | Minimal and incremental — no unrelated engine refactors |
 
@@ -57,8 +57,8 @@ Plain English: finish the engine as a **clean host**. The loop stays in engine; 
 
 - [x] Custom Pool compute can replace the default without editing `Pool` internals for product rules
 - [x] Default compute preserves G-001 heartbeat / `nudge` behavior
-- [ ] Non-`Long` field values can be stored, merged (Static/Destructive pick-one), and read from settled snapshots
-- [ ] Numeric Increment merge still works for `Long` fields
+- [x] Non-`Long` field values can be stored, merged (Static/Destructive pick-one), and read from settled snapshots
+- [x] Numeric Increment merge still works for `Long` fields
 - [ ] Custom emission policy can choose events from state/input without editing engine for each product feature
 - [ ] Default emission preserves scripted config-path behavior
 - [x] Incremental suite: all G-001 Step tests remain green
@@ -75,7 +75,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 | Step | Intent | Status |
 |------|--------|--------|
 | F-010 | Pluggable Pool compute — extract heartbeat/`nudge` to default strategy; wire via setup | done |
-| F-011 | Wider Pool field carrier — non-`Long` values; keep Increment for numbers | not started |
+| F-011 | Wider Pool field carrier — non-`Long` values; keep Increment for numbers | done |
 | F-012 | Pluggable event emission — default = scripted paths; close host-readiness claims + docs | not started |
 
 ---
@@ -84,7 +84,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 3 |
-| Host-readiness claim boxes | 3 / 8 |
+| Steps done | 2 / 3 |
+| Host-readiness claim boxes | 5 / 8 |
 
 Update this section at the end of every successful Step.

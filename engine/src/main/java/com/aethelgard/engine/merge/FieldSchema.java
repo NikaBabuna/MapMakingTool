@@ -11,12 +11,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/** Field name → {@link FieldType} for typed merge. */
+/** Field name → {@link FieldMergeType} for typed merge. */
 public final class FieldSchema {
 
-  private final Map<String, FieldType> types;
+  private final Map<String, FieldMergeType> types;
 
-  private FieldSchema(Map<String, FieldType> types) {
+  private FieldSchema(Map<String, FieldMergeType> types) {
     this.types = Map.copyOf(types);
   }
 
@@ -24,17 +24,17 @@ public final class FieldSchema {
     return new FieldSchema(Map.of());
   }
 
-  public static FieldSchema of(Map<String, FieldType> types) {
+  public static FieldSchema of(Map<String, ? extends FieldMergeType> types) {
     Objects.requireNonNull(types, "types");
     return new FieldSchema(new LinkedHashMap<>(types));
   }
 
-  public static FieldSchema of(String name, FieldType type) {
+  public static FieldSchema of(String name, FieldMergeType type) {
     return of(Map.of(name, type));
   }
 
-  public FieldType typeOf(String field) {
-    FieldType type = types.get(field);
+  public FieldMergeType typeOf(String field) {
+    FieldMergeType type = types.get(field);
     if (type == null) {
       throw new IllegalArgumentException("unknown field: " + field);
     }
@@ -45,7 +45,7 @@ public final class FieldSchema {
     return types.containsKey(field);
   }
 
-  public Map<String, FieldType> asMap() {
+  public Map<String, FieldMergeType> asMap() {
     return types;
   }
 

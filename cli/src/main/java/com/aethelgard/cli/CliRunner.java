@@ -69,7 +69,7 @@ public final class CliRunner {
     sb.append("stepIndex=").append(engine.stepIndex()).append('\n');
     sb.append("value=").append(snap.value()).append('\n');
     sb.append("updateCount=").append(snap.updateCount()).append('\n');
-    Map<String, Long> fields = snap.fields();
+    Map<String, Object> fields = snap.fields();
     if (!fields.isEmpty()) {
       sb.append("fields=").append(fields).append('\n');
     }

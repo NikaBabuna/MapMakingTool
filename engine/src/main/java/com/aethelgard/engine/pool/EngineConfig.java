@@ -16,11 +16,11 @@ import java.util.Objects;
  *
  * @param initialValue trivial Pool seed (F-002 heartbeat)
  * @param emitCategoryPathsEachUpdate category paths emitted on every Pool {@code update} (F-003)
- * @param initialFields typed field seeds (F-004); must match {@link
- *     com.aethelgard.engine.merge.FieldSchema} keys when used
+ * @param initialFields typed field seeds (F-004/F-011); must match {@link
+ *     com.aethelgard.engine.merge.FieldSchema} keys when used; values are {@link Object}
  */
 public record EngineConfig(
-    long initialValue, List<String> emitCategoryPathsEachUpdate, Map<String, Long> initialFields) {
+    long initialValue, List<String> emitCategoryPathsEachUpdate, Map<String, Object> initialFields) {
 
   public EngineConfig {
     emitCategoryPathsEachUpdate =

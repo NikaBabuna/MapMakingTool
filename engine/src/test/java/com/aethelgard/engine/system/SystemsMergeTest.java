@@ -92,10 +92,10 @@ class SystemsMergeTest {
         writeSub("right", Set.of("y"), io -> io.write("y", io.poolValue() + 2));
 
     PoolSnapshot snap = new PoolSnapshot(5L, 1, Map.of("x", 0L, "y", 0L));
-    Map<String, Long> forward =
+    Map<String, Object> forward =
         new EngineSystem(new SystemConfig("s", tree.get("world"), List.of(left, right), null))
             .run(snap);
-    Map<String, Long> reverse =
+    Map<String, Object> reverse =
         new EngineSystem(new SystemConfig("s", tree.get("world"), List.of(right, left), null))
             .run(snap);
 
@@ -115,12 +115,12 @@ class SystemsMergeTest {
     ConflictResolutionSubSystem secondThenFirst = conflict -> List.of(second, first);
 
     PoolSnapshot snap = new PoolSnapshot(0L, 1, Map.of("slot", 0L));
-    Map<String, Long> a =
+    Map<String, Object> a =
         new EngineSystem(
                 new SystemConfig(
                     "s", tree.get("world"), List.of(first, second), firstThenSecond))
             .run(snap);
-    Map<String, Long> b =
+    Map<String, Object> b =
         new EngineSystem(
                 new SystemConfig(
                     "s", tree.get("world"), List.of(first, second), secondThenFirst))
@@ -172,8 +172,8 @@ class SystemsMergeTest {
 
     List<ProvenancedWrite> writes = engine.lastStepOutput().asMap().get("flag");
     assertEquals(2, writes.size());
-    assertTrue(writes.stream().anyMatch(w -> w.systemId().equals("alpha") && w.value() == 10L));
-    assertTrue(writes.stream().anyMatch(w -> w.systemId().equals("beta") && w.value() == 20L));
+    assertTrue(writes.stream().anyMatch(w -> w.systemId().equals("alpha") && w.value().equals(10L)));
+    assertTrue(writes.stream().anyMatch(w -> w.systemId().equals("beta") && w.value().equals(20L)));
     // lexicographically smallest systemId wins
     assertEquals(10L, engine.settled().field("flag"));
     assertEquals("alpha", TypedMerge.pickOne(writes).systemId());

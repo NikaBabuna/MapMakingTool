@@ -1,8 +1,8 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java
- * Purpose: Resolve provenanced System writes by field type and apply rules
+ * Purpose: Resolve provenanced System writes by field merge type and apply
  * Audience: Agents implementing the engine
- * Update when: Merge rules change
+ * Update when: Merge orchestration changes
  */
 
 package com.aethelgard.engine.merge;
@@ -11,12 +11,13 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * System → Pool typed merge.
  *
- * <p><b>Static / Destructive pick-one:</b> lexicographically smallest {@code systemId} wins.
- * Resolvers see {@link ProvenancedWrite} pairs, not bare values.
+ * <p>Each field's {@link FieldMergeType} decides resolution. Default types: {@link FieldType}.
+ * Static/Destructive pick-one helpers remain here for reuse.
  */
 public final class TypedMerge {
 
@@ -25,36 +26,23 @@ public final class TypedMerge {
   /**
    * Merges Step output into new field values.
    *
-   * @param schema field types
+   * @param schema field merge types
    * @param standing current Pool field values
    * @param buffer provenanced writes this Step
    * @return full field map after merge (includes untouched standing fields)
    */
-  public static Map<String, Long> merge(
-      FieldSchema schema, Map<String, Long> standing, StepOutputBuffer buffer) {
-    Map<String, Long> result = new LinkedHashMap<>(standing);
+  public static Map<String, Object> merge(
+      FieldSchema schema, Map<String, Object> standing, StepOutputBuffer buffer) {
+    Map<String, Object> result = new LinkedHashMap<>(standing);
     for (var entry : buffer.asMap().entrySet()) {
       String field = entry.getKey();
       List<ProvenancedWrite> writers = entry.getValue();
-      FieldType type = schema.typeOf(field);
-      long standingValue = standing.getOrDefault(field, 0L);
-      result.put(field, resolve(type, standingValue, writers));
+      FieldMergeType type = schema.typeOf(field);
+      Object standingValue = standing.get(field);
+      Object merged = type.merge(standingValue, writers);
+      result.put(field, Objects.requireNonNull(merged, "merge result for " + field));
     }
     return Map.copyOf(result);
-  }
-
-  private static long resolve(FieldType type, long standing, List<ProvenancedWrite> writers) {
-    return switch (type) {
-      case INCREMENT -> {
-        long sum = 0L;
-        for (ProvenancedWrite w : writers) {
-          sum += w.value();
-        }
-        yield standing + sum;
-      }
-      case CONSTANT -> standing;
-      case STATIC, DESTRUCTIVE -> pickOne(writers).value();
-    };
   }
 
   /** Deterministic pick-one: lowest systemId (lexicographic). */

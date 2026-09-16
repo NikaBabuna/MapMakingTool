@@ -204,7 +204,7 @@ public final class Engine {
         continue;
       }
       barrier.onClaimed(system.id());
-      Map<String, Long> outSys = system.run(snapshotForSystems);
+      Map<String, Object> outSys = system.run(snapshotForSystems);
       for (var fieldWrite : outSys.entrySet()) {
         output.add(fieldWrite.getKey(), new ProvenancedWrite(system.id(), fieldWrite.getValue()));
       }
@@ -213,7 +213,7 @@ public final class Engine {
 
     barrier.requireBalanced();
 
-    Map<String, Long> merged =
+    Map<String, Object> merged =
         TypedMerge.merge(pool.fieldSchema(), pool.fieldValues(), output);
     pool.applyFields(merged);
 

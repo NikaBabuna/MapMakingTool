@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-16** — **F-011:** `Object` field carrier + pluggable `FieldMergeType` (G-002).
 - **2026-09-16** — **F-010:** pluggable `PoolCompute` / `SkeletonPoolCompute` default (G-002).
 - **2026-09-16** — **G-002** Engine host readiness Goal registered; Steps F-010–F-012 planned (docs only; no code).
 - **2026-09-04** — F-008: `ui` Maven module — basic Step advance / settled view; **G-001 complete**.

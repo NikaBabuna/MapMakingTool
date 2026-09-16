@@ -13,11 +13,12 @@ import java.util.Objects;
  * One System's contribution to a field in the Step output buffer.
  *
  * @param systemId producing System id (provenance)
- * @param value written value
+ * @param value written value (any non-null Object; Long for Increment fields)
  */
-public record ProvenancedWrite(String systemId, long value) {
+public record ProvenancedWrite(String systemId, Object value) {
 
   public ProvenancedWrite {
     Objects.requireNonNull(systemId, "systemId");
+    Objects.requireNonNull(value, "value");
   }
 }

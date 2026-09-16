@@ -7,9 +7,9 @@
 
 # Merge and type system
 
-> **Code status (through F-004):** Static, Increment, Constant, and Destructive are implemented via `TypedMerge` + `FieldSchema`. Provenance is `ProvenancedWrite(systemId, value)`. Static/Destructive pick-one = lexicographically smallest `systemId`. **Delete Request** is not implemented (open question #4).
+> **Code status (through F-011):** Static, Increment, Constant, and Destructive are default `FieldMergeType`s (`FieldType` enum). `FieldSchema` maps fields to any `FieldMergeType`. Field values are `Object`. Provenance is `ProvenancedWrite(systemId, Object value)`. Static/Destructive pick-one = lexicographically smallest `systemId`. Custom merge types may be supplied by callers. **Delete Request** is not implemented (open question #4).
 
-Every output field carries a type; the type defines how conflicting writes resolve.
+Every output field carries a merge type; the type defines how conflicting writes resolve. Engine defaults cover the four built-in behaviors; a product may add further types by implementing `FieldMergeType` without modifying the engine.
 
 ## Field types
 
@@ -54,6 +54,14 @@ flowchart TD
 ```
 
 When every claiming System has finished, the buffer groups by type. Static, Destructive, and Delete Request fields with multiple writers run through type resolvers. Increment sums. Constant keeps standing value. Result applies in one step; event buffer clears.
+
+## Adding a custom merge type
+
+1. Implement `com.aethelgard.engine.merge.FieldMergeType` (`Object merge(Object standing, List<ProvenancedWrite> writers)`).
+2. Put that instance in `FieldSchema` for the field(s) that use it.
+3. System writes remain non-null `Object`s; your type decides which shapes are legal.
+
+Do **not** add product rules as new `FieldType` enum constants — that would force an engine edit.
 
 ## Provenance
 

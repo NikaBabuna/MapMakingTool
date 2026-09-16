@@ -53,10 +53,10 @@ public final class EngineSystem {
    * {@link ConflictResolutionSubSystem} supplies deterministic order for the conflict set; remaining
    * disjoint Sub-Systems keep registration order around that.
    */
-  public Map<String, Long> run(PoolSnapshot snapshot) {
+  public Map<String, Object> run(PoolSnapshot snapshot) {
     Objects.requireNonNull(snapshot, "snapshot");
     List<SubSystem> ordered = orderSubSystems(config.subSystems(), config.conflictResolver());
-    Map<String, Long> staging = new LinkedHashMap<>();
+    Map<String, Object> staging = new LinkedHashMap<>();
     for (SubSystem sub : ordered) {
       SubSystemIo io = new SubSystemIo(snapshot, staging, sub.writeRanges());
       sub.execute(io);

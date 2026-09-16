@@ -21,8 +21,8 @@ import java.util.Objects;
  * Engine Pool: shared state updated once at the start of each Step's computation.
  *
  * <p>Update rules live in {@link PoolCompute} (default {@link SkeletonPoolCompute}). Typed fields
- * also receive merged System output after claim (F-004). Samples {@link InputView} once per update
- * (F-006).
+ * also receive merged System output after claim (F-004/F-011). Samples {@link InputView} once per
+ * update (F-006).
  */
 public final class Pool {
 
@@ -32,7 +32,7 @@ public final class Pool {
   private long value;
   private int updateCount;
   private final FieldSchema fieldSchema;
-  private final Map<String, Long> fields = new LinkedHashMap<>();
+  private final Map<String, Object> fields = new LinkedHashMap<>();
   private final PoolCompute compute;
   private InputView lastInputView = InputView.empty();
 
@@ -42,7 +42,8 @@ public final class Pool {
     this.fieldSchema = fieldSchema == null ? FieldSchema.empty() : fieldSchema;
     this.compute = Objects.requireNonNull(compute, "compute");
     for (String name : this.fieldSchema.asMap().keySet()) {
-      fields.put(name, config.initialFields().getOrDefault(name, 0L));
+      Object seed = config.initialFields().get(name);
+      fields.put(name, seed != null ? seed : 0L);
     }
     for (String name : config.initialFields().keySet()) {
       if (!this.fieldSchema.has(name)) {
@@ -68,12 +69,12 @@ public final class Pool {
   }
 
   /** Applies typed-merge result once per Step (after Systems finish). */
-  void applyFields(Map<String, Long> merged) {
+  void applyFields(Map<String, Object> merged) {
     fields.clear();
     fields.putAll(merged);
   }
 
-  Map<String, Long> fieldValues() {
+  Map<String, Object> fieldValues() {
     return Map.copyOf(fields);
   }
 
@@ -101,7 +102,7 @@ public final class Pool {
     this.value = value;
   }
 
-  void putFieldForCompute(String name, long value) {
-    fields.put(name, value);
+  void putFieldForCompute(String name, Object value) {
+    fields.put(name, Objects.requireNonNull(value, "value"));
   }
 }

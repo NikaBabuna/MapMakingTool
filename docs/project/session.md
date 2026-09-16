@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-16  
-**Status:** complete (F-010 Accepted)
+**Status:** complete (F-011 Accepted)
 
 ---
 
 ## Session goal
 
-Accept **F-010** (pluggable Pool compute).
+Accept **F-011** (Object field carrier + pluggable `FieldMergeType`).
 
 ---
 
@@ -28,17 +28,17 @@ Accept **F-010** (pluggable Pool compute).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-010 | Pluggable Pool compute | done |
+| F-011 | Wider field carrier + pluggable merge types | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (70 tests)
+- [x] Incremental suite green (77 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Negotiate **F-011** (wider Pool field carrier) job + FRs.
+1. Negotiate **F-012** (pluggable event emission + host closure) job + FRs.

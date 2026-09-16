@@ -114,6 +114,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-008.md](blockers/F-008.md) | done — basic UI + G-001 closure |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
 | [F-010.md](blockers/F-010.md) | done — pluggable Pool compute |
+| [F-011.md](blockers/F-011.md) | done — Object fields + FieldMergeType |
 
 ---
 

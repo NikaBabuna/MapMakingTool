@@ -67,9 +67,22 @@ public final class PoolComputeContext {
     return pool.fieldSchema();
   }
 
-  /** Current field value, or {@code 0} if unset. */
+  /** Current field value, or {@code null} if unset. */
+  public Object field(String name) {
+    return pool.fieldValues().get(name);
+  }
+
+  /** Current Long field value, or {@code 0} if unset. */
   public long fieldOrZero(String name) {
-    return pool.fieldValues().getOrDefault(name, 0L);
+    Object v = pool.fieldValues().get(name);
+    if (v == null) {
+      return 0L;
+    }
+    if (v instanceof Long l) {
+      return l;
+    }
+    throw new IllegalArgumentException(
+        "fieldOrZero requires Long; '" + name + "' was " + v.getClass().getName());
   }
 
   /**
@@ -77,12 +90,18 @@ public final class PoolComputeContext {
    *
    * @throws IllegalArgumentException if {@code name} is not in the schema
    */
-  public void setField(String name, long value) {
+  public void setField(String name, Object value) {
     Objects.requireNonNull(name, "name");
+    Objects.requireNonNull(value, "value");
     if (!pool.fieldSchema().has(name)) {
       throw new IllegalArgumentException("undeclared field: " + name);
     }
     pool.putFieldForCompute(name, value);
+  }
+
+  /** Long overload for numeric skeleton fields. */
+  public void setField(String name, long value) {
+    setField(name, Long.valueOf(value));
   }
 
   /** Resolved scripted emission categories from config (may be empty). */
@@ -110,7 +129,7 @@ public final class PoolComputeContext {
   }
 
   /** Snapshot of current fields (unmodifiable copy). */
-  public Map<String, Long> fields() {
+  public Map<String, Object> fields() {
     return pool.fieldValues();
   }
 }

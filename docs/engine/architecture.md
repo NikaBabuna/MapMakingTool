@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-010 pluggable Pool compute; G-002 in progress)  
+**Status:** active (F-011 FieldMergeType / Object fields; G-002 in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -54,7 +54,7 @@ product  →  engine  ←  cli
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
 | `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
 | `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook, `ClaimFinishBarrier` | F-004–F-005 |
-| `com.aethelgard.engine.merge` | `FieldType`, `FieldSchema`, provenance, `StepOutputBuffer`, `TypedMerge` | F-004 |
+| `com.aethelgard.engine.merge` | `FieldMergeType`, `FieldType` (defaults), `FieldSchema`, provenance, `StepOutputBuffer`, `TypedMerge` | F-004–F-011 |
 | `com.aethelgard.engine.user` | `UserInput`, `InputKind`, `InputView`, `UserView`, `RecordingUserView` | F-006 |
 
 ### Implemented Step order (through F-006)
@@ -132,16 +132,20 @@ Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `Eng
 
 **Determinism:** same config + setup + N advances → equal settled Pool; independent Systems may be registered in any order without changing settled fields.
 
-### Typed merge (F-004)
+### Typed merge (F-004 / F-011)
 
 | Type | Role |
 |------|------|
-| `FieldSchema` / `FieldType` | STATIC, INCREMENT, CONSTANT, DESTRUCTIVE |
-| `ProvenancedWrite` | `(systemId, value)` entering the Step output buffer |
+| `FieldMergeType` | Pluggable merge rule interface (`merge(standing, writers) → Object`) |
+| `FieldType` | Default implementations: STATIC, INCREMENT, CONSTANT, DESTRUCTIVE |
+| `FieldSchema` | Field name → `FieldMergeType` (defaults or custom) |
+| `ProvenancedWrite` | `(systemId, Object value)` entering the Step output buffer |
 | `StepOutputBuffer` | Field → list of provenanced writes |
-| `TypedMerge` | Resolve by type; **Static/Destructive pick-one = lexicographically smallest `systemId`** |
+| `TypedMerge` | Applies each field's `FieldMergeType`; **pickOne** = lex-min `systemId` |
 
-Increment: standing + sum of writes. Constant: keep standing. Delete Request: not implemented.
+**Values:** typed fields are `Object` (Long still works). **Increment** default requires `Long`. Product adds custom merge types by implementing `FieldMergeType` and putting them in the schema — no engine enum edits.
+
+Delete Request: not implemented (open question #4).
 
 ### Diagnostics (F-003 / ADR-008)
 
