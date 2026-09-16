@@ -43,7 +43,8 @@ Read in order:
 - After FR approval: **store** them in `docs/blockers/F-0xx.md` before MARK/code.
 - Mark Step `in progress` **before** code (torn-step protection).
 - Treat `./mvnw test` / `mvnw.cmd test` as Accept — **this Step and all prior Steps** (incremental).
-- Sync tied docs at end of Step; AI owns doc updates within protocol.
+- Sync tied docs at end of Step per [../doc-contract.md](../doc-contract.md) and the **SYNC checklist** in [step-procedure.md](step-procedure.md) — not only FR-named files.
+- Do **not** claim Accept if entry points (AGENTS, README, navigation, session, PHASE) disagree with [../project/goals.md](../project/goals.md).
 - Explain in clear English: what changed, what it means, what was tested.
 - On uncertain or torn state: **rollback / reconcile first** ([quality.md](quality.md)).
 
@@ -52,6 +53,7 @@ Read in order:
 ## Never
 
 - Claim `done` without a green witness.
+- Claim `done` with green tests but stale Active Goal / “through F-00x” / “deferred until…” docs this Step made false.
 - Continue a torn Step as if it succeeded — rollback instead.
 - Weaken or delete tests to get green.
 - Invent deep package trees ahead of architecture docs and ADRs.
@@ -66,5 +68,7 @@ New chat or “continue”:
 
 1. Reconcile Session + Step marks  
 2. If torn → rollback and report  
-3. Else work Session / next Step of active Goal per procedure  
-4. Propose next Step if Session empty and Goal incomplete — wait for approval  
+3. Confirm Active Goal wording matches [../project/goals.md](../project/goals.md) across entry points; if drift → fix docs before new work  
+4. Else work Session / next Step of active Goal per procedure  
+5. If no active Goal → propose next **Goal**; if Session empty under an active Goal → propose next Step — wait for approval  
+6. After Accept → re-check entry points vs `goals.md` before proposing further work  

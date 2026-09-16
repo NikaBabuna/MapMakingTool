@@ -19,6 +19,7 @@ Markdown status is not Accept. The executable witness is.
 Correct(F-00n)  ⇔  tests for F-00n green
                 ∧  tests for all earlier Accepted Steps green   ← incremental
                 ∧  docs required by doc-contract are synced
+                ∧  SYNC checklist held (entry points / banners / glossary as applicable)
                 ∧  approved FRs stored in docs/blockers/F-00n.md
                 ∧  scope ∈ project.md
                 ∧  Step belongs to an active Goal (or explicit doc-only Session)
@@ -28,6 +29,7 @@ Correct(F-00n)  ⇔  tests for F-00n green
 - Vague aspirations (“clean code”) are **not** requirements or blockers.
 - Weakening or deleting tests (including **prior Step** tests) to get green is **forbidden**.
 - If a blocker/FR was wrong: update `F-0xx.md` with rationale and user agreement, then change tests deliberately — never silently.
+- **Stale Active Goal / “through F-00x” / “deferred until after G-00x” lines** that this Step made false ⇒ **not Accept** until SYNC fixes them ([../doc-contract.md](../doc-contract.md), [step-procedure.md](step-procedure.md) § SYNC).
 
 **Accept** (`done`, commit of the Step) only when the witness above holds.
 
@@ -79,6 +81,7 @@ Template: [../blockers/README.md](../blockers/README.md).
 | Tests weakened/deleted to pass | Blocked — restore strictness |
 | Vague FRs | Blocked — rewrite as measurable |
 | Status/`done` without suite witness | **Invalid Accept** — recovery |
+| Docs lag / stale entry points or banners after code or Goal close | **Blocked** — SYNC then Accept ([step-procedure.md](step-procedure.md)) |
 | Torn Step marks / mid-step debris | **Rollback** |
 
 ---
@@ -133,7 +136,9 @@ Engine Steps lean on [../engine/specs/](../engine/specs/).
 - [ ] Code written to plan
 - [ ] Tests mapped to FRs and implemented
 - [ ] **Incremental** suite green (this Step + all prior Steps)
-- [ ] Tied docs synced; Goal progress updated
+- [ ] Tied docs synced per [../doc-contract.md](../doc-contract.md); **SYNC checklist** complete ([step-procedure.md](step-procedure.md))
+- [ ] Entry points match [../project/goals.md](../project/goals.md); no stale banners this Step made false
+- [ ] If Goal closed: Goal-status entry-point reconcile done
 - [ ] Final check → commit → mark `done`
 
 ---
@@ -144,5 +149,6 @@ Engine Steps lean on [../engine/specs/](../engine/specs/).
 2. Tests map to those FRs and are green.
 3. **All earlier Accepted Steps’ tests remain green.**
 4. Code meets [rules.md](rules.md) and this file.
-5. Tied docs updated; Goal progress honest.
-6. Commit records the Accept.
+5. Tied docs updated; Goal progress honest; **SYNC checklist** held (not Step-local FR greps alone).
+6. On Goal close: all Active Goal entry points agree with `goals.md`.
+7. Commit records the Accept.

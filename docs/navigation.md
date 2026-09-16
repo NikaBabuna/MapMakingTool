@@ -67,7 +67,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
 | [architecture.md](architecture.md) | Active (roll-up; through F-012 / G-002 done) |
-| [doc-contract.md](doc-contract.md) | Active |
+| [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
 

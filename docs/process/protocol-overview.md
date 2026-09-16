@@ -27,11 +27,11 @@ Make work by **stochastic AI agents** checkable and serializable:
 
 | Claim | Meaning |
 |-------|---------|
-| **Correctness is contractual** | Correct iff blockers green ∧ full suite green ∧ docs synced ∧ in scope |
+| **Correctness is contractual** | Correct iff blockers green ∧ full suite green ∧ docs synced (doc-contract + SYNC checklist) ∧ in scope |
 | **Requirements before code** | User approves FRs; they are **stored** in `blockers/F-0xx.md` before implementation |
 | **Blockers witness the code** | Tests map to stored FRs; suite is **incremental** (prior Steps must stay green) |
 | **Docs are permanent context** | Docs win over chat; what docs point to is where agents go |
-| **Markdown is not Accept** | Only the suite Accepts |
+| **Markdown is not Accept** | Only the suite Accepts — and stale entry points / banners block Accept |
 | **Steps are serialized** | One Step at a time through the procedure |
 | **Agents fail** | Torn progress → rollback |
 

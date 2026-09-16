@@ -25,7 +25,8 @@ Before non-trivial work, read in order:
 - No code before user approval of job + FRs; store FRs in `docs/blockers/F-0xx.md` before MARK/code
 - Mark Step `in progress` before code; torn progress ⇒ rollback
 - Witness: full incremental suite (this Step + all prior Steps) — markdown is not Accept
-- Sync docs at end of Step; commit after final check when green
+- Sync docs at end of Step per `docs/doc-contract.md` + SYNC checklist in `docs/process/step-procedure.md` (entry points, banners, glossary — not FR greps alone); commit after final check when green
+- Do not Accept if Active Goal entry points disagree with `docs/project/goals.md`
 - Explain in clear English what changed and what it means
 
 Active Goal: _(none — propose next)_ · Last: `docs/project/goals/G-002-engine-host-readiness.md` (**done**)  

@@ -43,13 +43,40 @@ A **Session** points at one Goal and lists which Steps it will attempt. Prefer s
 10. FIX LOOP   On failure: analyze → fix → retest.
                If failures persist: STOP, explain in English, ask whether to continue.
                If user declines → ROLLBACK to last Accept
-11. SYNC       Update tied docs (doc-contract); bookkeeping; Goal progress
-12. CHECK      Final review: full incremental suite green, docs match code
+11. SYNC       Update tied docs (doc-contract) — **full reconcile, not Step-local only**
+               (see SYNC checklist below); bookkeeping; Goal progress
+12. CHECK      Final review: suite green; docs match code; entry points match goals.md
 13. COMMIT     Commit the Step (seals Accept)
 14. CLOSE MARK Clear `in progress`; set Step `done` only when witness held
 ```
 
-**Done / Accept** only after the **incremental** suite is green. Markdown never Accepts alone.
+**Done / Accept** only after the **incremental** suite is green **and** SYNC/CHECK docs hold. Markdown never Accepts alone.
+
+---
+
+## SYNC checklist (mandatory before CHECK)
+
+Complete every row that applies. Record N/A + reason in the Step’s `F-0xx.md` Witness / SYNC section when a row does not apply.
+
+| Check | Requirement |
+|-------|-------------|
+| **Doc-contract ties** | Every modified source/doc artifact’s ties in [../doc-contract.md](../doc-contract.md) are updated |
+| **Entry points** | [../project/goals.md](../project/goals.md) Active Goal text matches [../project/session.md](../project/session.md), [../navigation.md](../navigation.md) header, [../../AGENTS.md](../../AGENTS.md), [../../.cursor/rules/protocol.mdc](../../.cursor/rules/protocol.mdc), [../PHASE.md](../PHASE.md), [../../README.md](../../README.md), [../architecture.md](../architecture.md) |
+| **Navigation status** | [../navigation.md](../navigation.md) Status cells for touched docs are not stale (“through F-00x”, “after G-00x”, “deferred until…”) |
+| **Glossary** | New public engine terms/ports appear in [../engine/glossary.md](../engine/glossary.md) (or product glossary if product-only) |
+| **Specs banners** | Relevant [../engine/specs/](../engine/specs/) (and architecture) **code-status** banners match the Step’s reality |
+| **Goal close** | If this Step marks a Goal `done` (or changes Active Goal): run the **Goal status and entry points** table in [../doc-contract.md](../doc-contract.md) in full |
+
+**Forbidden:** claiming Accept because an FR only grepped one architecture string while entry points or banners still describe the previous Goal/Step world.
+
+---
+
+## CHECK (mandatory before COMMIT)
+
+1. Incremental suite green (this Step + all prior Accepted Steps).
+2. SYNC checklist complete (or N/A recorded).
+3. `goals.md` Active Goal wording agrees with AGENTS / navigation / README / session.
+4. No known stale “Deferred until after G-00x” that this Goal already unlocked.
 
 ---
 
@@ -77,7 +104,7 @@ The suite is **cumulative**.
 ```
 Accept(F-00n)  ⇔  tests(F-00n) green
                ∧  tests(F-001) … tests(F-00n-1) still green
-               ∧  docs synced ∧ in scope
+               ∧  docs synced per doc-contract + SYNC checklist ∧ in scope
 ```
 
 - New Step must not break older Steps.
@@ -141,5 +168,7 @@ Every propose / plan / stop / sync summary must be in clear English:
 1. Read [../PHASE.md](../PHASE.md)
 2. Read [../project/session.md](../project/session.md) and active Goal
 3. Reconcile (torn Step? → rollback)
-4. If Session empty: propose next Step from active Goal, wait for approval
-5. Otherwise: finish Session Steps per this procedure
+4. If no active Goal: **propose next Goal**, wait for approval  
+5. If Session empty under an active Goal: propose next Step, wait for approval  
+6. Otherwise: finish Session Steps per this procedure  
+7. After any Accept: confirm entry-point Active Goal text still matches [../project/goals.md](../project/goals.md) before proposing further work

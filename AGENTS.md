@@ -28,9 +28,11 @@ Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](d
 ## Default on new chat / “continue”
 
 1. Reconcile Session + Step marks — if torn, **rollback** and report  
-2. Follow active Goal; if none, **propose next Goal** (not a lone Step); if Session empty under an active Goal, propose next `F-0xx`  
-3. No code until user approves job + FRs; store FRs in `docs/blockers/F-0xx.md` first  
-4. Witness is incremental — prior Step tests must stay green  
+2. Confirm Active Goal text matches [docs/project/goals.md](docs/project/goals.md) on AGENTS / navigation / README / session / PHASE; fix drift before new work  
+3. Follow active Goal; if none, **propose next Goal** (not a lone Step); if Session empty under an active Goal, propose next `F-0xx`  
+4. No code until user approves job + FRs; store FRs in `docs/blockers/F-0xx.md` first  
+5. Witness is incremental — prior Step tests must stay green  
+6. After Accept: SYNC checklist ([docs/process/step-procedure.md](docs/process/step-procedure.md)); re-check entry points vs `goals.md`  
 
 Full procedure: [docs/process/step-procedure.md](docs/process/step-procedure.md)
 
@@ -38,4 +40,4 @@ Full procedure: [docs/process/step-procedure.md](docs/process/step-procedure.md)
 
 ## Commits
 
-After a successful Step final check (green witness + doc sync), commit that Step.
+After a successful Step final check (green witness + **full** doc sync), commit that Step.

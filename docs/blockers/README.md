@@ -55,15 +55,26 @@ Copy when starting a Step (at STORE):
 
 This Step’s Accept requires the full suite: prior Accepted Steps + tests above.
 
+## SYNC (before Accept)
+
+- [ ] Doc-contract ties for touched artifacts
+- [ ] Entry points match `goals.md` (session, navigation, AGENTS, protocol rule, PHASE, README, architecture)
+- [ ] Navigation Status cells for touched docs not stale
+- [ ] Glossary terms for new public types/ports (or N/A: …)
+- [ ] Specs / architecture code-status banners match this Step (or N/A: …)
+- [ ] Goal close entry-point reconcile (or N/A: Goal not closed)
+
 ## Witness
 
 - [ ] New tests green
 - [ ] All prior Step tests green
-- [ ] Docs synced
+- [ ] Docs synced (SYNC checklist above)
 ```
 
 **Status `fr-approved`:** FRs stored, code not started (or not yet marked in progress).  
 After MARK → `in progress`. After Accept → `done`.
+
+SYNC checklist detail: [../process/step-procedure.md](../process/step-procedure.md) · [../doc-contract.md](../doc-contract.md).
 
 ---
 
