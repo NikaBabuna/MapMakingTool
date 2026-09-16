@@ -5,7 +5,7 @@
 Procedural fantasy world generator — simulate tectonics, climate, and terrain so maps stay physically consistent, with a scrubbable history of how the world formed.
 
 **Status:** alpha  
-**Current Goal:** [See the world (G-004)](docs/project/goals/G-004-see-the-world.md) (`in progress`) · Last: [First product world (G-003)](docs/project/goals/G-003-first-product-world.md)  
+**Current Goal:** none · Last: [See the world (G-004)](docs/project/goals/G-004-see-the-world.md)  
 **CI:** GitHub Actions on `main` — JDK 21 + `./mvnw test` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
 
 ---
@@ -15,7 +15,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | | |
 |-|-|
 | [Docs tree](docs/README.md) | Documentation folders |
-| [Goals index](docs/project/goals.md) | Active Goal [G-004](docs/project/goals/G-004-see-the-world.md) (`in progress`) · last G-003 |
+| [Goals index](docs/project/goals.md) | Active Goal none · last [G-004](docs/project/goals/G-004-see-the-world.md) |
 | [How AI works](docs/process/step-procedure.md) | Goal / Session / Step |
 | [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
 | [Engine module](engine/README.md) | Code module index |

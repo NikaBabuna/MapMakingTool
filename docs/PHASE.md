@@ -62,4 +62,4 @@
 ## Agent work model
 
 Goal → Session → Step. Binding procedure: [process/step-procedure.md](process/step-procedure.md).  
-Active Goal: [project/goals.md](project/goals.md) — [G-004 See the world](project/goals/G-004-see-the-world.md) (`in progress`) · Last: G-003 done.
+Active Goal: none · Last: [G-004 See the world](project/goals/G-004-see-the-world.md) done.

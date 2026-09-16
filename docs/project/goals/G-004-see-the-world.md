@@ -7,7 +7,7 @@
 
 # G-004 — See the world
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Engine:** do not edit `engine` source for ordinary world rules (G-002 host ports).  
 **Prior:** [G-003](G-003-first-product-world.md) locked the product house and a two-plate stripe. This Goal makes that world **look like a map** and **visible**.
 
@@ -69,8 +69,8 @@ If a stored FR cannot be met without an engine port: **stop**, ADR, do not sneak
 - [x] Collision uplift on the new sutures; Step 0 elevation still all zeros
 - [x] F-015/F-016 witnesses match the new rule (golden dump still 8×8)
 - [x] Same seed + dimensions + N Steps → identical elevation (and dump for DEFAULT)
-- [ ] 512×512 view spec; headless raster is deterministic RGB per cell
-- [ ] Product window paints that raster; Advance; loading while compute runs; no `JFrame` in tests
+- [x] 512×512 view spec; headless raster is deterministic RGB per cell
+- [x] Product window paints that raster; Advance; loading while compute runs; no `JFrame` in tests
 - [x] `ui` / `cli` do not depend on `product`; no `engine` production edits
 - [x] Incremental suite: all prior Accepted Step tests remain green
 
@@ -83,7 +83,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 | Step | Intent | Status |
 |------|--------|--------|
 | F-017 | Voronoi multi-plate seed + wiki; update F-015/F-016 witnesses | done |
-| F-018 | 512×512 colored map window, Advance, loading | not started |
+| F-018 | 512×512 colored map window, Advance, loading | done |
 
 ---
 
@@ -91,7 +91,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 2 |
-| Product claim boxes | 6 / 8 |
+| Steps done | 2 / 2 |
+| Product claim boxes | 8 / 8 |
 
 Update this section at the end of every successful Step.

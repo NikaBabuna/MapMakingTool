@@ -12,5 +12,7 @@
  * is Pool fields {@code elevation} and {@code plates} ({@link com.aethelgard.product.Grid}).
  * Generation is a product {@code EngineSystem} on category {@code world/tectonics}.
  * {@link com.aethelgard.product.WorldDump} formats a settled snapshot.
+ * {@link com.aethelgard.product.ElevationRaster} and {@link com.aethelgard.product.MapController}
+ * drive the product map window ({@link com.aethelgard.product.ProductApp}).
  */
 package com.aethelgard.product;

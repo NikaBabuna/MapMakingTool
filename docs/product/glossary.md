@@ -23,6 +23,9 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0. |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid). |
+| **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |
+| **ElevationRaster** | Headless RGB image of an elevation grid; absolute height ramp, one pixel per cell. |
+| **MapController** | Headless map logic: create, Advance, raster, busy / `Working...` status. No Swing. |
 | **Seed** | Initial configuration that deterministically produces a world variant |
 | **Timeline** | Scrubbable history of world formation from simulation start to present |
 | **Guide mode** | User nudges specific features; simulation resolves the rest consistently |

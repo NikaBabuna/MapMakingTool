@@ -7,9 +7,24 @@
 
 # Product flows
 
-_Status: partial — high-level modes from concept. **G-003** elevation slice is done. **G-004** adds a large colored map view (see + Advance). Detailed Explore / Guide / Timeline / Inspect steps await later Goals._
+_Status: **See the world** (G-004 / F-018) is specified. Detailed Explore / Guide / Timeline / Inspect steps await later Goals._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
+
+---
+
+## Flow: See the world (elevation + Advance)
+
+**Goal:** User opens a large colored heightmap, steps generation, and sees ridges form. UI stays honest while compute runs.
+
+| Step | Action |
+|------|--------|
+| 1 | Launch `ProductApp`. Window shows `WorldSpec.VIEW` (512×512, seed 0) at **Step 0** — a dark flat field (zero elevation). |
+| 2 | User clicks **Advance**. Status shows **Working...**; the button does not queue extra clicks. Compute runs off the Swing thread. |
+| 3 | When the Step settles, the map paints the new elevation raster (absolute height ramp) and status returns to `Step n`. |
+| 4 | Repeat Advance to grow suture ridges. No pan/zoom; one pixel per cell. |
+
+**Edges / failures:** Clicks while busy are ignored. Tests never construct `JFrame`. Dump fixture remains `WorldSpec.DEFAULT` 8×8.
 
 ---
 

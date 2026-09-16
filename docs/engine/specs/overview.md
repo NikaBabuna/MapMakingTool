@@ -7,7 +7,7 @@
 
 # Overview
 
-> **Code status (through F-012 / G-002):** The Pool-System loop is implemented and host-ready. Product plugs in via `PoolCompute`, `FieldMergeType`, and `EventEmissionPolicy` without editing engine internals. CLI and basic UI adapters exist; Aethelgard product module is **F-017** (Voronoi plates). **G-004** in progress.
+> **Code status (through F-012 / G-002):** The Pool-System loop is implemented and host-ready. Product plugs in via `PoolCompute`, `FieldMergeType`, and `EventEmissionPolicy` without editing engine internals. CLI and basic UI adapters exist; Aethelgard product module is **F-018** (map window). **G-004 done.**
 
 **Scope:** General-purpose architecture for step-based computation and simulation. Independent of any particular game, product, or service.
 

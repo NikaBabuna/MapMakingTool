@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-018:** product map window (512×512 height raster, Advance, busy status); **G-004 complete**.
 - **2026-09-17** — **F-017:** Voronoi 6–15 plate seed (Euclidean nearest site); F-015 two-plate stripe superseded.
 - **2026-09-17** — **G-004** See the world Goal registered; Steps F-017–F-018 planned.
 - **2026-09-17** — **F-016:** headless `WorldDump` + G-003 complete.

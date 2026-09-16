@@ -67,7 +67,7 @@ Goal doc: [goals/G-004-see-the-world.md](goals/G-004-see-the-world.md)
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-017 | Voronoi multi-plate tectonics | done | [F-017.md](../blockers/F-017.md) |
-| F-018 | Large colored map UI + loading | not started | _(store FRs at APPROVE)_ |
+| F-018 | Large colored map UI + loading | done | [F-018.md](../blockers/F-018.md) |
 
 ---
 
