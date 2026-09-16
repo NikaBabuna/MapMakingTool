@@ -47,6 +47,19 @@ Goal doc: [goals/G-002-engine-host-readiness.md](goals/G-002-engine-host-readine
 
 ---
 
+## G-003 — First product world
+
+Goal doc: [goals/G-003-first-product-world.md](goals/G-003-first-product-world.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-013 | Product Maven module + architecture | done | [F-013.md](../blockers/F-013.md) |
+| F-014 | World as Pool state (grid + elevation) | not started | _(store FRs at APPROVE)_ |
+| F-015 | First generative process | not started | _(store FRs at APPROVE)_ |
+| F-016 | Witnessed world + G-003 closure | not started | _(store FRs at APPROVE)_ |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` **before** writing code for that Step.  

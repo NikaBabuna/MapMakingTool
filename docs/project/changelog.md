@@ -13,6 +13,8 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-013:** `product` Maven module (`com.aethelgard:product`, `ProductHost`); G-003 in progress.
+- **2026-09-17** — **G-003** First product world Goal registered; Steps F-013–F-016 planned.
 - **2026-09-17** — Process: SYNC checklist + Goal-close entry-point ties (`doc-contract`, step-procedure, quality, global-prompt, rules, blockers template).
 - **2026-09-16** — Doc sync after G-002: entry points, specs, glossary, navigation aligned to host-ready engine.
 - **2026-09-16** — **F-012:** pluggable `EventEmissionPolicy`; **G-002 complete**.

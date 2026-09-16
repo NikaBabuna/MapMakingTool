@@ -7,21 +7,21 @@
 
 # Current session
 
-**Updated:** 2026-09-16  
-**Status:** complete (F-012 Accepted; G-002 done)
+**Updated:** 2026-09-17  
+**Status:** complete (F-013 Accepted; G-003 in progress)
 
 ---
 
 ## Session goal
 
-Accept **F-012** and close **G-002**.
+Accept **F-013**.
 
 ---
 
-## Last Goal / Session
+## Active Goal
 
-**Last Goal:** [G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **done**  
-**Active Goal:** _(none — propose next)_
+**Active Goal:** [G-003 — First product world](goals/G-003-first-product-world.md) — **in progress**  
+**Last completed:** [G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **done**
 
 ---
 
@@ -29,17 +29,17 @@ Accept **F-012** and close **G-002**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-012 | Pluggable event emission + host closure | done |
+| F-013 | Product Maven module + architecture | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (84 tests)
+- [x] Incremental suite green (89 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose next Goal: product world generation on the engine (from [roadmap.md](roadmap.md) / [backlog.md](backlog.md)).
+1. Propose F-014: world as Pool state (grid geometry + `elevation`); wiki World / grid / layer.

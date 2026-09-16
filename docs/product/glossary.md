@@ -11,6 +11,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 
 | Term | Definition |
 |------|------------|
+| **ProductHost** | Product factory that constructs an `Engine` via `EngineSetup` (F-013). |
 | **Seed** | Initial configuration that deterministically produces a world variant |
 | **Timeline** | Scrubbable history of world formation from simulation start to present |
 | **Guide mode** | User nudges specific features; simulation resolves the rest consistently |

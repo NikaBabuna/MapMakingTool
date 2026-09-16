@@ -8,9 +8,9 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** _(none — propose next)_ · Last: [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) (**done**)  
+**Active Goal:** [G-003 First product world](project/goals/G-003-first-product-world.md) (`in progress`) · Last: [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
-**Code:** [../engine/README.md](../engine/README.md) · [engine/architecture.md](engine/architecture.md)
+**Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
 Folder indexes are **README.md** in each landmark directory. Prefer those links when entering a folder.
 
@@ -52,8 +52,9 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals.md](project/goals.md) | Active |
 | [goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) | done |
 | [goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) | done |
+| [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | in progress |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-002 Steps registered |
+| [features.md](project/features.md) | Active — G-001–G-003 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
 | [decisions.md](project/decisions.md) | Active (8 ADRs) |
@@ -66,7 +67,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-012 / G-002 done) |
+| [architecture.md](architecture.md) | Active (roll-up; F-013 product module) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -90,11 +91,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
+| [architecture.md](product/architecture.md) | Active — F-013 ProductHost |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | Deferred detail — engine host ready (G-002); awaits product Goal |
-| [glossary.md](product/glossary.md) | Minimal |
+| [flows.md](product/flows.md) | Deferred detail — G-003 first product world; Explore/Guide/Timeline await later Goals |
+| [glossary.md](product/glossary.md) | Active — ProductHost (F-013) |
 | [style-guide.md](product/style-guide.md) | Deferred |
-| [wiki/](product/wiki/) | Empty — deferred |
+| [wiki/](product/wiki/) | Empty — G-003 (F-014/F-015) |
 
 ---
 
@@ -116,6 +118,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-010.md](blockers/F-010.md) | done — pluggable Pool compute |
 | [F-011.md](blockers/F-011.md) | done — Object fields + FieldMergeType |
 | [F-012.md](blockers/F-012.md) | done — EventEmissionPolicy + G-002 closure |
+| [F-013.md](blockers/F-013.md) | done — product Maven module |
 
 ---
 
@@ -126,6 +129,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
 | [../cli/](../cli/) | [README](../cli/README.md) — headless runner |
 | [../ui/](../ui/) | [README](../ui/README.md) — skeleton Step advance / view |
+| [../product/](../product/) | [README](../product/README.md) — Maven module |
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
 | [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
 | [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |

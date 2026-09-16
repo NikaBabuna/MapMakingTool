@@ -19,17 +19,15 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002 |
-| **Product** | _(implementation architecture TBD)_ | Next Goal after G-002 |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-013 `ProductHost` |
 
 ---
 
 ## Goals
 
-**Active Goal:** _(none — propose next)_  
+**Active Goal:** [G-003 First product world](project/goals/G-003-first-product-world.md) (`in progress`)  
 **Last completed:** [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md)  
-**Prior:** [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done  
-
-Propose next: product world generation ([roadmap.md](project/roadmap.md)).
+**Prior:** [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
 
 ---
 
@@ -41,13 +39,13 @@ Propose next: product world generation ([roadmap.md](project/roadmap.md)).
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
 | `cli/` | Active — F-007 (`com.aethelgard:cli`) |
 | `ui/` | Active — F-008 (`com.aethelgard:ui`) |
-| `product/` | Planned — next Goal after G-002 |
+| `product/` | Active — F-013 (`com.aethelgard:product`) |
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 
-**Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · **Java:** 21
+**Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · `com.aethelgard.product` (F-013) · **Java:** 21
 
-**Modules:** `engine`, `cli`, `ui` — product still later.
+**Modules:** `engine`, `cli`, `ui`, `product`.
 
 ---
 

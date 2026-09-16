@@ -8,7 +8,7 @@ Per [../process/rules.md](../process/rules.md): do not leave domain content only
 
 ## Pages
 
-_Status: none yet._
+_Status: none yet — first pages belong to G-003 (F-014 World / grid / layer; F-015 elevation rule)._
 
 | Page | Purpose |
 |------|---------|

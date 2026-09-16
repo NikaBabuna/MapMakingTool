@@ -9,7 +9,7 @@
 
 Terms for the Pool-System Framework. Product domain terms: [../product/glossary.md](../product/glossary.md).
 
-**Implementation note (through F-012 / G-002 done):** Engine core is a clean host (pluggable compute, merge types, emission). CLI and basic UI modules exist. Product world-gen is next. See [architecture.md](architecture.md).
+**Implementation note (through F-013):** Engine core is a clean host (G-002). Product module `com.aethelgard:product` (`ProductHost`) exists. World fields are F-014. See [architecture.md](architecture.md) and [../product/architecture.md](../product/architecture.md).
 
 | Term | Definition |
 |------|------------|

@@ -32,7 +32,7 @@
 3. Non-obvious moves → [project/decisions.md](project/decisions.md)
 4. **Folder README:** every landmark folder has a `README.md` explaining what lives there; [navigation.md](navigation.md) links those READMEs
 
-**Landmark folders** (require README): `docs/` and each docs namespace (`process/`, `project/`, `project/goals/`, `engine/`, `engine/specs/`, `product/`, `product/wiki/`, `blockers/`); code module roots (`engine/`, `cli/`, `ui/`) and owned packages under `engine/src/main/java/.../engine/{pool,event,diag,system,merge,user}/`; `.github/`, `.github/workflows/`, `.cursor/`, `.cursor/rules/`.
+**Landmark folders** (require README): `docs/` and each docs namespace (`process/`, `project/`, `project/goals/`, `engine/`, `engine/specs/`, `product/`, `product/wiki/`, `blockers/`); code module roots (`engine/`, `cli/`, `ui/`, `product/`) and owned packages under `engine/src/main/java/.../engine/{pool,event,diag,system,merge,user}/`; `.github/`, `.github/workflows/`, `.cursor/`, `.cursor/rules/`.
 
 **Exempt:** `target/`, `.tools/`, `.mvn/`, intermediate Java path segments (`src/`, `main/`, `java/`, `com/`, …).
 
@@ -62,4 +62,4 @@
 ## Agent work model
 
 Goal → Session → Step. Binding procedure: [process/step-procedure.md](process/step-procedure.md).  
-Active Goal: [project/goals.md](project/goals.md) — _(none — propose next)_ · G-002 done.
+Active Goal: [project/goals.md](project/goals.md) — [G-003 First product world](project/goals/G-003-first-product-world.md) (`in progress`) · Last: G-002 done.

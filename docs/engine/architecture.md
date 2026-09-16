@@ -19,7 +19,7 @@
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — G-002 host ports |
 | **cli** | `com.aethelgard:cli` | Headless runner (N Steps, settled state) | Active — F-007 |
 | **ui** | `com.aethelgard:ui` | Basic Step advance / view | Active — F-008 |
-| **product** | _(planned)_ | Aethelgard domain Systems / views | After G-002 |
+| **product** | `com.aethelgard:product` | Aethelgard domain host (`ProductHost`) | Active — F-013 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
 
@@ -206,6 +206,10 @@ MapMakingTool/
     pom.xml
     src/main/java/com/aethelgard/ui/    # F-008
     src/test/java/com/aethelgard/ui/
+  product/
+    pom.xml
+    src/main/java/com/aethelgard/product/   # F-013
+    src/test/java/com/aethelgard/product/
 ```
 
 ### CLI (F-007)
@@ -232,7 +236,7 @@ Artifact `com.aethelgard:ui` depends on `engine`.
 
 ## Witness
 
-From repo root: `mvnw.cmd test` (Windows) or `./mvnw test` (Unix). Incremental suite for G-001 and G-002 lives under `engine`, `cli`, and `ui` tests.
+From repo root: `mvnw.cmd test` (Windows) or `./mvnw test` (Unix). Incremental suite lives under `engine`, `cli`, `ui`, and `product` tests.
 
 ### CI (F-009)
 

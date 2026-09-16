@@ -29,5 +29,5 @@ Before non-trivial work, read in order:
 - Do not Accept if Active Goal entry points disagree with `docs/project/goals.md`
 - Explain in clear English what changed and what it means
 
-Active Goal: _(none — propose next)_ · Last: `docs/project/goals/G-002-engine-host-readiness.md` (**done**)  
+Active Goal: [G-003 First product world](docs/project/goals/G-003-first-product-world.md) (`in progress`) · Last: `docs/project/goals/G-002-engine-host-readiness.md` (**done**)  
 Full checklist: `AGENTS.md`

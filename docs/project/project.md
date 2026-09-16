@@ -24,7 +24,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | Area | Description |
 |------|-------------|
 | **Engine** | Pool-System Framework — step-based simulation, typed merge, events, systems; **host ports** so product Systems live outside `engine` |
-| **Product** | Aethelgard — world generation, guided nudging, timeline/history exploration (next Goal after G-002) |
+| **Product** | Aethelgard — world generation, guided nudging, timeline/history exploration (G-003: first elevation slice) |
 | **Process** | Agent-assisted development under repository protocol |
 
 ---
