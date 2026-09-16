@@ -18,9 +18,10 @@ Accept **F-012** and close **G-002**.
 
 ---
 
-## Active Goal
+## Last Goal / Session
 
-[G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **done**
+**Last Goal:** [G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **done**  
+**Active Goal:** _(none — propose next)_
 
 ---
 

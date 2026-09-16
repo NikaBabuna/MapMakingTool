@@ -57,13 +57,13 @@ product  →  engine  ←  cli
 | `com.aethelgard.engine.merge` | `FieldMergeType`, `FieldType` (defaults), `FieldSchema`, provenance, `StepOutputBuffer`, `TypedMerge` | F-004–F-011 |
 | `com.aethelgard.engine.user` | `UserInput`, `InputKind`, `InputView`, `UserView`, `RecordingUserView` | F-006 |
 
-### Implemented Step order (through F-006)
+### Implemented Step order (through F-012)
 
 ```text
-stepStarted → stage Input View → Pool.update (reads Input View; may emit)
+stepStarted → stage Input View → PoolCompute (reads Input View; may emit via EventEmissionPolicy)
   → consume persistent present in view → ancestry claim
   → claiming Systems run Sub-Systems (same Pool snapshot; claim/finish counters)
-  → claim/finish barrier (claimCount == finishCount) → typed merge → apply fields
+  → claim/finish barrier (claimCount == finishCount) → typed merge (FieldMergeType) → apply fields
   → clear event buffer → User View(settled) → stepSettled
 ```
 
@@ -232,7 +232,7 @@ Artifact `com.aethelgard:ui` depends on `engine`.
 
 ## Witness
 
-From repo root: `mvnw.cmd test` (Windows) or `./mvnw test` (Unix). Incremental suite for G-001 lives under `engine`, `cli`, and `ui` tests.
+From repo root: `mvnw.cmd test` (Windows) or `./mvnw test` (Unix). Incremental suite for G-001 and G-002 lives under `engine`, `cli`, and `ui` tests.
 
 ### CI (F-009)
 

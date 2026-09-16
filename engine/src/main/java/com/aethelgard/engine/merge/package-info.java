@@ -5,5 +5,8 @@
  * Update when: Package role changes
  */
 
-/** Field types, provenance, and System→Pool merge. */
+/**
+ * Pluggable {@link com.aethelgard.engine.merge.FieldMergeType}, default {@link
+ * com.aethelgard.engine.merge.FieldType}s, provenance, and System→Pool merge.
+ */
 package com.aethelgard.engine.merge;

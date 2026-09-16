@@ -7,18 +7,20 @@
 
 # Engine module
 
-Maven artifact `com.aethelgard:engine` — Pool-System Framework (Java 21).
+Maven artifact `com.aethelgard:engine` — Pool-System Framework (Java 21). Clean host after G-002.
 
 **Docs:** [docs/engine/README.md](../docs/engine/README.md) · [architecture](../docs/engine/architecture.md)
 
 | Package | Role |
 |---------|------|
-| `com.aethelgard.engine.pool` | Step loop, config, Pool, snapshots |
+| `com.aethelgard.engine.pool` | Step loop, config, Pool, `PoolCompute`, `EventEmissionPolicy`, snapshots |
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers |
 | `com.aethelgard.engine.diag` | Diagnostics / SLF4J bridge |
 | `com.aethelgard.engine.system` | Systems, Sub-Systems, conflict-resolution hook |
-| `com.aethelgard.engine.merge` | Field types, provenance, typed merge |
+| `com.aethelgard.engine.merge` | `FieldMergeType`, defaults, provenance, typed merge |
 | `com.aethelgard.engine.user` | User Input, Input View, User View |
+
+**Host ports:** `PoolCompute`, `FieldMergeType`, `EventEmissionPolicy` — product plugs in via `EngineSetup` / schema without editing this module.
 
 **Witness:** from repo root, `mvnw.cmd test` / `./mvnw test`.  
 **CI:** [../.github/workflows/README.md](../.github/workflows/README.md).

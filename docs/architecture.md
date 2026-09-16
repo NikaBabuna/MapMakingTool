@@ -18,16 +18,18 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 | Layer | Doc | Status |
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
-| **Engine specs** | [engine/specs/](engine/specs/) | Active |
-| **Product** | _(implementation architecture TBD)_ | After G-002 |
+| **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002 |
+| **Product** | _(implementation architecture TBD)_ | Next Goal after G-002 |
 
 ---
 
-## Current Goal
+## Goals
 
-[G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — **done**.  
-Propose next: product world generation (roadmap).  
-Prior: [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **done**.
+**Active Goal:** _(none — propose next)_  
+**Last completed:** [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md)  
+**Prior:** [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done  
+
+Propose next: product world generation ([roadmap.md](project/roadmap.md)).
 
 ---
 
@@ -36,16 +38,28 @@ Prior: [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **don
 | Path | Purpose |
 |------|---------|
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
-| `engine/` | Pool-System Framework (`com.aethelgard:engine`) |
+| `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
 | `cli/` | Active — F-007 (`com.aethelgard:cli`) |
 | `ui/` | Active — F-008 (`com.aethelgard:ui`) |
-| `product/` | Planned — after G-002 |
+| `product/` | Planned — next Goal after G-002 |
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 
 **Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · **Java:** 21
 
 **Modules:** `engine`, `cli`, `ui` — product still later.
+
+---
+
+## Host extension points (G-002)
+
+Product plugs into the engine without editing `engine` for ordinary feature growth. Detail: [engine/architecture.md](engine/architecture.md).
+
+| Port | Wire via | Default |
+|------|----------|---------|
+| `PoolCompute` | `EngineSetup.poolCompute` | `SkeletonPoolCompute` |
+| `FieldMergeType` | `FieldSchema` | `FieldType` (Static / Increment / Constant / Destructive) |
+| `EventEmissionPolicy` | `EngineSetup.eventEmissionPolicy` | `ScriptedEventEmissionPolicy` |
 
 ---
 

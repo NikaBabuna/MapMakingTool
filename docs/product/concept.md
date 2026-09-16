@@ -64,4 +64,4 @@ Tabletop campaigns, novels, personal worldbuilding — anywhere the map must sur
 
 ## Engine
 
-Implemented on the [Pool-System Framework](../engine/specs/overview.md) — step-based simulation with deterministic merge and cross-step consequence chains suited to geological time.
+Implemented on the [Pool-System Framework](../engine/specs/overview.md) — step-based simulation with deterministic merge and cross-step consequence chains suited to geological time. After **G-002**, the engine is a clean host: Aethelgard Systems and world rules plug in via `PoolCompute`, `FieldMergeType`, and `EventEmissionPolicy` without editing `engine`.

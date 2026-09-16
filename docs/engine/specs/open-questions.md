@@ -16,12 +16,14 @@ Gaps between current spec and complete framework.
 | 2b | **Unmatched events** | **Log** when no System claims the event | [events.md](events.md), ADR-006 |
 | 3 | **Step 0 bootstrap** | Seed from a starting **config object** | [pool-engine.md](pool-engine.md), ADR-005 |
 
-## Still open
+## Still open (unchanged by G-002)
 
 | # | Topic | Question |
 |---|-------|----------|
-| 1 | **Non-finishing Systems** | Wait indefinitely, timeout, or proceed without output? Deferred past G-001. |
-| 2a | **Category tree authorship** | How the tree is defined and maintained (application concern). |
-| 4 | **Delete Request resolution** | Against concurrent write: delete wins or write wins? Deferred past G-001. |
+| 1 | **Non-finishing Systems** | Wait indefinitely, timeout, or proceed without output? Still open after G-002. |
+| 2a | **Category tree authorship** | How the tree is defined and maintained (application / product concern — ready to decide with product Goal). |
+| 4 | **Delete Request resolution** | Against concurrent write: delete wins or write wins? Still open after G-002. |
+
+G-002 added host ports (`PoolCompute`, `FieldMergeType`, `EventEmissionPolicy`) and did **not** resolve the rows above.
 
 Resolve remaining items via ADR in [../../project/decisions.md](../../project/decisions.md).

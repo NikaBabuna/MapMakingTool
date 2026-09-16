@@ -1,6 +1,6 @@
 <!--
   File: docs/project/goals/G-001-engine-skeleton.md
-  Purpose: Current multi-session Goal — runnable Pool-System engine skeleton
+  Purpose: Completed multi-session Goal — runnable Pool-System engine skeleton
   Audience: Agents and humans
   Update when: Progress changes or Goal definition changes
 -->

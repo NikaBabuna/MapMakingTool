@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** [project/goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) (**done**)  
+**Active Goal:** _(none — propose next)_ · Last: [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [engine/architecture.md](engine/architecture.md)
 
@@ -66,7 +66,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; through F-008 / G-001 done) |
+| [architecture.md](architecture.md) | Active (roll-up; through F-012 / G-002 done) |
 | [doc-contract.md](doc-contract.md) | Active |
 
 ---
@@ -78,8 +78,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-008 UI; G-001 done |
-| [specs/](engine/specs/) | Active — engine skeleton complete (G-001) |
+| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done |
+| [specs/](engine/specs/) | Active — through G-002 (host-ready) |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
 
 ---
@@ -91,7 +91,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | Deferred until after G-001 |
+| [flows.md](product/flows.md) | Deferred detail — engine host ready (G-002); awaits product Goal |
 | [glossary.md](product/glossary.md) | Minimal |
 | [style-guide.md](product/style-guide.md) | Deferred |
 | [wiki/](product/wiki/) | Empty — deferred |

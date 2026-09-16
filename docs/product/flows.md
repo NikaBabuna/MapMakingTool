@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: partial — high-level modes extracted from concept. Detailed steps awaiting specification._
+_Status: partial — high-level modes from concept. Engine host is ready (G-002). Detailed flow steps await the product Goal._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 

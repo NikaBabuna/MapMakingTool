@@ -4,7 +4,7 @@
 
 Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](docs/process/protocol-overview.md).
 
-**Active Goal:** [docs/project/goals/G-002-engine-host-readiness.md](docs/project/goals/G-002-engine-host-readiness.md) (**done** — propose next Goal)  
+**Active Goal:** _(none — propose next)_ · Last completed: [docs/project/goals/G-002-engine-host-readiness.md](docs/project/goals/G-002-engine-host-readiness.md)  
 **Current Session:** [docs/project/session.md](docs/project/session.md)
 
 ---
@@ -28,7 +28,7 @@ Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](d
 ## Default on new chat / “continue”
 
 1. Reconcile Session + Step marks — if torn, **rollback** and report  
-2. Follow active Goal; propose next `F-0xx` if Session empty  
+2. Follow active Goal; if none, **propose next Goal** (not a lone Step); if Session empty under an active Goal, propose next `F-0xx`  
 3. No code until user approves job + FRs; store FRs in `docs/blockers/F-0xx.md` first  
 4. Witness is incremental — prior Step tests must stay green  
 

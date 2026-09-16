@@ -1,6 +1,6 @@
 # Engine specifications
 
-Pool-System Framework spec, split by topic. Extracted and structured from the original framework draft.
+Pool-System Framework spec, split by topic. Code status: through **F-012 / G-002** (host ports). Extracted and structured from the original framework draft.
 
 | Spec | Topic |
 |------|-------|
@@ -8,9 +8,9 @@ Pool-System Framework spec, split by topic. Extracted and structured from the or
 | [architecture-diagram.md](architecture-diagram.md) | Architecture at a glance |
 | [step-lifecycle.md](step-lifecycle.md) | Step transaction order |
 | [systems.md](systems.md) | Systems, Sub-Systems, conflict resolution |
-| [events.md](events.md) | Event model and category tree |
-| [merge-types.md](merge-types.md) | Typed merge and field types |
+| [events.md](events.md) | Event model, category tree, emission policy |
+| [merge-types.md](merge-types.md) | Typed merge and pluggable field types |
 | [determinism.md](determinism.md) | Determinism guarantees |
 | [user-layer.md](user-layer.md) | User View, User Input, Input View |
-| [pool-engine.md](pool-engine.md) | Pool as engine object |
+| [pool-engine.md](pool-engine.md) | Pool as engine object + host ports |
 | [open-questions.md](open-questions.md) | Unresolved design gaps |

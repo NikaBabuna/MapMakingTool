@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-16** — Doc sync after G-002: entry points, specs, glossary, navigation aligned to host-ready engine.
 - **2026-09-16** — **F-012:** pluggable `EventEmissionPolicy`; **G-002 complete**.
 - **2026-09-16** — **F-011:** `Object` field carrier + pluggable `FieldMergeType` (G-002).
 - **2026-09-16** — **F-010:** pluggable `PoolCompute` / `SkeletonPoolCompute` default (G-002).
