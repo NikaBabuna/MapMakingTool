@@ -8,10 +8,10 @@ Per [../process/rules.md](../process/rules.md): do not leave domain content only
 
 ## Pages
 
-_Status: none yet — first pages belong to G-003 (F-014 World / grid / layer; F-015 elevation rule)._
+_Status: World / grid / layer (F-014). Elevation rule is F-015._
 
 | Page | Purpose |
 |------|---------|
-| _(add as needed)_ | |
+| [world.md](world.md) | World, grid, layer, Step-0 elevation |
 
 When adding pages, update [../navigation.md](../navigation.md).

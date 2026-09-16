@@ -11,7 +11,11 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 
 | Term | Definition |
 |------|------------|
-| **ProductHost** | Product factory that constructs an `Engine` via `EngineSetup` (F-013). |
+| **ProductHost** | Product factory that constructs an `Engine` via `EngineSetup`. |
+| **WorldSpec** | Step 0 seed: grid width, height, and recorded generation seed. |
+| **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
+| **Layer** | Named Pool field whose value is a `Grid` of the world geometry. |
+| **Elevation** | First layer (`elevation`); Step 0 is all zeros. |
 | **Seed** | Initial configuration that deterministically produces a world variant |
 | **Timeline** | Scrubbable history of world formation from simulation start to present |
 | **Guide mode** | User nudges specific features; simulation resolves the rest consistently |

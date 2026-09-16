@@ -19,7 +19,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — F-013 `ProductHost` |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-014 world fields |
 
 ---
 

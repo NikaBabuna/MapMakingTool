@@ -7,9 +7,10 @@
 
 # Product architecture
 
-**Status:** active (F-013 `ProductHost`; world fields F-014)  
+**Status:** active (F-014 world fields; generation F-015)  
 **Roll-up:** [../architecture.md](../architecture.md)  
-**Engine host:** [../engine/architecture.md](../engine/architecture.md)
+**Engine host:** [../engine/architecture.md](../engine/architecture.md)  
+**Domain:** [wiki/world.md](wiki/world.md)
 
 ---
 
@@ -21,8 +22,6 @@
 | Path | `product/` |
 | Package root | `com.aethelgard.product` |
 | Java | 21 (parent `maven.compiler.release`) |
-
-`ProductHost` constructs an `Engine` via `EngineSetup`. F-013: `ProductHost.setup()` is `EngineSetup.defaults()` (skeleton compute and emission). Later G-003 Steps add field schema, category tree, and Systems here — not in `engine`.
 
 ### One-way dependency rule
 
@@ -36,7 +35,23 @@ product  →  engine  ←  cli
 
 ---
 
-## Source layout (F-013)
+## Host wiring (F-014)
+
+`ProductHost` constructs an `Engine` via `EngineSetup`.
+
+| Piece | F-014 |
+|-------|--------|
+| Schema | Field `elevation` (`WorldFields.ELEVATION`) → `FieldType.STATIC` |
+| Value | Immutable `Grid` of `int` cells |
+| Create | `ProductHost.create(WorldSpec)` seeds a **zero** grid of `width` × `height` |
+| Default | `ProductHost.create()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
+| Compute / emission | Engine defaults (skeleton heartbeat). World is **not** `PoolSnapshot.value`. |
+
+`WorldSpec.seed` is stored for later Steps; it does not fill elevation in F-014.
+
+---
+
+## Source layout (through F-014)
 
 ```
 product/
@@ -45,8 +60,12 @@ product/
   src/main/java/com/aethelgard/product/
     package-info.java
     ProductHost.java
+    WorldSpec.java
+    WorldFields.java
+    Grid.java
   src/test/java/com/aethelgard/product/
     ProductHostTest.java
+    WorldStateTest.java
 ```
 
-No world grid, elevation, or generative Systems in this Step.
+No generative Systems in this Step.

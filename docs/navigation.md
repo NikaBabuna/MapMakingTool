@@ -91,12 +91,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-013 ProductHost |
+| [architecture.md](product/architecture.md) | Active — F-014 world fields |
 | [concept.md](product/concept.md) | Active |
 | [flows.md](product/flows.md) | Deferred detail — G-003 first product world; Explore/Guide/Timeline await later Goals |
-| [glossary.md](product/glossary.md) | Active — ProductHost (F-013) |
+| [glossary.md](product/glossary.md) | Active — Grid / WorldSpec / elevation (F-014) |
 | [style-guide.md](product/style-guide.md) | Deferred |
-| [wiki/](product/wiki/) | Empty — G-003 (F-014/F-015) |
+| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) (F-014) |
 
 ---
 
@@ -119,6 +119,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-011.md](blockers/F-011.md) | done — Object fields + FieldMergeType |
 | [F-012.md](blockers/F-012.md) | done — EventEmissionPolicy + G-002 closure |
 | [F-013.md](blockers/F-013.md) | done — product Maven module |
+| [F-014.md](blockers/F-014.md) | done — world as Pool state |
 
 ---
 

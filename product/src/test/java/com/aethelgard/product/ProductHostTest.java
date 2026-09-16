@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.aethelgard.engine.pool.Engine;
-import com.aethelgard.engine.pool.EngineConfig;
 import com.aethelgard.engine.pool.EngineSetup;
 import com.aethelgard.engine.pool.PoolSnapshot;
 import java.nio.file.Files;
@@ -70,7 +69,7 @@ class ProductHostTest {
     EngineSetup setup = ProductHost.setup();
     assertNotNull(setup);
 
-    Engine engine = ProductHost.create(new EngineConfig(0L));
+    Engine engine = ProductHost.create();
     assertEquals(0, engine.stepIndex());
     PoolSnapshot settled = engine.settled();
     assertNotNull(settled);

@@ -13,6 +13,6 @@ Maven artifact `com.aethelgard:product` — Aethelgard world generation on the P
 
 Package root: `com.aethelgard.product`.
 
-`ProductHost` constructs an `Engine` via product `EngineSetup`. F-013 uses engine defaults; later G-003 Steps add world fields and Systems here.
+`ProductHost` constructs an `Engine` via product `EngineSetup`. F-014 wires field `elevation` (`Grid`) and seeds a zero heightmap. Generation Systems are F-015.
 
-**Docs:** [docs/product/architecture.md](../docs/product/architecture.md)
+**Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [wiki/world](../docs/product/wiki/world.md)

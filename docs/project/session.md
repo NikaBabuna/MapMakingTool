@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** complete (F-013 Accepted; G-003 in progress)
+**Status:** complete (F-014 Accepted; G-003 in progress)
 
 ---
 
 ## Session goal
 
-Accept **F-013**.
+Accept **F-014**.
 
 ---
 
@@ -29,17 +29,17 @@ Accept **F-013**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-013 | Product Maven module + architecture | done |
+| F-014 | World as Pool state (grid + elevation) | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (89 tests)
+- [x] Incremental suite green (95 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose F-014: world as Pool state (grid geometry + `elevation`); wiki World / grid / layer.
+1. Propose F-015: first generative process (emission tick + System); wiki elevation rule.

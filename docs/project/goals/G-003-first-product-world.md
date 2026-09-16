@@ -61,7 +61,7 @@ If a stored FR cannot be met without an engine port: **stop**, ADR, do not sneak
 ## Product claims (tests by Goal end)
 
 - [x] `product` module exists; depends on `engine`; `engine` does not depend on `product`
-- [ ] World state is Pool typed fields (geometry + `elevation`); not the heartbeat `value`
+- [x] World state is Pool typed fields (geometry + `elevation`); not the heartbeat `value`
 - [ ] Step 0 seeds initial conditions only; settled heightmap after N Steps is System-produced
 - [ ] Product category tree + emission policy + at least one `EngineSystem` drive generation without editing `engine`
 - [ ] Same seed + dimensions + N Steps → identical elevation grid
@@ -78,7 +78,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 | Step | Intent | Status |
 |------|--------|--------|
 | F-013 | Product Maven module + architecture (one-way rule); product test constructs `Engine` via `EngineSetup` | done |
-| F-014 | World as Pool state — geometry + `elevation` (and seed fields the first process needs); wiki: World / grid / layer | not started |
+| F-014 | World as Pool state — geometry + `elevation` (and seed fields the first process needs); wiki: World / grid / layer | done |
 | F-015 | First generative process — product emission tick + first System; wiki: elevation rule | not started |
 | F-016 | Witnessed world — determinism fixture, headless dump, close Goal claims + docs | not started |
 
@@ -88,7 +88,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 4 |
-| Product claim boxes | 1 / 8 |
+| Steps done | 2 / 4 |
+| Product claim boxes | 2 / 8 |
 
 Update this section at the end of every successful Step.

@@ -8,6 +8,7 @@
 /**
  * Aethelgard product root package.
  *
- * <p>Depends on {@code com.aethelgard.engine}. Must not be depended on by the engine.
+ * <p>Depends on {@code com.aethelgard.engine}. Must not be depended on by the engine. World state
+ * is Pool field {@code elevation} ({@link com.aethelgard.product.Grid}).
  */
 package com.aethelgard.product;
