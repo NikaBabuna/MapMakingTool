@@ -17,11 +17,24 @@ Maven artifact `com.aethelgard:ui` — basic skeleton Step advance / settled vie
 
 ## Interactive
 
-```text
-mvnw -pl ui -am exec:java -Dexec.mainClass=com.aethelgard.ui.SkeletonApp
+From the repo root in **cmd** (recommended):
+
+```bat
+run-ui.cmd
 ```
 
-Optional: `-Dexec.args="--initial 10"`.
+Or manually — **install** (not just package), then run only `ui`:
+
+```bat
+mvnw -pl ui -am install -DskipTests
+mvnw -pl ui exec:java
+```
+
+Why: `package` builds jars under `target/`, but a later `mvnw -pl ui exec:java` resolves `engine` from your local Maven repo (`.m2`). Without `install`, Maven cannot find `com.aethelgard:engine:0.1.0-SNAPSHOT`.
+
+Do **not** use `mvnw -pl ui -am exec:java` alone — Maven may run `exec:java` on the parent aggregator and fail.
+
+Optional seed: `mvnw -pl ui exec:java -Dexec.args="--initial 10"`
 
 Window: settled text + **Advance** button (`SkeletonFrame`). Do not construct `JFrame` in tests.
 
