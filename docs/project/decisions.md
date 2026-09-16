@@ -98,3 +98,16 @@ Monorepo Maven parent `com.aethelgard:aethelgard` with module `engine` (`com.aet
 `engine` depends on **SLF4J API** only. `EngineDiagnostics` is the observability port (Step start/settle, emit, claim, unmatched). Default bridge logs to SLF4J (DEBUG for lifecycle/emit/claim; **WARN** for unmatched — ADR-006). Bindings (Logback, `slf4j-simple`, etc.) live in adapters or test scope — not as `engine` compile deps. Tests use `RecordingDiagnostics` to assert without scraping stdout. Diagnostics must not affect Pool determinism.
 
 **Why:** Unmatched events are a correctness obligation; operators also need to see the machine run. A port keeps both testable and adapter-friendly.
+
+---
+
+## ADR-009 — Product authors the category tree in Java
+
+**Date:** 2026-09-17  
+**Status:** accepted
+
+The event **category tree is application-owned**. For G-003, `product` builds it in Java (`CategoryTree.of("world/tectonics")` via `ProductCategories`). The engine provides `CategoryTree` / ancestry claiming only. No file format, DSL, or engine-owned world tree in this Goal.
+
+**Why:** Open question #2a was an application concern. F-015 needs a real tree to dispatch generation; product Java is the smallest honest authorship model.
+
+Resolves: [../engine/specs/open-questions.md](../engine/specs/open-questions.md) #2a.

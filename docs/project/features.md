@@ -55,7 +55,7 @@ Goal doc: [goals/G-003-first-product-world.md](goals/G-003-first-product-world.m
 |----|------|--------|---------|
 | F-013 | Product Maven module + architecture | done | [F-013.md](../blockers/F-013.md) |
 | F-014 | World as Pool state (grid + elevation) | done | [F-014.md](../blockers/F-014.md) |
-| F-015 | First generative process | not started | _(store FRs at APPROVE)_ |
+| F-015 | First generative process | done | [F-015.md](../blockers/F-015.md) |
 | F-016 | Witnessed world + G-003 closure | not started | _(store FRs at APPROVE)_ |
 
 ---

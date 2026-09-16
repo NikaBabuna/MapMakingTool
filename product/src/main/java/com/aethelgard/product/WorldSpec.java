@@ -8,12 +8,12 @@
 package com.aethelgard.product;
 
 /**
- * Initial conditions for a product run. Width and height are cell counts. {@code seed} is recorded
- * for later generative Steps; F-014 does not use it to fill elevation (cells start at 0).
+ * Initial conditions for a product run. Width and height are cell counts. {@code seed} places the
+ * Step-0 plates suture; elevation cells start at 0.
  *
  * @param width cell count east–west (≥ 1)
  * @param height cell count north–south (≥ 1)
- * @param seed recorded generation seed (F-015+)
+ * @param seed recorded generation seed; places the Step-0 plates suture (F-015)
  */
 public record WorldSpec(int width, int height, long seed) {
 

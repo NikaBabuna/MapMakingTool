@@ -7,10 +7,10 @@
 
 # Product architecture
 
-**Status:** active (F-014 world fields; generation F-015)  
+**Status:** active (F-015 generation: plates + collision uplift)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
-**Domain:** [wiki/world.md](wiki/world.md)
+**Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)
 
 ---
 
@@ -35,23 +35,26 @@ product  →  engine  ←  cli
 
 ---
 
-## Host wiring (F-014)
+## Host wiring (F-015)
 
 `ProductHost` constructs an `Engine` via `EngineSetup`.
 
-| Piece | F-014 |
+| Piece | F-015 |
 |-------|--------|
-| Schema | Field `elevation` (`WorldFields.ELEVATION`) → `FieldType.STATIC` |
-| Value | Immutable `Grid` of `int` cells |
-| Create | `ProductHost.create(WorldSpec)` seeds a **zero** grid of `width` × `height` |
+| Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.CONSTANT` |
+| Values | Immutable `Grid` of `int` cells |
+| Create | `ProductHost.create(WorldSpec)` seeds **zero** elevation and a two-plate `plates` grid from `seed` |
 | Default | `ProductHost.create()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
-| Compute / emission | Engine defaults (skeleton heartbeat). World is **not** `PoolSnapshot.value`. |
+| Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
+| Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
+| System | `EngineSystem` id `tectonics`, assigned `world/tectonics`, Sub-System `CollisionUplift` |
+| Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. |
 
-`WorldSpec.seed` is stored for later Steps; it does not fill elevation in F-014.
+`WorldSpec.seed` places the plates suture. It is not a Pool field.
 
 ---
 
-## Source layout (through F-014)
+## Source layout (through F-015)
 
 ```
 product/
@@ -60,12 +63,15 @@ product/
   src/main/java/com/aethelgard/product/
     package-info.java
     ProductHost.java
+    ProductCategories.java
     WorldSpec.java
     WorldFields.java
     Grid.java
+    Plates.java
+    GenerationTickPolicy.java
+    CollisionUplift.java
   src/test/java/com/aethelgard/product/
     ProductHostTest.java
     WorldStateTest.java
+    ElevationProcessTest.java
 ```
-
-No generative Systems in this Step.

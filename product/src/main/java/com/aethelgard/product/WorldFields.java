@@ -13,5 +13,8 @@ public final class WorldFields {
   /** Elevation layer — {@link Grid} of {@code int} cells. */
   public static final String ELEVATION = "elevation";
 
+  /** Plate-id layer — {@link Grid} of {@code int} cells; Step-0 seed for tectonics. */
+  public static final String PLATES = "plates";
+
   private WorldFields() {}
 }

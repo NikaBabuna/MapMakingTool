@@ -18,8 +18,8 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 | Layer | Doc | Status |
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
-| **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — F-014 world fields |
+| **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-015 generation |
 
 ---
 
@@ -39,7 +39,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
 | `cli/` | Active — F-007 (`com.aethelgard:cli`) |
 | `ui/` | Active — F-008 (`com.aethelgard:ui`) |
-| `product/` | Active — F-013 (`com.aethelgard:product`) |
+| `product/` | Active — F-015 (`com.aethelgard:product`) |
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 

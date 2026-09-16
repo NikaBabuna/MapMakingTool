@@ -4,7 +4,7 @@ Aethelgard — procedural fantasy world generation.
 
 | Doc | Purpose |
 |-----|---------|
-| [architecture.md](architecture.md) | Module layout, ProductHost, elevation Grid |
+| [architecture.md](architecture.md) | Module layout, ProductHost, plates + collision uplift |
 | [concept.md](concept.md) | Vision, problem, approach |
 | [flows.md](flows.md) | User journeys |
 | [glossary.md](glossary.md) | Domain terminology |

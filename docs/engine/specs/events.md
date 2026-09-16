@@ -29,7 +29,7 @@ flowchart TD
     S -.assigned to.-> SysC[Reputation System]
 ```
 
-The tree above is **illustrative**. The framework fixes ancestry-based claiming; the application defines the actual tree and how it is authored ([open-questions.md](open-questions.md)).
+The tree above is **illustrative**. The framework fixes ancestry-based claiming; the **application** defines the actual tree. G-003: product Java `CategoryTree.of(...)` (ADR-009). File-format authorship is not required.
 
 In the example: Reputation System is assigned to parent "Social Events" and claims Trade and Reputation; Economy System is assigned to "Trade" only.
 

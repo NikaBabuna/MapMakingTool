@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** complete (F-014 Accepted; G-003 in progress)
+**Status:** complete (F-015 Accepted; G-003 in progress)
 
 ---
 
 ## Session goal
 
-Accept **F-014**.
+Accept **F-015**.
 
 ---
 
@@ -29,17 +29,17 @@ Accept **F-014**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-014 | World as Pool state (grid + elevation) | done |
+| F-015 | First generative process | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (95 tests)
+- [x] Incremental suite green (101 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose F-015: first generative process (emission tick + System); wiki elevation rule.
+1. Propose F-016: witnessed world (determinism fixture, headless dump, close G-003).

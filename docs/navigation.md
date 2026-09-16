@@ -57,7 +57,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [features.md](project/features.md) | Active — G-001–G-003 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (8 ADRs) |
+| [decisions.md](project/decisions.md) | Active (9 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -67,7 +67,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-013 product module) |
+| [architecture.md](architecture.md) | Active (roll-up; F-015 product generation) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -79,9 +79,9 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done |
+| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; product F-015 |
 | [specs/](engine/specs/) | Active — through G-002 (host-ready) |
-| [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1, #2a, and #4 still open |
+| [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open; #2a decided (ADR-009) |
 
 ---
 
@@ -91,12 +91,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-014 world fields |
+| [architecture.md](product/architecture.md) | Active — F-015 generation |
 | [concept.md](product/concept.md) | Active |
 | [flows.md](product/flows.md) | Deferred detail — G-003 first product world; Explore/Guide/Timeline await later Goals |
-| [glossary.md](product/glossary.md) | Active — Grid / WorldSpec / elevation (F-014) |
+| [glossary.md](product/glossary.md) | Active — Grid / plates / collision uplift (F-015) |
 | [style-guide.md](product/style-guide.md) | Deferred |
-| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) (F-014) |
+| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -120,6 +120,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-012.md](blockers/F-012.md) | done — EventEmissionPolicy + G-002 closure |
 | [F-013.md](blockers/F-013.md) | done — product Maven module |
 | [F-014.md](blockers/F-014.md) | done — world as Pool state |
+| [F-015.md](blockers/F-015.md) | done — first generative process |
 
 ---
 

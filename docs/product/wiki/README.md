@@ -8,10 +8,11 @@ Per [../process/rules.md](../process/rules.md): do not leave domain content only
 
 ## Pages
 
-_Status: World / grid / layer (F-014). Elevation rule is F-015._
+_Status: World / grid / layer (F-014). Elevation process (F-015)._
 
 | Page | Purpose |
 |------|---------|
-| [world.md](world.md) | World, grid, layer, Step-0 elevation |
+| [world.md](world.md) | World, grid, layer, Step-0 elevation and plates |
+| [elevation.md](elevation.md) | Plates seed and collision-uplift rule |
 
 When adding pages, update [../navigation.md](../navigation.md).

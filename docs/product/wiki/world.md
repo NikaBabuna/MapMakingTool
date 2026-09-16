@@ -20,7 +20,7 @@ It is not the engine heartbeat counter. It lives in Pool typed fields that `Prod
 - Both must be at least 1.
 - Geometry is shared: every layer has the same width and height.
 
-A `WorldSpec` also records a long **seed**. F-014 does not use the seed to paint cells. Later generation Steps may.
+A `WorldSpec` also records a long **seed**. The seed places the Step-0 **plates** suture. It does not paint elevation.
 
 ---
 
@@ -30,16 +30,23 @@ A **layer** is one named field on the Pool whose value is a `Grid` of the world 
 
 Later climate (rainfall, temperature, …) is more layers of the same shape, not a second world object.
 
+Current layers:
+
+| Field | Step 0 | Later Steps |
+|-------|--------|-------------|
+| `elevation` | every cell `0` | collision uplift — [elevation.md](elevation.md) |
+| `plates` | two-plate vertical suture from seed | unchanged (Constant) |
+
 ---
 
 ## Elevation (Step 0)
 
-The first layer is **`elevation`**: integer height per cell.
+The first relief layer is **`elevation`**: integer height per cell.
 
-At Step 0 this is **initial condition**, not a finished map. Every cell starts at **0**. Relief is produced by a later generative process (F-015), not copied in from config as the final heightmap.
+At Step 0 this is **initial condition**, not a finished map. Every cell starts at **0**. Relief is produced by the tectonics process in [elevation.md](elevation.md).
 
 ---
 
 ## Engine
 
-`ProductHost` wires `elevation` into `EngineSetup`’s field schema and seeds the zero grid through `EngineConfig.initialFields`. Ordinary world rules do not edit `engine` source.
+`ProductHost` wires layers into `EngineSetup`’s field schema and seeds grids through `EngineConfig.initialFields`. Ordinary world rules do not edit `engine` source.
