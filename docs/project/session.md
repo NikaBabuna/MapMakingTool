@@ -7,20 +7,20 @@
 
 # Current session
 
-**Updated:** 2026-09-04  
-**Status:** complete (F-008 Accepted; G-001 done)
+**Updated:** 2026-09-16  
+**Status:** complete (F-010 Accepted)
 
 ---
 
 ## Session goal
 
-Complete **F-008** (basic UI + G-001 closure).
+Accept **F-010** (pluggable Pool compute).
 
 ---
 
 ## Active Goal
 
-[G-001 — Engine skeleton](goals/G-001-engine-skeleton.md) — **done**
+[G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **in progress**
 
 ---
 
@@ -28,17 +28,17 @@ Complete **F-008** (basic UI + G-001 closure).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-008 | Basic UI + G-001 closure | done |
+| F-010 | Pluggable Pool compute | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (63 tests)
+- [x] Incremental suite green (70 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose next Goal (product world generation on the engine) from [roadmap.md](roadmap.md) / [backlog.md](backlog.md).
+1. Negotiate **F-011** (wider Pool field carrier) job + FRs.

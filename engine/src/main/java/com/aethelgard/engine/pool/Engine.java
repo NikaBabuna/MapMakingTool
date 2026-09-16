@@ -93,7 +93,7 @@ public final class Engine {
         setup.categoryTree().resolveAll(config.emitCategoryPathsEachUpdate());
     Engine engine =
         new Engine(
-            new Pool(config, setup.fieldSchema()),
+            new Pool(config, setup.fieldSchema(), setup.poolCompute()),
             emissions,
             setup.claimers(),
             setup.systems(),

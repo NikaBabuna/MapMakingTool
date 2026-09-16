@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/EngineSetup.java
- * Purpose: Optional claimers, Systems, schema, user layer, diagnostics for a run
+ * Purpose: Optional claimers, Systems, schema, user layer, compute, diagnostics for a run
  * Audience: Agents / callers / tests
  * Update when: Run wiring options change
  */
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Wiring for events/claiming/Systems/user-layer/diagnostics. {@link Engine#create(EngineConfig)}
- * uses {@link #defaults()}.
+ * Wiring for events/claiming/Systems/user-layer/compute/diagnostics. {@link
+ * Engine#create(EngineConfig)} uses {@link #defaults()}.
  */
 public record EngineSetup(
     CategoryTree categoryTree,
@@ -28,7 +28,8 @@ public record EngineSetup(
     FieldSchema fieldSchema,
     EngineDiagnostics diagnostics,
     UserInput userInput,
-    UserView userView) {
+    UserView userView,
+    PoolCompute poolCompute) {
 
   public EngineSetup {
     categoryTree = categoryTree == null ? CategoryTree.empty() : categoryTree;
@@ -38,22 +39,51 @@ public record EngineSetup(
     diagnostics = diagnostics == null ? EngineDiagnostics.slf4j() : diagnostics;
     userInput = userInput == null ? new UserInput() : userInput;
     userView = userView == null ? UserView.noop() : userView;
+    poolCompute = poolCompute == null ? SkeletonPoolCompute.INSTANCE : poolCompute;
   }
 
-  /** F-003-compatible wiring (no Systems / schema / custom user layer). */
+  /** F-003-compatible wiring (no Systems / schema / custom user layer / custom compute). */
   public EngineSetup(
       CategoryTree categoryTree, List<EventClaimer> claimers, EngineDiagnostics diagnostics) {
-    this(categoryTree, claimers, List.of(), FieldSchema.empty(), diagnostics, new UserInput(), UserView.noop());
+    this(
+        categoryTree,
+        claimers,
+        List.of(),
+        FieldSchema.empty(),
+        diagnostics,
+        new UserInput(),
+        UserView.noop(),
+        null);
   }
 
-  /** F-004/F-005-compatible wiring without custom user layer. */
+  /** F-004/F-005-compatible wiring without custom user layer or compute. */
   public EngineSetup(
       CategoryTree categoryTree,
       List<EventClaimer> claimers,
       List<EngineSystem> systems,
       FieldSchema fieldSchema,
       EngineDiagnostics diagnostics) {
-    this(categoryTree, claimers, systems, fieldSchema, diagnostics, new UserInput(), UserView.noop());
+    this(
+        categoryTree,
+        claimers,
+        systems,
+        fieldSchema,
+        diagnostics,
+        new UserInput(),
+        UserView.noop(),
+        null);
+  }
+
+  /** F-006-compatible wiring without custom compute (default {@link SkeletonPoolCompute}). */
+  public EngineSetup(
+      CategoryTree categoryTree,
+      List<EventClaimer> claimers,
+      List<EngineSystem> systems,
+      FieldSchema fieldSchema,
+      EngineDiagnostics diagnostics,
+      UserInput userInput,
+      UserView userView) {
+    this(categoryTree, claimers, systems, fieldSchema, diagnostics, userInput, userView, null);
   }
 
   public static EngineSetup defaults() {
@@ -64,6 +94,7 @@ public record EngineSetup(
         FieldSchema.empty(),
         EngineDiagnostics.slf4j(),
         new UserInput(),
-        UserView.noop());
+        UserView.noop(),
+        null);
   }
 }

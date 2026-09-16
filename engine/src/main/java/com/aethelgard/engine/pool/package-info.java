@@ -6,8 +6,9 @@
  */
 
 /**
- * Pool heartbeat: config bootstrap, discrete Steps, settled snapshots.
+ * Pool and Step loop: config bootstrap, discrete Steps, settled snapshots, pluggable {@link
+ * com.aethelgard.engine.pool.PoolCompute}.
  *
- * <p>Events, Systems, and merge live elsewhere (later Steps).
+ * <p>Events, Systems, and merge live in sibling packages.
  */
 package com.aethelgard.engine.pool;

@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-008 basic UI; G-001 complete)  
+**Status:** active (F-010 pluggable Pool compute; G-002 in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,10 +16,10 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — user layer (F-006) |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — F-010 PoolCompute |
 | **cli** | `com.aethelgard:cli` | Headless runner (N Steps, settled state) | Active — F-007 |
 | **ui** | `com.aethelgard:ui` | Basic Step advance / view | Active — F-008 |
-| **product** | _(planned)_ | Aethelgard domain Systems / views | After G-001 |
+| **product** | _(planned)_ | Aethelgard domain Systems / views | After G-002 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
 
@@ -50,7 +50,7 @@ product  →  engine  ←  cli
 | Package | Contents | Step |
 |---------|----------|------|
 | `com.aethelgard.engine` | Package root | F-001 |
-| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `Engine`, `PoolSnapshot` | F-002–F-006 |
+| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `PoolCompute`, `PoolComputeContext`, `SkeletonPoolCompute`, `Engine`, `PoolSnapshot` | F-002–F-010 |
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
 | `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
 | `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook, `ClaimFinishBarrier` | F-004–F-005 |
@@ -69,18 +69,21 @@ stepStarted → stage Input View → Pool.update (reads Input View; may emit)
 
 Systems run **synchronously** and always finish (non-finishing policy deferred past G-001). Delete Request merge type omitted (open question #4). No Swing/CLI in `engine`.
 
-### Pool heartbeat (F-002)
+### Pool heartbeat (F-002) + pluggable compute (F-010)
 
 | Type | Role |
 |------|------|
 | `EngineConfig` | Step 0 seed + optional scripted emission paths + optional typed field seeds |
-| `Pool` | Shared state; `update()` once per Step; typed fields apply after merge |
+| `Pool` | Shared state; `update()` once per Step delegates to `PoolCompute`; typed fields apply after merge |
+| `PoolCompute` | Pluggable update strategy (host extension point) |
+| `PoolComputeContext` | API for compute: value, fields, Input View, emit, scripted emissions |
+| `SkeletonPoolCompute` | **Default** G-001 demo: `value += 1`, optional `nudge` (+100), emit scripted paths |
 | `Engine` | Step loop driver |
 | `PoolSnapshot` | Immutable settled state (`value`, `updateCount`, `fields`) |
 
 **`stepIndex()` rule:** 0-based index of the last completed Step. `create` completes Step 0 → `0`. Each `advance()` increments by 1.
 
-**Trivial Pool rule:** `value = value + 1` on each `update()`. If Input View has action `nudge` active, also `value += 100` (F-006 skeleton demo). Domain state replaces this later.
+**Default Pool rule (`SkeletonPoolCompute`):** `value = value + 1` on each `update()`. If Input View has action `nudge` active, also `value += 100`. Callers replace this via `EngineSetup.poolCompute` without editing `Pool`.
 
 ### User layer (F-006)
 

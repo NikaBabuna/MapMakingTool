@@ -35,6 +35,18 @@ Goal doc: [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md)
 
 ---
 
+## G-002 — Engine host readiness
+
+Goal doc: [goals/G-002-engine-host-readiness.md](goals/G-002-engine-host-readiness.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-010 | Pluggable Pool compute | done | [F-010.md](../blockers/F-010.md) |
+| F-011 | Wider Pool field carrier | not started | _(create at APPROVE)_ |
+| F-012 | Pluggable event emission + host closure | not started | _(create at APPROVE)_ |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` **before** writing code for that Step.  

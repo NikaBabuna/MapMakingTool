@@ -62,4 +62,4 @@
 ## Agent work model
 
 Goal → Session → Step. Binding procedure: [process/step-procedure.md](process/step-procedure.md).  
-Active Goal: [project/goals.md](project/goals.md).
+Active Goal: [project/goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md).

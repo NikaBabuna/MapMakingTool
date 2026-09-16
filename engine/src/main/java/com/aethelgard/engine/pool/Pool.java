@@ -9,35 +9,38 @@ package com.aethelgard.engine.pool;
 
 import com.aethelgard.engine.diag.EngineDiagnostics;
 import com.aethelgard.engine.event.Category;
-import com.aethelgard.engine.event.EngineEvent;
 import com.aethelgard.engine.event.EventBuffer;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.user.InputView;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Engine Pool: shared state updated once at the start of each Step's computation.
  *
- * <p>May emit scripted events into the shared buffer during {@link #update}. Typed fields receive
- * merged System output after claim (F-004). Samples {@link InputView} once per update (F-006).
+ * <p>Update rules live in {@link PoolCompute} (default {@link SkeletonPoolCompute}). Typed fields
+ * also receive merged System output after claim (F-004). Samples {@link InputView} once per update
+ * (F-006).
  */
 public final class Pool {
 
-  /** Skeleton demo action: when active in Input View, adds 100 to {@code value}. */
-  public static final String NUDGE_ACTION = "nudge";
+  /** Skeleton demo action name — alias of {@link SkeletonPoolCompute#NUDGE_ACTION}. */
+  public static final String NUDGE_ACTION = SkeletonPoolCompute.NUDGE_ACTION;
 
   private long value;
   private int updateCount;
   private final FieldSchema fieldSchema;
   private final Map<String, Long> fields = new LinkedHashMap<>();
+  private final PoolCompute compute;
   private InputView lastInputView = InputView.empty();
 
-  Pool(EngineConfig config, FieldSchema fieldSchema) {
+  Pool(EngineConfig config, FieldSchema fieldSchema, PoolCompute compute) {
     this.value = config.initialValue();
     this.updateCount = 0;
     this.fieldSchema = fieldSchema == null ? FieldSchema.empty() : fieldSchema;
+    this.compute = Objects.requireNonNull(compute, "compute");
     for (String name : this.fieldSchema.asMap().keySet()) {
       fields.put(name, config.initialFields().getOrDefault(name, 0L));
     }
@@ -50,11 +53,8 @@ public final class Pool {
   }
 
   /**
-   * Invoked exactly once at the start of each Step's computation.
-   *
-   * <p>Trivial rule for F-002: {@code value = value + 1}. If {@link #NUDGE_ACTION} is active in
-   * the Input View, also {@code value += 100} (F-006 sampling). Then emits configured events
-   * (F-003).
+   * Invoked exactly once at the start of each Step's computation. Delegates rules to {@link
+   * PoolCompute}.
    */
   void update(
       EventBuffer buffer,
@@ -63,15 +63,8 @@ public final class Pool {
       InputView inputView) {
     this.lastInputView = inputView == null ? InputView.empty() : inputView;
     updateCount++;
-    value = value + 1;
-    if (this.lastInputView.isActive(NUDGE_ACTION)) {
-      value = value + 100;
-    }
-    for (Category category : emissions) {
-      EngineEvent event = new EngineEvent(category);
-      buffer.add(event);
-      diagnostics.eventEmitted(event);
-    }
+    compute.compute(
+        new PoolComputeContext(this, this.lastInputView, buffer, emissions, diagnostics));
   }
 
   /** Applies typed-merge result once per Step (after Systems finish). */
@@ -98,5 +91,17 @@ public final class Pool {
 
   int updateCount() {
     return updateCount;
+  }
+
+  long valueForCompute() {
+    return value;
+  }
+
+  void setValueForCompute(long value) {
+    this.value = value;
+  }
+
+  void putFieldForCompute(String name, long value) {
+    fields.put(name, value);
   }
 }

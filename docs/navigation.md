@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** [project/goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) (**done**)  
+**Active Goal:** [project/goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) (**in progress**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [engine/architecture.md](engine/architecture.md)
 
@@ -50,9 +50,10 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 |-----|--------|
 | [project.md](project/project.md) | Active |
 | [goals.md](project/goals.md) | Active |
-| [goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) | Active (in progress) |
+| [goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) | done |
+| [goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) | Active (in progress) |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001 Steps registered |
+| [features.md](project/features.md) | Active — G-001 done; G-002 Steps F-010–F-012 registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
 | [decisions.md](project/decisions.md) | Active (8 ADRs) |
@@ -112,6 +113,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-007.md](blockers/F-007.md) | done — CLI runner |
 | [F-008.md](blockers/F-008.md) | done — basic UI + G-001 closure |
 | [F-009.md](blockers/F-009.md) | done — CI pipeline |
+| [F-010.md](blockers/F-010.md) | done — pluggable Pool compute |
 
 ---
 

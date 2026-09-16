@@ -25,7 +25,8 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 ## Current Goal
 
-[G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **done** (Pool-System runnable core + CLI + basic UI).
+[G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — **in progress** (pluggable compute / fields / emissions).  
+Prior: [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **done**.
 
 ---
 
