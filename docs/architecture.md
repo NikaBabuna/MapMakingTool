@@ -17,15 +17,16 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 | Layer | Doc | Status |
 |-------|-----|--------|
-| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — F-008 UI; G-001 done |
+| **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active |
-| **Product** | _(implementation architecture TBD)_ | After G-001 |
+| **Product** | _(implementation architecture TBD)_ | After G-002 |
 
 ---
 
 ## Current Goal
 
-[G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — **in progress** (pluggable compute / fields / emissions).  
+[G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — **done**.  
+Propose next: product world generation (roadmap).  
 Prior: [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **done**.
 
 ---
@@ -38,7 +39,7 @@ Prior: [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — **don
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) |
 | `cli/` | Active — F-007 (`com.aethelgard:cli`) |
 | `ui/` | Active — F-008 (`com.aethelgard:ui`) |
-| `product/` | Planned — after G-001 |
+| `product/` | Planned — after G-002 |
 
 **One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
 

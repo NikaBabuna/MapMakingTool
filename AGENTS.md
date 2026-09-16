@@ -4,7 +4,7 @@
 
 Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](docs/process/protocol-overview.md).
 
-**Active Goal:** [docs/project/goals/G-002-engine-host-readiness.md](docs/project/goals/G-002-engine-host-readiness.md) (**in progress**)  
+**Active Goal:** [docs/project/goals/G-002-engine-host-readiness.md](docs/project/goals/G-002-engine-host-readiness.md) (**done** — propose next Goal)  
 **Current Session:** [docs/project/session.md](docs/project/session.md)
 
 ---

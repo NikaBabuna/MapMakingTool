@@ -1,13 +1,13 @@
 <!--
   File: docs/project/goals/G-002-engine-host-readiness.md
-  Purpose: Active multi-session Goal — engine as clean host for product
+  Purpose: Multi-session Goal — engine as clean host for product
   Audience: Agents and humans
   Update when: Progress changes or Goal definition changes
 -->
 
 # G-002 — Engine host readiness
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Product world generation:** out of scope for this Goal (no tectonics, climate, biomes, timeline scrub as product features).
 
 ---
@@ -48,7 +48,7 @@ Plain English: finish the engine as a **clean host**. The loop stays in engine; 
 | Separation | Product must not require engine edits for new Systems/mechanics; engine never depends on product (ADR-007) |
 | Skeleton demo | Heartbeat + `nudge` + scripted emissions stay available as **defaults** for regression; not hardwired as the only path |
 | Field carrier | Widen to `Object`; pluggable `FieldMergeType`; defaults via `FieldType` enum; Increment remains numeric (`Long`) — **F-011** |
-| Emissions | Pluggable policy/compute; scripted `emitCategoryPathsEachUpdate` remains default behavior |
+| Emissions | Pluggable `EventEmissionPolicy`; default `ScriptedEventEmissionPolicy`; skeleton always applies policy — **F-012** |
 | Corrections | Minimal and incremental — no unrelated engine refactors |
 
 ---
@@ -59,24 +59,22 @@ Plain English: finish the engine as a **clean host**. The loop stays in engine; 
 - [x] Default compute preserves G-001 heartbeat / `nudge` behavior
 - [x] Non-`Long` field values can be stored, merged (Static/Destructive pick-one), and read from settled snapshots
 - [x] Numeric Increment merge still works for `Long` fields
-- [ ] Custom emission policy can choose events from state/input without editing engine for each product feature
-- [ ] Default emission preserves scripted config-path behavior
+- [x] Custom emission policy can choose events from state/input without editing engine for each product feature
+- [x] Default emission preserves scripted config-path behavior
 - [x] Incremental suite: all G-001 Step tests remain green
-- [ ] Architecture docs record the host extension points (`EngineSetup` / ports)
+- [x] Architecture docs record the host extension points (`EngineSetup` / ports)
 
 ---
 
 ## Planned Steps
 
-Registered in [../features.md](../features.md). Order may be refined when a Step is negotiated; **do not start code until that Step’s job + FRs are approved**.
-
-Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **incremental**.
+Registered in [../features.md](../features.md). Accept is **incremental**.
 
 | Step | Intent | Status |
 |------|--------|--------|
 | F-010 | Pluggable Pool compute — extract heartbeat/`nudge` to default strategy; wire via setup | done |
 | F-011 | Wider Pool field carrier — non-`Long` values; keep Increment for numbers | done |
-| F-012 | Pluggable event emission — default = scripted paths; close host-readiness claims + docs | not started |
+| F-012 | Pluggable event emission — default = scripted paths; close host-readiness claims + docs | done |
 
 ---
 
@@ -84,7 +82,7 @@ Each Step stores approved FRs in `docs/blockers/F-0xx.md`. Accept is **increment
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 2 / 3 |
-| Host-readiness claim boxes | 5 / 8 |
+| Steps done | 3 / 3 |
+| Host-readiness claim boxes | 8 / 8 |
 
 Update this section at the end of every successful Step.

@@ -8,19 +8,19 @@
 # Current session
 
 **Updated:** 2026-09-16  
-**Status:** complete (F-011 Accepted)
+**Status:** complete (F-012 Accepted; G-002 done)
 
 ---
 
 ## Session goal
 
-Accept **F-011** (Object field carrier + pluggable `FieldMergeType`).
+Accept **F-012** and close **G-002**.
 
 ---
 
 ## Active Goal
 
-[G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **in progress**
+[G-002 — Engine host readiness](goals/G-002-engine-host-readiness.md) — **done**
 
 ---
 
@@ -28,17 +28,17 @@ Accept **F-011** (Object field carrier + pluggable `FieldMergeType`).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-011 | Wider field carrier + pluggable merge types | done |
+| F-012 | Pluggable event emission + host closure | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (77 tests)
+- [x] Incremental suite green (84 tests)
 
 ---
 
 ## Next Session (suggested)
 
-1. Negotiate **F-012** (pluggable event emission + host closure) job + FRs.
+1. Propose next Goal: product world generation on the engine (from [roadmap.md](roadmap.md) / [backlog.md](backlog.md)).

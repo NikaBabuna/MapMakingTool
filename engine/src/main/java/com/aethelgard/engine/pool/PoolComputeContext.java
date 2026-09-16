@@ -1,14 +1,15 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/PoolComputeContext.java
- * Purpose: API surface for PoolCompute during one Step update
- * Audience: PoolCompute implementations
- * Update when: Compute context capabilities change
+ * Purpose: API surface for PoolCompute / EventEmissionPolicy during one Step update
+ * Audience: PoolCompute and EventEmissionPolicy implementations
+ * Update when: Compute/emission context capabilities change
  */
 
 package com.aethelgard.engine.pool;
 
 import com.aethelgard.engine.diag.EngineDiagnostics;
 import com.aethelgard.engine.event.Category;
+import com.aethelgard.engine.event.CategoryTree;
 import com.aethelgard.engine.event.EngineEvent;
 import com.aethelgard.engine.event.EventBuffer;
 import com.aethelgard.engine.merge.FieldSchema;
@@ -18,8 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Mutable view of Pool state for one {@link PoolCompute#compute} call. Created by {@link Pool};
- * not retained across Steps.
+ * Mutable view of Pool state for one {@link PoolCompute#compute} / {@link
+ * EventEmissionPolicy#emitEvents} call. Created by {@link Pool}; not retained across Steps.
  */
 public final class PoolComputeContext {
 
@@ -28,23 +29,44 @@ public final class PoolComputeContext {
   private final EventBuffer buffer;
   private final List<Category> scriptedEmissions;
   private final EngineDiagnostics diagnostics;
+  private final CategoryTree categoryTree;
+  private final EventEmissionPolicy emissionPolicy;
 
   PoolComputeContext(
       Pool pool,
       InputView inputView,
       EventBuffer buffer,
       List<Category> scriptedEmissions,
-      EngineDiagnostics diagnostics) {
+      EngineDiagnostics diagnostics,
+      CategoryTree categoryTree,
+      EventEmissionPolicy emissionPolicy) {
     this.pool = Objects.requireNonNull(pool, "pool");
     this.inputView = inputView == null ? InputView.empty() : inputView;
     this.buffer = Objects.requireNonNull(buffer, "buffer");
     this.scriptedEmissions = List.copyOf(Objects.requireNonNull(scriptedEmissions, "scriptedEmissions"));
     this.diagnostics = Objects.requireNonNull(diagnostics, "diagnostics");
+    this.categoryTree = Objects.requireNonNull(categoryTree, "categoryTree");
+    this.emissionPolicy = Objects.requireNonNull(emissionPolicy, "emissionPolicy");
   }
 
   /** Staged Input View for this Step. */
   public InputView inputView() {
     return inputView;
+  }
+
+  /** Category tree for this run (resolve paths for custom emission). */
+  public CategoryTree categoryTree() {
+    return categoryTree;
+  }
+
+  /** Wired emission policy (default {@link ScriptedEventEmissionPolicy}). */
+  public EventEmissionPolicy emissionPolicy() {
+    return emissionPolicy;
+  }
+
+  /** Invokes the wired {@link EventEmissionPolicy} for this Step. */
+  public void applyEmissionPolicy() {
+    emissionPolicy.emitEvents(this);
   }
 
   /** Current trivial heartbeat value. */
@@ -115,6 +137,15 @@ public final class PoolComputeContext {
     EngineEvent event = new EngineEvent(category);
     buffer.add(event);
     diagnostics.eventEmitted(event);
+  }
+
+  /**
+   * Emits the category at {@code path} (must already exist in the category tree).
+   *
+   * @throws IllegalArgumentException if the path is unknown
+   */
+  public void emitPath(String path) {
+    emit(categoryTree.get(path));
   }
 
   /** Emits every scripted emission category (default skeleton behavior). */

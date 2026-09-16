@@ -9,12 +9,12 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** [G-002 Engine host readiness](goals/G-002-engine-host-readiness.md) — **in progress**
+**Active Goal:** _(none — propose next)_ · Last completed: [G-002 Engine host readiness](goals/G-002-engine-host-readiness.md)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
 | G-001 | Engine skeleton (Pool-System + CLI + basic UI) | done | [goals/G-001-engine-skeleton.md](goals/G-001-engine-skeleton.md) |
-| G-002 | Engine host readiness (pluggable compute / fields / emissions) | in progress | [goals/G-002-engine-host-readiness.md](goals/G-002-engine-host-readiness.md) |
+| G-002 | Engine host readiness (pluggable compute / fields / emissions) | done | [goals/G-002-engine-host-readiness.md](goals/G-002-engine-host-readiness.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 

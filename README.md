@@ -5,7 +5,7 @@
 Procedural fantasy world generator — simulate tectonics, climate, and terrain so maps stay physically consistent, with a scrubbable history of how the world formed.
 
 **Status:** alpha  
-**Current Goal:** [Engine host readiness (G-002)](docs/project/goals/G-002-engine-host-readiness.md)  
+**Current Goal:** _(none — propose next)_ · Last: [Engine host readiness (G-002)](docs/project/goals/G-002-engine-host-readiness.md)  
 **CI:** GitHub Actions on `main` — JDK 21 + `./mvnw test` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
 
 ---

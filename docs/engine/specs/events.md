@@ -7,7 +7,7 @@
 
 # Event model
 
-> **Code status (through F-004):** category tree, event buffer, ancestry claiming (stub claimers and Systems), unmatched diagnostics, System OUT_SYS → typed merge, and no same-Step buffer refill are implemented. Cross-step event chaining from System output remains F-005+.
+> **Code status (through F-012):** category tree, event buffer, ancestry claiming (stub claimers and Systems), unmatched diagnostics, System OUT_SYS → typed merge, and no same-Step buffer refill are implemented. **Event emission** is pluggable via `EventEmissionPolicy` (default: scripted config paths). Cross-step chaining is done by next-Step compute/emission reading Pool fields (not same-Step buffer refill).
 
 ## Category tree and ancestry claiming
 
@@ -42,3 +42,5 @@ If an event’s category matches **no** System’s assigned category (including 
 If a System's output would qualify as a new event, it is **not** evaluated in the Step that produced it. It sits in the updated Pool and waits for category matching at the **start of the next Step**.
 
 Same-Step recursive triggering is structurally impossible: the event buffer fills once per Step at Pool compute time and is not refilled before the Step ends.
+
+**Host port:** callers supply an `EventEmissionPolicy` (or a custom `PoolCompute` that emits) to turn settled field state / Input View into next-Step events — without editing the engine. Default policy emits only the scripted config path list.

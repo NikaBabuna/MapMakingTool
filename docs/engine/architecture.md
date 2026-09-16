@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-011 FieldMergeType / Object fields; G-002 in progress)  
+**Status:** active (F-012 EventEmissionPolicy; **G-002 done**)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -16,7 +16,7 @@
 
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
-| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — F-010 PoolCompute |
+| **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — G-002 host ports |
 | **cli** | `com.aethelgard:cli` | Headless runner (N Steps, settled state) | Active — F-007 |
 | **ui** | `com.aethelgard:ui` | Basic Step advance / view | Active — F-008 |
 | **product** | _(planned)_ | Aethelgard domain Systems / views | After G-002 |
@@ -50,7 +50,7 @@ product  →  engine  ←  cli
 | Package | Contents | Step |
 |---------|----------|------|
 | `com.aethelgard.engine` | Package root | F-001 |
-| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `PoolCompute`, `PoolComputeContext`, `SkeletonPoolCompute`, `Engine`, `PoolSnapshot` | F-002–F-010 |
+| `com.aethelgard.engine.pool` | `EngineConfig`, `EngineSetup`, `Pool`, `PoolCompute`, `EventEmissionPolicy`, `PoolComputeContext`, `SkeletonPoolCompute`, `ScriptedEventEmissionPolicy`, `Engine`, `PoolSnapshot` | F-002–F-012 |
 | `com.aethelgard.engine.event` | Categories, buffer, stub claimers, `EventClaiming`, `ClaimResult` | F-003 |
 | `com.aethelgard.engine.diag` | `EngineDiagnostics`, SLF4J bridge, `RecordingDiagnostics`, `noop()` | F-003 |
 | `com.aethelgard.engine.system` | `EngineSystem`, `SystemConfig`, `SubSystem`, conflict-resolution hook, `ClaimFinishBarrier` | F-004–F-005 |
@@ -69,21 +69,35 @@ stepStarted → stage Input View → Pool.update (reads Input View; may emit)
 
 Systems run **synchronously** and always finish (non-finishing policy deferred past G-001). Delete Request merge type omitted (open question #4). No Swing/CLI in `engine`.
 
-### Pool heartbeat (F-002) + pluggable compute (F-010)
+### Host extension points (G-002)
+
+Product (and tests) plug into the engine **without editing `engine` source** for ordinary feature growth:
+
+| Port | Wire via | Default | Purpose |
+|------|----------|---------|---------|
+| `PoolCompute` | `EngineSetup.poolCompute` | `SkeletonPoolCompute` | What the Pool does each update |
+| `FieldMergeType` | `FieldSchema` | `FieldType` enum values | How conflicting field writes merge |
+| `EventEmissionPolicy` | `EngineSetup.eventEmissionPolicy` | `ScriptedEventEmissionPolicy` | Which events fire this Step |
+
+Custom `PoolCompute` may ignore the emission policy and call `emit` / `emitPath` itself. Default skeleton always calls `applyEmissionPolicy()`.
+
+### Pool heartbeat (F-002) + pluggable compute (F-010) + emission (F-012)
 
 | Type | Role |
 |------|------|
 | `EngineConfig` | Step 0 seed + optional scripted emission paths + optional typed field seeds |
 | `Pool` | Shared state; `update()` once per Step delegates to `PoolCompute`; typed fields apply after merge |
 | `PoolCompute` | Pluggable update strategy (host extension point) |
-| `PoolComputeContext` | API for compute: value, fields, Input View, emit, scripted emissions |
-| `SkeletonPoolCompute` | **Default** G-001 demo: `value += 1`, optional `nudge` (+100), emit scripted paths |
+| `EventEmissionPolicy` | Pluggable which-events-fire strategy (host extension point) |
+| `PoolComputeContext` | API for compute/policy: value, fields, Input View, category tree, emit / emitPath / emitScripted |
+| `SkeletonPoolCompute` | **Default** G-001 demo: `value += 1`, optional `nudge` (+100), then `applyEmissionPolicy()` |
+| `ScriptedEventEmissionPolicy` | **Default** emission: emit resolved `emitCategoryPathsEachUpdate` |
 | `Engine` | Step loop driver |
 | `PoolSnapshot` | Immutable settled state (`value`, `updateCount`, `fields`) |
 
 **`stepIndex()` rule:** 0-based index of the last completed Step. `create` completes Step 0 → `0`. Each `advance()` increments by 1.
 
-**Default Pool rule (`SkeletonPoolCompute`):** `value = value + 1` on each `update()`. If Input View has action `nudge` active, also `value += 100`. Callers replace this via `EngineSetup.poolCompute` without editing `Pool`.
+**Default Pool rule (`SkeletonPoolCompute`):** `value = value + 1` on each `update()`. If Input View has action `nudge` active, also `value += 100`. Then the wired emission policy runs. Callers replace compute and/or emission policy via `EngineSetup` without editing `Pool`.
 
 ### User layer (F-006)
 
@@ -108,7 +122,7 @@ Wire via `EngineSetup` (`userInput`, `userView`). Defaults: empty `UserInput` + 
 | `EventClaiming` | Ancestry dispatch; multiple claimers may claim the same event |
 | `ClaimResult` | Observable claimed / unmatched sets (`Engine.lastClaimResult()`) |
 
-Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `EngineSetup.categoryTree()`.
+Scripted emissions: `EngineConfig.emitCategoryPathsEachUpdate` resolved via `EngineSetup.categoryTree()`, then emitted by default `ScriptedEventEmissionPolicy`. Replace via `EngineSetup.eventEmissionPolicy`.
 
 ### Systems (F-004)
 

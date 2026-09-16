@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/SkeletonPoolCompute.java
- * Purpose: Default G-001 Pool compute — heartbeat, nudge, scripted emissions
+ * Purpose: Default G-001 Pool compute — heartbeat, nudge, then emission policy
  * Audience: EngineSetup defaults / regression witnesses
  * Update when: Skeleton demo rules change
  */
@@ -9,7 +9,7 @@ package com.aethelgard.engine.pool;
 
 /**
  * Default {@link PoolCompute}: {@code value += 1}; if Input View has {@link #NUDGE_ACTION} active,
- * also {@code value += 100}; then emit scripted categories.
+ * also {@code value += 100}; then {@link PoolComputeContext#applyEmissionPolicy()}.
  */
 public final class SkeletonPoolCompute implements PoolCompute {
 
@@ -27,6 +27,6 @@ public final class SkeletonPoolCompute implements PoolCompute {
     if (context.inputView().isActive(NUDGE_ACTION)) {
       context.setValue(context.value() + 100);
     }
-    context.emitScripted();
+    context.applyEmissionPolicy();
   }
 }

@@ -9,6 +9,7 @@ package com.aethelgard.engine.pool;
 
 import com.aethelgard.engine.diag.EngineDiagnostics;
 import com.aethelgard.engine.event.Category;
+import com.aethelgard.engine.event.CategoryTree;
 import com.aethelgard.engine.event.EventBuffer;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.user.InputView;
@@ -20,7 +21,8 @@ import java.util.Objects;
 /**
  * Engine Pool: shared state updated once at the start of each Step's computation.
  *
- * <p>Update rules live in {@link PoolCompute} (default {@link SkeletonPoolCompute}). Typed fields
+ * <p>Update rules live in {@link PoolCompute} (default {@link SkeletonPoolCompute}). Emission rules
+ * live in {@link EventEmissionPolicy} (default {@link ScriptedEventEmissionPolicy}). Typed fields
  * also receive merged System output after claim (F-004/F-011). Samples {@link InputView} once per
  * update (F-006).
  */
@@ -34,13 +36,22 @@ public final class Pool {
   private final FieldSchema fieldSchema;
   private final Map<String, Object> fields = new LinkedHashMap<>();
   private final PoolCompute compute;
+  private final CategoryTree categoryTree;
+  private final EventEmissionPolicy emissionPolicy;
   private InputView lastInputView = InputView.empty();
 
-  Pool(EngineConfig config, FieldSchema fieldSchema, PoolCompute compute) {
+  Pool(
+      EngineConfig config,
+      FieldSchema fieldSchema,
+      PoolCompute compute,
+      CategoryTree categoryTree,
+      EventEmissionPolicy emissionPolicy) {
     this.value = config.initialValue();
     this.updateCount = 0;
     this.fieldSchema = fieldSchema == null ? FieldSchema.empty() : fieldSchema;
     this.compute = Objects.requireNonNull(compute, "compute");
+    this.categoryTree = Objects.requireNonNull(categoryTree, "categoryTree");
+    this.emissionPolicy = Objects.requireNonNull(emissionPolicy, "emissionPolicy");
     for (String name : this.fieldSchema.asMap().keySet()) {
       Object seed = config.initialFields().get(name);
       fields.put(name, seed != null ? seed : 0L);
@@ -65,7 +76,14 @@ public final class Pool {
     this.lastInputView = inputView == null ? InputView.empty() : inputView;
     updateCount++;
     compute.compute(
-        new PoolComputeContext(this, this.lastInputView, buffer, emissions, diagnostics));
+        new PoolComputeContext(
+            this,
+            this.lastInputView,
+            buffer,
+            emissions,
+            diagnostics,
+            categoryTree,
+            emissionPolicy));
   }
 
   /** Applies typed-merge result once per Step (after Systems finish). */
