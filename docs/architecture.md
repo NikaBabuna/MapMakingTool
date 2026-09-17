@@ -19,13 +19,13 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — F-018 map window; G-004 done |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-019 session; map view in `ui` |
 
 ---
 
 ## Goals
 
-**Active Goal:** none  
+**Active Goal:** [G-005 Living map](project/goals/G-005-living-map.md)  
 **Last completed:** [G-004 See the world](project/goals/G-004-see-the-world.md)  
 **Prior:** [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
 
@@ -37,11 +37,11 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |------|---------|
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
-| `cli/` | Active — F-007 (`com.aethelgard:cli`) |
-| `ui/` | Active — F-008 (`com.aethelgard:ui`) |
-| `product/` | Active — F-018 (`com.aethelgard:product`) |
+| `cli/` | Active — F-019 (`com.aethelgard:cli`) |
+| `ui/` | Active — F-019 (`com.aethelgard:ui`) |
+| `product/` | Active — F-019 session (`com.aethelgard:product`) |
 
-**One-way rule:** `product` / `cli` / `ui` → `engine`; never the reverse. Details: [engine/architecture.md](engine/architecture.md).
+**One-way rule:** `ui` → `product` → `engine`; `cli` → `product` → `engine`. Engine never depends on siblings (ADR-010 / F-019). Details: [engine/architecture.md](engine/architecture.md) · [project/decisions.md](project/decisions.md).
 
 **Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · `com.aethelgard.product` (F-013) · **Java:** 21
 

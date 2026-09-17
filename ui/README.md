@@ -7,21 +7,25 @@
 
 # UI module
 
-Maven artifact `com.aethelgard:ui` — basic skeleton Step advance / settled view.
+Maven artifact `com.aethelgard:ui` — Aethelgard map view of product values.
 
-**Depends on:** `engine` (one-way). Never depended on by `engine`.
+**Depends on:** `product` (ADR-010). Never depended on by `engine` or `product`.
 
 ## Headless logic
 
-`UiController` — create run, `advance()`, `settledText()` via User View. **No Swing.** Covered by tests.
+`MapController` — `ProductSession`, `advance()` / `advanceAsync()`, elevation raster, busy status. **No Swing.** Covered by tests.
+
+`ElevationRaster` — packed RGB height ramp (F-018 formula).
 
 ## Interactive
 
 From the repo root in **cmd** (recommended):
 
 ```bat
-run-ui.cmd
+run-product.cmd
 ```
+
+(`run-ui.cmd` is the same launch.)
 
 Or manually — **install** (not just package), then run only `ui`:
 
@@ -30,12 +34,6 @@ mvnw -pl ui -am install -DskipTests
 mvnw -pl ui exec:java
 ```
 
-Why: `package` builds jars under `target/`, but a later `mvnw -pl ui exec:java` resolves `engine` from your local Maven repo (`.m2`). Without `install`, Maven cannot find `com.aethelgard:engine:0.1.0-SNAPSHOT`.
+Window: 512×512 elevation raster (seed 0, Step 0) + **Advance**. Status **Working...** while compute runs off the EDT. Do not construct `JFrame` in tests.
 
-Do **not** use `mvnw -pl ui -am exec:java` alone — Maven may run `exec:java` on the parent aggregator and fail.
-
-Optional seed: `mvnw -pl ui exec:java -Dexec.args="--initial 10"`
-
-Window: settled text + **Advance** button (`SkeletonFrame`). Do not construct `JFrame` in tests.
-
-**Docs:** [docs/engine/architecture.md](../docs/engine/architecture.md)
+**Docs:** [docs/product/architecture.md](../docs/product/architecture.md)

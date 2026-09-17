@@ -29,5 +29,5 @@ Before non-trivial work, read in order:
 - Do not Accept if Active Goal entry points disagree with `docs/project/goals.md`
 - Explain in clear English what changed and what it means
 
-Active Goal: none · Last: `docs/project/goals/G-004-see-the-world.md` (**done**)  
+Active Goal: [G-005 Living map](docs/project/goals/G-005-living-map.md) (`in progress`) · Last: [G-004](docs/project/goals/G-004-see-the-world.md) (`done`)  
 Full checklist: `AGENTS.md`

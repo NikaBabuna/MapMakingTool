@@ -20,9 +20,9 @@
 
   <modules>
     <module>engine</module>
+    <module>product</module>
     <module>cli</module>
     <module>ui</module>
-    <module>product</module>
   </modules>
 
   <properties>

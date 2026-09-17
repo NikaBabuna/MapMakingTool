@@ -39,18 +39,16 @@ class ProductHostTest {
   }
 
   @Test
-  @DisplayName("FR-2: product depends on engine; engine/cli/ui do not depend on product")
+  @DisplayName("FR-2: product depends on engine; engine does not depend on product; product has no ui/cli deps")
   void moduleWiringOneWay() throws Exception {
     Path root = findRepoRoot();
     String productPom = Files.readString(root.resolve("product/pom.xml"));
     assertTrue(productPom.contains("<artifactId>engine</artifactId>"));
+    assertFalse(productPom.contains("<artifactId>ui</artifactId>"));
+    assertFalse(productPom.contains("<artifactId>cli</artifactId>"));
 
     String enginePom = Files.readString(root.resolve("engine/pom.xml"));
-    String cliPom = Files.readString(root.resolve("cli/pom.xml"));
-    String uiPom = Files.readString(root.resolve("ui/pom.xml"));
     assertFalse(enginePom.contains("<artifactId>product</artifactId>"));
-    assertFalse(cliPom.contains("<artifactId>product</artifactId>"));
-    assertFalse(uiPom.contains("<artifactId>product</artifactId>"));
   }
 
   @Test

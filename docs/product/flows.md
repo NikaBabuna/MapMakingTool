@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **See the world** (G-004 / F-018) is specified. Detailed Explore / Guide / Timeline / Inspect steps await later Goals._
+_Status: **See the world** (G-004 / F-018) is specified. **G-005 Living map** (session, tool UI, console, moving plates) is the active Goal — extend this file per Step. Explore / Guide / Timeline still await later Goals._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -19,7 +19,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 
 | Step | Action |
 |------|--------|
-| 1 | Launch `ProductApp`. Window shows `WorldSpec.VIEW` (512×512, seed 0) at **Step 0** — a dark flat field (zero elevation). |
+| 1 | Launch `com.aethelgard.ui.ProductApp` (`run-product.cmd`). Window shows `WorldSpec.VIEW` (512×512, seed 0) at **Step 0** — a dark flat field (zero elevation). |
 | 2 | User clicks **Advance**. Status shows **Working...**; the button does not queue extra clicks. Compute runs off the Swing thread. |
 | 3 | When the Step settles, the map paints the new elevation raster (absolute height ramp) and status returns to `Step n`. |
 | 4 | Repeat Advance to grow suture ridges. No pan/zoom; one pixel per cell. |

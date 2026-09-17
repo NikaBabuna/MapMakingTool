@@ -7,33 +7,28 @@
 
 # CLI module
 
-Maven artifact `com.aethelgard:cli` — headless runner over the Pool-System Framework.
+Maven artifact `com.aethelgard:cli` — headless runner over a **product session**.
 
-**Depends on:** `engine` (one-way). Never depended on by `engine`.
+**Depends on:** `product` (ADR-010). Never depended on by `engine` or `product`.
+
+Placeholder flags (unstable — G-005): not a finished operator language.
 
 ## Run
 
 From repo root (after `mvnw -pl cli -am package`):
 
 ```text
-java -cp cli/target/classes;engine/target/classes;... com.aethelgard.cli.Main --steps 3 --initial 10
-```
-
-Or via Maven:
-
-```text
-mvnw -pl cli -am exec:java -Dexec.mainClass=com.aethelgard.cli.Main -Dexec.args="--steps 3 --initial 10"
+mvnw -pl cli -am exec:java -Dexec.mainClass=com.aethelgard.cli.Main -Dexec.args="--steps 3"
 ```
 
 ## Flags
 
 | Flag | Default | Meaning |
 |------|---------|---------|
-| `--steps N` | `0` | Additional Steps after create (create already completes Step 0) |
-| `--initial V` | `0` | `EngineConfig` seed value |
+| `--steps N` | `0` | Additional generation Steps after create (create already completes Step 0) |
 
 ## Output
 
-Settled report lines: `stepIndex`, `value`, `updateCount`, and `fields=...` when typed fields exist.
+`ProductSession.settledWorld()` — world dump (header, elevation, plates) for `WorldSpec.DEFAULT`.
 
-**Docs:** [docs/engine/architecture.md](../docs/engine/architecture.md)
+**Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [docs/engine/architecture.md](../docs/engine/architecture.md)

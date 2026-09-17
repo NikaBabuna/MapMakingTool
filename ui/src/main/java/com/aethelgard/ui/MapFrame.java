@@ -1,11 +1,11 @@
 /*
- * File: product/src/main/java/com/aethelgard/product/MapFrame.java
- * Purpose: Product Swing shell — colored elevation map + Advance (not used in tests)
+ * File: ui/src/main/java/com/aethelgard/ui/MapFrame.java
+ * Purpose: Swing shell — colored elevation map + Advance (not used in tests)
  * Audience: Interactive operators
  * Update when: Map window layout changes
  */
 
-package com.aethelgard.product;
+package com.aethelgard.ui;
 
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;

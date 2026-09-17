@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** none · Last: [G-004 See the world](project/goals/G-004-see-the-world.md) (**done**)  
+**Active Goal:** [G-005 Living map](project/goals/G-005-living-map.md) (**in progress**) · Last: [G-004 See the world](project/goals/G-004-see-the-world.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -54,11 +54,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) | done |
 | [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | done |
 | [goals/G-004-see-the-world.md](project/goals/G-004-see-the-world.md) | done |
+| [goals/G-005-living-map.md](project/goals/G-005-living-map.md) | in progress |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-004 Steps registered |
+| [features.md](project/features.md) | Active — G-001–G-005 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (9 ADRs) |
+| [decisions.md](project/decisions.md) | Active (10 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -68,7 +69,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-018 map window; G-004 done) |
+| [architecture.md](architecture.md) | Active (roll-up; F-019 session; G-005 in progress) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -80,7 +81,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; product F-018 / G-004 done |
+| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; F-019 `ui`/`cli` → `product` |
 | [specs/](engine/specs/) | Active — through G-002 (host-ready) |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open; #2a decided (ADR-009) |
 
@@ -92,10 +93,10 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-018 map window; G-004 done |
+| [architecture.md](product/architecture.md) | Active — F-019 `ProductSession`; map view in `ui` |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | See the world (F-018); Explore/Guide/Timeline await later Goals |
-| [glossary.md](product/glossary.md) | Active — ElevationRaster / VIEW (F-018); Voronoi plates (F-017) |
+| [flows.md](product/flows.md) | See the world (F-018); launch via `ui` (F-019); G-005 living-map flows planned |
+| [glossary.md](product/glossary.md) | Active — ProductSession (F-019); ElevationRaster in `ui` |
 | [style-guide.md](product/style-guide.md) | Deferred |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-017 Voronoi) |
 
@@ -125,6 +126,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-016.md](blockers/F-016.md) | done — witnessed world + G-003 closure |
 | [F-017.md](blockers/F-017.md) | done — Voronoi multi-plate tectonics |
 | [F-018.md](blockers/F-018.md) | done — large colored map UI |
+| [F-019.md](blockers/F-019.md) | done — product session + UI/CLI house |
+| F-020–F-023 | planned — G-005 |
 
 ---
 

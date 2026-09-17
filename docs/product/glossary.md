@@ -12,6 +12,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | Term | Definition |
 |------|------------|
 | **ProductHost** | Product factory that constructs an `Engine` via `EngineSetup`. |
+| **ProductSession** | In-process owner of one run: serialized `advance`, read elevation/plates, settled dump. No Swing. Not a CLI parser. |
 | **WorldSpec** | Step 0 seed: grid width, height, and recorded generation seed. |
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field whose value is a `Grid` of the world geometry. |
@@ -24,8 +25,8 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0. |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid). |
 | **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |
-| **ElevationRaster** | Headless RGB image of an elevation grid; absolute height ramp, one pixel per cell. |
-| **MapController** | Headless map logic: create, Advance, raster, busy / `Working...` status. No Swing. |
+| **ElevationRaster** | UI headless RGB image of an elevation grid; absolute height ramp, one pixel per cell (`com.aethelgard.ui`). |
+| **MapController** | UI headless map logic: `ProductSession`, Advance, raster, busy / `Working...` status. No Swing. |
 | **Seed** | Initial configuration that deterministically produces a world variant |
 | **Timeline** | Scrubbable history of world formation from simulation start to present |
 | **Guide mode** | User nudges specific features; simulation resolves the rest consistently |

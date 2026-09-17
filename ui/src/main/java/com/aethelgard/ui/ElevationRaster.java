@@ -1,12 +1,13 @@
 /*
- * File: product/src/main/java/com/aethelgard/product/ElevationRaster.java
+ * File: ui/src/main/java/com/aethelgard/ui/ElevationRaster.java
  * Purpose: Headless elevation → RGB raster (no Swing)
  * Audience: MapController / tests
  * Update when: Height color ramp changes
  */
 
-package com.aethelgard.product;
+package com.aethelgard.ui;
 
+import com.aethelgard.product.Grid;
 import java.util.Arrays;
 import java.util.Objects;
 

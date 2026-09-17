@@ -18,9 +18,14 @@
 
   <artifactId>ui</artifactId>
   <name>Aethelgard UI</name>
-  <description>Basic Step advance / view — depends on engine only</description>
+  <description>Aethelgard map view — depends on product</description>
 
   <dependencies>
+    <dependency>
+      <groupId>com.aethelgard</groupId>
+      <artifactId>product</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.aethelgard</groupId>
       <artifactId>engine</artifactId>
@@ -53,7 +58,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <mainClass>com.aethelgard.ui.SkeletonApp</mainClass>
+          <mainClass>com.aethelgard.ui.ProductApp</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
       </plugin>

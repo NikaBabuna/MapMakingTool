@@ -46,9 +46,9 @@ class ScaffoldWitnessTest {
     List<String> modules = captureAll(parentPom, "<module>([^<]+)</module>");
     assertTrue(modules.contains("engine"), "engine module required (F-001)");
     assertEquals(
-        List.of("engine", "cli", "ui", "product"),
+        List.of("engine", "product", "cli", "ui"),
         modules,
-        "aggregator modules: engine (F-001) + cli (F-007) + ui (F-008) + product (F-013)");
+        "aggregator modules: engine then product (F-019 deps) then cli + ui");
   }
 
   @Test

@@ -9,7 +9,7 @@
 
 Terms for the Pool-System Framework. Product domain terms: [../product/glossary.md](../product/glossary.md).
 
-**Implementation note (through F-018):** Engine core is a clean host (G-002). Product module `com.aethelgard:product` owns the category tree (ADR-009), generation tick, tectonics System, Voronoi plates, `WorldDump`, and the elevation map window. **G-004 done.** See [architecture.md](architecture.md) and [../product/architecture.md](../product/architecture.md).
+**Implementation note (through F-019):** Engine core is a clean host (G-002). Product module owns the category tree (ADR-009), generation tick, tectonics System, Voronoi plates, `WorldDump`, and `ProductSession`. Map window lives in `ui` (ADR-010). **G-005** in progress. See [architecture.md](architecture.md) and [../product/architecture.md](../product/architecture.md).
 
 | Term | Definition |
 |------|------------|

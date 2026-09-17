@@ -13,6 +13,8 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-019:** `ProductSession`; `ui`/`cli` depend on `product`; map window in `ui` (ADR-010).
+- **2026-09-17** — **G-005** Living map Goal registered; Steps F-019–F-023 planned. **ADR-010:** `ui`/`cli` depend on `product`; in-UI console; CLI commands are placeholders.
 - **2026-09-17** — **F-018:** product map window (512×512 height raster, Advance, busy status); **G-004 complete**.
 - **2026-09-17** — **F-017:** Voronoi 6–15 plate seed (Euclidean nearest site); F-015 two-plate stripe superseded.
 - **2026-09-17** — **G-004** See the world Goal registered; Steps F-017–F-018 planned.

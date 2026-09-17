@@ -5,5 +5,5 @@
  * Update when: Package role changes
  */
 
-/** Headless Aethelgard CLI — depends on engine only. */
+/** Headless Aethelgard CLI — depends on product (placeholder flags). */
 package com.aethelgard.cli;

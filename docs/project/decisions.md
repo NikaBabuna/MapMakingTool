@@ -111,3 +111,33 @@ The event **category tree is application-owned**. For G-003, `product` builds it
 **Why:** Open question #2a was an application concern. F-015 needs a real tree to dispatch generation; product Java is the smallest honest authorship model.
 
 Resolves: [../engine/specs/open-questions.md](../engine/specs/open-questions.md) #2a.
+
+---
+
+## ADR-010 — UI and CLI are product adapters
+
+**Date:** 2026-09-17  
+**Status:** accepted
+
+`ui` and `cli` depend on `product`. `product` depends on `engine`. `engine` never depends on `ui`, `cli`, or `product`.
+
+| Module | Role |
+|--------|------|
+| **engine** | Abstract Pool-System loop |
+| **product** | Aethelgard simulation — field values, Systems, session. **No Swing** |
+| **ui** | View of those values (map window, tool chrome) |
+| **cli** | Operator access — placeholder command layer + headless entry |
+
+`ui` may depend on `cli` **only** to reuse that command layer for an **in-window console**. `cli` must not depend on `ui`.
+
+**Live access (G-005):** one in-process **session** owns the `Engine`. UI, console, and headless CLI call it. Advances are serialized. No socket.
+
+**Commands are placeholders.** The verb table (`status`, `advance`, `dump`, `at`, `layers`, …) is unstable. Keep a thin dispatcher in `cli`. Do **not** put command names into product Systems, Pool fields, or merge types. Replacing the language later must not rewrite tectonics.
+
+Skeleton heartbeat `ui` / `cli` as the product experience is retired (G-001 adapters were scaffolding). Engine tests still witness the loop without Aethelgard.
+
+**Amends:** [ADR-007](#adr-007--multi-module-layout-and-java-21) — sibling modules may depend on `product`, not only on `engine`. Engine still never depends on siblings.
+
+**Why:** The engine is abstract. Product computes the world. UI displays it. CLI (including a console button in the UI) interrogates the same run. Deep CLI integration would freeze a throwaway command set into the simulator.
+
+**Goal:** [G-005 Living map](goals/G-005-living-map.md)

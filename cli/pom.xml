@@ -18,9 +18,14 @@
 
   <artifactId>cli</artifactId>
   <name>Aethelgard CLI</name>
-  <description>Headless runner — depends on engine only</description>
+  <description>Headless product runner — depends on product</description>
 
   <dependencies>
+    <dependency>
+      <groupId>com.aethelgard</groupId>
+      <artifactId>product</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.aethelgard</groupId>
       <artifactId>engine</artifactId>
@@ -45,8 +50,12 @@
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>com.aethelgard.cli.Main</mainClass>
+        </configuration>
       </plugin>
     </plugins>
   </build>

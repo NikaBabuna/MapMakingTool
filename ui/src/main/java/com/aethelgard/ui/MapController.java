@@ -1,13 +1,14 @@
 /*
- * File: product/src/main/java/com/aethelgard/product/MapController.java
- * Purpose: Headless map logic — create run, advance, raster, busy flag
+ * File: ui/src/main/java/com/aethelgard/ui/MapController.java
+ * Purpose: Headless map view logic — session, raster, busy flag
  * Audience: Tests / Swing shell
  * Update when: Map window behavior changes
  */
 
-package com.aethelgard.product;
+package com.aethelgard.ui;
 
-import com.aethelgard.engine.pool.Engine;
+import com.aethelgard.product.ProductSession;
+import com.aethelgard.product.WorldSpec;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -17,9 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Headless controller for the product map. No Swing types — safe for CI tests.
  *
- * <p>{@link #advance()} runs one generation Step on the caller. {@link #advanceAsync()} runs it on
- * the injected {@link Executor} and reports {@link #busy()} / {@link #WORKING_STATUS} while in
- * flight.
+ * <p>Owns a {@link ProductSession}. {@link #advance()} runs one generation Step on the caller.
+ * {@link #advanceAsync()} runs it on the injected {@link Executor} and reports {@link #busy()} /
+ * {@link #WORKING_STATUS} while in flight.
  */
 public final class MapController {
 
@@ -27,7 +28,7 @@ public final class MapController {
 
   private final WorldSpec spec;
   private final Executor executor;
-  private final Engine engine;
+  private final ProductSession session;
   private final AtomicBoolean busy = new AtomicBoolean(false);
   private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
   private ElevationRaster raster;
@@ -39,7 +40,7 @@ public final class MapController {
   public MapController(WorldSpec spec, Executor executor) {
     this.spec = Objects.requireNonNull(spec, "spec");
     this.executor = Objects.requireNonNull(executor, "executor");
-    this.engine = ProductHost.create(spec);
+    this.session = new ProductSession(spec);
     this.raster = snapshot();
   }
 
@@ -52,8 +53,12 @@ public final class MapController {
     return spec;
   }
 
+  public ProductSession session() {
+    return session;
+  }
+
   public int stepIndex() {
-    return engine.stepIndex();
+    return session.stepIndex();
   }
 
   public ElevationRaster raster() {
@@ -69,7 +74,7 @@ public final class MapController {
     if (busy.get()) {
       return WORKING_STATUS;
     }
-    return "Step " + engine.stepIndex();
+    return "Step " + session.stepIndex();
   }
 
   public void onChanged(Runnable listener) {
@@ -80,7 +85,7 @@ public final class MapController {
 
   /** One generation Step on the caller thread. */
   public void advance() {
-    engine.advance(1);
+    session.advance();
     raster = snapshot();
     fire();
   }
@@ -97,7 +102,7 @@ public final class MapController {
     executor.execute(
         () -> {
           try {
-            engine.advance(1);
+            session.advance();
             raster = snapshot();
           } finally {
             busy.set(false);
@@ -106,13 +111,8 @@ public final class MapController {
         });
   }
 
-  public Engine engine() {
-    return engine;
-  }
-
   private ElevationRaster snapshot() {
-    Grid elevation = (Grid) engine.settled().field(WorldFields.ELEVATION);
-    return ElevationRaster.of(elevation);
+    return ElevationRaster.of(session.elevation());
   }
 
   private void fire() {
