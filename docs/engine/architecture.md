@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-012 EventEmissionPolicy; **G-002 done**; **G-005** F-022 tool UI; F-019 `ui`/`cli` → `product`)  
+**Status:** active (F-012 EventEmissionPolicy; **G-002 done**; **G-005 done**; F-023 console)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -17,8 +17,8 @@
 | Module | Artifact | Role | Status |
 |--------|----------|------|--------|
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — G-002 host ports |
-| **cli** | `com.aethelgard:cli` | Headless product session runner | Active — F-019 |
-| **ui** | `com.aethelgard:ui` | Aethelgard map tool | Active — F-022 |
+| **cli** | `com.aethelgard:cli` | Headless product session runner | Active — F-023 |
+| **ui** | `com.aethelgard:ui` | Aethelgard map tool | Active — F-023 |
 | **product** | `com.aethelgard:product` | Aethelgard domain host + session | Active — F-021 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
@@ -26,11 +26,12 @@ Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
 ### One-way dependency rule
 
 ```
+ui  →  cli  →  product  →  engine
 ui  →  product  →  engine
 cli →  product  →  engine
 ```
 
-**F-019 / ADR-010:** `ui` and `cli` depend on `product`. `product` depends on `engine`. **`engine` must never depend on them.** `cli` does not depend on `ui`. Engine stays free of UI toolkits and CLI libraries on the compile classpath. **SLF4J API** is allowed in `engine`; logging *bindings* are not (ADR-008).
+**F-019 / ADR-010:** `ui` and `cli` depend on `product`. `ui` may depend on `cli` only for the placeholder console. `product` depends on `engine`. **`engine` must never depend on them.** `cli` does not depend on `ui`. Engine stays free of UI toolkits and CLI libraries on the compile classpath. **SLF4J API** is allowed in `engine`; logging *bindings* are not (ADR-008).
 
 ---
 
@@ -211,26 +212,27 @@ MapMakingTool/
     src/test/java/com/aethelgard/product/
 ```
 
-### CLI (F-019)
+### CLI (F-023)
 
 | Type | Role |
 |------|------|
-| `CliRunner` | Parse `--steps N`; `ProductSession.ofDefault()`; print `settledWorld()` |
+| `CommandDispatch` | Placeholder verbs on a `ProductSession` (`status`, `advance`, `dump`, `at`, `layers`) |
+| `CliRunner` | `--steps N` dump **or** one dispatcher line; `ProductSession.ofDefault()` |
 | `Main` | Process entry → `CliRunner` → exit code |
-| `CliOptions` / `CliResult` | Placeholder flags (unstable) |
+| `CliOptions` / `CliResult` | Placeholder flags / result (unstable) |
 
 Artifact `com.aethelgard:cli` depends on `product`. Run headlessly from tests via `CliRunner.run(args)`. Heartbeat `--initial` is retired.
 
-### UI (F-022)
+### UI (F-023)
 
 | Type | Role |
 |------|------|
 | `ElevationRaster` | Headless RGB of Elevation / Plates / Overlay (ocean, hillshade) |
-| `MapController` | Headless layers / play / newWorld / inspect via `ProductSession` (no Swing) |
-| `MapFrame` | Dark tool window (not constructed in tests) |
+| `MapController` | Headless layers / play / newWorld / inspect / `runCommand` (no Swing) |
+| `MapFrame` | Dark tool window + Console (not constructed in tests) |
 | `ProductApp` | `main` entry on the EDT; wires `SwingPlayScheduler` |
 
-Artifact `com.aethelgard:ui` depends on `product`. Launch: `run-product.cmd` / `run-ui.cmd`. Console is F-023.
+Artifact `com.aethelgard:ui` depends on `product` and `cli` (console dispatcher only). Launch: `run-product.cmd` / `run-ui.cmd`.
 
 ---
 

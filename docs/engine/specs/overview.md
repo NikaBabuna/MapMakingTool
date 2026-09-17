@@ -7,7 +7,7 @@
 
 # Overview
 
-> **Code status (through F-012 / G-002):** The Pool-System loop is implemented and host-ready. Product plugs in via `PoolCompute`, `FieldMergeType`, and `EventEmissionPolicy` without editing engine internals. CLI and UI are product adapters (F-019 / ADR-010). **G-005** in progress.
+> **Code status (through F-012 / G-002):** The Pool-System loop is implemented and host-ready. Product plugs in via `PoolCompute`, `FieldMergeType`, and `EventEmissionPolicy` without editing engine internals. CLI and UI are product adapters (F-019 / ADR-010). Placeholder console dispatcher is F-023. **G-005** done.
 
 **Scope:** General-purpose architecture for step-based computation and simulation. Independent of any particular game, product, or service.
 

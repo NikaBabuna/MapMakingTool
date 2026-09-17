@@ -8,20 +8,20 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** F-022 Accepted
+**Status:** F-023 Accepted · G-005 closed
 
 ---
 
 ## Session goal
 
-Accept **F-022** (tool UI: ocean, hillshade, layers, play, seed, inspect, legend).
+Accept **F-023** (placeholder CLI + in-UI console) and close **G-005**.
 
 ---
 
 ## Active Goal
 
-**Active Goal:** [G-005 — Living map](goals/G-005-living-map.md) — **in progress**  
-**Last completed:** [G-004 — See the world](goals/G-004-see-the-world.md) — **done**
+**Active Goal:** none  
+**Last completed:** [G-005 — Living map](goals/G-005-living-map.md) — **done**
 
 ---
 
@@ -29,22 +29,21 @@ Accept **F-022** (tool UI: ocean, hillshade, layers, play, seed, inspect, legend
 
 | Step | Work | Status |
 |------|------|--------|
-| F-022 | Tool UI | done |
+| F-023 | Placeholder CLI + in-UI console | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (138 tests, last Accept F-022)
+- [x] Incremental suite green (145 tests, last Accept F-023; G-005 closed)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-023** (placeholder CLI + in-UI console) job + FRs.
+1. Propose next **Goal** (not a lone Step). Candidates: climate / further generation, or tectonics that look like continents.
 
 ## Notes
 
-- CLI commands are **placeholders**; do not bake verbs into product.
-- UI must include a **console** control that uses the same thin CLI layer (F-023).
+- CLI commands remain **placeholders**. Replacing the verb table must not rewrite Systems.

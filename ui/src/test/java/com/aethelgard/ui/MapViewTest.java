@@ -29,8 +29,11 @@ class MapViewTest {
     Path root = findRepoRoot();
     String uiPom = Files.readString(root.resolve("ui/pom.xml"));
     assertTrue(uiPom.contains("<artifactId>product</artifactId>"));
+    assertTrue(uiPom.contains("<artifactId>cli</artifactId>"));
     String productPom = Files.readString(root.resolve("product/pom.xml"));
     assertFalse(productPom.contains("<artifactId>ui</artifactId>"));
+    String cliPom = Files.readString(root.resolve("cli/pom.xml"));
+    assertFalse(cliPom.contains("<artifactId>ui</artifactId>"));
     String enginePom = Files.readString(root.resolve("engine/pom.xml"));
     assertFalse(enginePom.contains("<artifactId>product</artifactId>"));
     assertFalse(enginePom.contains("<artifactId>ui</artifactId>"));

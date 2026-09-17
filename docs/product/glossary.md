@@ -29,7 +29,8 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid, velocities). |
 | **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |
-| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, busy / `Working...`. No Swing. |
+| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
+| **CommandDispatch** | Placeholder verb table in `cli` (`status`, `advance`, `dump`, `at`, `layers`). Unstable. Not a product API. |
 | **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. |
 | **MapSpeed** | Play tick period: Slow 1000 ms, Normal 250 ms, Fast 100 ms. |
 | **PlayScheduler** | Injected repeating ticks for Play. Production: `SwingPlayScheduler`. |

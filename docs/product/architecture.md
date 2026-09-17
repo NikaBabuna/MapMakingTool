@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-022 tool UI; F-021 orogeny; F-019 session + house; **G-005** in progress)  
+**Status:** active (F-023 console; F-022 tool UI; F-021 orogeny; F-019 session; **G-005 done**)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -27,11 +27,12 @@
 ### One-way dependency rule
 
 ```
+ui  →  cli  →  product  →  engine
 ui  →  product  →  engine
 cli →  product  →  engine
 ```
 
-`product` depends on `engine`. **`engine` must never depend on `product`.** `ui` and `cli` depend on `product`. **Product has no Swing.** `cli` does not depend on `ui`. `ui` may depend on `cli` later only for the placeholder console (F-023).
+`product` depends on `engine`. **`engine` must never depend on `product`.** `ui` and `cli` depend on `product`. **Product has no Swing.** `cli` does not depend on `ui`. `ui` depends on `cli` **only** for the placeholder console (`CommandDispatch`, F-023).
 
 ---
 
@@ -58,7 +59,9 @@ cli →  product  →  engine
 
 ## Map view (in `ui`, F-022)
 
-The **UI** module paints product values. Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Dark tool chrome (`0x12141A`): layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect sidebar, legend. Advance and play ticks run **one** generation Step on a worker thread (not the Swing EDT) via `ProductSession`. While compute is in flight the status text is **Working...** and further Advances (and play ticks) are ignored. `newWorld(seed)` is ignored while busy. Console waits for F-023.
+The **UI** module paints product values. Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Dark tool chrome (`0x12141A`): layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect sidebar, legend, **Console**. Advance and play ticks run **one** generation Step on a worker thread (not the Swing EDT) via `ProductSession`. While compute is in flight the status text is **Working...** and further Advances (and play ticks) are ignored. `newWorld(seed)` is ignored while busy.
+
+Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (`MapController.runCommand`). After `advance`, the raster refreshes. Placeholder verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`. Unstable — not a product API.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB`. Same grids + layer → identical RGB.
 
@@ -92,11 +95,11 @@ Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused.
 
 Launch from repo root: `run-product.cmd` or `run-ui.cmd` (`mvnw -pl ui -am install -DskipTests` then `mvnw -pl ui exec:java`).
 
-Headless CLI: `cli` creates `ProductSession.ofDefault()`, `--steps N`, prints `settledWorld()`. Placeholder flags (ADR-010).
+Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `settledWorld()`. Bare argv is one dispatcher line (`status`, `advance 3`, `at 1 2`, …). Placeholder (ADR-010).
 
 ---
 
-## Source layout (through F-022)
+## Source layout (through F-023)
 
 ```
 product/
@@ -143,4 +146,13 @@ ui/
   src/test/java/com/aethelgard/ui/
     MapViewTest.java
     ToolUiTest.java
+    ConsoleUiTest.java
+
+cli/
+  src/main/java/com/aethelgard/cli/
+    CommandDispatch.java
+    CliRunner.java
+    CliOptions.java
+    CliResult.java
+    Main.java
 ```

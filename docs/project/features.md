@@ -81,7 +81,7 @@ Goal doc: [goals/G-005-living-map.md](goals/G-005-living-map.md)
 | F-020 | Plate kinematics | done | [F-020.md](../blockers/F-020.md) |
 | F-021 | Motion-based orogeny | done | [F-021.md](../blockers/F-021.md) |
 | F-022 | Tool UI | done | [F-022.md](../blockers/F-022.md) |
-| F-023 | Placeholder CLI + in-UI console | not started | _(store at APPROVE)_ |
+| F-023 | Placeholder CLI + in-UI console | done | [F-023.md](../blockers/F-023.md) |
 
 ---
 

@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-023:** placeholder CLI dispatcher + in-UI console; **G-005 complete**.
 - **2026-09-17** — **F-022:** tool UI (ocean, hillshade, layers, play, seed, inspect, legend). F-018 negative-as-zero paint superseded.
 - **2026-09-17** — **F-021:** motion-based orogeny (converge / diverge / transform; negative elevation). Foreign-neighbor `+1` retired.
 - **2026-09-17** — **F-020:** plate kinematics (`plate_velocity` CONSTANT; `plates` STATIC advection). Elevation still standing-plate `+1` until F-021.

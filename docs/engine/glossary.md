@@ -9,7 +9,7 @@
 
 Terms for the Pool-System Framework. Product domain terms: [../product/glossary.md](../product/glossary.md).
 
-**Implementation note (through F-022):** Engine core is a clean host (G-002). Product module owns the category tree (ADR-009), generation tick, kinematics + tectonics (`Orogeny`) Systems, Voronoi plates, plate velocities, `WorldDump`, and `ProductSession`. Map **tool** lives in `ui` (ADR-010, F-022). **G-005** in progress (console is F-023). See [architecture.md](architecture.md) and [../product/architecture.md](../product/architecture.md).
+**Implementation note (through F-023):** Engine core is a clean host (G-002). Product module owns the category tree (ADR-009), generation tick, kinematics + tectonics (`Orogeny`) Systems, Voronoi plates, plate velocities, `WorldDump`, and `ProductSession`. Map **tool** lives in `ui` (ADR-010). Placeholder console/CLI dispatcher lives in `cli`. **G-005** done. See [architecture.md](architecture.md) and [../product/architecture.md](../product/architecture.md).
 
 | Term | Definition |
 |------|------------|

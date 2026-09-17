@@ -9,11 +9,11 @@
 
 Maven artifact `com.aethelgard:ui` — Aethelgard map view of product values.
 
-**Depends on:** `product` (ADR-010). Never depended on by `engine` or `product`.
+**Depends on:** `product` and `cli` (ADR-010 — `cli` only for the console dispatcher). Never depended on by `engine` or `product`.
 
 ## Headless logic
 
-`MapController` — `ProductSession`, layers, Advance / Play, `newWorld`, inspect, legend, busy status. **No Swing.** Covered by tests.
+`MapController` — `ProductSession`, layers, Advance / Play, `newWorld`, inspect, legend, `runCommand`, busy status. **No Swing.** Covered by tests.
 
 `ElevationRaster` — packed RGB for Elevation (ocean + hillshade), Plates, and Overlay (F-022 formulas).
 
@@ -34,6 +34,6 @@ mvnw -pl ui -am install -DskipTests
 mvnw -pl ui exec:java
 ```
 
-Window: dark 512×512 tool (seed 0, Step 0) with layers, Advance, Play/Pause, speed, seed + New world, inspect, legend. Status **Working...** while compute runs off the EDT. Console is F-023. Do not construct `JFrame` in tests.
+Window: dark 512×512 tool (seed 0, Step 0) with layers, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Console**. Status **Working...** while compute runs off the EDT. Console uses `cli` `CommandDispatch` on the same session. Do not construct `JFrame` in tests.
 
 **Docs:** [docs/product/architecture.md](../docs/product/architecture.md)

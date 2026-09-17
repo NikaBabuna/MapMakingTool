@@ -18,12 +18,17 @@
 
   <artifactId>ui</artifactId>
   <name>Aethelgard UI</name>
-  <description>Aethelgard map view — depends on product</description>
+  <description>Aethelgard map tool — depends on product; cli only for console</description>
 
   <dependencies>
     <dependency>
       <groupId>com.aethelgard</groupId>
       <artifactId>product</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aethelgard</groupId>
+      <artifactId>cli</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

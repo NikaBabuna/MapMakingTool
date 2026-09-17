@@ -19,15 +19,15 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — F-022 tool UI; F-021 orogeny; map view in `ui` |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-023 console; F-022 tool UI; map view in `ui` |
 
 ---
 
 ## Goals
 
-**Active Goal:** [G-005 Living map](project/goals/G-005-living-map.md)  
-**Last completed:** [G-004 See the world](project/goals/G-004-see-the-world.md)  
-**Prior:** [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
+**Active Goal:** none  
+**Last completed:** [G-005 Living map](project/goals/G-005-living-map.md)  
+**Prior:** [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
 
 ---
 
@@ -37,11 +37,11 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |------|---------|
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
-| `cli/` | Active — F-019 (`com.aethelgard:cli`) |
-| `ui/` | Active — F-022 tool UI (`com.aethelgard:ui`) |
+| `cli/` | Active — F-023 placeholder dispatcher (`com.aethelgard:cli`) |
+| `ui/` | Active — F-023 console; F-022 tool UI (`com.aethelgard:ui`) |
 | `product/` | Active — F-021 orogeny; map chrome in `ui` (`com.aethelgard:product`) |
 
-**One-way rule:** `ui` → `product` → `engine`; `cli` → `product` → `engine`. Engine never depends on siblings (ADR-010 / F-019). Details: [engine/architecture.md](engine/architecture.md) · [project/decisions.md](project/decisions.md).
+**One-way rule:** `ui` → `product` → `engine`; `cli` → `product` → `engine`; `ui` may depend on `cli` only for the console (ADR-010 / F-023). Engine never depends on siblings. Details: [engine/architecture.md](engine/architecture.md) · [project/decisions.md](project/decisions.md).
 
 **Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · `com.aethelgard.product` (F-013) · **Java:** 21
 

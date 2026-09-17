@@ -7,6 +7,8 @@
 
 package com.aethelgard.ui;
 
+import com.aethelgard.cli.CliResult;
+import com.aethelgard.cli.CommandDispatch;
 import com.aethelgard.product.Grid;
 import com.aethelgard.product.PlateVelocities;
 import com.aethelgard.product.ProductSession;
@@ -24,7 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <p>Owns a {@link ProductSession}. {@link #advance()} runs one generation Step on the caller.
  * {@link #advanceAsync()} runs it on the injected {@link Executor} and reports {@link #busy()} /
- * {@link #WORKING_STATUS} while in flight. Play uses an injected {@link PlayScheduler}.
+ * {@link #WORKING_STATUS} while in flight. Play uses an injected {@link PlayScheduler}. Console
+ * lines go through {@link CommandDispatch} on the same session.
  */
 public final class MapController {
 
@@ -238,6 +241,24 @@ public final class MapController {
             fire();
           }
         });
+  }
+
+  /**
+   * Placeholder console line on this session. Ignored while {@link #busy()} ({@code error: busy}).
+   * Refreshes the raster after the dispatcher returns so map Advance and console share one view.
+   */
+  public CliResult runCommand(String line) {
+    if (busy.get()) {
+      return new CliResult(2, "error: busy");
+    }
+    CliResult result = CommandDispatch.execute(session, line);
+    capture();
+    if (inspected != null) {
+      inspect(inspected.x(), inspected.y());
+      return result;
+    }
+    fire();
+    return result;
   }
 
   private List<LegendEntry> elevationLegend() {

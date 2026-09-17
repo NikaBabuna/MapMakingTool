@@ -15,7 +15,7 @@ Package root: `com.aethelgard.product`.
 
 `ProductHost` constructs an `Engine` via product `EngineSetup`. `ProductSession` owns a run (serialized `advance`, grid reads, settled dump). Generation: `elevation` + Voronoi `plates` + CONSTANT `plate_velocity`, `world/tectonics` after Step 0, kinematics (advection) and tectonics (`Orogeny`: converge / diverge / transform). `WorldDump` prints a settled snapshot.
 
-The map **window** lives in [`ui/`](../ui/README.md) (F-022 tool chrome; console is F-023).
+The map **window** lives in [`ui/`](../ui/README.md) (F-022 tool chrome; F-023 console).
 
 ## Interactive map
 

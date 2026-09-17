@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -26,6 +28,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -91,6 +95,27 @@ public final class MapFrame extends JFrame {
     legendRows.setLayout(new BoxLayout(legendRows, BoxLayout.Y_AXIS));
     legendRows.setBackground(PANEL);
 
+    JLabel consoleTitle = new JLabel("Console");
+    styleLabel(consoleTitle);
+    consoleTitle.setFont(consoleTitle.getFont().deriveFont(Font.BOLD));
+    JTextArea consoleOut = new JTextArea(6, 16);
+    consoleOut.setEditable(false);
+    consoleOut.setLineWrap(true);
+    consoleOut.setWrapStyleWord(true);
+    consoleOut.setBackground(BG);
+    consoleOut.setForeground(FG);
+    consoleOut.setCaretColor(FG);
+    consoleOut.setBorder(new EmptyBorder(4, 4, 4, 4));
+    JScrollPane consoleScroll = new JScrollPane(consoleOut);
+    consoleScroll.setBorder(BorderFactory.createLineBorder(new Color(0x2A2D38)));
+    consoleScroll.setAlignmentX(LEFT_ALIGNMENT);
+    JTextField consoleIn = new JTextField();
+    styleField(consoleIn);
+    consoleIn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 28));
+    JButton consoleRun = new JButton("Run");
+    styleButton(consoleRun);
+    consoleRun.setMaximumSize(new Dimension(Integer.MAX_VALUE, 32));
+
     final boolean[] syncing = {false};
 
     Runnable apply =
@@ -103,6 +128,8 @@ public final class MapFrame extends JFrame {
             advance.setEnabled(idle);
             newWorld.setEnabled(idle);
             seedField.setEnabled(idle);
+            consoleRun.setEnabled(idle);
+            consoleIn.setEnabled(idle);
             layerBox.setSelectedItem(controller.layer());
             speedBox.setSelectedItem(controller.speed());
             seedField.setText(String.valueOf(controller.spec().seed()));
@@ -176,6 +203,30 @@ public final class MapFrame extends JFrame {
           }
         });
 
+    Runnable submitConsole =
+        () -> {
+          if (syncing[0] || controller.busy()) {
+            return;
+          }
+          String line = consoleIn.getText();
+          var result = controller.runCommand(line);
+          consoleOut.append("> " + line + "\n" + result.output());
+          if (!result.output().endsWith("\n")) {
+            consoleOut.append("\n");
+          }
+          consoleIn.setText("");
+        };
+    consoleRun.addActionListener(e -> submitConsole.run());
+    consoleIn.addKeyListener(
+        new KeyAdapter() {
+          @Override
+          public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+              submitConsole.run();
+            }
+          }
+        });
+
     map.addMouseListener(
         new MouseAdapter() {
           @Override
@@ -222,6 +273,9 @@ public final class MapFrame extends JFrame {
     inspectBody.setAlignmentX(LEFT_ALIGNMENT);
     legendTitle.setAlignmentX(LEFT_ALIGNMENT);
     legendRows.setAlignmentX(LEFT_ALIGNMENT);
+    consoleTitle.setAlignmentX(LEFT_ALIGNMENT);
+    consoleIn.setAlignmentX(LEFT_ALIGNMENT);
+    consoleRun.setAlignmentX(LEFT_ALIGNMENT);
     sidebar.add(inspectTitle);
     sidebar.add(Box.createVerticalStrut(6));
     sidebar.add(inspectBody);
@@ -229,6 +283,14 @@ public final class MapFrame extends JFrame {
     sidebar.add(legendTitle);
     sidebar.add(Box.createVerticalStrut(6));
     sidebar.add(legendRows);
+    sidebar.add(Box.createVerticalStrut(16));
+    sidebar.add(consoleTitle);
+    sidebar.add(Box.createVerticalStrut(6));
+    sidebar.add(consoleScroll);
+    sidebar.add(Box.createVerticalStrut(6));
+    sidebar.add(consoleIn);
+    sidebar.add(Box.createVerticalStrut(4));
+    sidebar.add(consoleRun);
 
     add(north, BorderLayout.NORTH);
     add(map, BorderLayout.CENTER);

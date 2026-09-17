@@ -7,11 +7,11 @@
 
 # CLI module
 
-Maven artifact `com.aethelgard:cli` — headless runner over a **product session**.
+Maven artifact `com.aethelgard:cli` — headless runner + **placeholder dispatcher** over a product session.
 
-**Depends on:** `product` (ADR-010). Never depended on by `engine` or `product`.
+**Depends on:** `product` (ADR-010). Never depended on by `engine` or `product`. `ui` depends on this module **only** for the in-window console.
 
-Placeholder flags (unstable — G-005): not a finished operator language.
+Placeholder verbs (unstable — G-005): not a finished operator language.
 
 ## Run
 
@@ -19,16 +19,27 @@ From repo root (after `mvnw -pl cli -am package`):
 
 ```text
 mvnw -pl cli -am exec:java -Dexec.mainClass=com.aethelgard.cli.Main -Dexec.args="--steps 3"
+mvnw -pl cli -am exec:java -Dexec.mainClass=com.aethelgard.cli.Main -Dexec.args="status"
 ```
 
-## Flags
+## Batch flag
 
 | Flag | Default | Meaning |
 |------|---------|---------|
-| `--steps N` | `0` | Additional generation Steps after create (create already completes Step 0) |
+| `--steps N` | `0` | Additional generation Steps after create; print `settledWorld()` |
+
+## Verbs (`CommandDispatch`)
+
+| Line | Meaning |
+|------|---------|
+| `status` | step, size, seed |
+| `advance` / `advance N` | generation Steps |
+| `dump` | settled world text |
+| `at X Y` | cell elevation, plate, velocity |
+| `layers` | field names |
 
 ## Output
 
-`ProductSession.settledWorld()` — world dump (header, elevation, plates) for `WorldSpec.DEFAULT`.
+`--steps`: `ProductSession.settledWorld()` for `WorldSpec.DEFAULT`. Verb lines: see [docs/blockers/F-023.md](../docs/blockers/F-023.md).
 
 **Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [docs/engine/architecture.md](../docs/engine/architecture.md)

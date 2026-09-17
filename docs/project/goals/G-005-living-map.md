@@ -7,7 +7,7 @@
 
 # G-005 — Living map
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Engine:** do not edit `engine` source for ordinary world rules (G-002 host ports).  
 **Prior:** [G-004](G-004-see-the-world.md) made a frozen Voronoi heightmap visible inside `product`. This Goal makes **Aethelgard the product**: real module roles, moving plates, a tool UI, and a loosely coupled operator console.
 
@@ -67,14 +67,14 @@ If a stored FR cannot be met without an engine port: **stop**, ADR, do not sneak
 ## Product claims (tests by Goal end)
 
 - [x] `ui` / `cli` Maven modules depend on `product`; `product` has no Swing types in main sources
-- [ ] Shared session: UI + console + headless CLI serialize advances on one `Engine`
-- [ ] UI console uses the same placeholder dispatcher as headless CLI; dispatcher is isolated (not product Systems)
+- [x] Shared session: UI + console + headless CLI serialize advances on one `Engine`
+- [x] UI console uses the same placeholder dispatcher as headless CLI; dispatcher is isolated (not product Systems)
 - [x] Kinematics: plates move; velocities seeded; wrap + fill as wiki
 - [x] Orogeny: converge/diverge/transform; negative elevation allowed; old suture-`+1` retired
-- [ ] Determinism: same seed + spec + N Steps → identical fields
+- [x] Determinism: same seed + spec + N Steps → identical fields
 - [x] Tool UI claims (layers, play, inspect, hillshade/ocean, busy) with no `JFrame` in tests
-- [ ] Placeholder CLI verbs work headless and from the in-UI console
-- [ ] Incremental suite: all prior Accepted Step tests remain green
+- [x] Placeholder CLI verbs work headless and from the in-UI console
+- [x] Incremental suite: all prior Accepted Step tests remain green
 
 ---
 
@@ -88,7 +88,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 | F-020 | Velocities + kinematics; plates move; wiki + dump/tests | done |
 | F-021 | Orogeny by relative motion; negative elevation; retire foreign-neighbor `+1` | done |
 | F-022 | Tool UI: layers, play, seed, inspect, hillshade, ocean | done |
-| F-023 | Placeholder CLI + **in-UI console**; same dispatcher; close G-005 | not started |
+| F-023 | Placeholder CLI + **in-UI console**; same dispatcher; close G-005 | done |
 
 ---
 
@@ -96,7 +96,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 4 / 5 |
-| Product claim boxes | 4 / 9 |
+| Steps done | 5 / 5 |
+| Product claim boxes | 9 / 9 |
 
 Update this section at the end of every successful Step.

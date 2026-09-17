@@ -15,6 +15,6 @@ Durable multi-session results. Index: [../goals.md](../goals.md).
 | G-002 Engine host readiness | [G-002-engine-host-readiness.md](G-002-engine-host-readiness.md) | done |
 | G-003 First product world | [G-003-first-product-world.md](G-003-first-product-world.md) | done |
 | G-004 See the world | [G-004-see-the-world.md](G-004-see-the-world.md) | done |
-| G-005 Living map | [G-005-living-map.md](G-005-living-map.md) | in progress |
+| G-005 Living map | [G-005-living-map.md](G-005-living-map.md) | done |
 
 Procedure: [../../process/step-procedure.md](../../process/step-procedure.md).

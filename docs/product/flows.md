@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **See the world** (G-004 / F-018) is specified. **G-005 Living map** — tool UI (F-022) specified; console (F-023) still planned. Explore / Guide / Timeline still await later Goals._
+_Status: **See the world** (G-004 / F-018) specified. **G-005 Living map** done (tool UI F-022, console F-023). Explore / Guide / Timeline still await later Goals._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -30,7 +30,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 
 ## Flow: Tool window (layers, play, inspect)
 
-**Goal:** User reads relief and plates, lets time run, reseeds, and inspects a cell — without a console (F-023).
+**Goal:** User reads relief and plates, lets time run, reseeds, inspects a cell, and uses the placeholder console.
 
 | Step | Action |
 |------|--------|
@@ -39,8 +39,9 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 3 | **Play** (Slow / Normal / Fast) or **Advance**. Status is **Working...** while a Step is in flight; extra ticks are ignored. **Pause** stops the scheduler. |
 | 4 | Click a cell. **Inspect** shows x, y, elevation, plate id, velocity. Legend follows the current layer. |
 | 5 | Change **Seed** and **New world**. Session restarts at Step 0. Ignored while busy. |
+| 6 | Type a placeholder line in **Console** (`status`, `advance`, `dump`, `at X Y`, `layers`) and **Run**. Same dispatcher as headless CLI. Map refreshes after `advance`. |
 
-**Edges / failures:** Invalid seed text keeps the previous seed. No pan/zoom. No console. Tests never construct `JFrame`.
+**Edges / failures:** Invalid seed text keeps the previous seed. Console unknown verbs print `error:`. No pan/zoom. Tests never construct `JFrame`.
 
 ---
 
