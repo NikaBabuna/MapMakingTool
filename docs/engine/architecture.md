@@ -7,7 +7,7 @@
 
 # Engine architecture
 
-**Status:** active (F-012 EventEmissionPolicy; **G-002 done**; **G-005** F-019: `ui`/`cli` → `product`)  
+**Status:** active (F-012 EventEmissionPolicy; **G-002 done**; **G-005** F-022 tool UI; F-019 `ui`/`cli` → `product`)  
 **Roll-up:** [../architecture.md](../architecture.md)
 
 ---
@@ -18,7 +18,7 @@
 |--------|----------|------|--------|
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — G-002 host ports |
 | **cli** | `com.aethelgard:cli` | Headless product session runner | Active — F-019 |
-| **ui** | `com.aethelgard:ui` | Aethelgard map view | Active — F-019 |
+| **ui** | `com.aethelgard:ui` | Aethelgard map tool | Active — F-022 |
 | **product** | `com.aethelgard:product` | Aethelgard domain host + session | Active — F-021 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
@@ -221,16 +221,16 @@ MapMakingTool/
 
 Artifact `com.aethelgard:cli` depends on `product`. Run headlessly from tests via `CliRunner.run(args)`. Heartbeat `--initial` is retired.
 
-### UI (F-019)
+### UI (F-022)
 
 | Type | Role |
 |------|------|
-| `ElevationRaster` | Headless RGB of an elevation grid (absolute ramp) |
-| `MapController` | Headless advance / raster / busy via `ProductSession` (no Swing) |
-| `MapFrame` | Swing shell — map + Advance (not constructed in tests) |
-| `ProductApp` | `main` entry on the EDT |
+| `ElevationRaster` | Headless RGB of Elevation / Plates / Overlay (ocean, hillshade) |
+| `MapController` | Headless layers / play / newWorld / inspect via `ProductSession` (no Swing) |
+| `MapFrame` | Dark tool window (not constructed in tests) |
+| `ProductApp` | `main` entry on the EDT; wires `SwingPlayScheduler` |
 
-Artifact `com.aethelgard:ui` depends on `product`. Launch: `run-product.cmd` / `run-ui.cmd`.
+Artifact `com.aethelgard:ui` depends on `product`. Launch: `run-product.cmd` / `run-ui.cmd`. Console is F-023.
 
 ---
 

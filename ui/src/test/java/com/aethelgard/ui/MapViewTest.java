@@ -43,8 +43,8 @@ class MapViewTest {
     ElevationRaster raster = ElevationRaster.of(grid);
     assertEquals(3, raster.width());
     assertEquals(2, raster.height());
-    assertEquals(ElevationRaster.rgbOf(0), raster.rgb(0, 0));
-    assertEquals(ElevationRaster.rgbOf(5), raster.rgb(2, 1));
+    assertEquals(ElevationRaster.elevationCell(grid, 0, 0), raster.rgb(0, 0));
+    assertEquals(ElevationRaster.elevationCell(grid, 2, 1), raster.rgb(2, 1));
     assertEquals(raster, ElevationRaster.of(grid));
 
     MapController view = MapController.view(Runnable::run);
@@ -54,12 +54,14 @@ class MapViewTest {
   }
 
   @Test
-  @DisplayName("F-018 FR-2: absolute integer ramp; clamp 32")
+  @DisplayName("F-018 FR-2 / F-022: absolute integer ramp; ocean for negatives")
   void absoluteRampFormula() {
     assertEquals(pack(12, 10, 18), ElevationRaster.rgbOf(0));
     assertEquals(pack(255, 196, 96), ElevationRaster.rgbOf(32));
     assertEquals(ElevationRaster.rgbOf(32), ElevationRaster.rgbOf(99));
-    assertEquals(ElevationRaster.rgbOf(0), ElevationRaster.rgbOf(-4));
+    assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-4));
+    assertEquals(pack(18, 56, 92), ElevationRaster.rgbOf(-1));
+    assertNotEquals(ElevationRaster.rgbOf(0), ElevationRaster.rgbOf(-4));
     int e = 8;
     int r = 12 + (243 * e) / 32;
     int g = 10 + (186 * e) / 32;

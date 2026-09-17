@@ -119,6 +119,10 @@ This supersedes foreign-neighbor `+1` from F-015 / F-017 / F-020.
 
 A world whose standing assignment is a single plate (for example a 1×1 grid) has no foreign neighbor, so elevation stays 0.
 
+### Map display (F-022)
+
+The grid may be negative. The **UI** paints `e < 0` as ocean, hillshades land, and can show plates / overlay. Paint formulas live in [architecture.md](../architecture.md), not in this physics rule. Interior cells are unchanged **in the grid** even when the window shows ocean.
+
 ---
 
 ## Engine

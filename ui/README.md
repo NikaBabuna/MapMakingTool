@@ -13,9 +13,9 @@ Maven artifact `com.aethelgard:ui` — Aethelgard map view of product values.
 
 ## Headless logic
 
-`MapController` — `ProductSession`, `advance()` / `advanceAsync()`, elevation raster, busy status. **No Swing.** Covered by tests.
+`MapController` — `ProductSession`, layers, Advance / Play, `newWorld`, inspect, legend, busy status. **No Swing.** Covered by tests.
 
-`ElevationRaster` — packed RGB height ramp (F-018 formula).
+`ElevationRaster` — packed RGB for Elevation (ocean + hillshade), Plates, and Overlay (F-022 formulas).
 
 ## Interactive
 
@@ -34,6 +34,6 @@ mvnw -pl ui -am install -DskipTests
 mvnw -pl ui exec:java
 ```
 
-Window: 512×512 elevation raster (seed 0, Step 0) + **Advance**. Status **Working...** while compute runs off the EDT. Do not construct `JFrame` in tests.
+Window: dark 512×512 tool (seed 0, Step 0) with layers, Advance, Play/Pause, speed, seed + New world, inspect, legend. Status **Working...** while compute runs off the EDT. Console is F-023. Do not construct `JFrame` in tests.
 
 **Docs:** [docs/product/architecture.md](../docs/product/architecture.md)

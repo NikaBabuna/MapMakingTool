@@ -69,7 +69,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-021 orogeny; G-005 in progress) |
+| [architecture.md](architecture.md) | Active (roll-up; F-022 tool UI; G-005 in progress) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -81,7 +81,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; F-019 `ui`/`cli` → `product` |
+| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; F-022 `ui` tool; F-019 `cli` → `product` |
 | [specs/](engine/specs/) | Active — through G-002 (host-ready) |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open; #2a decided (ADR-009) |
 
@@ -93,12 +93,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-021 orogeny; F-019 `ProductSession`; map view in `ui` |
+| [architecture.md](product/architecture.md) | Active — F-022 tool UI; F-019 `ProductSession`; map view in `ui` |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | See the world (F-018); launch via `ui` (F-019); plates move (F-020); orogeny (F-021); G-005 tool UI / console planned |
-| [glossary.md](product/glossary.md) | Active — ProductSession (F-019); ElevationRaster in `ui` |
+| [flows.md](product/flows.md) | See the world (F-018); launch via `ui` (F-019); plates move (F-020); orogeny (F-021); tool UI (F-022); G-005 console planned |
+| [glossary.md](product/glossary.md) | Active — ProductSession (F-019); tool UI types in `ui` (F-022) |
 | [style-guide.md](product/style-guide.md) | Deferred |
-| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-021 orogeny) |
+| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-021 orogeny; F-022 display note) |
 
 ---
 
@@ -129,7 +129,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-019.md](blockers/F-019.md) | done — product session + UI/CLI house |
 | [F-020.md](blockers/F-020.md) | done — plate kinematics |
 | [F-021.md](blockers/F-021.md) | done — motion-based orogeny |
-| F-022–F-023 | planned — G-005 |
+| [F-022.md](blockers/F-022.md) | done — tool UI |
+| F-023 | planned — G-005 |
 
 ---
 

@@ -28,8 +28,13 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid, velocities). |
 | **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |
-| **ElevationRaster** | UI headless RGB image of an elevation grid; absolute height ramp, one pixel per cell (`com.aethelgard.ui`). |
-| **MapController** | UI headless map logic: `ProductSession`, Advance, raster, busy / `Working...` status. No Swing. |
+| **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |
+| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, busy / `Working...`. No Swing. |
+| **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. |
+| **MapSpeed** | Play tick period: Slow 1000 ms, Normal 250 ms, Fast 100 ms. |
+| **PlayScheduler** | Injected repeating ticks for Play. Production: `SwingPlayScheduler`. |
+| **CellInspect** | Click-inspect snapshot: x, y, elevation, plate id, vx, vy. |
+| **LegendEntry** | Headless legend row: packed RGB + label. |
 | **Seed** | Initial configuration that deterministically produces a world variant |
 | **Timeline** | Scrubbable history of world formation from simulation start to present |
 | **Guide mode** | User nudges specific features; simulation resolves the rest consistently |

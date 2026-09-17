@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-021 orogeny; F-020 kinematics; F-019 session + house; **G-005** in progress)  
+**Status:** active (F-022 tool UI; F-021 orogeny; F-019 session + house; **G-005** in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -56,22 +56,39 @@ cli →  product  →  engine
 
 ---
 
-## Map view (in `ui`, F-019)
+## Map view (in `ui`, F-022)
 
-The **UI** module paints product values. Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Advance runs **one** generation Step on a worker thread (not the Swing EDT) via `ProductSession`. While compute is in flight the status text is **Working...** and further Advances are ignored.
+The **UI** module paints product values. Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Dark tool chrome (`0x12141A`): layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect sidebar, legend. Advance and play ticks run **one** generation Step on a worker thread (not the Swing EDT) via `ProductSession`. While compute is in flight the status text is **Working...** and further Advances (and play ticks) are ignored. `newWorld(seed)` is ignored while busy. Console waits for F-023.
 
-Absolute height ramp lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division):
+Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB`. Same grids + layer → identical RGB.
+
+**Land ramp** (`e >= 0`, F-018; clamp 32):
 
 ```
-e = clamp(elevation, 0, 32)
+e = min(elevation, 32)
 R = 12 + (243 * e) / 32
 G = 10 + (186 * e) / 32
 B = 18 + (78 * e) / 32
 ```
 
-Packed as `0xRRGGBB`. Low is dark (12, 10, 18); high is warm light (255, 196, 96). Same elevation grid → identical RGB.
+**Ocean** (`e < 0`): constant `(18, 56, 92)` / `0x12385C`.
 
-`MapController` has no Swing types. `MapFrame` / `ProductApp` are interactive only (`com.aethelgard.ui`).
+**Hillshade** (Elevation and Overlay land cells; toroidal west/north). Ocean is not hillshaded. Flat land (`dw = dn = 0`) matches the land ramp.
+
+```
+dw = e(x,y) - e(x-1, y)
+dn = e(x,y) - e(x, y-1)
+lit = clamp(12 + 2*dw + 2*dn, 6, 18)
+c' = min(255, (c * lit) / 12)
+```
+
+**Plates:** `z = plateId * 0x9E3779B97F4A7C15`; `z ^= z >>> 30`; `R,G,B = 48 + ((z >>> shift) & 0x7F)` for shifts 0, 8, 16.
+
+**Overlay:** elevation paint, then each channel `c / 3` when plate id differs from toroidal east or south neighbor.
+
+Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused. Play uses an injected `PlayScheduler` (`SwingPlayScheduler` in `ProductApp`).
+
+`MapController` has no Swing types. `MapFrame` / `ProductApp` / `SwingPlayScheduler` are interactive only (`com.aethelgard.ui`).
 
 Launch from repo root: `run-product.cmd` or `run-ui.cmd` (`mvnw -pl ui -am install -DskipTests` then `mvnw -pl ui exec:java`).
 
@@ -79,7 +96,7 @@ Headless CLI: `cli` creates `ProductSession.ofDefault()`, `--steps N`, prints `s
 
 ---
 
-## Source layout (through F-021)
+## Source layout (through F-022)
 
 ```
 product/
@@ -114,7 +131,16 @@ product/
 ui/
   src/main/java/com/aethelgard/ui/
     ElevationRaster.java
+    MapLayer.java
+    MapSpeed.java
+    PlayScheduler.java
+    SwingPlayScheduler.java
+    CellInspect.java
+    LegendEntry.java
     MapController.java
     MapFrame.java
     ProductApp.java
+  src/test/java/com/aethelgard/ui/
+    MapViewTest.java
+    ToolUiTest.java
 ```

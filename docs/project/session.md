@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** F-021 Accepted
+**Status:** F-022 Accepted
 
 ---
 
 ## Session goal
 
-Accept **F-021** (motion-based orogeny: converge / diverge / transform; negative elevation).
+Accept **F-022** (tool UI: ocean, hillshade, layers, play, seed, inspect, legend).
 
 ---
 
@@ -29,23 +29,22 @@ Accept **F-021** (motion-based orogeny: converge / diverge / transform; negative
 
 | Step | Work | Status |
 |------|------|--------|
-| F-021 | Motion-based orogeny | done |
+| F-022 | Tool UI | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (129 tests, last Accept F-021)
+- [x] Incremental suite green (138 tests, last Accept F-022)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-022** (tool UI) job + FRs.
+1. Propose **F-023** (placeholder CLI + in-UI console) job + FRs.
 
 ## Notes
 
 - CLI commands are **placeholders**; do not bake verbs into product.
 - UI must include a **console** control that uses the same thin CLI layer (F-023).
-- Map still clamps elevation to `[0, 32]` until F-022 (negatives exist in the grid).

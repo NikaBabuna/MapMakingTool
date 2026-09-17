@@ -37,7 +37,7 @@ public final class ProductApp {
 
     SwingUtilities.invokeLater(
         () -> {
-          MapController controller = MapController.view(compute);
+          MapController controller = MapController.view(compute, new SwingPlayScheduler());
           MapFrame frame = new MapFrame(controller);
           frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
           frame.addWindowListener(

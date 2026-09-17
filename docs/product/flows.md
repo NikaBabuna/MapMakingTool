@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **See the world** (G-004 / F-018) is specified. **G-005 Living map** (session, tool UI, console, moving plates) is the active Goal — extend this file per Step. Explore / Guide / Timeline still await later Goals._
+_Status: **See the world** (G-004 / F-018) is specified. **G-005 Living map** — tool UI (F-022) specified; console (F-023) still planned. Explore / Guide / Timeline still await later Goals._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -21,10 +21,26 @@ Before production feature code, extend this file per [../process/quality.md](../
 |------|--------|
 | 1 | Launch `com.aethelgard.ui.ProductApp` (`run-product.cmd`). Window shows `WorldSpec.VIEW` (512×512, seed 0) at **Step 0** — a dark flat field (zero elevation). |
 | 2 | User clicks **Advance**. Status shows **Working...**; the button does not queue extra clicks. Compute runs off the Swing thread. |
-| 3 | When the Step settles, the map paints the new elevation raster (absolute height ramp) and status returns to `Step n`. Plates have drifted (F-020). Ridges and rifts follow **standing** converge / diverge (F-021). Negatives exist in the grid; the window still clamps to `[0, 32]` until F-022. |
+| 3 | When the Step settles, the map paints the current layer (ocean + hillshaded height, plates, or overlay). Status returns to `Step n`. Plates have drifted (F-020). Ridges and rifts follow **standing** converge / diverge (F-021). Elevation `< 0` paints ocean. |
 | 4 | Repeat Advance to grow suture ridges. No pan/zoom; one pixel per cell. |
 
 **Edges / failures:** Clicks while busy are ignored. Tests never construct `JFrame`. Dump fixture remains `WorldSpec.DEFAULT` 8×8.
+
+---
+
+## Flow: Tool window (layers, play, inspect)
+
+**Goal:** User reads relief and plates, lets time run, reseeds, and inspects a cell — without a console (F-023).
+
+| Step | Action |
+|------|--------|
+| 1 | Launch `ProductApp`. Dark window at `WorldSpec.VIEW` (512×512, seed 0), Step 0, **Elevation** layer, paused. Legend shows ocean / low / high. |
+| 2 | Switch **Plates** or **Overlay**. The world does not advance. Overlay darkens east/south plate contacts. |
+| 3 | **Play** (Slow / Normal / Fast) or **Advance**. Status is **Working...** while a Step is in flight; extra ticks are ignored. **Pause** stops the scheduler. |
+| 4 | Click a cell. **Inspect** shows x, y, elevation, plate id, velocity. Legend follows the current layer. |
+| 5 | Change **Seed** and **New world**. Session restarts at Step 0. Ignored while busy. |
+
+**Edges / failures:** Invalid seed text keeps the previous seed. No pan/zoom. No console. Tests never construct `JFrame`.
 
 ---
 

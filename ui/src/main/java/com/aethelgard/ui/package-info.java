@@ -5,5 +5,5 @@
  * Update when: Package role changes
  */
 
-/** Product map view — depends on {@code product}. Swing lives here, not in product. */
+/** Product map tool — depends on {@code product}. Swing lives here, not in product. */
 package com.aethelgard.ui;

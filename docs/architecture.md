@@ -19,7 +19,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — F-021 orogeny; F-020 kinematics; map view in `ui` |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-022 tool UI; F-021 orogeny; map view in `ui` |
 
 ---
 
@@ -38,8 +38,8 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
 | `cli/` | Active — F-019 (`com.aethelgard:cli`) |
-| `ui/` | Active — F-019 (`com.aethelgard:ui`) |
-| `product/` | Active — F-021 orogeny (`com.aethelgard:product`) |
+| `ui/` | Active — F-022 tool UI (`com.aethelgard:ui`) |
+| `product/` | Active — F-021 orogeny; map chrome in `ui` (`com.aethelgard:product`) |
 
 **One-way rule:** `ui` → `product` → `engine`; `cli` → `product` → `engine`. Engine never depends on siblings (ADR-010 / F-019). Details: [engine/architecture.md](engine/architecture.md) · [project/decisions.md](project/decisions.md).
 

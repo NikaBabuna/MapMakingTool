@@ -1,8 +1,8 @@
 /*
  * File: ui/src/main/java/com/aethelgard/ui/ElevationRaster.java
- * Purpose: Headless elevation → RGB raster (no Swing)
+ * Purpose: Headless map RGB raster — elevation, plates, overlay (no Swing)
  * Audience: MapController / tests
- * Update when: Height color ramp changes
+ * Update when: Paint formulas change
  */
 
 package com.aethelgard.ui;
@@ -12,18 +12,25 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Deterministic RGB image of an elevation {@link Grid}. One packed {@code 0xRRGGBB} per cell.
- * Absolute ramp: height 0 is dark; each +1 steps toward warm light; clamp at {@link #CLAMP}.
+ * Deterministic RGB image of a map layer. One packed {@code 0xRRGGBB} per cell.
+ *
+ * <p>Land ramp (F-018) for {@code e >= 0}; ocean for negatives; hillshade on land for Elevation and
+ * Overlay. Formulas: {@code docs/blockers/F-022.md} and product architecture.
  */
 public final class ElevationRaster {
 
   public static final int CLAMP = 32;
+  public static final int OCEAN_RGB = pack(18, 56, 92);
   public static final int DARK_R = 12;
   public static final int DARK_G = 10;
   public static final int DARK_B = 18;
   public static final int LIGHT_R = 255;
   public static final int LIGHT_G = 196;
   public static final int LIGHT_B = 96;
+  public static final int HILLSHADE_FLAT = 12;
+  public static final int HILLSHADE_MIN = 6;
+  public static final int HILLSHADE_MAX = 18;
+  public static final long PLATE_GOLDEN = 0x9E3779B97F4A7C15L;
 
   private final int width;
   private final int height;
@@ -35,31 +42,65 @@ public final class ElevationRaster {
     this.rgb = rgb;
   }
 
-  /** Raster of {@code elevation}; same geometry. */
+  /** Elevation layer (ocean + hillshaded land). */
   public static ElevationRaster of(Grid elevation) {
+    return paint(elevation, null, MapLayer.ELEVATION);
+  }
+
+  /** Raster of {@code elevation} and {@code plates} for {@code layer}. */
+  public static ElevationRaster paint(Grid elevation, Grid plates, MapLayer layer) {
     Objects.requireNonNull(elevation, "elevation");
+    Objects.requireNonNull(layer, "layer");
+    if (layer != MapLayer.ELEVATION) {
+      Objects.requireNonNull(plates, "plates");
+      if (plates.width() != elevation.width() || plates.height() != elevation.height()) {
+        throw new IllegalArgumentException(
+            "plates "
+                + plates.width()
+                + "x"
+                + plates.height()
+                + " != elevation "
+                + elevation.width()
+                + "x"
+                + elevation.height());
+      }
+    }
     int w = elevation.width();
     int h = elevation.height();
     int[][] cells = new int[h][w];
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
-        cells[y][x] = rgbOf(elevation.get(x, y));
+        cells[y][x] =
+            switch (layer) {
+              case ELEVATION -> elevationCell(elevation, x, y);
+              case PLATES -> plateRgb(plates.get(x, y));
+              case OVERLAY -> overlayCell(elevation, plates, x, y);
+            };
       }
     }
     return new ElevationRaster(cells);
   }
 
   /**
-   * Packed RGB for one height. Integer formula (truncating division):
+   * Unshaded cell color: ocean if {@code elevation < 0}, else land ramp (clamp 32).
    *
    * <pre>
-   *   e = clamp(elevation, 0, 32)
+   *   e = min(elevation, 32)   // when elevation &gt;= 0
    *   R = 12 + (243 * e) / 32
    *   G = 10 + (186 * e) / 32
    *   B = 18 + (78 * e) / 32
+   *   ocean = (18, 56, 92)
    * </pre>
    */
   public static int rgbOf(int elevation) {
+    if (elevation < 0) {
+      return OCEAN_RGB;
+    }
+    return landRamp(elevation);
+  }
+
+  /** F-018 land ramp; {@code elevation} is treated as {@code max(0, min(e, 32))}. */
+  public static int landRamp(int elevation) {
     int e = elevation;
     if (e < 0) {
       e = 0;
@@ -69,7 +110,85 @@ public final class ElevationRaster {
     int r = DARK_R + ((LIGHT_R - DARK_R) * e) / CLAMP;
     int g = DARK_G + ((LIGHT_G - DARK_G) * e) / CLAMP;
     int b = DARK_B + ((LIGHT_B - DARK_B) * e) / CLAMP;
-    return (r << 16) | (g << 8) | b;
+    return pack(r, g, b);
+  }
+
+  /**
+   * Plate-id color.
+   *
+   * <pre>
+   *   z = plateId * 0x9E3779B97F4A7C15
+   *   z = z XOR (z &gt;&gt;&gt; 30)
+   *   R = 48 + (z AND 0x7F)
+   *   G = 48 + ((z &gt;&gt;&gt; 8) AND 0x7F)
+   *   B = 48 + ((z &gt;&gt;&gt; 16) AND 0x7F)
+   * </pre>
+   */
+  public static int plateRgb(int plateId) {
+    long z = plateId * PLATE_GOLDEN;
+    z ^= (z >>> 30);
+    int r = 48 + (int) (z & 0x7F);
+    int g = 48 + (int) ((z >>> 8) & 0x7F);
+    int b = 48 + (int) ((z >>> 16) & 0x7F);
+    return pack(r, g, b);
+  }
+
+  public static int hillshadeLit(int dw, int dn) {
+    int lit = HILLSHADE_FLAT + 2 * dw + 2 * dn;
+    if (lit < HILLSHADE_MIN) {
+      return HILLSHADE_MIN;
+    }
+    if (lit > HILLSHADE_MAX) {
+      return HILLSHADE_MAX;
+    }
+    return lit;
+  }
+
+  public static int applyHillshade(int rgb, int lit) {
+    int r = Math.min(255, (((rgb >> 16) & 0xFF) * lit) / HILLSHADE_FLAT);
+    int g = Math.min(255, (((rgb >> 8) & 0xFF) * lit) / HILLSHADE_FLAT);
+    int b = Math.min(255, ((rgb & 0xFF) * lit) / HILLSHADE_FLAT);
+    return pack(r, g, b);
+  }
+
+  /** Overlay suture: each channel {@code c / 3}. */
+  public static int darken(int rgb) {
+    int r = ((rgb >> 16) & 0xFF) / 3;
+    int g = ((rgb >> 8) & 0xFF) / 3;
+    int b = (rgb & 0xFF) / 3;
+    return pack(r, g, b);
+  }
+
+  /**
+   * Elevation-layer pixel: ocean or hillshaded land. West/north neighbors wrap with {@code
+   * floorMod}.
+   */
+  public static int elevationCell(Grid elevation, int x, int y) {
+    int e = elevation.get(x, y);
+    if (e < 0) {
+      return OCEAN_RGB;
+    }
+    int rgb = landRamp(e);
+    int west = Math.floorMod(x - 1, elevation.width());
+    int north = Math.floorMod(y - 1, elevation.height());
+    int dw = e - elevation.get(west, y);
+    int dn = e - elevation.get(x, north);
+    return applyHillshade(rgb, hillshadeLit(dw, dn));
+  }
+
+  /**
+   * Overlay pixel: elevation paint, then darken if plate differs from toroidal east or south
+   * neighbor.
+   */
+  public static int overlayCell(Grid elevation, Grid plates, int x, int y) {
+    int rgb = elevationCell(elevation, x, y);
+    int id = plates.get(x, y);
+    int east = Math.floorMod(x + 1, plates.width());
+    int south = Math.floorMod(y + 1, plates.height());
+    if (id != plates.get(east, y) || id != plates.get(x, south)) {
+      return darken(rgb);
+    }
+    return rgb;
   }
 
   public int width() {
@@ -102,5 +221,9 @@ public final class ElevationRaster {
   @Override
   public int hashCode() {
     return Arrays.deepHashCode(rgb);
+  }
+
+  static int pack(int r, int g, int b) {
+    return (r << 16) | (g << 8) | b;
   }
 }

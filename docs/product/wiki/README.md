@@ -8,7 +8,7 @@ Per [../process/rules.md](../process/rules.md): do not leave domain content only
 
 ## Pages
 
-_Status: World / grid / layer (F-014). Elevation process (F-021 orogeny; F-020 kinematics)._
+_Status: World / grid / layer (F-014). Elevation process (F-021 orogeny; F-020 kinematics). Map display note (F-022)._
 
 | Page | Purpose |
 |------|---------|
