@@ -16,14 +16,15 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **WorldSpec** | Step 0 seed: grid width, height, and recorded generation seed. |
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
-| **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are collision uplift on standing plates. |
+| **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
 | **Plates** | Layer (`plates`) of integer plate ids; Step-0 Voronoi nearest-site assignment from seed (6–15 sites); kinematics advects after Step 0. |
 | **Plate velocity** | Constant field (`plate_velocity`) of per-site integer `(vx, vy)` in `{-1,0,1}`, seeded from `WorldSpec.seed`. |
-| **Suture** | Contact between different plate ids; 4-neighbor collision uplifts both sides of **standing** plates. |
+| **Suture** | Contact between different plate ids; toroidal 4-neighbor orogeny on **standing** plates. |
 | **Voronoi plates** | Each cell’s plate id is the nearest site (Euclidean); ties take the lower site index. Leftover cells after advection use the same rule on moved sites. |
-| **Collision uplift** | Generative rule: each generation Step, cells touching a foreign **standing** plate gain +1 elevation. |
+| **Collision uplift** | Retired (F-021). Replaced by orogeny. |
+| **Orogeny** | Generative rule: standing-plate toroidal contacts; converge +1, diverge −1, transform/interior 0. |
 | **Kinematics System** | Product `EngineSystem` (`kinematics`) that advects `plates` each generation Step. |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; collision uplift. |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-System `Orogeny`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid, velocities). |
 | **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |

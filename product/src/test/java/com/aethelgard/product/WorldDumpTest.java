@@ -53,7 +53,7 @@ class WorldDumpTest {
   }
 
   @Test
-  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches standing-plate collision")
+  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches standing orogeny")
   void stepZeroAndSutureRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
@@ -68,9 +68,9 @@ class WorldDumpTest {
     String risen = WorldDump.of(engine, spec);
     PlateVelocities vel = PlateVelocities.seed(0L);
     Grid p0 = plates;
-    Grid e1 = upliftTimes(p0, 1);
+    Grid e1 = Orogeny.apply(p0, vel, Grid.zeros(4, 2));
     Grid p1 = PlateKinematics.advect(p0, vel, 1);
-    Grid e2 = upliftOnce(p1, e1);
+    Grid e2 = Orogeny.apply(p1, vel, e1);
     Grid p2 = PlateKinematics.advect(p1, vel, 2);
     assertTrue(risen.contains("elevation:\n" + gridBlock(e2)));
     assertTrue(risen.contains("plates:\n" + gridBlock(p2)));
@@ -124,25 +124,6 @@ class WorldDumpTest {
       }
     }
     throw new IllegalStateException("repo root not found");
-  }
-
-  private static Grid upliftOnce(Grid plates, Grid elevation) {
-    int[][] next = new int[elevation.height()][elevation.width()];
-    for (int y = 0; y < elevation.height(); y++) {
-      for (int x = 0; x < elevation.width(); x++) {
-        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
-        next[y][x] = elevation.get(x, y) + bump;
-      }
-    }
-    return new Grid(next);
-  }
-
-  private static Grid upliftTimes(Grid plates, int steps) {
-    Grid elevation = Grid.zeros(plates.width(), plates.height());
-    for (int s = 0; s < steps; s++) {
-      elevation = upliftOnce(plates, elevation);
-    }
-    return elevation;
   }
 
   private static String gridBlock(Grid grid) {

@@ -1,7 +1,7 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/Plates.java
  * Purpose: Step-0 Voronoi plate partition from WorldSpec.seed
- * Audience: ProductHost / CollisionUplift / tests
+ * Audience: ProductHost / Orogeny / tests
  * Update when: Plate-seed geometry rule changes
  */
 

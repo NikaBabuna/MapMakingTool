@@ -102,19 +102,19 @@ class ElevationProcessTest {
   }
 
   @Test
-  @DisplayName("FR-5: collision +1 on standing Voronoi plates; same seed matches")
+  @DisplayName("FR-5: orogeny on standing plates; same seed matches")
   void collisionUpliftMatchesRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
     engine.advance(1);
-    assertEquals(upliftOnce(plates, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(Orogeny.apply(plates, vel, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
 
     Grid afterMove = PlateKinematics.advect(plates, vel, 1);
     engine.advance(1);
     assertEquals(
-        upliftOnce(afterMove, upliftOnce(plates, Grid.zeros(4, 2))),
+        Orogeny.apply(afterMove, vel, Orogeny.apply(plates, vel, Grid.zeros(4, 2))),
         engine.settled().field(WorldFields.ELEVATION));
 
     Engine a = ProductHost.create(new WorldSpec(8, 8, 7L));
@@ -132,7 +132,7 @@ class ElevationProcessTest {
     String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
     assertTrue(wiki.toLowerCase().contains("voronoi") || wiki.toLowerCase().contains("plate"));
     assertTrue(wiki.contains("world/tectonics") || wiki.toLowerCase().contains("tectonic"));
-    assertTrue(wiki.toLowerCase().contains("uplift") || wiki.contains("+1"));
+    assertTrue(wiki.toLowerCase().contains("orogeny") || wiki.toLowerCase().contains("converge"));
     assertTrue(wiki.contains("4-neighbor") || wiki.toLowerCase().contains("neighbor"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
@@ -148,17 +148,6 @@ class ElevationProcessTest {
     assertTrue(arch.contains("GenerationTickPolicy") || arch.toLowerCase().contains("emission"));
     assertTrue(arch.contains("plates"));
     assertTrue(arch.contains("EngineSystem") || arch.toLowerCase().contains("system"));
-  }
-
-  private static Grid upliftOnce(Grid plates, Grid elevation) {
-    int[][] next = new int[elevation.height()][elevation.width()];
-    for (int y = 0; y < elevation.height(); y++) {
-      for (int x = 0; x < elevation.width(); x++) {
-        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
-        next[y][x] = elevation.get(x, y) + bump;
-      }
-    }
-    return new Grid(next);
   }
 
   private static void assertZero(Grid grid) {

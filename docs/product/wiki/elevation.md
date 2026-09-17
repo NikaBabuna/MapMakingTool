@@ -1,15 +1,15 @@
 <!--
   File: docs/product/wiki/elevation.md
-  Purpose: Domain rule for Voronoi plates, kinematics, and collision-uplift elevation
+  Purpose: Domain rule for Voronoi plates, kinematics, and motion-based orogeny
   Audience: Agents and humans
   Update when: The elevation process changes
 -->
 
 # Elevation process
 
-Relief is **caused** by plates grinding at sutures. It is not painted at Step 0.
+Relief is **caused** by plates converging and diverging at sutures. It is not painted at Step 0.
 
-Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics / collision uplift** (writes `elevation`). They read the same standing Pool snapshot; neither sees the other's output this Step.
+Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics / orogeny** (writes `elevation`). They read the same standing Pool snapshot; neither sees the other's output this Step.
 
 ---
 
@@ -82,7 +82,7 @@ If every plate would be \((0, 0)\), plate `0` is forced to \((1, 0)\). Not every
 
 ---
 
-## Later Steps — kinematics then standing uplift
+## Later Steps — kinematics and standing orogeny
 
 Each generation Step (every `advance` after create) both Systems run against the **standing** plates from the previous Step.
 
@@ -101,13 +101,21 @@ Moved site \(i\) after \(G\) generation Steps:
 
 This supersedes “plates do not move” from G-004 / F-017.
 
-### Collision uplift (standing plates)
+### Orogeny (standing plates)
 
-1. Read standing `plates` and `elevation` (not this Step’s kinematics write).
-2. For every cell, if any **4-neighbor** (north, east, south, west) has a **different plate id**, that cell’s elevation increases by **1**.
-3. Write the new elevation grid.
+1. Read standing `plates`, `plate_velocity`, and `elevation` (not this Step’s kinematics write).
+2. For every cell, look at **toroidal 4-neighbors** (north, east, south, west; wrap with `floorMod`).
+3. A neighbor on a **different** plate is a contact. Let \(A\) be this cell’s plate, \(B\) the neighbor’s plate, and \(\mathbf{n}\) the outward unit normal toward that neighbor (`(1,0)` east, `(-1,0)` west, `(0,1)` south, `(0,-1)` north). Closing is \(\mathbf{n} \cdot (\mathbf{v}_A - \mathbf{v}_B)\):
+   - closing \(> 0\) — **converge**
+   - closing \(< 0\) — **diverge**
+   - closing \(= 0\) — **transform**
+4. The cell’s elevation change that Step is **one** integer:
+   - any converging foreign neighbor → `+1`
+   - else any diverging foreign neighbor → `−1`
+   - else `0` (interior, or only transform contacts)
+5. Write the new elevation grid. **No floor** — elevation may go negative. Interior cells stay at their previous height.
 
-Interior of each standing plate stays at its previous height until a later process. Motion-based orogeny (converge / diverge / transform) is **not** this rule — that waits for a later Step.
+This supersedes foreign-neighbor `+1` from F-015 / F-017 / F-020.
 
 A world whose standing assignment is a single plate (for example a 1×1 grid) has no foreign neighbor, so elevation stays 0.
 
@@ -115,4 +123,4 @@ A world whose standing assignment is a single plate (for example a 1×1 grid) ha
 
 ## Engine
 
-`ProductHost` wires the category tree, `GenerationTickPolicy` (no tick on Step 0), the kinematics `EngineSystem`, and the tectonics `EngineSystem`. Ordinary world rules do not edit `engine` source.
+`ProductHost` wires the category tree, `GenerationTickPolicy` (no tick on Step 0), the kinematics `EngineSystem`, and the tectonics `EngineSystem` (`Orogeny`). Ordinary world rules do not edit `engine` source.

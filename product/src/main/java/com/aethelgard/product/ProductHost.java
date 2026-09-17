@@ -25,14 +25,15 @@ import java.util.Objects;
  *
  * <p>F-020: schema includes {@link WorldFields#ELEVATION} (STATIC), {@link WorldFields#PLATES}
  * (STATIC), and {@link WorldFields#PLATE_VELOCITY} (CONSTANT). Kinematics and tectonics Systems
- * both claim {@code world/tectonics} after Step 0 via {@link GenerationTickPolicy}.
+ * both claim {@code world/tectonics} after Step 0 via {@link GenerationTickPolicy}. Tectonics runs
+ * {@link Orogeny}.
  */
 public final class ProductHost {
 
   /** Provenance / claimer id for the kinematics System. */
   public static final String KINEMATICS_SYSTEM_ID = "kinematics";
 
-  /** Provenance / claimer id for the tectonics (collision-uplift) System. */
+  /** Provenance / claimer id for the tectonics (orogeny) System. */
   public static final String TECTONICS_SYSTEM_ID = "tectonics";
 
   private ProductHost() {}
@@ -55,7 +56,7 @@ public final class ProductHost {
             new SystemConfig(
                 TECTONICS_SYSTEM_ID,
                 tree.get(ProductCategories.TECTONICS),
-                List.of(new CollisionUplift()),
+                List.of(new Orogeny()),
                 null));
     FieldSchema schema =
         FieldSchema.of(

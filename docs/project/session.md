@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** F-020 Accepted
+**Status:** F-021 Accepted
 
 ---
 
 ## Session goal
 
-Accept **F-020** (plate kinematics: velocities, advection, standing-plate uplift unchanged).
+Accept **F-021** (motion-based orogeny: converge / diverge / transform; negative elevation).
 
 ---
 
@@ -29,23 +29,23 @@ Accept **F-020** (plate kinematics: velocities, advection, standing-plate uplift
 
 | Step | Work | Status |
 |------|------|--------|
-| F-020 | Plate kinematics | done |
+| F-021 | Motion-based orogeny | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (123 tests, last Accept F-020)
+- [x] Incremental suite green (129 tests, last Accept F-021)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-021** (motion-based orogeny) job + FRs.
+1. Propose **F-022** (tool UI) job + FRs.
 
 ## Notes
 
 - CLI commands are **placeholders**; do not bake verbs into product.
 - UI must include a **console** control that uses the same thin CLI layer (F-023).
-- Elevation still uses foreign-neighbor `+1` on **standing** plates until F-021.
+- Map still clamps elevation to `[0, 32]` until F-022 (negatives exist in the grid).

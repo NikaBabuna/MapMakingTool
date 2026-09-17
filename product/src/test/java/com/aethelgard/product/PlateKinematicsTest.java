@@ -102,7 +102,7 @@ class PlateKinematicsTest {
   }
 
   @Test
-  @DisplayName("FR-4: elevation is standing-plate +1; kinematics output unused this Step")
+  @DisplayName("FR-4: elevation is standing-plate orogeny; kinematics output unused this Step")
   void standingPlateUpliftUnchanged() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
@@ -111,7 +111,7 @@ class PlateKinematicsTest {
     Grid elevation = Grid.zeros(8, 8);
     engine.advance(3);
     for (int g = 1; g <= 3; g++) {
-      elevation = upliftOnce(plates, elevation);
+      elevation = Orogeny.apply(plates, vel, elevation);
       plates = independentAdvect(plates, vel, g);
     }
     assertEquals(elevation, engine.settled().field(WorldFields.ELEVATION));
@@ -282,17 +282,6 @@ class PlateKinematicsTest {
     z = (z ^ (z >>> 30)) * SILVER;
     z = (z ^ (z >>> 27)) * BRONZE;
     return z ^ (z >>> 31);
-  }
-
-  private static Grid upliftOnce(Grid plates, Grid elevation) {
-    int[][] next = new int[elevation.height()][elevation.width()];
-    for (int y = 0; y < elevation.height(); y++) {
-      for (int x = 0; x < elevation.width(); x++) {
-        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
-        next[y][x] = elevation.get(x, y) + bump;
-      }
-    }
-    return new Grid(next);
   }
 
   private static void assertZero(Grid grid) {

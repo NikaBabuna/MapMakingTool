@@ -81,7 +81,7 @@ class VoronoiPlatesTest {
   }
 
   @Test
-  @DisplayName("FR-3: collision +1 on standing plates; kinematics moves plates")
+  @DisplayName("FR-3: orogeny on standing plates; kinematics moves plates")
   void collisionUpliftOnVoronoiSutures() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
@@ -91,7 +91,7 @@ class VoronoiPlatesTest {
     engine.advance(3);
     Grid standing = plates;
     for (int g = 1; g <= 3; g++) {
-      elevation = expectedUpliftOnce(standing, elevation);
+      elevation = Orogeny.apply(standing, vel, elevation);
       standing = PlateKinematics.advect(standing, vel, g);
     }
     assertEquals(elevation, engine.settled().field(WorldFields.ELEVATION));
@@ -173,17 +173,6 @@ class VoronoiPlatesTest {
     z = (z ^ (z >>> 30)) * SILVER;
     z = (z ^ (z >>> 27)) * BRONZE;
     return z ^ (z >>> 31);
-  }
-
-  private static Grid expectedUpliftOnce(Grid plates, Grid elevation) {
-    int[][] next = new int[plates.height()][plates.width()];
-    for (int y = 0; y < plates.height(); y++) {
-      for (int x = 0; x < plates.width(); x++) {
-        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
-        next[y][x] = elevation.get(x, y) + bump;
-      }
-    }
-    return new Grid(next);
   }
 
   private static void assertIdsInRange(Grid plates, int n) {

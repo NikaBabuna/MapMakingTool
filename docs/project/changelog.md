@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-17** — **F-021:** motion-based orogeny (converge / diverge / transform; negative elevation). Foreign-neighbor `+1` retired.
 - **2026-09-17** — **F-020:** plate kinematics (`plate_velocity` CONSTANT; `plates` STATIC advection). Elevation still standing-plate `+1` until F-021.
 - **2026-09-17** — **F-019:** `ProductSession`; `ui`/`cli` depend on `product`; map window in `ui` (ADR-010).
 - **2026-09-17** — **G-005** Living map Goal registered; Steps F-019–F-023 planned. **ADR-010:** `ui`/`cli` depend on `product`; in-UI console; CLI commands are placeholders.

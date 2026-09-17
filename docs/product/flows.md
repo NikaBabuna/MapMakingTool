@@ -21,7 +21,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 |------|--------|
 | 1 | Launch `com.aethelgard.ui.ProductApp` (`run-product.cmd`). Window shows `WorldSpec.VIEW` (512×512, seed 0) at **Step 0** — a dark flat field (zero elevation). |
 | 2 | User clicks **Advance**. Status shows **Working...**; the button does not queue extra clicks. Compute runs off the Swing thread. |
-| 3 | When the Step settles, the map paints the new elevation raster (absolute height ramp) and status returns to `Step n`. Plates have drifted (F-020); ridges still follow **standing** sutures until F-021. |
+| 3 | When the Step settles, the map paints the new elevation raster (absolute height ramp) and status returns to `Step n`. Plates have drifted (F-020). Ridges and rifts follow **standing** converge / diverge (F-021). Negatives exist in the grid; the window still clamps to `[0, 32]` until F-022. |
 | 4 | Repeat Advance to grow suture ridges. No pan/zoom; one pixel per cell. |
 
 **Edges / failures:** Clicks while busy are ignored. Tests never construct `JFrame`. Dump fixture remains `WorldSpec.DEFAULT` 8×8.

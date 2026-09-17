@@ -34,7 +34,7 @@ Current layers:
 
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
-| `elevation` | every cell `0` | collision uplift on **standing** plates — [elevation.md](elevation.md) |
+| `elevation` | every cell `0` | orogeny from standing-plate motion — [elevation.md](elevation.md) |
 | `plates` | Voronoi nearest-site ids from seed (6–15 sites) | kinematics advection (Static) |
 | `plate_velocity` | per-site `(vx, vy)` in `{-1,0,1}` from seed | unchanged (Constant) |
 
