@@ -14,7 +14,7 @@ import com.aethelgard.engine.event.CategoryTree;
  */
 public final class ProductCategories {
 
-  /** Generation tick claimed by the tectonics System. */
+  /** Generation tick claimed by kinematics and tectonics Systems. */
   public static final String TECTONICS = "world/tectonics";
 
   private ProductCategories() {}

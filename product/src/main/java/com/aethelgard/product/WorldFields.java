@@ -13,8 +13,11 @@ public final class WorldFields {
   /** Elevation layer — {@link Grid} of {@code int} cells. */
   public static final String ELEVATION = "elevation";
 
-  /** Plate-id layer — {@link Grid} of {@code int} cells; Step-0 seed for tectonics. */
+  /** Plate-id layer — {@link Grid} of {@code int} cells; STATIC after F-020 (kinematics writes). */
   public static final String PLATES = "plates";
+
+  /** Per-plate integer velocities — {@link PlateVelocities}; CONSTANT after seed. */
+  public static final String PLATE_VELOCITY = "plate_velocity";
 
   private WorldFields() {}
 }

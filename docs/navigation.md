@@ -69,7 +69,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-019 session; G-005 in progress) |
+| [architecture.md](architecture.md) | Active (roll-up; F-020 kinematics; F-019 session; G-005 in progress) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -93,12 +93,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-019 `ProductSession`; map view in `ui` |
+| [architecture.md](product/architecture.md) | Active — F-020 kinematics; F-019 `ProductSession`; map view in `ui` |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | See the world (F-018); launch via `ui` (F-019); G-005 living-map flows planned |
+| [flows.md](product/flows.md) | See the world (F-018); launch via `ui` (F-019); plates move (F-020); G-005 tool UI / console planned |
 | [glossary.md](product/glossary.md) | Active — ProductSession (F-019); ElevationRaster in `ui` |
 | [style-guide.md](product/style-guide.md) | Deferred |
-| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-017 Voronoi) |
+| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-020 kinematics) |
 
 ---
 
@@ -127,7 +127,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-017.md](blockers/F-017.md) | done — Voronoi multi-plate tectonics |
 | [F-018.md](blockers/F-018.md) | done — large colored map UI |
 | [F-019.md](blockers/F-019.md) | done — product session + UI/CLI house |
-| F-020–F-023 | planned — G-005 |
+| [F-020.md](blockers/F-020.md) | done — plate kinematics |
+| F-021–F-023 | planned — G-005 |
 
 ---
 

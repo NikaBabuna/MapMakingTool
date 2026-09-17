@@ -12,7 +12,8 @@ import com.aethelgard.engine.pool.PoolComputeContext;
 
 /**
  * Product emission policy: fire {@link ProductCategories#TECTONICS} on every Pool update after Step
- * 0. Step 0 is {@code updateCount == 1}; generation starts at {@code 2}.
+ * 0 (kinematics + collision uplift). Step 0 is {@code updateCount == 1}; generation starts at {@code
+ * 2}.
  */
 public final class GenerationTickPolicy implements EventEmissionPolicy {
 

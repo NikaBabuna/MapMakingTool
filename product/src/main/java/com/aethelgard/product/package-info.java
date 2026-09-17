@@ -10,9 +10,9 @@
  *
  * <p>Depends on {@code com.aethelgard.engine}. Must not be depended on by the engine. {@code ui}
  * and {@code cli} depend on this package (ADR-010). World state is Pool fields {@code elevation}
- * and {@code plates} ({@link com.aethelgard.product.Grid}). Generation is a product {@code
- * EngineSystem} on category {@code world/tectonics}. {@link
- * com.aethelgard.product.ProductSession} owns a run. {@link com.aethelgard.product.WorldDump}
- * formats a settled snapshot.
+ * and {@code plates} ({@link com.aethelgard.product.Grid}), plus CONSTANT {@code plate_velocity}.
+ * Generation is product {@code EngineSystem}s on category {@code world/tectonics} (kinematics +
+ * collision uplift). {@link com.aethelgard.product.ProductSession} owns a run. {@link
+ * com.aethelgard.product.WorldDump} formats a settled snapshot.
  */
 package com.aethelgard.product;

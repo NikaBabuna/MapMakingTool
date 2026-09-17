@@ -19,7 +19,7 @@
 | **engine** | `com.aethelgard:engine` | Pool-System Framework | Active — G-002 host ports |
 | **cli** | `com.aethelgard:cli` | Headless product session runner | Active — F-019 |
 | **ui** | `com.aethelgard:ui` | Aethelgard map view | Active — F-019 |
-| **product** | `com.aethelgard:product` | Aethelgard domain host + session | Active — F-019 |
+| **product** | `com.aethelgard:product` | Aethelgard domain host + session | Active — F-020 |
 
 Parent aggregator: `com.aethelgard:aethelgard` (`packaging` `pom`) at repo root.
 

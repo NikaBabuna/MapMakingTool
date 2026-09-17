@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  * Reads standing {@code plates} and {@code elevation}; writes a new elevation grid. Cells with a
- * 4-neighbor on a different plate gain {@code +1}.
+ * 4-neighbor on a different plate gain {@code +1}. Does not see kinematics output in the same Step.
  */
 public final class CollisionUplift implements SubSystem {
 

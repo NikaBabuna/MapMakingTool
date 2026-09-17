@@ -74,6 +74,12 @@ public final class ProductSession {
     }
   }
 
+  public PlateVelocities plateVelocities() {
+    synchronized (lock) {
+      return (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
+    }
+  }
+
   /** Headless snapshot ({@link WorldDump}); same lock as {@link #advance(int)}. */
   public String settledWorld() {
     synchronized (lock) {

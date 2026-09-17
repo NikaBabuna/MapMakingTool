@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-019 session + house; F-017 Voronoi plates; **G-005** in progress)  
+**Status:** active (F-020 kinematics; F-019 session + house; **G-005** in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -35,24 +35,24 @@ cli →  product  →  engine
 
 ---
 
-## Session (F-019)
+## Session (F-019) and kinematics (F-020)
 
 `ProductSession` owns one `Engine` created via `ProductHost`. Callers **advance** and **read grids** through the session. Advances are **serialized** (one lock). Not a command parser — no CLI verb names.
 
-| Piece | F-019 |
+| Piece | F-020 |
 |-------|--------|
-| Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.CONSTANT` |
-| Values | Immutable `Grid` of `int` cells |
-| Create | `ProductHost.create(WorldSpec)` / `new ProductSession(spec)` seeds **zero** elevation and a **Voronoi** `plates` grid from `seed` (6–15 sites) |
+| Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.STATIC`; `plate_velocity` → `FieldType.CONSTANT` |
+| Values | Immutable `Grid` of `int` cells; `PlateVelocities` per-site `(vx, vy)` |
+| Create | `ProductHost.create(WorldSpec)` / `new ProductSession(spec)` seeds **zero** elevation, a **Voronoi** `plates` grid, and CONSTANT velocities from `seed` (6–15 sites) |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (512×512, seed `0`) — map window launch spec |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
-| System | `EngineSystem` id `tectonics`, assigned `world/tectonics`, Sub-System `CollisionUplift` |
-| Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. |
-| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates; canonical golden is DEFAULT + `advance(3)` |
+| Systems | `kinematics` (Sub-System `PlateKinematics`) and `tectonics` (Sub-System `CollisionUplift`); same snapshot; neither sees the other this Step |
+| Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
+| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places Voronoi plate sites (`N = 6 + floorMod(seed, 10)`). Each cell takes the nearest site (Euclidean); ties take the lower site index. The seed is not a Pool field.
+`WorldSpec.seed` places Voronoi plate sites (`N = 6 + floorMod(seed, 10)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (Euclidean); ties take the lower site index. After Step 0, kinematics advects ownership (toroidal wrap; leftover cells nearest moved site). Collision uplift still uses **standing** plates (foreign-neighbor `+1`). The seed is not its own Pool field.
 
 ---
 
@@ -79,7 +79,7 @@ Headless CLI: `cli` creates `ProductSession.ofDefault()`, `--steps N`, prints `s
 
 ---
 
-## Source layout (through F-019)
+## Source layout (through F-020)
 
 ```
 product/
@@ -94,6 +94,8 @@ product/
     WorldFields.java
     Grid.java
     Plates.java
+    PlateVelocities.java
+    PlateKinematics.java
     GenerationTickPolicy.java
     CollisionUplift.java
     WorldDump.java
@@ -104,6 +106,7 @@ product/
     ElevationProcessTest.java
     VoronoiPlatesTest.java
     WorldDumpTest.java
+    PlateKinematicsTest.java
   src/test/resources/worlds/
     default-n3.txt
 

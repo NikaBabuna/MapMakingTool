@@ -1,6 +1,6 @@
 <!--
   File: docs/product/wiki/elevation.md
-  Purpose: Domain rule for Voronoi plates seed and collision-uplift elevation
+  Purpose: Domain rule for Voronoi plates, kinematics, and collision-uplift elevation
   Audience: Agents and humans
   Update when: The elevation process changes
 -->
@@ -9,15 +9,17 @@
 
 Relief is **caused** by plates grinding at sutures. It is not painted at Step 0.
 
-Category: `world/tectonics`. The product emission policy ticks this category after Step 0. A tectonics System claims the tick and applies the rule below.
+Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics / collision uplift** (writes `elevation`). They read the same standing Pool snapshot; neither sees the other's output this Step.
 
 ---
 
-## Step 0 — plates
+## Step 0 — plates and velocities
 
 A **plates** layer (same width and height as elevation) stores an integer **plate id** per cell.
 
 Plate count and sites are a deterministic function of `WorldSpec.seed`. Each cell belongs to the **nearest site** (Voronoi). This supersedes the G-003 two-plate vertical suture.
+
+A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **Constant** after seed. `plates` is **Static** (kinematics rewrites ownership after Step 0).
 
 ### Count
 
@@ -65,24 +67,52 @@ For each cell \((x, y)\), take the site \(i\) with the smallest **Euclidean** di
 
 The cell’s plate id is that site index.
 
-**Elevation at Step 0 is still every cell `0`.** Plates are initial conditions. The seed is used only to place sites; it is not stored as its own Pool field.
+**Elevation at Step 0 is still every cell `0`.** Plates and velocities are initial conditions. The seed is used to place sites and velocities; it is not stored as its own Pool field (the Constant `plate_velocity` object records the seed so kinematics can move sites).
+
+### Velocities
+
+Each site \(i\) gets integer components in `{-1, 0, 1}`:
+
+- \(v_{x,i} = \mathrm{floorMod}(\mathrm{mix}(\mathrm{seed}, i, 2), 3) - 1\)
+- \(v_{y,i} = \mathrm{floorMod}(\mathrm{mix}(\mathrm{seed}, i, 3), 3) - 1\)
+
+Axis `2` is \(v_x\); axis `3` is \(v_y\).
+
+If every plate would be \((0, 0)\), plate `0` is forced to \((1, 0)\). Not every plate is stationary.
 
 ---
 
-## Later Steps — collision uplift
+## Later Steps — kinematics then standing uplift
 
-Each generation Step (every `advance` after create):
+Each generation Step (every `advance` after create) both Systems run against the **standing** plates from the previous Step.
 
-1. Read standing `plates` and `elevation`.
+### Kinematics (advection)
+
+Generation index \(G\) is `1` on the first tectonics tick, `2` on the next, and so on (Pool heartbeat value after that Step’s update, minus one, under the default host compute).
+
+1. Translate each cell by its plate’s \((v_x, v_y)\) with **toroidal wrap**: \(x' = \mathrm{floorMod}(x + v_x, \mathrm{width})\), same for \(y\).
+2. If exactly one cell claims a destination, that destination keeps the claimant’s plate id.
+3. Leftover cells (zero claimants or two or more) take the **nearest moved site**, Euclidean, lower index on ties — the same rule as Step-0 Voronoi.
+
+Moved site \(i\) after \(G\) generation Steps:
+
+- \(x_i(G) = \mathrm{floorMod}(x_i + G \cdot v_{x,i}, \mathrm{width})\)
+- \(y_i(G) = \mathrm{floorMod}(y_i + G \cdot v_{y,i}, \mathrm{height})\)
+
+This supersedes “plates do not move” from G-004 / F-017.
+
+### Collision uplift (standing plates)
+
+1. Read standing `plates` and `elevation` (not this Step’s kinematics write).
 2. For every cell, if any **4-neighbor** (north, east, south, west) has a **different plate id**, that cell’s elevation increases by **1**.
-3. Write the new elevation grid. Plates do not move.
+3. Write the new elevation grid.
 
-Interior of each plate stays at its previous height (0 until a later process). Cells that touch a foreign plate form ridges of height \(n\) after \(n\) generation Steps.
+Interior of each standing plate stays at its previous height until a later process. Motion-based orogeny (converge / diverge / transform) is **not** this rule — that waits for a later Step.
 
-A world whose Voronoi assignment is a single plate (for example a 1×1 grid) has no foreign neighbor, so elevation stays 0.
+A world whose standing assignment is a single plate (for example a 1×1 grid) has no foreign neighbor, so elevation stays 0.
 
 ---
 
 ## Engine
 
-`ProductHost` wires the category tree, `GenerationTickPolicy` (no tick on Step 0), and the tectonics `EngineSystem`. Ordinary world rules do not edit `engine` source.
+`ProductHost` wires the category tree, `GenerationTickPolicy` (no tick on Step 0), the kinematics `EngineSystem`, and the tectonics `EngineSystem`. Ordinary world rules do not edit `engine` source.

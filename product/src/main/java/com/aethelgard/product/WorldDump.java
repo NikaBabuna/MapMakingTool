@@ -11,8 +11,8 @@ import com.aethelgard.engine.pool.Engine;
 import java.util.Objects;
 
 /**
- * Formats settled world state as a stable text snapshot (header, elevation, plates). Same fields
- * always produce the same string.
+ * Formats settled world state as a stable text snapshot (header, elevation, plates, velocities).
+ * Same fields always produce the same string.
  */
 public final class WorldDump {
 
@@ -30,7 +30,9 @@ public final class WorldDump {
     Objects.requireNonNull(spec, "spec");
     Grid elevation = (Grid) engine.settled().field(WorldFields.ELEVATION);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
-    return format(spec, engine.stepIndex(), elevation, plates);
+    PlateVelocities velocities =
+        (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
+    return format(spec, engine.stepIndex(), elevation, plates, velocities);
   }
 
   /**
@@ -39,9 +41,20 @@ public final class WorldDump {
    * @param steps last completed Step index (0 after create)
    */
   public static String format(WorldSpec spec, int steps, Grid elevation, Grid plates) {
+    return format(spec, steps, elevation, plates, PlateVelocities.seed(spec.seed()));
+  }
+
+  /**
+   * Stable snapshot. Lines use {@code \n}. Ends with a trailing newline.
+   *
+   * @param steps last completed Step index (0 after create)
+   */
+  public static String format(
+      WorldSpec spec, int steps, Grid elevation, Grid plates, PlateVelocities velocities) {
     Objects.requireNonNull(spec, "spec");
     Objects.requireNonNull(elevation, "elevation");
     Objects.requireNonNull(plates, "plates");
+    Objects.requireNonNull(velocities, "velocities");
     if (steps < 0) {
       throw new IllegalArgumentException("steps must be >= 0, was " + steps);
     }
@@ -61,6 +74,10 @@ public final class WorldDump {
     appendGrid(out, elevation);
     out.append("plates:\n");
     appendGrid(out, plates);
+    out.append("plate_velocity:\n");
+    for (int i = 0; i < velocities.count(); i++) {
+      out.append(velocities.vx(i)).append(' ').append(velocities.vy(i)).append('\n');
+    }
     return out.toString();
   }
 

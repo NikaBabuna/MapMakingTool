@@ -20,13 +20,13 @@ It is not the engine heartbeat counter. It lives in Pool typed fields that `Prod
 - Both must be at least 1.
 - Geometry is shared: every layer has the same width and height.
 
-A `WorldSpec` also records a long **seed**. The seed places Step-0 **Voronoi plate sites**. It does not paint elevation.
+A `WorldSpec` also records a long **seed**. The seed places Step-0 **Voronoi plate sites** and per-plate velocities. It does not paint elevation.
 
 ---
 
 ## Layer
 
-A **layer** is one named field on the Pool whose value is a `Grid` of the world geometry.
+A **layer** is one named field on the Pool. Grid layers (`elevation`, `plates`) share world geometry. `plate_velocity` is a per-site object, not a grid.
 
 Later climate (rainfall, temperature, …) is more layers of the same shape, not a second world object.
 
@@ -34,8 +34,9 @@ Current layers:
 
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
-| `elevation` | every cell `0` | collision uplift — [elevation.md](elevation.md) |
-| `plates` | Voronoi nearest-site ids from seed (6–15 sites) | unchanged (Constant) |
+| `elevation` | every cell `0` | collision uplift on **standing** plates — [elevation.md](elevation.md) |
+| `plates` | Voronoi nearest-site ids from seed (6–15 sites) | kinematics advection (Static) |
+| `plate_velocity` | per-site `(vx, vy)` in `{-1,0,1}` from seed | unchanged (Constant) |
 
 ---
 

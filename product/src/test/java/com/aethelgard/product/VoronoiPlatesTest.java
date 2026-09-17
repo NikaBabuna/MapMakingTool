@@ -81,14 +81,22 @@ class VoronoiPlatesTest {
   }
 
   @Test
-  @DisplayName("FR-3: collision +1 on Voronoi sutures; plates stay Constant")
+  @DisplayName("FR-3: collision +1 on standing plates; kinematics moves plates")
   void collisionUpliftOnVoronoiSutures() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
+    PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
+    Grid elevation = Grid.zeros(8, 8);
     engine.advance(3);
-    assertEquals(expectedElevation(plates, 3), engine.settled().field(WorldFields.ELEVATION));
-    assertEquals(plates, engine.settled().field(WorldFields.PLATES));
+    Grid standing = plates;
+    for (int g = 1; g <= 3; g++) {
+      elevation = expectedUpliftOnce(standing, elevation);
+      standing = PlateKinematics.advect(standing, vel, g);
+    }
+    assertEquals(elevation, engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(standing, engine.settled().field(WorldFields.PLATES));
+    assertNotEquals(plates, engine.settled().field(WorldFields.PLATES));
 
     Engine tiny = ProductHost.create(new WorldSpec(1, 1, 0L));
     tiny.advance(5);
@@ -167,20 +175,15 @@ class VoronoiPlatesTest {
     return z ^ (z >>> 31);
   }
 
-  private static Grid expectedElevation(Grid plates, int steps) {
-    int[][] cells = new int[plates.height()][plates.width()];
-    Grid elevation = new Grid(cells);
-    for (int s = 0; s < steps; s++) {
-      int[][] next = new int[plates.height()][plates.width()];
-      for (int y = 0; y < plates.height(); y++) {
-        for (int x = 0; x < plates.width(); x++) {
-          int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
-          next[y][x] = elevation.get(x, y) + bump;
-        }
+  private static Grid expectedUpliftOnce(Grid plates, Grid elevation) {
+    int[][] next = new int[plates.height()][plates.width()];
+    for (int y = 0; y < plates.height(); y++) {
+      for (int x = 0; x < plates.width(); x++) {
+        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
+        next[y][x] = elevation.get(x, y) + bump;
       }
-      elevation = new Grid(next);
     }
-    return elevation;
+    return new Grid(next);
   }
 
   private static void assertIdsInRange(Grid plates, int n) {

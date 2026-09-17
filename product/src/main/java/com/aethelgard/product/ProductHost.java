@@ -23,19 +23,33 @@ import java.util.Objects;
  * Product entry for constructing an {@link Engine}. Setup is owned here so later Steps can add
  * schema and Systems without callers talking to engine defaults directly.
  *
- * <p>F-015/F-017: schema includes {@link WorldFields#ELEVATION} and {@link WorldFields#PLATES}; a
- * tectonics {@link EngineSystem} runs after Step 0 via {@link GenerationTickPolicy}.
+ * <p>F-020: schema includes {@link WorldFields#ELEVATION} (STATIC), {@link WorldFields#PLATES}
+ * (STATIC), and {@link WorldFields#PLATE_VELOCITY} (CONSTANT). Kinematics and tectonics Systems
+ * both claim {@code world/tectonics} after Step 0 via {@link GenerationTickPolicy}.
  */
 public final class ProductHost {
 
-  /** Provenance / claimer id for the tectonics System. */
+  /** Provenance / claimer id for the kinematics System. */
+  public static final String KINEMATICS_SYSTEM_ID = "kinematics";
+
+  /** Provenance / claimer id for the tectonics (collision-uplift) System. */
   public static final String TECTONICS_SYSTEM_ID = "tectonics";
 
   private ProductHost() {}
 
-  /** Product {@link EngineSetup}: world fields, category tree, generation tick, tectonics System. */
+  /**
+   * Product {@link EngineSetup}: world fields, category tree, generation tick, kinematics +
+   * tectonics Systems.
+   */
   public static EngineSetup setup() {
     CategoryTree tree = ProductCategories.tree();
+    EngineSystem kinematics =
+        new EngineSystem(
+            new SystemConfig(
+                KINEMATICS_SYSTEM_ID,
+                tree.get(ProductCategories.TECTONICS),
+                List.of(new PlateKinematics()),
+                null));
     EngineSystem tectonics =
         new EngineSystem(
             new SystemConfig(
@@ -47,11 +61,12 @@ public final class ProductHost {
         FieldSchema.of(
             Map.of(
                 WorldFields.ELEVATION, FieldType.STATIC,
-                WorldFields.PLATES, FieldType.CONSTANT));
+                WorldFields.PLATES, FieldType.STATIC,
+                WorldFields.PLATE_VELOCITY, FieldType.CONSTANT));
     return new EngineSetup(
         tree,
         List.of(),
-        List.of(tectonics),
+        List.of(kinematics, tectonics),
         schema,
         null,
         null,
@@ -66,8 +81,9 @@ public final class ProductHost {
   }
 
   /**
-   * Creates a run from {@code spec}: seeds {@code elevation} as a zero grid and Voronoi {@code plates}
-   * from {@code spec.seed()}. Completes Step 0 (no generation tick).
+   * Creates a run from {@code spec}: seeds {@code elevation} as a zero grid, Voronoi {@code plates}
+   * from {@code spec.seed()}, and CONSTANT {@code plate_velocity}. Completes Step 0 (no generation
+   * tick).
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */
@@ -75,11 +91,15 @@ public final class ProductHost {
     Objects.requireNonNull(spec, "spec");
     Grid elevation = Grid.zeros(spec.width(), spec.height());
     Grid plates = Plates.seed(spec.width(), spec.height(), spec.seed());
+    PlateVelocities velocities = PlateVelocities.seed(spec.seed());
     EngineConfig config =
         new EngineConfig(
             0L,
             List.of(),
-            Map.of(WorldFields.ELEVATION, elevation, WorldFields.PLATES, plates));
+            Map.of(
+                WorldFields.ELEVATION, elevation,
+                WorldFields.PLATES, plates,
+                WorldFields.PLATE_VELOCITY, velocities));
     return Engine.create(config, setup());
   }
 }

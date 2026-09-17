@@ -33,6 +33,7 @@ class WorldDumpTest {
     assertTrue(a.startsWith("world w=4 h=2 seed=0 steps=2\n"));
     assertTrue(a.contains("elevation:\n"));
     assertTrue(a.contains("plates:\n"));
+    assertTrue(a.contains("plate_velocity:\n"));
     assertTrue(a.endsWith("\n"));
   }
 
@@ -52,7 +53,7 @@ class WorldDumpTest {
   }
 
   @Test
-  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches collision on Voronoi plates")
+  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches standing-plate collision")
   void stepZeroAndSutureRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
@@ -61,12 +62,18 @@ class WorldDumpTest {
     assertTrue(zero.contains("elevation:\n0 0 0 0\n0 0 0 0\n"));
     Grid plates = Plates.seed(4, 2, 0L);
     assertTrue(zero.contains("plates:\n" + gridBlock(plates)));
+    assertTrue(zero.contains("plate_velocity:\n"));
 
     engine.advance(2);
     String risen = WorldDump.of(engine, spec);
-    Grid expected = upliftTimes(plates, 2);
-    assertTrue(risen.contains("elevation:\n" + gridBlock(expected)));
-    assertTrue(risen.contains("plates:\n" + gridBlock(plates)));
+    PlateVelocities vel = PlateVelocities.seed(0L);
+    Grid p0 = plates;
+    Grid e1 = upliftTimes(p0, 1);
+    Grid p1 = PlateKinematics.advect(p0, vel, 1);
+    Grid e2 = upliftOnce(p1, e1);
+    Grid p2 = PlateKinematics.advect(p1, vel, 2);
+    assertTrue(risen.contains("elevation:\n" + gridBlock(e2)));
+    assertTrue(risen.contains("plates:\n" + gridBlock(p2)));
   }
 
   @Test
@@ -119,17 +126,21 @@ class WorldDumpTest {
     throw new IllegalStateException("repo root not found");
   }
 
+  private static Grid upliftOnce(Grid plates, Grid elevation) {
+    int[][] next = new int[elevation.height()][elevation.width()];
+    for (int y = 0; y < elevation.height(); y++) {
+      for (int x = 0; x < elevation.width(); x++) {
+        int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
+        next[y][x] = elevation.get(x, y) + bump;
+      }
+    }
+    return new Grid(next);
+  }
+
   private static Grid upliftTimes(Grid plates, int steps) {
     Grid elevation = Grid.zeros(plates.width(), plates.height());
     for (int s = 0; s < steps; s++) {
-      int[][] next = new int[plates.height()][plates.width()];
-      for (int y = 0; y < plates.height(); y++) {
-        for (int x = 0; x < plates.width(); x++) {
-          int bump = Plates.hasForeignNeighbor(plates, x, y) ? 1 : 0;
-          next[y][x] = elevation.get(x, y) + bump;
-        }
-      }
-      elevation = new Grid(next);
+      elevation = upliftOnce(plates, elevation);
     }
     return elevation;
   }

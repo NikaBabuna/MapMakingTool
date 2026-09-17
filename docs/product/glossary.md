@@ -15,15 +15,17 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **ProductSession** | In-process owner of one run: serialized `advance`, read elevation/plates, settled dump. No Swing. Not a CLI parser. |
 | **WorldSpec** | Step 0 seed: grid width, height, and recorded generation seed. |
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
-| **Layer** | Named Pool field whose value is a `Grid` of the world geometry. |
-| **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are collision uplift. |
-| **Plates** | Layer (`plates`) of integer plate ids; Step-0 Voronoi nearest-site assignment from seed (6–15 sites). |
-| **Suture** | Contact between different plate ids; 4-neighbor collision uplifts both sides. |
-| **Voronoi plates** | Each cell’s plate id is the nearest site (Euclidean); ties take the lower site index. |
-| **Collision uplift** | Generative rule: each generation Step, cells touching a foreign plate gain +1 elevation. |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`. |
-| **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0. |
-| **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid). |
+| **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
+| **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are collision uplift on standing plates. |
+| **Plates** | Layer (`plates`) of integer plate ids; Step-0 Voronoi nearest-site assignment from seed (6–15 sites); kinematics advects after Step 0. |
+| **Plate velocity** | Constant field (`plate_velocity`) of per-site integer `(vx, vy)` in `{-1,0,1}`, seeded from `WorldSpec.seed`. |
+| **Suture** | Contact between different plate ids; 4-neighbor collision uplifts both sides of **standing** plates. |
+| **Voronoi plates** | Each cell’s plate id is the nearest site (Euclidean); ties take the lower site index. Leftover cells after advection use the same rule on moved sites. |
+| **Collision uplift** | Generative rule: each generation Step, cells touching a foreign **standing** plate gain +1 elevation. |
+| **Kinematics System** | Product `EngineSystem` (`kinematics`) that advects `plates` each generation Step. |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; collision uplift. |
+| **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
+| **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid, velocities). |
 | **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |
 | **ElevationRaster** | UI headless RGB image of an elevation grid; absolute height ramp, one pixel per cell (`com.aethelgard.ui`). |
 | **MapController** | UI headless map logic: `ProductSession`, Advance, raster, busy / `Working...` status. No Swing. |

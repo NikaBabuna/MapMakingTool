@@ -69,7 +69,7 @@ If a stored FR cannot be met without an engine port: **stop**, ADR, do not sneak
 - [x] `ui` / `cli` Maven modules depend on `product`; `product` has no Swing types in main sources
 - [ ] Shared session: UI + console + headless CLI serialize advances on one `Engine`
 - [ ] UI console uses the same placeholder dispatcher as headless CLI; dispatcher is isolated (not product Systems)
-- [ ] Kinematics: plates move; velocities seeded; wrap + fill as wiki
+- [x] Kinematics: plates move; velocities seeded; wrap + fill as wiki
 - [ ] Orogeny: converge/diverge/transform; negative elevation allowed; old suture-`+1` retired
 - [ ] Determinism: same seed + spec + N Steps → identical fields
 - [ ] Tool UI claims (layers, play, inspect, hillshade/ocean, busy) with no `JFrame` in tests
@@ -85,7 +85,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 | Step | Intent | Status |
 |------|--------|--------|
 | F-019 | ADR-010 + deps + session; map shell in `ui`; product no Swing | done |
-| F-020 | Velocities + kinematics; plates move; wiki + dump/tests | not started |
+| F-020 | Velocities + kinematics; plates move; wiki + dump/tests | done |
 | F-021 | Orogeny by relative motion; negative elevation; retire foreign-neighbor `+1` | not started |
 | F-022 | Tool UI: layers, play, seed, inspect, hillshade, ocean | not started |
 | F-023 | Placeholder CLI + **in-UI console**; same dispatcher; close G-005 | not started |
@@ -96,7 +96,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 5 |
-| Product claim boxes | 1 / 9 |
+| Steps done | 2 / 5 |
+| Product claim boxes | 2 / 9 |
 
 Update this section at the end of every successful Step.

@@ -30,13 +30,15 @@ class ElevationProcessTest {
     EngineSetup setup = ProductHost.setup();
     assertTrue(setup.categoryTree().contains(ProductCategories.TECTONICS));
     assertInstanceOf(GenerationTickPolicy.class, setup.eventEmissionPolicy());
-    assertEquals(1, setup.systems().size());
-    assertEquals(ProductHost.TECTONICS_SYSTEM_ID, setup.systems().getFirst().id());
+    assertEquals(2, setup.systems().size());
+    assertEquals(ProductHost.KINEMATICS_SYSTEM_ID, setup.systems().get(0).id());
+    assertEquals(ProductHost.TECTONICS_SYSTEM_ID, setup.systems().get(1).id());
     assertEquals(
         ProductCategories.TECTONICS,
         setup.systems().getFirst().config().assignedCategory().path());
     assertTrue(setup.fieldSchema().has(WorldFields.PLATES));
-    assertEquals(FieldType.CONSTANT, setup.fieldSchema().typeOf(WorldFields.PLATES));
+    assertEquals(FieldType.STATIC, setup.fieldSchema().typeOf(WorldFields.PLATES));
+    assertEquals(FieldType.CONSTANT, setup.fieldSchema().typeOf(WorldFields.PLATE_VELOCITY));
   }
 
   @Test
@@ -80,8 +82,10 @@ class ElevationProcessTest {
 
     engine.advance(1);
     assertEquals(1, engine.stepIndex());
-    assertEquals(1, engine.lastClaimFinish().claimCount());
-    assertEquals(List.of(ProductHost.TECTONICS_SYSTEM_ID), engine.lastClaimFinish().finishedSystemIds());
+    assertEquals(2, engine.lastClaimFinish().claimCount());
+    assertEquals(
+        List.of(ProductHost.KINEMATICS_SYSTEM_ID, ProductHost.TECTONICS_SYSTEM_ID),
+        engine.lastClaimFinish().finishedSystemIds());
     assertTrue(engine.lastStepOutput().asMap().containsKey(WorldFields.ELEVATION));
     assertEquals(
         ProductHost.TECTONICS_SYSTEM_ID,
@@ -94,21 +98,23 @@ class ElevationProcessTest {
 
     Grid platesAfter = (Grid) engine.settled().field(WorldFields.PLATES);
     Grid platesBefore = Plates.seed(8, 8, 0L);
-    assertEquals(platesBefore, platesAfter, "Constant plates must not change");
+    assertNotEquals(platesBefore, platesAfter, "kinematics must move plates");
   }
 
   @Test
-  @DisplayName("FR-5: collision +1 on Voronoi foreign 4-neighbors; same seed matches")
+  @DisplayName("FR-5: collision +1 on standing Voronoi plates; same seed matches")
   void collisionUpliftMatchesRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
+    PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
     engine.advance(1);
     assertEquals(upliftOnce(plates, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
 
+    Grid afterMove = PlateKinematics.advect(plates, vel, 1);
     engine.advance(1);
     assertEquals(
-        upliftOnce(plates, upliftOnce(plates, Grid.zeros(4, 2))),
+        upliftOnce(afterMove, upliftOnce(plates, Grid.zeros(4, 2))),
         engine.settled().field(WorldFields.ELEVATION));
 
     Engine a = ProductHost.create(new WorldSpec(8, 8, 7L));

@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-17  
-**Status:** F-019 Accepted
+**Status:** F-020 Accepted
 
 ---
 
 ## Session goal
 
-Accept **F-019** (house: `ProductSession`, `ui`/`cli` → `product`, map shell in `ui`).
+Accept **F-020** (plate kinematics: velocities, advection, standing-plate uplift unchanged).
 
 ---
 
@@ -29,22 +29,23 @@ Accept **F-019** (house: `ProductSession`, `ui`/`cli` → `product`, map shell i
 
 | Step | Work | Status |
 |------|------|--------|
-| F-019 | Product session + UI/CLI house | done |
+| F-020 | Plate kinematics | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (117 tests, last Accept F-019)
+- [x] Incremental suite green (123 tests, last Accept F-020)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-020** (plate kinematics) job + FRs.
+1. Propose **F-021** (motion-based orogeny) job + FRs.
 
 ## Notes
 
 - CLI commands are **placeholders**; do not bake verbs into product.
 - UI must include a **console** control that uses the same thin CLI layer (F-023).
+- Elevation still uses foreign-neighbor `+1` on **standing** plates until F-021.

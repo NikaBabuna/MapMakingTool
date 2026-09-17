@@ -78,7 +78,7 @@ Goal doc: [goals/G-005-living-map.md](goals/G-005-living-map.md)
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-019 | Product session + UI/CLI house | done | [F-019.md](../blockers/F-019.md) |
-| F-020 | Plate kinematics | not started | _(store at APPROVE)_ |
+| F-020 | Plate kinematics | done | [F-020.md](../blockers/F-020.md) |
 | F-021 | Motion-based orogeny | not started | _(store at APPROVE)_ |
 | F-022 | Tool UI | not started | _(store at APPROVE)_ |
 | F-023 | Placeholder CLI + in-UI console | not started | _(store at APPROVE)_ |
