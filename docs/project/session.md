@@ -44,4 +44,5 @@ Ship **G-008** — boundary tectonics + large cylinder world + cartography studi
 ## Notes
 
 - Edge-driven integrate shipped in F-037.
-- Next: **F-038** orogeny from standing boundaries.
+- **F-038 rolled back** (`f5f01f0` revert): boundary orogeny was O(cells×contacts) — ~78s/Advance on VIEW; status polls blocked on session lock. Re-negotiate F-038 with O(contacts) relief + non-blocking status before retry.
+- Next: **F-038** (orogeny + optional UI tweaks), redesigned.
