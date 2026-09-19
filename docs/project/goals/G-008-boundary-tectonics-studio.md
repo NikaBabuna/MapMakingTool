@@ -56,7 +56,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 ## Product claims (tests by Goal end)
 
-- [x] 1920×1080 torus world; wiki + witnesses
+- [x] 1920×1080 VIEW in code; wiki + witnesses (torus wrap still F-032)
 - [ ] Initial realistic plate partition
 - [ ] Boundaries + flux + flood + fission/death
 - [ ] Edge-driven motion; Constant random velocities gone
