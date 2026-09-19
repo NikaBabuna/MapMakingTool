@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 F-043 ridge accretion; F-042 DiagnosticsHub; G-008 done)  
+**Status:** active (G-009 in progress through F-045; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -53,7 +53,7 @@ cli →  product  →  engine
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
 | Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry + boundaries + area_flux + motion_intent; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, re-traces boundaries, then advects ownership (wrap X; Y off-map dropped). Unresolved cells after advection use **ridge accretion** (SEPARATE pair only) then neighbor flood — not global nearest-site fill (F-043). Orogeny stamps relief from standing classified `boundaries` (O(contacts)). Elevation may go negative. The seed is not its own Pool field.
+`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, re-traces boundaries, then advects ownership (wrap X; Y off-map dropped). Unresolved cells after advection use **iterative flood** (F-044). Crossing a pole uses **sphere antipodal re-entry** and flips plate `vx,vy` (F-045). SEPARATE/COLLIDE flux apply uses **deterministic ragged** skips/nibbles along contacts (F-045 P3). Crumb absorb bar is **0.1%** of W×H. Orogeny stamps relief from standing classified `boundaries` (O(contacts)). Elevation may go negative. The seed is not its own Pool field.
 
 MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the session physics lock (F-038).
 
@@ -93,9 +93,9 @@ lit = clamp(12 + 2*dw + 2*dn, 6, 18)
 c' = min(255, (c * lit) / 12)
 ```
 
-**Plates:** `z = plateId * 0x9E3779B97F4A7C15`; `z ^= z >>> 30`; `R,G,B = 48 + ((z >>> shift) & 0x7F)` for shifts 0, 8, 16.
+**Plates (F-045 bold):** gray interior; boundary = half-edge **core** (east/south via `SphereTopology`) **dilated** by one orthogonal step (≥2 cells) so strokes survive zoom-out nearest-neighbor.
 
-**Overlay:** elevation paint, then each channel `c / 3` when plate id differs from toroidal east or south neighbor.
+**Overlay:** elevation paint, then darken on the same bold stroke rule.
 
 Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused.
 

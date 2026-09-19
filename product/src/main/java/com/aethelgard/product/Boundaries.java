@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Classified plate contacts. Wiki: {@code docs/product/wiki/tectonics.md}. Geometry is a
- * cylinder: wrap X; Y does not wrap (polar edges).
+ * Classified plate contacts. Wiki: {@code docs/product/wiki/tectonics.md}. Geometry is
+ * sphere-on-rectangle (F-045): wrap X; polar wrap Y via {@link SphereTopology}.
  */
 public final class Boundaries {
 
@@ -31,7 +31,7 @@ public final class Boundaries {
 
   /**
    * Trace undirected foreign contacts (east + south only) and classify from standing velocities.
-   * North/west are omitted to avoid doubles. Y neighbors off-map are skipped (no vertical wrap).
+   * North/west are omitted to avoid doubles. South/east use {@link SphereTopology}.
    */
   public static Boundaries trace(Grid plates, PlateVelocities velocities) {
     Objects.requireNonNull(plates, "plates");
@@ -46,12 +46,12 @@ public final class Boundaries {
         for (int[] d : dirs) {
           int nx = d[0];
           int ny = d[1];
-          int bx = Math.floorMod(x + nx, width);
-          int by = y + ny;
-          if (by < 0 || by >= height) {
+          int[] b = SphereTopology.neighbor(x, y, nx, ny, width, height);
+          // Skip self-neighbor (degenerate) — should not happen for unit ortho steps.
+          if (b[0] == x && b[1] == y) {
             continue;
           }
-          int plateB = plates.get(bx, by);
+          int plateB = plates.get(b[0], b[1]);
           if (plateA == plateB) {
             continue;
           }

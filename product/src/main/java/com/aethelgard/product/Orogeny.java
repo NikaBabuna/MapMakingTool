@@ -61,11 +61,9 @@ public final class Orogeny implements SubSystem {
     for (BoundaryContact c : boundaries.contacts()) {
       int ax = c.x();
       int ay = c.y();
-      int bx = Math.floorMod(ax + c.nx(), width);
-      int by = ay + c.ny();
-      if (by < 0 || by >= height) {
-        continue;
-      }
+      int[] nb = SphereTopology.neighbor(ax, ay, c.nx(), c.ny(), width, height);
+      int bx = nb[0];
+      int by = nb[1];
       switch (c.kind()) {
         case PASS_BY -> {
           /* no relief */

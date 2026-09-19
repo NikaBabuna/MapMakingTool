@@ -119,7 +119,7 @@ A world whose standing assignment is a single plate (for example a 1×1 grid) ha
 
 ### Map display (F-022 / F-038)
 
-The grid may be negative. The **UI** paints `e < 0` as ocean, hillshades land, and can show plates / overlay. Plates layer paints **interior + boundary** (no per-id rainbow). Paint formulas live in [architecture.md](../architecture.md), not in this physics rule. Interior cells are unchanged **in the grid** even when the window shows ocean.
+The grid may be negative. The **UI** paints `e < 0` as ocean, hillshades land, and can show plates / overlay. Plates layer paints **interior + half-edge boundary** (no per-id rainbow). Paint formulas live in [architecture.md](../architecture.md), not in this physics rule. Interior cells are unchanged **in the grid** even when the window shows ocean.
 
 ---
 

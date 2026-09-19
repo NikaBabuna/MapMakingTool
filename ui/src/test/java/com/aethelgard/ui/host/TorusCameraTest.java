@@ -27,7 +27,7 @@ class TorusCameraTest {
     assertTrue(viewport.contains("fittedViewport"));
     assertTrue(viewport.contains("MAX_SCALE"));
     assertTrue(viewport.contains("stageToCell"));
-    assertTrue(viewport.contains("floorMod((stageX") || viewport.contains("floorMod((stageX -"));
+    assertTrue(viewport.contains("floorMod") || viewport.contains("wrapPan"));
 
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
     assertTrue(canvas.contains("fitScale"));

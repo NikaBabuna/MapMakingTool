@@ -137,20 +137,39 @@ public final class ElevationRaster {
     return pack(r, g, b);
   }
 
-  /** True when a cylinder 4-neighbor has a different plate id (wrap X; Y clipped). */
-  public static boolean isPlateBoundary(Grid plates, int x, int y) {
+  /**
+   * Half-edge core (F-044): true when plate id differs from east or south neighbor under
+   * {@link com.aethelgard.product.SphereTopology}.
+   */
+  public static boolean isPlateBoundaryCore(Grid plates, int x, int y) {
     Objects.requireNonNull(plates, "plates");
     int id = plates.get(x, y);
     int width = plates.width();
     int height = plates.height();
-    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int[] d : dirs) {
-      int nx = Math.floorMod(x + d[0], width);
-      int ny = y + d[1];
-      if (ny < 0 || ny >= height) {
-        continue;
-      }
-      if (plates.get(nx, ny) != id) {
+    int[] east = com.aethelgard.product.SphereTopology.neighbor(x, y, 1, 0, width, height);
+    if (plates.get(east[0], east[1]) != id) {
+      return true;
+    }
+    int[] south = com.aethelgard.product.SphereTopology.neighbor(x, y, 0, 1, width, height);
+    if (plates.get(south[0], south[1]) != id) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Bold border (F-045 P1): core half-edge plus orthogonal dilation so stroke is ≥2 cells — stays
+   * visible when the canvas nearest-neighbor scales down.
+   */
+  public static boolean isPlateBoundary(Grid plates, int x, int y) {
+    if (isPlateBoundaryCore(plates, x, y)) {
+      return true;
+    }
+    int width = plates.width();
+    int height = plates.height();
+    for (int[] d : com.aethelgard.product.SphereTopology.ORTHO) {
+      int[] n = com.aethelgard.product.SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+      if (isPlateBoundaryCore(plates, n[0], n[1])) {
         return true;
       }
     }
@@ -189,8 +208,8 @@ public final class ElevationRaster {
   }
 
   /**
-   * Elevation-layer pixel: ocean or hillshaded land. West wraps on X; north is clipped (polar
-   * edge — no Y wrap).
+   * Elevation-layer pixel: ocean or hillshaded land. West/north use {@link
+   * com.aethelgard.product.SphereTopology}.
    */
   public static int elevationCell(Grid elevation, int x, int y) {
     int e = elevation.get(x, y);
@@ -198,28 +217,22 @@ public final class ElevationRaster {
       return OCEAN_RGB;
     }
     int rgb = landRamp(e);
-    int west = Math.floorMod(x - 1, elevation.width());
-    int dw = e - elevation.get(west, y);
-    int dn = 0;
-    if (y > 0) {
-      dn = e - elevation.get(x, y - 1);
-    }
+    int width = elevation.width();
+    int height = elevation.height();
+    int[] west = com.aethelgard.product.SphereTopology.neighbor(x, y, -1, 0, width, height);
+    int[] north = com.aethelgard.product.SphereTopology.neighbor(x, y, 0, -1, width, height);
+    int dw = e - elevation.get(west[0], west[1]);
+    int dn = e - elevation.get(north[0], north[1]);
     return applyHillshade(rgb, hillshadeLit(dw, dn));
   }
 
   /**
-   * Overlay pixel: elevation paint, then darken if plate differs from east (wrap X) or south
-   * (clipped Y) neighbor.
+   * Overlay pixel: elevation paint, then darken on bold sphere half-edge (same as Plates stroke
+   * core+dilate).
    */
   public static int overlayCell(Grid elevation, Grid plates, int x, int y) {
     int rgb = elevationCell(elevation, x, y);
-    int id = plates.get(x, y);
-    int east = Math.floorMod(x + 1, plates.width());
-    boolean foreign = id != plates.get(east, y);
-    if (y + 1 < plates.height() && id != plates.get(x, y + 1)) {
-      foreign = true;
-    }
-    if (foreign) {
+    if (isPlateBoundary(plates, x, y)) {
       return darken(rgb);
     }
     return rgb;

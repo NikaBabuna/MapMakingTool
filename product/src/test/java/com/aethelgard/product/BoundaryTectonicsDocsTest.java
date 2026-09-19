@@ -27,7 +27,7 @@ class BoundaryTectonicsDocsTest {
     assertTrue(tectonics.contains("Torus") || tectonics.contains("torus"));
     assertTrue(tectonics.contains("12 +") || tectonics.contains("12–24") || tectonics.contains("12-24"));
     assertTrue(tectonics.contains("Fission") || tectonics.contains("fission"));
-    assertTrue(tectonics.contains("0.05%"));
+    assertTrue(tectonics.contains("0.1%"));
     assertTrue(tectonics.contains("plate_registry"));
     assertTrue(tectonics.contains("boundaries"));
     assertTrue(tectonics.contains("world/tectonics"));

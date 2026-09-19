@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 class BoundaryTraceTest {
 
   @Test
-  @DisplayName("FR-1..FR-3: boundaries seeded and classified; east+south unique; no Y wrap")
+  @DisplayName("FR-1..FR-3: boundaries seeded and classified; east+south unique; sphere south")
   void boundariesSeedAndClassify() {
     WorldSpec spec = new WorldSpec(4, 3, 0L);
     Engine engine = ProductHost.create(spec);
@@ -36,20 +36,11 @@ class BoundaryTraceTest {
     for (BoundaryContact c : at0.contacts()) {
       assertTrue(c.nx() == 1 && c.ny() == 0 || c.nx() == 0 && c.ny() == 1);
       assertTrue(c.plateA() != c.plateB());
-      int bx = Math.floorMod(c.x() + c.nx(), plates.width());
-      int by = c.y() + c.ny();
-      assertTrue(by >= 0 && by < plates.height());
-      assertEquals(c.plateB(), plates.get(bx, by));
+      int[] b = SphereTopology.neighbor(c.x(), c.y(), c.nx(), c.ny(), plates.width(), plates.height());
+      assertEquals(c.plateB(), plates.get(b[0], b[1]));
       assertEquals(Boundaries.classify(c.plateA(), c.plateB(), vel, c.nx(), c.ny()), c.kind());
       String key = c.x() + "," + c.y() + "," + c.nx() + "," + c.ny();
       assertTrue(keys.add(key), "duplicate edge " + key);
-    }
-
-    // Bottom row has no south wrap contact into top
-    for (BoundaryContact c : at0.contacts()) {
-      if (c.ny() == 1) {
-        assertTrue(c.y() < plates.height() - 1);
-      }
     }
 
     engine.advance(1);

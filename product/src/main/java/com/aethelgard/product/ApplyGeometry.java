@@ -25,7 +25,20 @@ public final class ApplyGeometry implements SubSystem {
   /** Unowned / destroyed crust during apply; must not remain after flood. */
   public static final int SINK = -1;
 
-  private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+  private static final int[][] DIRS = SphereTopology.ORTHO;
+
+  /** Deterministic edge skip/extra for ragged fronts (F-045 P3). */
+  static boolean raggedSkip(long seed, int x, int y) {
+    long z = seed ^ (((long) x) * 0x9E3779B97F4A7C15L) ^ (((long) y) * 0xBF58476D1CE4E5B9L);
+    z ^= z >>> 30;
+    return (z & 3L) == 0L; // ~25% of contact cells skipped
+  }
+
+  static boolean raggedExtra(long seed, int x, int y) {
+    long z = seed ^ (((long) x) * 0x94D049BB133111EBL) ^ (((long) y) * 0x2545F4914F6CDD1DL);
+    z ^= z >>> 27;
+    return (z & 7L) == 0L; // ~12.5% take an extra orthogonal nibble
+  }
 
   @Override
   public String id() {
@@ -49,11 +62,12 @@ public final class ApplyGeometry implements SubSystem {
     Result result = apply(plates, boundaries, flux, registry, velocities);
     // Re-trace on remapped plates so ridge pairs match post-fission ids.
     Boundaries ridge = Boundaries.trace(result.plates(), result.velocities());
-    Grid moved = PlateKinematics.advect(result.plates(), result.velocities(), generationIndex, ridge);
-    PlateRegistry after = PlateRegistry.from(moved, result.velocities());
-    io.write(WorldFields.PLATES, moved);
+    PlateKinematics.AdvectResult moved =
+        PlateKinematics.advect(result.plates(), result.velocities(), generationIndex, ridge);
+    PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
+    io.write(WorldFields.PLATES, moved.plates());
     io.write(WorldFields.PLATE_REGISTRY, after);
-    io.write(WorldFields.PLATE_VELOCITY, result.velocities());
+    io.write(WorldFields.PLATE_VELOCITY, moved.velocities());
   }
 
   /** Full geometry pass (also used by tests). */
@@ -71,8 +85,9 @@ public final class ApplyGeometry implements SubSystem {
     int width = plates.width();
     int height = plates.height();
     int[][] cells = copyCells(plates);
-    applyCollide(cells, width, height, boundaries, registry);
-    applySeparate(cells, width, height, boundaries);
+    long seed = velocities.seed();
+    applyCollide(cells, width, height, boundaries, registry, seed);
+    applySeparate(cells, width, height, boundaries, seed);
     floodSink(cells, width, height);
     Lifecycle life = fissionAndCrumbs(cells, width, height, velocities);
     return remapDense(cells, width, height, life.vx(), life.vy(), velocities.seed());
@@ -83,34 +98,76 @@ public final class ApplyGeometry implements SubSystem {
   private record Lifecycle(int[] vx, int[] vy) {}
 
   private static void applyCollide(
-      int[][] cells, int width, int height, Boundaries boundaries, PlateRegistry registry) {
+      int[][] cells,
+      int width,
+      int height,
+      Boundaries boundaries,
+      PlateRegistry registry,
+      long seed) {
     for (BoundaryContact c : boundaries.contacts()) {
       if (c.kind() != BoundaryKind.COLLIDE) {
+        continue;
+      }
+      if (raggedSkip(seed, c.x(), c.y())) {
         continue;
       }
       int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
       int x = c.x();
       int y = c.y();
       if (lose == c.plateB()) {
-        x = Math.floorMod(c.x() + c.nx(), width);
-        y = c.y() + c.ny();
+        int[] b = SphereTopology.neighbor(c.x(), c.y(), c.nx(), c.ny(), width, height);
+        x = b[0];
+        y = b[1];
       }
-      if (y >= 0 && y < height && cells[y][x] == lose) {
+      if (cells[y][x] == lose) {
         cells[y][x] = SINK;
+        if (raggedExtra(seed, x, y)) {
+          nibbleSink(cells, width, height, x, y, lose);
+        }
       }
     }
   }
 
-  private static void applySeparate(int[][] cells, int width, int height, Boundaries boundaries) {
+  private static void applySeparate(
+      int[][] cells, int width, int height, Boundaries boundaries, long seed) {
     for (BoundaryContact c : boundaries.contacts()) {
       if (c.kind() != BoundaryKind.SEPARATE) {
         continue;
       }
+      if (raggedSkip(seed, c.x(), c.y())) {
+        continue;
+      }
       claimSinkNear(cells, width, height, c.x(), c.y(), c.plateA());
-      int bx = Math.floorMod(c.x() + c.nx(), width);
-      int by = c.y() + c.ny();
-      if (by >= 0 && by < height) {
-        claimSinkNear(cells, width, height, bx, by, c.plateB());
+      int[] b = SphereTopology.neighbor(c.x(), c.y(), c.nx(), c.ny(), width, height);
+      claimSinkNear(cells, width, height, b[0], b[1], c.plateB());
+      if (raggedExtra(seed, c.x(), c.y())) {
+        nibbleClaim(cells, width, height, c.x(), c.y(), c.plateA());
+        nibbleClaim(cells, width, height, b[0], b[1], c.plateB());
+      }
+    }
+  }
+
+  /** Extra orthogonal claim for ragged SEPARATE fronts. */
+  private static void nibbleClaim(
+      int[][] cells, int width, int height, int ox, int oy, int plate) {
+    for (int[] d : DIRS) {
+      int[] n = SphereTopology.neighbor(ox, oy, d[0], d[1], width, height);
+      int id = cells[n[1]][n[0]];
+      if (id >= 0 && id != plate) {
+        cells[n[1]][n[0]] = plate;
+        return;
+      }
+    }
+  }
+
+  /** Extra orthogonal sink for ragged COLLIDE fronts. */
+  private static void nibbleSink(
+      int[][] cells, int width, int height, int ox, int oy, int lose) {
+    for (int[] d : DIRS) {
+      int[] n = SphereTopology.neighbor(ox, oy, d[0], d[1], width, height);
+      if (cells[n[1]][n[0]] == lose) {
+        cells[n[1]][n[0]] = SINK;
+        return;
       }
     }
   }
@@ -122,13 +179,9 @@ public final class ApplyGeometry implements SubSystem {
       return;
     }
     for (int[] d : DIRS) {
-      int x = Math.floorMod(ox + d[0], width);
-      int y = oy + d[1];
-      if (y < 0 || y >= height) {
-        continue;
-      }
-      if (cells[y][x] == SINK) {
-        cells[y][x] = plate;
+      int[] n = SphereTopology.neighbor(ox, oy, d[0], d[1], width, height);
+      if (cells[n[1]][n[0]] == SINK) {
+        cells[n[1]][n[0]] = plate;
         return;
       }
     }
@@ -164,12 +217,8 @@ public final class ApplyGeometry implements SubSystem {
     int bestId = -1;
     int bestContact = -1;
     for (int[] d : DIRS) {
-      int nx = Math.floorMod(x + d[0], width);
-      int ny = y + d[1];
-      if (ny < 0 || ny >= height) {
-        continue;
-      }
-      int id = cells[ny][nx];
+      int[] n = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+      int id = cells[n[1]][n[0]];
       if (id < 0) {
         continue;
       }
@@ -185,12 +234,8 @@ public final class ApplyGeometry implements SubSystem {
   private static int countContact(int[][] cells, int width, int height, int x, int y, int id) {
     int n = 0;
     for (int[] d : DIRS) {
-      int nx = Math.floorMod(x + d[0], width);
-      int ny = y + d[1];
-      if (ny < 0 || ny >= height) {
-        continue;
-      }
-      if (cells[ny][nx] == id) {
+      int[] p = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+      if (cells[p[1]][p[0]] == id) {
         n++;
       }
     }
@@ -262,7 +307,8 @@ public final class ApplyGeometry implements SubSystem {
         }
         List<int[]> component = new ArrayList<>();
         floodComponent(cells, seen, width, height, x, y, id, component);
-        if (component.size() * 2000L >= world) {
+        // Crumb bar 0.1% of W×H (tuned down from F-044's 0.2%; was 0.05% originally).
+        if (component.size() * 1000L >= world) {
           continue;
         }
         int neighbor = longestNeighbor(cells, width, height, component, id);
@@ -284,12 +330,8 @@ public final class ApplyGeometry implements SubSystem {
       int x = cell[0];
       int y = cell[1];
       for (int[] d : DIRS) {
-        int nx = Math.floorMod(x + d[0], width);
-        int ny = y + d[1];
-        if (ny < 0 || ny >= height) {
-          continue;
-        }
-        int id = cells[ny][nx];
+        int[] n = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+        int id = cells[n[1]][n[0]];
         if (id < 0 || id == self) {
           continue;
         }
@@ -330,9 +372,10 @@ public final class ApplyGeometry implements SubSystem {
       int x = cur[0];
       int y = cur[1];
       for (int[] d : DIRS) {
-        int nx = Math.floorMod(x + d[0], width);
-        int ny = y + d[1];
-        if (ny < 0 || ny >= height || seen[ny][nx] || cells[ny][nx] != id) {
+        int[] n = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+        int nx = n[0];
+        int ny = n[1];
+        if (seen[ny][nx] || cells[ny][nx] != id) {
           continue;
         }
         seen[ny][nx] = true;

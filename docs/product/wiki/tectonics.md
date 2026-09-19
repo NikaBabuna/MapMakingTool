@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-043 ridge accretion live; F-041 G-009 locks (sphere polar wrap on paper). Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Ridge fill F-043; cylinder hard-Y until F-045. **F-042:** session `DiagnosticsHub`.
+**Doc status:** F-045 sphere polar wrap live; F-044 flood + crumb 0.1% + bold borders. F-041 G-009 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Sphere-on-rectangle F-045; flood fill F-044; session `DiagnosticsHub` F-042.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -19,11 +19,11 @@ This page is the physics + Pool/System plan for boundary tectonics. When a later
 |------|------|
 | **VIEW** | **1920×1080** cells, seed `0` for the product window (`WorldSpec.VIEW`). |
 | **DEFAULT** | Dump / fast tests may stay a small rectangle (e.g. 8×8); not required to be 1920×1080. |
-| **Topology (G-009)** | **Sphere-on-rectangle** — **X wraps** with `floorMod`; **polar wrap on Y**: crossing north re-enters from the **north** at antipodal longitude (`x + width/2`) with heading flip (same for south). Neighbors, site distance, advection, fission, and camera must agree. Not a 3D globe mesh. |
-| **Topology (runtime until F-045)** | Still **cylinder** (wrap X; hard polar Y — mass dropped off-map). G-008 F-034. **Superseded on paper** by G-009 sphere polar wrap. |
-| **History** | Earlier G-008 text said **torus**; amended F-034 to cylinder; F-041 amends to sphere polar wrap (code F-045). |
+| **Topology (G-009)** | **Sphere-on-rectangle** — **X wraps** with `floorMod`; **polar wrap on Y**: crossing north re-enters from the **north** at antipodal longitude (`x + width/2`) with heading flip of **both** `vx` and `vy` (same for south). Neighbors, site distance (Step-0 still B1 cylindrical), advection, fission, and camera agree. Not a 3D globe mesh. |
+| **Topology (runtime)** | **F-045 live** — `SphereTopology` shared helper. Cylinder hard-Y **retired**. |
+| **History** | Earlier G-008 text said **torus**; amended F-034 to cylinder; F-041 amends to sphere polar wrap; **F-045** implements it. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission + boundary orogeny live (F-033–F-038). Sphere polar wrap **not implemented** until F-045.
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission + boundary orogeny live (F-033–F-038). **Sphere polar wrap live (F-045).**
 
 ---
 
@@ -82,9 +82,17 @@ Plates are the only tectonic actors. **Number, motion, and size** come from boun
 
 ### Diverge / void-fill (G-009)
 
-**Lock:** Gaps opened by SEPARATE must **not** be filled by a nearest arbitrary **third** plate. New crust at separate contacts belongs only to the **two contacting plates** (ridge accretion — plate extends). Full cover: no unowned cells.
+**Lock:** Gaps opened by SEPARATE must **not** be filled by a nearest arbitrary **third** plate. New crust grows by **iterative flood** from bordering owned cells.
 
-**Code (F-043):** After advection, unique claimants keep ownership; unresolved cells are filled by ridge accretion (neighbor set ⊆ SEPARATE pair {A,B}) then neighbor flood only. Global nearest-site / nearest-owner refill **removed**. Boundaries are re-traced on remapped plates before advect so ridge pairs match fission ids.
+**Code (F-044):** After advection, unique claimants keep ownership; unresolved cells fill by flood:
+1. Cells with **exactly one** distinct owned neighbor expand from that plate (repeat until stable).
+2. Remaining cells with **two or more** owned neighbors take **longest orthogonal contact**, then **lower plate id**.
+3. Cells with **zero** owned neighbors **wait** until a frontier appears.
+4. Full cover required — no permanent unowned cells.
+
+This fixes the F-043 miss at **triple junctions**: a gap between left and right that also touches an upper plate is not wrapped by the upper plate. Global nearest-site / nearest-owner refill remains **removed**.
+
+**Prior (F-043):** SEPARATE-pair subset ridge check then neighbor flood — incorrect when a gap cell touched three plates (ridge bailed; flood could assign the third).
 
 ### Collide precedence (v1)
 
@@ -95,8 +103,8 @@ When types are equal (no oceanic/continental yet): **smaller plate by area loses
 | Event | Rule |
 |-------|------|
 | **Death** | Plate **area → 0** → remove from registry |
-| Fission | If a plate’s cells become **disconnected** (4-connected on the **sphere map** — wrap X; polar wrap Y per World geometry), each component becomes its own plate (new ids; inherit velocity). **Runtime until F-045:** cylinder connectivity (wrap X; no Y wrap). |
-| **Crumb absorb** | After fission, any component with area **&lt; 0.05%** of `width × height` is absorbed into the neighboring plate that shares the longest contact (deterministic tie: lower neighbor id) |
+| Fission | If a plate’s cells become **disconnected** (4-connected on the **sphere map** — wrap X; polar wrap Y via `SphereTopology`), each component becomes its own plate (new ids; inherit velocity). |
+| **Crumb absorb** | After fission, any component with area **&lt; 0.1%** of `width × height` is absorbed into the neighboring plate that shares the longest contact (deterministic tie: lower neighbor id). (Tuned from F-044’s 0.2%; original G-008 was 0.05%.) |
 
 Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay small.
 
@@ -149,7 +157,7 @@ Implementation Steps: **F-034–F-038**.
 
 ## Studio UI
 
-- **F-032 / F-038:** zoom clamp; **X wrap + Y polar clamp** pan; **blank** above/below the map (no vertical loop tiles). **G-009 F-045:** camera must match sphere polar wrap (loop tiles / antipodal re-entry as decided in that Step).
+- **F-045:** camera matches sphere — **X wrap**; **Y locked when zoomed out** (map fits stage); **antipodal Y loop** when zoomed in (3×3 tiles with half-width shift). Prior F-032/F-038 polar clamp + blank N/S superseded for zoomed-in travel.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009 (planned):** scrap placeholder console; shared CLI/terminal command surface; runner chrome + perf panels (F-048–F-053).

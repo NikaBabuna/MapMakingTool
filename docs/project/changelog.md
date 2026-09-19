@@ -13,6 +13,8 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-045:** sphere-on-rectangle polar wrap (`SphereTopology`); antipodal camera loop; bold dilated borders; ragged flux fronts; golden refreshed.
+- **2026-09-19** — **F-044:** triple-junction flood gap fill; crumb absorb 0.2%; half-edge Plates/Overlay borders; golden dump refreshed.
 - **2026-09-19** — **F-044 rollback:** Accept reverted (compromised chat mid-Step); tree back at F-043.
 - **2026-09-19** — **F-043:** ridge accretion fill (no global nearest-site/owner); golden dump refreshed.
 - **2026-09-19** — **F-042:** `DiagnosticsHub` (collectors, enable/disable, ring history); CLI `stats` / `diag`; paint.wall from MapController.

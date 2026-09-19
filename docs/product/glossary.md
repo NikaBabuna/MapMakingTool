@@ -32,9 +32,9 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries, area_flux, motion_intent). |
 | **WorldSpec.VIEW** | Product window launch spec: **1920×1080** cells, seed 0 (F-031). Dump fixture stays `DEFAULT` small. |
 | **Torus** | Earlier G-008 lock (wrap both axes). **Amended F-034** to cylinder. |
-| **Cylinder map** | G-008: wrap X; hard polar Y. **Superseded on paper** by G-009 sphere polar wrap (F-041 / code F-045). |
-| **Sphere polar wrap** | Crossing north re-enters from north at antipodal longitude (heading flip); same for south. Planned code F-045. |
-| **Ridge accretion** | SEPARATE new crust extends the two contacting plates only — no nearest-third void fill (F-043 live). |
+| **Sphere polar wrap** | Crossing north re-enters from north at antipodal longitude (heading flips vx+vy); same for south. **Live F-045** (`SphereTopology`). |
+| **Cylinder map** | G-008: wrap X; hard polar Y. **Retired** by F-045. |
+| **Ridge accretion** | Diverge gaps fill by iterative flood from bordering plates (F-044); no nearest-third void fill (F-043 intent). |
 | **Simulation runner** | G-009 product feel: Unity-like control, shared CLI/terminal, visible performance. |
 | **Session diagnostics** | Planned (F-042): per-Step timings, memory, counters — queryable via commands. |
 | **DiagnosticsHub** | Session-owned controllable diagnostics: named collectors, enable/disable, ring history (F-042). Not Pool state. |
@@ -44,7 +44,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Motion intent** | STATIC Pool object (`motion_intent`): per-plate preferred Δv from edges (F-035); applied by `IntegrateVelocity` (F-037). |
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
-| **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.05% area absorbed). |
+| **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.1% area absorbed). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |

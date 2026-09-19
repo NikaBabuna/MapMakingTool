@@ -39,7 +39,7 @@ class RidgeAccretionTest {
                 new BoundaryContact(2, 1, 0, 1, 0, 1, BoundaryKind.SEPARATE),
                 new BoundaryContact(3, 1, 0, 1, 0, 1, BoundaryKind.SEPARATE)));
 
-    Grid moved = PlateKinematics.advect(plates, vel, 1, boundaries);
+    Grid moved = PlateKinematics.advect(plates, vel, 1, boundaries).plates();
 
     assertEquals(4, moved.height());
     assertEquals(4, moved.width());
@@ -58,7 +58,7 @@ class RidgeAccretionTest {
         Files.readString(
             findRepoRoot().resolve("product/src/main/java/com/aethelgard/product/PlateKinematics.java"));
     assertFalse(src.contains("Plates.assign"));
-    assertTrue(src.contains("ridge") || src.contains("Ridge") || src.contains("SEPARATE"));
+    assertTrue(src.contains("fillUnresolvedFlood") || src.toLowerCase().contains("flood"));
   }
 
   @Test

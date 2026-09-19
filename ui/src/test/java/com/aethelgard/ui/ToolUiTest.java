@@ -120,12 +120,16 @@ class ToolUiTest {
     assertEquals(
         ElevationRaster.darken(ElevationRaster.elevationCell(elev, 0, 0)),
         ElevationRaster.overlayCell(elev, plates, 0, 0));
-    // (1,1) east wraps to (0,1)=0 (same); south off-map (polar) → no darken
-    assertEquals(interior, ElevationRaster.overlayCell(elev, plates, 1, 1));
-    // (1,0) south is (1,1)=0 different → suture (no Y wrap needed)
+    // (1,0) south is (1,1)=0 different → suture
     assertEquals(
         ElevationRaster.darken(ElevationRaster.elevationCell(elev, 1, 0)),
         ElevationRaster.overlayCell(elev, plates, 1, 0));
+    // Bold dilate may darken cells next to a suture; assert darken matches helper.
+    assertEquals(
+        ElevationRaster.isPlateBoundary(plates, 1, 1)
+            ? ElevationRaster.darken(interior)
+            : interior,
+        ElevationRaster.overlayCell(elev, plates, 1, 1));
   }
 
   @Test

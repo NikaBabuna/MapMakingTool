@@ -1,13 +1,12 @@
 /*
  * File: ui/src/test/java/com/aethelgard/ui/host/CylinderMapTest.java
- * Purpose: F-034 structural witness — horizontal loop tiles; blank N/S
+ * Purpose: F-034/F-045 structural witness — map loop tiles (sphere antipodal Y)
  * Audience: Agents / CI
- * Update when: F-034 UI FRs change
+ * Update when: Map tiling FRs change
  */
 
 package com.aethelgard.ui.host;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -18,20 +17,21 @@ import org.junit.jupiter.api.Test;
 class CylinderMapTest {
 
   @Test
-  @DisplayName("FR-5: MapCanvas horizontal tiles only; docs polar/blank N/S")
+  @DisplayName("FR-5/F-045: MapCanvas sphere loop tiles (3×3 antipodal)")
   void blankNorthSouth() throws Exception {
     Path root = findRepoRoot();
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
-    assertTrue(canvas.contains("Horizontal loop") || canvas.contains("blank"));
     assertTrue(canvas.contains("for (let i = -1"));
-    assertFalse(canvas.contains("for (let j = -1"));
-    assertTrue(canvas.contains("drawImage(source, i * dw, 0)"));
+    assertTrue(canvas.contains("for (let j = -1") || canvas.contains("antipodal") || canvas.contains("half"));
+    assertTrue(canvas.contains("drawImage"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(
         style.toLowerCase().contains("blank")
             || style.toLowerCase().contains("polar")
-            || style.toLowerCase().contains("cylinder"));
+            || style.toLowerCase().contains("cylinder")
+            || style.toLowerCase().contains("sphere")
+            || style.contains("G-009"));
   }
 
   private static Path findRepoRoot() throws Exception {

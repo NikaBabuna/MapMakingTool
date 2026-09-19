@@ -54,7 +54,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 - Inspect clicks map into world cells (x wraps; y must hit the map band).
 - **Reset view** (`R`) restores fitted centered transform.
 - Busy: map overlay + status chip; do not queue Advance / New world. Status polls use cached step (non-blocking).
-- **Plates** layer: gray interior + dark boundary stroke (no per-id rainbow fills).
+- **Plates** layer: gray interior + dark **bold** boundary stroke (half-edge core + dilate; sphere neighbors).
 - **Mappy stage:** neatline frame + faint graticule/ticks; HUD shows hover cell coords and zoom scale.
 
 **Studio cartography** — the window is a working map desk, not a marketing page.

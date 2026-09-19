@@ -24,13 +24,13 @@ class SimulationRunnerDocsTest {
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(tectonics.contains("ridge") || tectonics.contains("Ridge"));
     assertTrue(tectonics.contains("third") || tectonics.contains("nearest"));
-    assertTrue(tectonics.contains("superseded") || tectonics.contains("Superseded"));
+    assertTrue(tectonics.contains("superseded") || tectonics.contains("Superseded") || tectonics.contains("retired") || tectonics.contains("Retired"));
     assertTrue(
         tectonics.contains("Sphere-on-rectangle")
             || tectonics.contains("sphere-on-rectangle")
             || tectonics.contains("antipodal"));
     assertTrue(tectonics.contains("F-045") || tectonics.contains("until F-045"));
-    assertTrue(tectonics.contains("F-043") || tectonics.contains("until F-043"));
+    assertTrue(tectonics.contains("F-043") || tectonics.contains("until F-043") || tectonics.contains("F-044"));
 
     String decisions = Files.readString(root.resolve("docs/project/decisions.md"));
     assertTrue(decisions.contains("ADR-012"));

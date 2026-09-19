@@ -1,8 +1,8 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/PlateKinematics.java
- * Purpose: Kinematics — advect plate ownership; ridge accretion for leftovers (F-043)
+ * Purpose: Kinematics — advect plate ownership with sphere polar wrap (F-045)
  * Audience: ApplyGeometry / tests
- * Update when: Advection / ridge-fill rule changes
+ * Update when: Advection / gap-fill rule changes
  */
 
 package com.aethelgard.product;
@@ -13,17 +13,14 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Cells translate by plate velocity (wrap X; Y off-map dropped). Unique claimants keep ownership.
- * Empty/contested cells are filled by <strong>ridge accretion</strong>: SEPARATE contacts extend
- * plates A/B into gaps whose owned neighbors are only from {A,B}; remaining holes use neighbor
- * flood only. No global nearest-site refill.
+ * Cells translate by plate velocity under {@link SphereTopology}. Unique claimants keep ownership.
+ * Empty/contested cells fill by iterative flood (F-044). Crossing a pole flips that plate's
+ * heading ({@code vx},{@code vy}) for the next generation (F-045 B2).
  */
 public final class PlateKinematics implements SubSystem {
 
   /** Temporary unresolved ownership after advection (must not remain). */
   public static final int UNRESOLVED = -1;
-
-  private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
   @Override
   public String id() {
@@ -32,7 +29,7 @@ public final class PlateKinematics implements SubSystem {
 
   @Override
   public Set<String> writeRanges() {
-    return Set.of(WorldFields.PLATES);
+    return Set.of(WorldFields.PLATES, WorldFields.PLATE_VELOCITY, WorldFields.PLATE_REGISTRY);
   }
 
   @Override
@@ -41,7 +38,10 @@ public final class PlateKinematics implements SubSystem {
     PlateVelocities velocities = requireVelocities(readVelocities(io));
     Boundaries boundaries = requireBoundaries(readBoundaries(io));
     int generationIndex = Math.toIntExact(io.poolValue()) - 1;
-    io.write(WorldFields.PLATES, advect(plates, velocities, generationIndex, boundaries));
+    AdvectResult moved = advect(plates, velocities, generationIndex, boundaries);
+    io.write(WorldFields.PLATES, moved.plates());
+    io.write(WorldFields.PLATE_VELOCITY, moved.velocities());
+    io.write(WorldFields.PLATE_REGISTRY, PlateRegistry.from(moved.plates(), moved.velocities()));
   }
 
   private static Object readPlates(SubSystemIo io) {
@@ -59,11 +59,14 @@ public final class PlateKinematics implements SubSystem {
     return staged != null ? staged : io.readPool(WorldFields.BOUNDARIES);
   }
 
+  /** Result of one advection generation (plates + possibly heading-flipped velocities). */
+  public record AdvectResult(Grid plates, PlateVelocities velocities) {}
+
   /**
-   * One generation of advection + ridge/neighbor fill. {@code generationIndex} ≥ 1 on the first
-   * tectonics tick.
+   * One generation of advection + flood fill. {@code generationIndex} ≥ 1 on the first tectonics
+   * tick. Plates that cross a pole have {@code vx,vy} flipped in the returned velocities.
    */
-  public static Grid advect(
+  public static AdvectResult advect(
       Grid plates, PlateVelocities velocities, int generationIndex, Boundaries boundaries) {
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(velocities, "velocities");
@@ -76,6 +79,14 @@ public final class PlateKinematics implements SubSystem {
     int n = velocities.count();
     int[][] claims = new int[height][width];
     int[][] who = new int[height][width];
+    // whoMin tracks lowest claimant id when contested (F-045 sphere can double-claim poles).
+    int[][] whoMin = new int[height][width];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        whoMin[y][x] = Integer.MAX_VALUE;
+      }
+    }
+    boolean[] crossed = new boolean[n];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int plate = plates.get(x, y);
@@ -83,31 +94,54 @@ public final class PlateKinematics implements SubSystem {
           throw new IllegalStateException(
               "plate id " + plate + " out of 0.." + (n - 1) + " at (" + x + "," + y + ")");
         }
-        int nx = PlateVelocities.wrapX(x, velocities.vx(plate), 1, width);
-        int ny = y + velocities.vy(plate);
-        if (ny < 0 || ny >= height) {
-          continue;
+        int vx = velocities.vx(plate);
+        int vy = velocities.vy(plate);
+        int[] step = SphereTopology.advectCell(x, y, vx, vy, width, height);
+        int nx = step[0];
+        int ny = step[1];
+        if (step[2] != vx || step[3] != vy) {
+          crossed[plate] = true;
         }
         claims[ny][nx]++;
         who[ny][nx] = plate;
+        if (plate < whoMin[ny][nx]) {
+          whoMin[ny][nx] = plate;
+        }
       }
     }
     int[][] next = new int[height][width];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        next[y][x] = claims[y][x] == 1 ? who[y][x] : UNRESOLVED;
+        if (claims[y][x] == 0) {
+          next[y][x] = UNRESOLVED;
+        } else if (claims[y][x] == 1) {
+          next[y][x] = who[y][x];
+        } else {
+          // Contested: keep lowest claimant so polar double-claims still seed flood.
+          next[y][x] = whoMin[y][x];
+        }
       }
     }
-    fillRidgeThenNeighbors(next, width, height, boundaries);
-    return new Grid(next);
+    fillUnresolvedFlood(next, width, height);
+    int[] ovx = new int[n];
+    int[] ovy = new int[n];
+    for (int i = 0; i < n; i++) {
+      if (crossed[i]) {
+        ovx[i] = -velocities.vx(i);
+        ovy[i] = -velocities.vy(i);
+      } else {
+        ovx[i] = velocities.vx(i);
+        ovy[i] = velocities.vy(i);
+      }
+    }
+    return new AdvectResult(new Grid(next), new PlateVelocities(velocities.seed(), ovx, ovy));
   }
 
   /**
-   * Ridge accretion then neighbor flood until full cover. Pure SEPARATE gaps: neighbor set ⊆ {A,B}
-   * → lower id among neighbors (plate extends).
+   * Iterative flood until full cover. Phase A: single distinct owned neighbor. Phase B: longest
+   * orthogonal contact then lower plate id. Sphere neighbors (F-045).
    */
-  static void fillRidgeThenNeighbors(
-      int[][] cells, int width, int height, Boundaries boundaries) {
+  static void fillUnresolvedFlood(int[][] cells, int width, int height) {
     boolean progress = true;
     while (progress) {
       progress = false;
@@ -116,9 +150,9 @@ public final class PlateKinematics implements SubSystem {
           if (cells[y][x] != UNRESOLVED) {
             continue;
           }
-          int ridge = ridgeOwner(cells, width, height, x, y, boundaries);
-          if (ridge >= 0) {
-            cells[y][x] = ridge;
+          int only = singleOwnedNeighbor(cells, width, height, x, y);
+          if (only >= 0) {
+            cells[y][x] = only;
             progress = true;
           }
         }
@@ -143,87 +177,42 @@ public final class PlateKinematics implements SubSystem {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (cells[y][x] < 0) {
-          throw new IllegalStateException("unowned cell after ridge fill at (" + x + "," + y + ")");
+          throw new IllegalStateException("unowned cell after flood fill at (" + x + "," + y + ")");
         }
       }
     }
   }
 
-  /**
-   * If owned neighbors are a non-empty subset of some SEPARATE pair {A,B}, extend that ridge
-   * (lower id when both touch).
-   */
-  private static int ridgeOwner(
-      int[][] cells, int width, int height, int x, int y, Boundaries boundaries) {
-    int n0 = -1;
-    int n1 = -1;
-    int distinct = 0;
-    for (int[] d : DIRS) {
-      int nx = Math.floorMod(x + d[0], width);
-      int ny = y + d[1];
-      if (ny < 0 || ny >= height) {
-        continue;
-      }
-      int id = cells[ny][nx];
+  private static int singleOwnedNeighbor(int[][] cells, int width, int height, int x, int y) {
+    int only = -1;
+    for (int[] d : SphereTopology.ORTHO) {
+      int[] n = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+      int id = cells[n[1]][n[0]];
       if (id < 0) {
         continue;
       }
-      if (distinct == 0) {
-        n0 = id;
-        distinct = 1;
-      } else if (id != n0 && distinct == 1) {
-        n1 = id;
-        distinct = 2;
-      } else if (id != n0 && id != n1) {
+      if (only < 0) {
+        only = id;
+      } else if (id != only) {
         return -1;
       }
     }
-    if (distinct == 0) {
-      return -1;
-    }
-    for (BoundaryContact c : boundaries.contacts()) {
-      if (c.kind() != BoundaryKind.SEPARATE) {
-        continue;
-      }
-      int a = c.plateA();
-      int b = c.plateB();
-      if (distinct == 1) {
-        if (n0 == a || n0 == b) {
-          return n0;
-        }
-      } else {
-        boolean match =
-            (n0 == a && n1 == b) || (n0 == b && n1 == a);
-        if (match) {
-          return Math.min(n0, n1);
-        }
-      }
-    }
-    return -1;
+    return only;
   }
 
-  /** Longest orthogonal contact among owned neighbors; lower id on ties. */
   private static int neighborOwner(int[][] cells, int width, int height, int x, int y) {
     int bestId = -1;
     int bestContact = -1;
-    for (int[] d : DIRS) {
-      int nx = Math.floorMod(x + d[0], width);
-      int ny = y + d[1];
-      if (ny < 0 || ny >= height) {
-        continue;
-      }
-      int id = cells[ny][nx];
+    for (int[] d : SphereTopology.ORTHO) {
+      int[] n = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+      int id = cells[n[1]][n[0]];
       if (id < 0) {
         continue;
       }
       int contact = 0;
-      for (int[] d2 : DIRS) {
-        int sx = Math.floorMod(x + d2[0], width);
-        int sy = y + d2[1];
-        if (sy < 0 || sy >= height) {
-          continue;
-        }
-        if (cells[sy][sx] == id) {
+      for (int[] d2 : SphereTopology.ORTHO) {
+        int[] s = SphereTopology.neighbor(x, y, d2[0], d2[1], width, height);
+        if (cells[s[1]][s[0]] == id) {
           contact++;
         }
       }

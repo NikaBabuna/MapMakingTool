@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-043 Accepted · F-044 rolled back (compromised chat) · Active Goal G-009 · re-negotiate F-044
+**Status:** F-045 Accepted · Active Goal G-009 · next negotiate F-046
 
 ---
 
@@ -29,21 +29,18 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-041 | Docs lock | done |
-| F-042 | Diagnostics hub | done |
-| F-043 | Ridge accretion | done |
-| F-044 | Slivers + border read | rolled back |
+| F-044 | Slivers + border read | done |
+| F-045 | Sphere topology (+ bold / natural borders) | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Tree restored to F-043 Accept (F-044 commits reverted)
+- [x] F-045 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- **2026-09-19:** F-044 rolled back — chat compromised mid-Step; reverted Accept + progress-table commits. Last Accept **F-043**. Re-negotiate F-044 before any code.
-- F-043: ridge fill + neighbor flood; no global nearest refill.
+- F-045: `SphereTopology`; antipodal polar wrap + vx/vy flip; camera 3×3 antipodal tiles; bold dilated borders; ragged flux edges; golden refreshed.
