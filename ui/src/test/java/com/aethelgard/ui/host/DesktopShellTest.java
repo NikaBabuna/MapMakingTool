@@ -26,6 +26,8 @@ class DesktopShellTest {
     assertTrue(Files.isRegularFile(root.resolve("ui/desktop/src-tauri/src/lib.rs")));
     String conf = Files.readString(root.resolve("ui/desktop/src-tauri/tauri.conf.json"));
     assertTrue(conf.contains("localhost:3000"));
+    assertTrue(conf.contains("beforeDevCommand"));
+    assertTrue(conf.contains("--prefix ../web") || conf.contains("../web"));
     String rust = Files.readString(root.resolve("ui/desktop/src-tauri/src/lib.rs"));
     assertTrue(rust.contains("MapHostApp"));
     assertTrue(rust.contains("aethelgard-maphost.pid") || rust.contains("pid_file"));

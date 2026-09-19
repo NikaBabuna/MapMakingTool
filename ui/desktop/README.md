@@ -9,7 +9,7 @@
 
 Tauri 2 shell under `ui/desktop/`. On start it spawns Java `MapHostApp` (port 7420) and opens a webview to the Next tool at **http://localhost:3000**. On quit it stops the host (PID file in the system temp dir).
 
-`tauri.dev` uses `beforeDevCommand` to run `npm run dev` in `../web`, then waits until `:3000` answers before opening the window.
+`tauri dev` runs `npm run --prefix ../web dev` (`beforeDevCommand`), then waits until `:3000` answers before opening the window. That path is relative to `ui/desktop` (where you run `npm run dev`).
 
 ## Launch (recommended)
 
