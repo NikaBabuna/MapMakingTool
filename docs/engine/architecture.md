@@ -31,7 +31,7 @@ ui  →  product  →  engine
 cli →  product  →  engine
 ```
 
-**F-019 / ADR-010:** `ui` and `cli` depend on `product`. `ui` may depend on `cli` only for the placeholder console. `product` depends on `engine`. **`engine` must never depend on them.** `cli` does not depend on `ui`. Engine stays free of UI toolkits and CLI libraries on the compile classpath. **SLF4J API** is allowed in `engine`; logging *bindings* are not (ADR-008).
+**F-019 / ADR-010:** `ui` and `cli` depend on `product`. `ui` may depend on `cli` for the shared command language (`CommandDispatch`, F-048+). `product` depends on `engine`. **`engine` must never depend on them.** `cli` does not depend on `ui`. Engine stays free of UI toolkits and CLI libraries on the compile classpath. **SLF4J API** is allowed in `engine`; logging *bindings* are not (ADR-008).
 
 ---
 

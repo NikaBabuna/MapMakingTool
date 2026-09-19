@@ -7,7 +7,7 @@
 
 # Elevation process
 
-> **Code status (through F-040 / G-008 done):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity`; geometry apply/fission; **Orogeny** from standing classified `boundaries` (O(contacts)). Studio: multi-panel + mappy stage + traditional terminal.
+> **Code status (through F-054 / G-009 done):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). Runtime topology is **sphere polar wrap** (F-045). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity`; geometry apply/fission/ridge flood; **Orogeny** from standing classified `boundaries`. Runner: Perf/World rails, always-on terminal, panel registry.
 
 Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 
@@ -92,9 +92,9 @@ Each generation Step (every `advance` after create) both Systems run against the
 
 Generation index \(G\) is `1` on the first tectonics tick, `2` on the next, and so on (Pool heartbeat value after that Step’s update, minus one, under the default host compute).
 
-1. Translate each cell by its plate’s \((v_x, v_y)\): **wrap X**; **Y off-map claims are dropped** (polar edge).
+1. Translate each cell by its plate’s \((v_x, v_y)\): **sphere polar wrap** (F-045) — X wraps; north/south antipodal re-entry with heading flip.
 2. If exactly one cell claims a destination, that destination keeps the claimant’s plate id.
-3. Leftover cells (zero claimants or two or more) take the **nearest moved site**, cylindrical distance, lower index on ties — the same rule as Step-0 partition.
+3. Leftover cells (zero claimants or two or more) take the **nearest moved site** under the live neighbor/distance rules, lower index on ties.
 
 Moved site \(i\) after \(G\) generation Steps:
 

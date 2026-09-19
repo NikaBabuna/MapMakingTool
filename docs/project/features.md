@@ -148,7 +148,7 @@ Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runne
 | F-051 | Runner chrome | done | [F-051.md](../blockers/F-051.md) |
 | F-052 | Perf rail + runner fixes | done | [F-052.md](../blockers/F-052.md) |
 | F-053 | Runner UI infrastructure + QoL | done | [F-053.md](../blockers/F-053.md) |
-| F-054 | Goal close | not started | |
+| F-054 | Goal close + layer harden + doc hygiene | done | [F-054.md](../blockers/F-054.md) |
 
 ---
 

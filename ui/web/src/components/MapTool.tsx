@@ -149,6 +149,8 @@ export function MapTool() {
   const [confirmNew, setConfirmNew] = useState(false);
   const playRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const busyRef = useRef(false);
+  /** Bumps on explicit layer changes so in-flight poll/raster applies cannot overwrite (F-054). */
+  const applyGenRef = useRef(0);
 
   useEffect(() => {
     setLeftRailOpen(readFlag(RAIL_OPEN_KEYS.left, true));
@@ -180,12 +182,19 @@ export function MapTool() {
   }
 
   const refresh = useCallback(async () => {
+    const gen = applyGenRef.current;
     const next = await fetchStatus();
+    if (gen !== applyGenRef.current) {
+      return next;
+    }
     setStatus(next);
     setSeedText(String(next.seed));
     setSpeed(next.speed as MapSpeedName);
     busyRef.current = next.busy;
     const bytes = await fetchRaster();
+    if (gen !== applyGenRef.current) {
+      return next;
+    }
     setRaster(bytes);
     return next;
   }, []);
@@ -211,11 +220,18 @@ export function MapTool() {
           return;
         }
         try {
+          const gen = applyGenRef.current;
           const next = await fetchStatus();
+          if (gen !== applyGenRef.current) {
+            return;
+          }
           setStatus(next);
           busyRef.current = next.busy;
           if (!next.busy) {
             const bytes = await fetchRaster();
+            if (gen !== applyGenRef.current) {
+              return;
+            }
             setRaster(bytes);
           }
         } catch {
@@ -347,12 +363,22 @@ export function MapTool() {
   }
 
   async function onLayer(layer: MapLayerName) {
+    const gen = ++applyGenRef.current;
     try {
       const next = await postLayer(layer);
+      if (gen !== applyGenRef.current) {
+        return;
+      }
       setStatus(next);
       const bytes = await fetchRaster();
+      if (gen !== applyGenRef.current) {
+        return;
+      }
       setRaster(bytes);
     } catch (err) {
+      if (gen !== applyGenRef.current) {
+        return;
+      }
       setError(err instanceof Error ? err.message : String(err));
     }
   }
@@ -385,15 +411,25 @@ export function MapTool() {
     }
     setPlaying(false);
     setConfirmNew(false);
+    const gen = ++applyGenRef.current;
     try {
       const next = await postNewWorld(parsed);
+      if (gen !== applyGenRef.current) {
+        return;
+      }
       setStatus(next);
       busyRef.current = next.busy;
       const bytes = await fetchRaster();
+      if (gen !== applyGenRef.current) {
+        return;
+      }
       setRaster(bytes);
       fitView();
       setError(null);
     } catch (err) {
+      if (gen !== applyGenRef.current) {
+        return;
+      }
       setError(err instanceof Error ? err.message : String(err));
     }
   }
@@ -436,10 +472,17 @@ export function MapTool() {
   }
 
   async function onTerminalRun(line: string) {
+    const gen = ++applyGenRef.current;
     const result = await postCommand(line);
+    if (gen !== applyGenRef.current) {
+      return result;
+    }
     setStatus(result.status);
     busyRef.current = result.status.busy;
     const bytes = await fetchRaster();
+    if (gen !== applyGenRef.current) {
+      return result;
+    }
     setRaster(bytes);
     return result;
   }
@@ -531,14 +574,17 @@ export function MapTool() {
         return;
       }
       if (key === "1") {
+        e.preventDefault();
         void onLayer("Elevation");
         return;
       }
       if (key === "2") {
+        e.preventDefault();
         void onLayer("Plates");
         return;
       }
       if (key === "3") {
+        e.preventDefault();
         void onLayer("Overlay");
         return;
       }

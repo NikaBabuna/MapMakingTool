@@ -7,7 +7,7 @@
 
 # G-009 — Simulation runner harden
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Engine:** do not edit `engine` source for ordinary feature growth (G-002 host ports).  
 **Prior:** [G-008](G-008-boundary-tectonics-studio.md) shipped boundary tectonics + studio; physics/UI still show void-fill artifacts, cylinder poles, placeholder commands, and weak observability.
 
@@ -64,7 +64,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 - [x] Shared command surface + full CLI + rebuilt terminal (F-048–F-050)
 - [x] Runner chrome + perf panels + UI infrastructure (F-051–F-053)
 - [x] Perf/memory improvements witnessed (F-046–F-047)
-- [ ] Determinism; no `engine` production edits; suite green
+- [x] Determinism; no `engine` production edits; suite green
 
 ---
 
@@ -85,7 +85,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-051 | Runner chrome | done |
 | F-052 | Perf rail + runner fixes | done |
 | F-053 | Runner UI infrastructure + QoL | done |
-| F-054 | Goal close | not started |
+| F-054 | Goal close + layer harden + doc hygiene | done |
 
 ---
 
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 13 / 14 |
-| Claim boxes | 7 / 8 |
-| Last Accept | F-053 |
+| Steps done | 14 / 14 |
+| Claim boxes | 8 / 8 |
+| Last Accept | F-054 |

@@ -7,9 +7,8 @@
 
 # World
 
-**Code status (through F-040 / G-008 done):** VIEW **1920×1080**; cylindrical plates + registry + boundaries + flux/intent + IntegrateVelocity + boundary orogeny; multi-panel studio + traditional console — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).  
-**G-009 (F-046):** crumb absorb 0.01%; phase collectors on hub. **(F-045):** sphere polar wrap live; diverge flood + bold/ragged borders.  
-**G-008:** complete.
+**Code status (through F-054 / G-009 done):** VIEW **1920×1080**; sphere-on-rectangle polar wrap (F-045); ridge accretion + flood/crumbs + bold borders; diagnostics hub; shared CLI/terminal; runner shell + panel registry — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).  
+**G-008:** complete (cylinder amended by F-045).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 
@@ -26,16 +25,16 @@ It is not the engine heartbeat counter. It lives in Pool typed fields that `Prod
 
 ### Specs
 
-| Spec | Role | Code (F-030) | G-008 target |
-|------|------|--------------|--------------|
+| Spec | Role | Code | Notes |
+|------|------|------|-------|
 | `WorldSpec.DEFAULT` | Dump / fast tests | Small (e.g. 8×8), seed 0 | May stay small |
 | `WorldSpec.VIEW` | Product window | **1920×1080**, seed 0 (**F-031**) | same |
 
-A `WorldSpec` also records a long **seed**. Under G-008 the seed places **initial plate sites** (toroidal nearest-site; N = 12–24) — [tectonics.md](tectonics.md). It does not paint elevation.
+A `WorldSpec` also records a long **seed**. The seed places **initial plate sites** (B1 cylindrical nearest-site at Step 0; N = 12–24) — [tectonics.md](tectonics.md). It does not paint elevation.
 
-### Topology (G-008)
+### Topology (G-009 live)
 
-**Cylinder:** wrap X (`floorMod`); Y does **not** wrap (polar edges). Sphere-on-rectangle analogue — not a 3D mesh.
+**Sphere-on-rectangle (F-045):** wrap X; crossing north/south re-enters from the same pole at antipodal longitude with heading flip. Step-0 B1 partition stays cylindrical. Cylinder hard-Y is **retired** for runtime advection/neighbors/camera.
 
 ---
 

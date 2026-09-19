@@ -7,11 +7,11 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-053; G-008 done)  
+**Status:** active (G-009 **done** through F-054; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
-**ADR:** [ADR-010](../project/decisions.md) · [ADR-011](../project/decisions.md)
+**ADR:** [ADR-010](../project/decisions.md) · [ADR-011](../project/decisions.md) · [ADR-012](../project/decisions.md)
 
 ---
 
@@ -69,7 +69,7 @@ Headless paint and session control live in `MapController` + `ElevationRaster`. 
 
 Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. **F-053** runner: menu-bar row, Play/Pause/Speed (`1x`…`Fastest`), left Perf rail, World rail (step/seed/reset/Advance ×N), map layer HUD top-left, always-on Terminal panel; rails and terminal are drag-resizable. While compute is in flight status text may read **Working...** (World rail chip) and further Advances are ignored — **no map overlay**. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
 
-Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated always-on `Terminal.tsx` panel. **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
+Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated always-on `Terminal.tsx` panel (**F-050** rebuild; **F-052** always-on). **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB` in a **flat** `int[]` (F-047). `MapController` **reuses** a **double buffer** when width×height is unchanged (prior snapshot keeps correct pixels). `MapHost` **caches/reuses** one packed `byte[]` keyed by step + layer + paint generation — refill on invalidate, O(1) allocations under Play soak. Same grids + layer → identical RGB.
 
@@ -135,7 +135,7 @@ Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×
 
 ---
 
-## Source layout (through F-033)
+## Source layout (through F-054)
 
 ```
 product/
@@ -153,20 +153,13 @@ product/
     PlateRegistry.java
     PlateVelocities.java
     PlateKinematics.java
+    SphereTopology.java
+    DiagnosticsHub.java
     GenerationTickPolicy.java
     Orogeny.java
     WorldDump.java
   src/test/java/com/aethelgard/product/
-    ProductHostTest.java
-    ProductSessionTest.java
-    WorldStateTest.java
-    ElevationProcessTest.java
-    VoronoiPlatesTest.java
-    PlatePartitionTest.java
-    WorldDumpTest.java
-    PlateKinematicsTest.java
-    OrogenyTest.java
-    BoundaryTectonicsDocsTest.java
+    … (physics / diagnostics / dump witnesses)
   src/test/resources/worlds/
     default-n3.txt
 
@@ -176,22 +169,32 @@ ui/
     MapLayer.java
     MapSpeed.java
     PlayScheduler.java
-    SwingPlayScheduler.java
     CellInspect.java
     LegendEntry.java
-    MapController.java
+    MapController.java          # paintLock vs setLayer/capture (F-054)
     ExecutorPlayScheduler.java
     host/
       MapHost.java
       MapHostApp.java
-  web/                          # Next.js tool (F-025)
+  web/                          # Next.js runner (G-006–G-009)
     package.json
     README.md
     src/
       components/
-        MapTool.tsx
-        Terminal.tsx              # F-050 rebuilt terminal
+        MapTool.tsx             # applyGen layer/poll race guard (F-054)
+        MenuBar.tsx
+        Panel.tsx
+        Terminal.tsx
         MapCanvas.tsx
+        ShortcutsOverlay.tsx
+      lib/
+        panels.ts
+        menus.ts
+        layout.ts
+        shortcuts.ts
+        host.ts
+        viewport.ts
+        raster.ts
   desktop/                      # Tauri 2 shell (F-026)
     package.json
     README.md
@@ -200,10 +203,13 @@ ui/
     MapViewTest.java
     ToolUiTest.java
     ConsoleUiTest.java
+    RasterHostMemoryTest.java
     host/
       MapHostTest.java
-      WebFrontTest.java
-      DesktopShellTest.java
+      PerfRailTest.java
+      RunnerUiInfraTest.java
+      GoalCloseTest.java        # F-054
+      …
 
 cli/
   src/main/java/com/aethelgard/cli/

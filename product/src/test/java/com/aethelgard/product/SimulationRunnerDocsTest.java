@@ -39,16 +39,23 @@ class SimulationRunnerDocsTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("G-009"));
-    assertTrue(style.contains("planned") || style.contains("Planned"));
+    assertTrue(
+        style.contains("planned")
+            || style.contains("Planned")
+            || style.contains("F-054")
+            || style.contains("done"));
 
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
     assertTrue(flows.contains("G-009"));
-    assertTrue(flows.contains("F-041") || flows.contains("planned"));
+    assertTrue(flows.contains("F-041") || flows.contains("shipped") || flows.contains("F-054"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
     assertTrue(goals.contains("G-009"));
     assertTrue(goals.contains("Simulation runner") || goals.contains("simulation-runner"));
-    assertTrue(goals.contains("in progress") || goals.contains("Active Goal"));
+    assertTrue(
+        goals.contains("in progress")
+            || goals.contains("Active Goal")
+            || goals.contains("| done |"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
     assertTrue(agents.contains("G-009"));

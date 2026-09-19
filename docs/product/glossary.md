@@ -36,7 +36,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Cylinder map** | G-008: wrap X; hard polar Y. **Retired** by F-045. |
 | **Ridge accretion** | Diverge gaps fill by iterative flood from bordering plates (F-044); no nearest-third void fill (F-043 intent). |
 | **Simulation runner** | G-009 product feel: Unity-like control, shared CLI/terminal, visible performance. |
-| **Session diagnostics** | Planned (F-042): per-Step timings, memory, counters — queryable via commands. |
+| **Session diagnostics** | Live (F-042+): per-Step timings, memory, counters — queryable via `stats` / `diag` and `/api/status` `diag`. |
 | **DiagnosticsHub** | Session-owned controllable diagnostics: named collectors, enable/disable, ring history (F-042). Not Pool state. |
 | **DiagnosticCollector** | One named sample stream on the hub (`advance.wall`, `heap.used`, `heap.max`, `paint.wall`, `phase.trace`, …). |
 | **Phase collectors** | Per–Sub-System wall timings on advance (`phase.trace` … `phase.orogeny`) via `TimingSubSystem` (F-046). |
@@ -62,8 +62,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |
 | **ui/web** | Next.js studio cartography tool (F-025 / G-007). HTTP client to `MapHost`; client-timed Play; map-first shell. |
 | **ui/desktop** | Tauri 2 shell (F-026). Spawns/stops `MapHostApp`; webview → Next. |
-| **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. |
-| **MapSpeed** | Play tick period: Slow 1000 ms, Normal 250 ms, Fast 100 ms. |
+| **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. HUD + keys `1`/`2`/`3` (suppressed while typing in INPUT/TEXTAREA/SELECT). |
 | **PlayScheduler** | Injected repeating ticks for Play. Host: `ExecutorPlayScheduler`. Next Play is client-timed. |
 | **CellInspect** | Click-inspect snapshot: x, y, elevation, plate id, vx, vy. |
 | **LegendEntry** | Headless legend row: packed RGB + label. |

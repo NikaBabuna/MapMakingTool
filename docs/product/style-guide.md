@@ -7,9 +7,9 @@
 
 # Style guide
 
-_Status: **active** — G-009 **F-053** UI infrastructure + QoL. G-008 studio done. Menu bar, panel registry, resizable rails, brighter map._
+_Status: **active** — G-009 **done** (F-054). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
 
-Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** (G-007/G-008 multi-panel Inspect/Legend + mappy neatline) remains the map-desk metaphor; F-051+ reframes chrome as a quiet **runner shell**. Terminal language F-048–F-050 (rebuilt `Terminal.tsx`); F-052 makes the terminal an always-on panel; F-053 turns chrome into descriptor-driven infrastructure.
+Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** (G-007/G-008 multi-panel Inspect/Legend + mappy neatline) remains the map-desk metaphor; F-051+ reframes chrome as a quiet **runner shell**. Terminal language F-048–F-050 (rebuilt `Terminal.tsx`); F-052 makes the terminal an always-on panel; F-053 turns chrome into descriptor-driven infrastructure; F-054 hardens layer switching and closes the Goal.
 
 ---
 
@@ -21,7 +21,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | **Terminal** | Always-on bottom panel on shared dispatcher | **F-052** |
 | **Perf** | Left rail: mean timings / memory from DiagnosticsHub | **F-052** |
 | **Chrome** | Menu bar row + panel registry + resizable rails | **F-053** |
-| **Close** | Goal wrap-up; no new chrome | planned F-054 |
+| **Close** | Layer harden + doc hygiene + Goal wrap-up | **F-054** done |
 
 ---
 
@@ -39,6 +39,15 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | **Terminal** | Always-visible bottom panel |
 
 **Principles:** map first; chrome gray and quiet; one job per region; progressive disclosure; same session as CLI/terminal language.
+
+### Layer shortcuts (F-054)
+
+| Keys | Action |
+|------|--------|
+| `1` / `2` / `3` | Elevation / Plates / Overlay — `preventDefault` when handled |
+| Typing targets | `INPUT` / `TEXTAREA` / `SELECT` (and contentEditable) **suppress** all runner shortcuts, including layer digits — focus Terminal or seed/speed first, then type |
+
+Layer clicks and keys bump an apply generation so the 200 ms status/raster poll cannot overwrite a fresher layer frame.
 
 ### Speeds
 

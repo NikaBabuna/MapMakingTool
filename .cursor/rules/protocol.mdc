@@ -29,5 +29,5 @@ Before non-trivial work, read in order:
 - Do not Accept if Active Goal entry points disagree with `docs/project/goals.md`
 - Explain in clear English what changed and what it means
 
-Active Goal: [G-009](docs/project/goals/G-009-simulation-runner-harden.md) (`in progress`) · Last: [G-008](docs/project/goals/G-008-boundary-tectonics-studio.md) (`done`)  
+Active Goal: none · Last: [G-009](docs/project/goals/G-009-simulation-runner-harden.md) (`done`) · Prior: [G-008](docs/project/goals/G-008-boundary-tectonics-studio.md) (`done`) 
 Full checklist: `AGENTS.md`

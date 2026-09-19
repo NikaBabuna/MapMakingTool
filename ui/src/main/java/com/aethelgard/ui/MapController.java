@@ -37,6 +37,8 @@ public final class MapController {
   private final PlayScheduler playScheduler;
   private final AtomicBoolean busy = new AtomicBoolean(false);
   private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
+  /** Guards paint buffers, layer, and raster vs concurrent advance / setLayer (F-054). */
+  private final Object paintLock = new Object();
 
   private WorldSpec spec;
   private ProductSession session;
@@ -106,16 +108,22 @@ public final class MapController {
   }
 
   public ElevationRaster raster() {
-    return raster;
+    synchronized (paintLock) {
+      return raster;
+    }
   }
 
   /** Monotonic paint counter; changes whenever the visible raster is rebuilt. */
   public int paintGeneration() {
-    return paintGeneration;
+    synchronized (paintLock) {
+      return paintGeneration;
+    }
   }
 
   public MapLayer layer() {
-    return layer;
+    synchronized (paintLock) {
+      return layer;
+    }
   }
 
   public MapSpeed speed() {
@@ -150,14 +158,19 @@ public final class MapController {
 
   /**
    * Switch paint layer. Does not advance the world. Uses the last captured grids (safe while
-   * busy).
+   * busy). Serialized with {@link #capture()} so paint buffers are not torn under Play.
    */
   public void setLayer(MapLayer layer) {
-    this.layer = Objects.requireNonNull(layer, "layer");
-    long t0 = System.nanoTime();
-    raster = paintReuse(elevation, plates, this.layer);
-    lastPaintNanos = System.nanoTime() - t0;
-    session.diagnostics().record(DiagnosticIds.PAINT_WALL, lastPaintNanos);
+    Objects.requireNonNull(layer, "layer");
+    long paintNanos;
+    synchronized (paintLock) {
+      this.layer = layer;
+      long t0 = System.nanoTime();
+      raster = paintReuse(elevation, plates, this.layer);
+      paintNanos = System.nanoTime() - t0;
+      lastPaintNanos = paintNanos;
+    }
+    session.diagnostics().record(DiagnosticIds.PAINT_WALL, paintNanos);
     fire();
   }
 
@@ -214,16 +227,24 @@ public final class MapController {
 
   /** Snapshot of cell {@code (x, y)} from the last captured grids. */
   public CellInspect inspect(int x, int y) {
-    int id = plates.get(x, y);
-    inspected =
-        new CellInspect(x, y, elevation.get(x, y), id, velocities.vx(id), velocities.vy(id));
+    CellInspect snap;
+    synchronized (paintLock) {
+      int id = plates.get(x, y);
+      snap =
+          new CellInspect(x, y, elevation.get(x, y), id, velocities.vx(id), velocities.vy(id));
+      inspected = snap;
+    }
     fire();
-    return inspected;
+    return snap;
   }
 
   /** Legend rows for the current layer. */
   public List<LegendEntry> legend() {
-    return switch (layer) {
+    MapLayer current;
+    synchronized (paintLock) {
+      current = layer;
+    }
+    return switch (current) {
       case ELEVATION -> elevationLegend();
       case PLATES -> plateLegend();
       case OVERLAY -> {
@@ -304,16 +325,25 @@ public final class MapController {
   }
 
   private void capture() {
-    elevation = session.elevation();
-    plates = session.plates();
-    velocities = session.plateVelocities();
-    cachedStep = session.stepIndex();
-    long t0 = System.nanoTime();
-    raster = paintReuse(elevation, plates, layer);
-    lastPaintNanos = System.nanoTime() - t0;
-    session.diagnostics().record(DiagnosticIds.PAINT_WALL, lastPaintNanos);
+    Grid nextElev = session.elevation();
+    Grid nextPlates = session.plates();
+    PlateVelocities nextVel = session.plateVelocities();
+    int nextStep = session.stepIndex();
+    long paintNanos;
+    synchronized (paintLock) {
+      elevation = nextElev;
+      plates = nextPlates;
+      velocities = nextVel;
+      cachedStep = nextStep;
+      long t0 = System.nanoTime();
+      raster = paintReuse(elevation, plates, layer);
+      paintNanos = System.nanoTime() - t0;
+      lastPaintNanos = paintNanos;
+    }
+    session.diagnostics().record(DiagnosticIds.PAINT_WALL, paintNanos);
   }
 
+  /** Caller must hold {@link #paintLock}. */
   private ElevationRaster paintReuse(Grid elev, Grid plateGrid, MapLayer mapLayer) {
     int need = elev.width() * elev.height();
     if (paintBufferA == null || paintBufferA.length != need) {
@@ -329,7 +359,9 @@ public final class MapController {
 
   /** Test hook: either slot of the double paint buffer. */
   int[] paintBufferForTest() {
-    return paintBufferA;
+    synchronized (paintLock) {
+      return paintBufferA;
+    }
   }
 
   private void fire() {

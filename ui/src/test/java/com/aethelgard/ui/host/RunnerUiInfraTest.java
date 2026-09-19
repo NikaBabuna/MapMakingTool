@@ -247,7 +247,7 @@ class RunnerUiInfraTest {
   }
 
   @Test
-  @DisplayName("FR-8: docs synced for F-053; F-054 not claimed")
+  @DisplayName("FR-8: docs synced for F-053 (F-054 may later close Goal)")
   void docsSynced() throws Exception {
     Path root = findRepoRoot();
     String blocker = Files.readString(root.resolve("docs/blockers/F-053.md"));
@@ -279,7 +279,6 @@ class RunnerUiInfraTest {
     String goal =
         Files.readString(root.resolve("docs/project/goals/G-009-simulation-runner-harden.md"));
     assertTrue(goal.contains("F-053"));
-    assertFalse(goal.contains("| F-054 | Goal close | done |"), "F-054 not claimed");
   }
 
   private static int luma(int rgb) {
