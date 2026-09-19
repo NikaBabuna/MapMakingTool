@@ -2,30 +2,30 @@
   File: docs/product/style-guide.md
   Purpose: Player-facing tone, visuals, and UX feel
   Audience: Agents implementing UI and copy
-  Update when: Style direction is specified or G-007 Steps change chrome
+  Update when: Style direction is specified or studio Steps change chrome
 -->
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 camera **F-038** (zoom + **X loop / Y clamp** pan); panels/console still planned._
+_Status: **active** — G-007 studio cartography (done). G-008 **F-039** multi-panel + mappy stage; traditional console still F-040._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
 ---
 
-## G-008 intent (planned / partial)
+## G-008 studio (F-039)
 
 | Item | Intent | Status |
 |------|--------|--------|
-| **Studio** | Distinct panels/windows for controls, legend, inspect | planned F-039 |
-| **Look** | More **mappy** (chart/atlas cues) | planned F-039 |
+| **Studio** | Distinct titled **Inspect** + **Legend** panel cards on the right rail | **F-039** |
+| **Look** | Chart/atlas cues: **neatline**, **graticule**/ticks, coords + scale HUD | **F-039** |
 | **Console** | Traditional terminal appearance | planned F-040 |
 | **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
-| **Loopback pan** | Drag pan: **X wraps**; **Y clamped** at polar edges (no pan past map top/bottom; blank N/S remain). Fit scale stays vertically centered. | **F-038** |
+| **Loopback pan** | Drag pan: **X wraps**; **Y clamped** at polar edges | **F-038** |
 
 ---
 
-## Map interaction (G-007 / F-028 / F-032 / F-038)
+## Map interaction (G-007 / F-028 / F-032 / F-038 / F-039)
 
 - Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map). Vertical pan clamped at polar edges when zoomed.
 - Drag to pan with **X loopback** and **Y polar clamp**; regions above/below the map band stay **blank** (no vertical loop tiles).
@@ -33,11 +33,12 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 - **Reset view** (`R`) restores fitted centered transform.
 - Busy: map overlay + status chip; do not queue Advance / New world. Status polls use cached step (non-blocking).
 - **Plates** layer: gray interior + dark boundary stroke (no per-id rainbow fills).
+- **Mappy stage:** neatline frame + faint graticule/ticks; HUD shows hover cell coords and zoom scale.
 
 **Studio cartography** — the window is a working map desk, not a marketing page.
 
 - Map fills the work area.
-- Chrome is thin bars and docks.
+- Chrome is thin bars and **multi-panel** cards.
 - Brand is a quiet wordmark in the top bar (not a gradient hero headline).
 - Type is restrained UI sans + mono for seed/coords/console.
 
@@ -67,9 +68,18 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
 | Region | Rule |
 |--------|------|
 | **Top bar** | Thin; brand wordmark + host pill + tool controls + status |
-| **Map stage** | Full-bleed in the remaining viewport (no max-width marketing column) |
-| **Right dock** | Inspect + Legend; collapsible; preference `localStorage` key `aethelgard.dockOpen` |
-| **Console** | On-demand drawer (not permanently in the dock) |
+| **Map stage** | Full-bleed in the remaining viewport; neatline + graticule + HUD |
+| **Right rail** | Stacked **studio-panel** cards: Inspect, Legend; whole rail toggles via Dock |
+| **Panel collapse** | Each panel body collapses independently |
+| **Console** | On-demand drawer (not permanently in the rail) |
+
+### Persistence (`localStorage`)
+
+| Key | Meaning |
+|-----|---------|
+| `aethelgard.dockOpen` | Right rail visible |
+| `aethelgard.panelInspectOpen` | Inspect panel body expanded |
+| `aethelgard.panelLegendOpen` | Legend panel body expanded |
 
 ---
 

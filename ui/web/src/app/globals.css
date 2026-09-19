@@ -255,10 +255,88 @@ input:focus-visible,
   image-rendering: pixelated;
 }
 
+/* Chart frame (F-039) — neatline + faint graticule + edge ticks */
+.map-neatline {
+  position: absolute;
+  inset: 0.55rem;
+  pointer-events: none;
+  z-index: 1;
+  border: 1px solid rgba(200, 214, 228, 0.42);
+  box-shadow:
+    inset 0 0 0 1px rgba(10, 13, 18, 0.55),
+    0 0 0 1px rgba(10, 13, 18, 0.35);
+}
+
+.map-graticule {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(to right, rgba(180, 198, 214, 0.55) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(180, 198, 214, 0.55) 1px, transparent 1px);
+  background-size: 12.5% 12.5%;
+}
+
+.map-ticks {
+  position: absolute;
+  pointer-events: none;
+}
+
+.map-ticks-x {
+  left: 0;
+  right: 0;
+  top: -0.35rem;
+  height: 0.35rem;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(200, 214, 228, 0.7) 0,
+    rgba(200, 214, 228, 0.7) 1px,
+    transparent 1px,
+    transparent 12.5%
+  );
+}
+
+.map-ticks-y {
+  top: 0;
+  bottom: 0;
+  left: -0.35rem;
+  width: 0.35rem;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(200, 214, 228, 0.7) 0,
+    rgba(200, 214, 228, 0.7) 1px,
+    transparent 1px,
+    transparent 12.5%
+  );
+}
+
+.map-hud {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.28rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(18, 22, 28, 0.82);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.map-hud-coords {
+  color: var(--text);
+}
+
 .map-busy {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 3;
   background: rgba(10, 13, 18, 0.35);
   display: flex;
   align-items: center;
@@ -275,30 +353,68 @@ input:focus-visible,
   opacity: 1;
 }
 
-.side-dock {
+.side-rail {
   width: var(--dock-w);
   border-left: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--ink);
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 0.55rem;
+  padding: 0.55rem;
   min-height: 0;
   overflow: auto;
   z-index: 2;
 }
 
-.side-dock section {
-  padding: 0.75rem 0.85rem;
-  border-bottom: 1px solid var(--line);
+.studio-panel {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.side-dock h2 {
-  margin: 0 0 0.55rem;
+.panel-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.panel-chrome h2 {
+  margin: 0;
   font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
+}
+
+.panel-toggle {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  color: var(--muted);
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.panel-toggle:hover {
+  color: var(--text);
+  border-color: rgba(126, 176, 199, 0.45);
+}
+
+.panel-body {
+  padding: 0.65rem 0.75rem 0.75rem;
 }
 
 .muted {
@@ -447,7 +563,7 @@ input:focus-visible,
     grid-template-columns: 1fr;
   }
 
-  .side-dock {
+  .side-rail {
     position: absolute;
     top: 0;
     right: 0;
@@ -455,7 +571,7 @@ input:focus-visible,
     box-shadow: -8px 0 24px rgba(0, 0, 0, 0.35);
   }
 
-  .studio-work.dock-closed .side-dock {
+  .studio-work.dock-closed .side-rail {
     display: none;
   }
 

@@ -80,7 +80,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | F-036 | Apply flux, flood, fission, death; registry | done |
 | F-037 | Integrate edge-driven velocities | done |
 | F-038 | Orogeny from standing boundaries | done |
-| F-039 | Multi-panel studio + mappy style | not started |
+| F-039 | Multi-panel studio + mappy style | done |
 | F-040 | Traditional console; Goal close | not started |
 
 ---
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 9 / 11 |
+| Steps done | 10 / 11 |
 | Claim boxes | 6 / 8 |
-| Last Accept | F-038 |
+| Last Accept | F-039 |

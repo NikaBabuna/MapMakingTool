@@ -31,16 +31,22 @@ import { rgbCss } from "@/lib/raster";
 const LAYERS: MapLayerName[] = ["Elevation", "Plates", "Overlay"];
 const SPEEDS: MapSpeedName[] = ["Slow", "Normal", "Fast"];
 const DOCK_KEY = "aethelgard.dockOpen";
+const INSPECT_PANEL_KEY = "aethelgard.panelInspectOpen";
+const LEGEND_PANEL_KEY = "aethelgard.panelLegendOpen";
 
-function readDockOpen(): boolean {
+function readFlag(key: string, fallback: boolean): boolean {
   if (typeof window === "undefined") {
-    return true;
+    return fallback;
   }
-  const raw = window.localStorage.getItem(DOCK_KEY);
+  const raw = window.localStorage.getItem(key);
   if (raw === null) {
-    return true;
+    return fallback;
   }
   return raw !== "0";
+}
+
+function readDockOpen(): boolean {
+  return readFlag(DOCK_KEY, true);
 }
 
 function isTypingTarget(el: EventTarget | null): boolean {
@@ -61,6 +67,8 @@ export function MapTool() {
   const [consoleLog, setConsoleLog] = useState<string[]>([]);
   const [consoleOpen, setConsoleOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(true);
+  const [inspectOpen, setInspectOpen] = useState(true);
+  const [legendOpen, setLegendOpen] = useState(true);
   const [viewport, setViewport] = useState<Viewport>(IDENTITY_VIEWPORT);
   const stageMetricsRef = useRef({
     stageW: 1,
@@ -77,6 +85,8 @@ export function MapTool() {
 
   useEffect(() => {
     setDockOpen(readDockOpen());
+    setInspectOpen(readFlag(INSPECT_PANEL_KEY, true));
+    setLegendOpen(readFlag(LEGEND_PANEL_KEY, true));
   }, []);
 
   useEffect(() => {
@@ -85,6 +95,20 @@ export function MapTool() {
     }
     window.localStorage.setItem(DOCK_KEY, dockOpen ? "1" : "0");
   }, [dockOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.setItem(INSPECT_PANEL_KEY, inspectOpen ? "1" : "0");
+  }, [inspectOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.setItem(LEGEND_PANEL_KEY, legendOpen ? "1" : "0");
+  }, [legendOpen]);
 
   const refresh = useCallback(async () => {
     const next = await fetchStatus();
@@ -483,48 +507,78 @@ export function MapTool() {
         />
 
         {dockOpen ? (
-          <aside className="side-dock" aria-label="Inspect and legend">
-            <section>
-              <h2>Inspect</h2>
-              {status?.inspect ? (
-                <dl className="inspect-grid">
-                  <div>
-                    <dt>Cell</dt>
-                    <dd>
-                      {status.inspect.x}, {status.inspect.y}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Elevation</dt>
-                    <dd>{status.inspect.elevation}</dd>
-                  </div>
-                  <div>
-                    <dt>Plate</dt>
-                    <dd>{status.inspect.plateId}</dd>
-                  </div>
-                  <div>
-                    <dt>Velocity</dt>
-                    <dd>
-                      {status.inspect.vx}, {status.inspect.vy}
-                    </dd>
-                  </div>
-                </dl>
-              ) : (
-                <p className="muted">Click the map to inspect a cell.</p>
-              )}
-            </section>
+          <aside className="side-rail" aria-label="Studio panels">
+            <article className="studio-panel" data-panel="inspect">
+              <header className="panel-chrome">
+                <h2>Inspect</h2>
+                <button
+                  type="button"
+                  className="panel-toggle"
+                  aria-expanded={inspectOpen}
+                  onClick={() => setInspectOpen((o) => !o)}
+                  title={inspectOpen ? "Collapse Inspect" : "Expand Inspect"}
+                >
+                  {inspectOpen ? "−" : "+"}
+                </button>
+              </header>
+              {inspectOpen ? (
+                <div className="panel-body">
+                  {status?.inspect ? (
+                    <dl className="inspect-grid">
+                      <div>
+                        <dt>Cell</dt>
+                        <dd>
+                          {status.inspect.x}, {status.inspect.y}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Elevation</dt>
+                        <dd>{status.inspect.elevation}</dd>
+                      </div>
+                      <div>
+                        <dt>Plate</dt>
+                        <dd>{status.inspect.plateId}</dd>
+                      </div>
+                      <div>
+                        <dt>Velocity</dt>
+                        <dd>
+                          {status.inspect.vx}, {status.inspect.vy}
+                        </dd>
+                      </div>
+                    </dl>
+                  ) : (
+                    <p className="muted">Click the map to inspect a cell.</p>
+                  )}
+                </div>
+              ) : null}
+            </article>
 
-            <section>
-              <h2>Legend</h2>
-              <ul className="legend-list">
-                {(status?.legend ?? []).map((row) => (
-                  <li key={`${row.rgb}-${row.label}`}>
-                    <span className="swatch" style={{ background: rgbCss(row.rgb) }} />
-                    {row.label}
-                  </li>
-                ))}
-              </ul>
-            </section>
+            <article className="studio-panel" data-panel="legend">
+              <header className="panel-chrome">
+                <h2>Legend</h2>
+                <button
+                  type="button"
+                  className="panel-toggle"
+                  aria-expanded={legendOpen}
+                  onClick={() => setLegendOpen((o) => !o)}
+                  title={legendOpen ? "Collapse Legend" : "Expand Legend"}
+                >
+                  {legendOpen ? "−" : "+"}
+                </button>
+              </header>
+              {legendOpen ? (
+                <div className="panel-body">
+                  <ul className="legend-list">
+                    {(status?.legend ?? []).map((row) => (
+                      <li key={`${row.rgb}-${row.label}`}>
+                        <span className="swatch" style={{ background: rgbCss(row.rgb) }} />
+                        {row.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </article>
           </aside>
         ) : null}
 

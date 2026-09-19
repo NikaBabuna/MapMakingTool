@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done (studio QoL). **G-008** in progress — through **F-038** boundary orogeny + camera/plates paint._
+_Status: **G-007** done (studio QoL). **G-008** in progress — through **F-039** multi-panel + mappy stage._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -20,7 +20,8 @@ Before production feature code, extend this file per [../process/quality.md](../
 | World | VIEW **1920×1080**, cylinder loop | F-031–F-032 |
 | Plates | Initial partition + registry; boundaries/flux/fission/motion/orogeny | **F-033–F-038 done** |
 | Camera | Zoom clamp; X loop + Y polar clamp pan; blank N/S (cylinder) | **F-038** |
-| Studio | Multi-panel, mappy style, traditional terminal console | F-039–F-040 |
+| Studio | Multi-panel + mappy style | **F-039** |
+| Console | Traditional terminal; Goal close | F-040 |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 
@@ -43,15 +44,15 @@ Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 
 ## Flow: Studio tool (layers, play, inspect, dock)
 
-**Goal:** User reads relief and plates in a map-first studio, lets time run, reseeds, inspects a cell, and opens the console on demand.
+**Goal:** User reads relief and plates in a map-first multi-panel studio, lets time run, reseeds, inspects a cell, and opens the console on demand.
 
 | Step | Action |
 |------|--------|
-| 1 | Launch desktop/Next tool. Thin top bar; full-bleed map; **Elevation**, paused; dock open (Inspect + Legend). |
+| 1 | Launch desktop/Next tool. Thin top bar; full-bleed map with neatline; **Elevation**, paused; right rail open with **Inspect** + **Legend** panel cards. |
 | 2 | Switch **Plates** or **Overlay**. The world does not advance. |
 | 3 | **Play** (client timer → `/api/advance`) or **Advance**. Status **Working...** while busy. **Pause** stops the timer. |
-| 4 | Click a cell. **Inspect** in the dock shows x, y, elevation, plate id, velocity. Legend follows the layer. |
-| 5 | **Dock** toggles the right panel (`localStorage` `aethelgard.dockOpen`). **Console** opens the bottom drawer. |
+| 4 | Click a cell. **Inspect** panel shows x, y, elevation, plate id, velocity. Legend follows the layer. Collapse panel bodies independently. |
+| 5 | **Dock** toggles the right rail (`localStorage` `aethelgard.dockOpen`). Panel bodies use `aethelgard.panelInspectOpen` / `panelLegendOpen`. **Console** opens the bottom drawer. |
 | 6 | Change **Seed**, **Random**, or **New world** (confirm when Step > 0). Ignored while busy. |
 | 7 | Shortcuts: Space Play; `A`/`.` Advance; `1`–`3` layers; `[`/`]` speed; `N` New world; `` ` ``/`C` console; `D` dock; `R` reset view. |
 | 8 | Console placeholder verbs via `CommandDispatch`. |

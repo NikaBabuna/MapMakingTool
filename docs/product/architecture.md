@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 F-038 boundary orogeny; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-039 multi-panel studio; F-038 orogeny; G-007 studio done; F-026 Tauri)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -124,7 +124,7 @@ Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.V
 
 ## Next.js tool (F-025 / G-007)
 
-Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is **studio cartography** (map-first; collapsible dock; console drawer) — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
+Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is **multi-panel studio cartography** (map-first; Inspect/Legend panel cards; neatline/graticule HUD; console drawer) — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
 
 ## Tauri desktop (F-026)
 

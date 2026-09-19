@@ -32,7 +32,7 @@ class StudioChromeTest {
     assertTrue(tool.contains("studio-bar"));
     assertTrue(tool.contains("aethelgard.dockOpen"));
     assertTrue(tool.contains("console-drawer") || tool.contains("consoleOpen"));
-    assertTrue(tool.contains("side-dock") || tool.contains("dockOpen"));
+    assertTrue(tool.contains("side-rail") || tool.contains("studio-panel") || tool.contains("dockOpen"));
     assertTrue(tool.contains("postAdvance"));
     assertTrue(tool.contains("Console"));
     assertFalse(tool.contains("tool-brand"));

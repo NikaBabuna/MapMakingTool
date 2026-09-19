@@ -143,4 +143,4 @@ Implementation Steps: **F-034–F-038**.
 ## Studio UI
 
 - **F-032 / F-038:** zoom clamp; **X wrap + Y polar clamp** pan; **blank** above/below the map (no vertical loop tiles). Sphere-on-rectangle camera.
-- **F-039 / F-040:** multi-panel mappy studio + traditional console — planned.
+- **F-039 / F-040:** multi-panel mappy studio (**F-039**); traditional console + Goal close (**F-040**).

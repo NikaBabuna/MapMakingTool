@@ -96,11 +96,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-008 F-038 orogeny; G-007 studio; Tauri + Next + MapHost |
+| [architecture.md](product/architecture.md) | Active — G-008 F-039 multi-panel; F-038 orogeny; Tauri + Next + MapHost |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-007 done; G-008 intent planned (F-030) |
+| [flows.md](product/flows.md) | G-007 done; G-008 through F-039 multi-panel |
 | [glossary.md](product/glossary.md) | Active — torus; plate registry; fission; VIEW target |
-| [style-guide.md](product/style-guide.md) | Active — G-007 shipped; G-008 intent planned |
+| [style-guide.md](product/style-guide.md) | Active — G-007 shipped; G-008 F-039 multi-panel + mappy |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) · [tectonics.md](product/wiki/tectonics.md) (F-030) |
 
 ---
@@ -149,6 +149,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-036.md](blockers/F-036.md) | done — apply flux + fission + B1 distance |
 | [F-037.md](blockers/F-037.md) | done — edge-driven IntegrateVelocity |
 | [F-038.md](blockers/F-038.md) | done — boundary orogeny O(contacts) + status/camera/plates |
+| [F-039.md](blockers/F-039.md) | done — multi-panel studio + mappy style |
 
 ---
 

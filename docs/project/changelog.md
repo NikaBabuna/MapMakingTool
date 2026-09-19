@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-039:** multi-panel Inspect/Legend cards + mappy neatline/graticule/HUD; panel `localStorage` prefs.
 - **2026-09-19** — **F-038:** boundary orogeny O(contacts) from standing `boundaries`; cached MapController step for non-blocking status; Y polar-clamp pan; plates interior/boundary paint; golden refreshed.
 - **2026-09-19** — **F-037:** `IntegrateVelocity` from `motion_intent`; pipeline Trace → Interaction → Integrate → ApplyGeometry → Orogeny; golden dump refreshed.
 - **2026-09-19** — **F-036:** apply `area_flux` (sink/flood/fission/death); B1 latitude-weighted partition; `plate_velocity` STATIC; single tectonics System pipeline.

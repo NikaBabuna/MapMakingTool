@@ -2,9 +2,9 @@
 
 /*
  * File: ui/web/src/components/MapCanvas.tsx
- * Purpose: Paint host raster with toroidal pan/zoom; forward click cells
+ * Purpose: Paint host raster with toroidal pan/zoom; mappy neatline + coords
  * Audience: MapTool
- * Update when: Display scaling or viewport interaction changes
+ * Update when: Display scaling, viewport, or chart overlays change
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -24,7 +24,12 @@ type Props = {
   viewport: Viewport;
   onViewportChange: (next: Viewport) => void;
   onCell: (x: number, y: number) => void;
-  onStageMetrics?: (metrics: { stageW: number; stageH: number; displayW: number; displayH: number }) => void;
+  onStageMetrics?: (metrics: {
+    stageW: number;
+    stageH: number;
+    displayW: number;
+    displayH: number;
+  }) => void;
 };
 
 export function MapCanvas({
@@ -42,6 +47,7 @@ export function MapCanvas({
   const stageSizeRef = useRef({ w: 1, h: 1 });
   const dragRef = useRef<{ x: number; y: number; moved: boolean } | null>(null);
   const [panning, setPanning] = useState(false);
+  const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(null);
   const viewportRef = useRef(viewport);
   viewportRef.current = viewport;
 
@@ -88,6 +94,24 @@ export function MapCanvas({
       displayW: dw,
       displayH: dh,
     });
+  }
+
+  function updateHover(clientX: number, clientY: number) {
+    const pt = stagePoint(clientX, clientY);
+    if (!pt) {
+      setHoverCell(null);
+      return;
+    }
+    const cell = stageToCell(
+      viewportRef.current,
+      pt.x,
+      pt.y,
+      sizeRef.current.w,
+      sizeRef.current.h,
+      sizeRef.current.dw,
+      sizeRef.current.dh,
+    );
+    setHoverCell(cell);
   }
 
   useEffect(() => {
@@ -144,6 +168,8 @@ export function MapCanvas({
     return { x: clientX - rect.left, y: clientY - rect.top };
   }
 
+  const scaleLabel = viewport.scale.toFixed(2);
+
   return (
     <div
       ref={stageRef}
@@ -179,6 +205,7 @@ export function MapCanvas({
         setPanning(true);
       }}
       onPointerMove={(e) => {
+        updateHover(e.clientX, e.clientY);
         if (!dragRef.current) {
           return;
         }
@@ -195,6 +222,7 @@ export function MapCanvas({
           onViewportChange(panBy(viewportRef.current, dx, dy, dw, dh, stageSizeRef.current.h));
         }
       }}
+      onPointerLeave={() => setHoverCell(null)}
       onPointerUp={(e) => {
         const wasDrag = dragRef.current?.moved ?? false;
         dragRef.current = null;
@@ -231,6 +259,17 @@ export function MapCanvas({
     >
       <canvas ref={sourceRef} className="map-source" width={1920} height={1080} aria-hidden />
       <canvas ref={viewRef} className="map-view" />
+      <div className="map-neatline" aria-hidden>
+        <div className="map-graticule" />
+        <div className="map-ticks map-ticks-x" />
+        <div className="map-ticks map-ticks-y" />
+      </div>
+      <div className="map-hud" aria-live="polite">
+        <span className="map-hud-coords">
+          {hoverCell ? `x ${hoverCell.x} · y ${hoverCell.y}` : "x — · y —"}
+        </span>
+        <span className="map-hud-scale">×{scaleLabel}</span>
+      </div>
       <div className="map-busy" aria-hidden={!busy}>
         Working…
       </div>

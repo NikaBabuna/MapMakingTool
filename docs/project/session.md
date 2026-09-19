@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-038 Accepted · next F-039
+**Status:** F-039 Accepted · next F-040
 
 ---
 
@@ -29,19 +29,19 @@ Ship **G-008** — boundary tectonics + large cylinder world + cartography studi
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030–F-038 | Foundations through boundary orogeny | done |
-| F-039–F-040 | Studio → Goal close | not started |
+| F-030–F-039 | Foundations through multi-panel studio | done |
+| F-040 | Traditional console; Goal close | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-038 Accept)
+- [x] Incremental suite green (F-039 Accept)
 
 ---
 
 ## Notes
 
-- F-038 redesign: O(contacts) relief, cached status, Y pan clamp, boundary plates paint.
-- Next: **F-039** multi-panel studio + mappy style.
+- F-039 Choice A shipped: Inspect/Legend panel cards, neatline/graticule/HUD.
+- Next: **F-040** traditional console + G-008 close.
