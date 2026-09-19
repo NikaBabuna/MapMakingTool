@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-042 Accepted · Active Goal G-009 · next negotiate F-043
+**Status:** F-043 Accepted · Active Goal G-009 · next negotiate F-044
 
 ---
 
@@ -31,16 +31,17 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 |------|------|--------|
 | F-041 | Docs lock | done |
 | F-042 | Diagnostics hub | done |
+| F-043 | Ridge accretion | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-042 Accept)
+- [x] Incremental suite green (F-043 Accept)
 
 ---
 
 ## Notes
 
-- F-042: `DiagnosticsHub` + collectors + CLI `stats`/`diag`. Next: negotiate F-043 (diverge / void-fill).
+- F-043: ridge fill + neighbor flood; no global nearest refill; golden refreshed. Next: negotiate F-044 (slivers / borders).

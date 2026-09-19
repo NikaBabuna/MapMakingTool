@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-041 G-009 locks (diverge ridge; sphere polar wrap on paper). Prior: F-030 locks; F-034 cylinder; F-036 B1. **Code status:** G-008 tectonics still live (cylinder hard-Y; nearest void-fill) until F-043–F-045. **F-042:** session `DiagnosticsHub` (not Pool).
+**Doc status:** F-043 ridge accretion live; F-041 G-009 locks (sphere polar wrap on paper). Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Ridge fill F-043; cylinder hard-Y until F-045. **F-042:** session `DiagnosticsHub`.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -82,9 +82,9 @@ Plates are the only tectonic actors. **Number, motion, and size** come from boun
 
 ### Diverge / void-fill (G-009)
 
-**Lock:** Gaps opened by SEPARATE must **not** be filled by a nearest arbitrary **third** plate. New crust at separate contacts belongs only to the **two contacting plates**.
+**Lock:** Gaps opened by SEPARATE must **not** be filled by a nearest arbitrary **third** plate. New crust at separate contacts belongs only to the **two contacting plates** (ridge accretion — plate extends). Full cover: no unowned cells.
 
-**Runtime (until F-043):** Advection/flood still uses nearest-owner void-fill (G-008) — this can invite a third plate into a ridge gap. That behavior is **superseded** for G-009; fix in F-043.
+**Code (F-043):** After advection, unique claimants keep ownership; unresolved cells are filled by ridge accretion (neighbor set ⊆ SEPARATE pair {A,B}) then neighbor flood only. Global nearest-site / nearest-owner refill **removed**. Boundaries are re-traced on remapped plates before advect so ridge pairs match fission ids.
 
 ### Collide precedence (v1)
 

@@ -42,7 +42,8 @@ public final class ProductGeneration {
     PlateVelocities integrated = IntegrateVelocity.integrate(standingVel, intent);
     ApplyGeometry.Result geom =
         ApplyGeometry.apply(standing, boundaries, flux, standingReg, integrated);
-    Grid moved = PlateKinematics.advect(geom.plates(), geom.velocities(), generationIndex);
+    Boundaries ridge = Boundaries.trace(geom.plates(), geom.velocities());
+    Grid moved = PlateKinematics.advect(geom.plates(), geom.velocities(), generationIndex, ridge);
     PlateRegistry after = PlateRegistry.from(moved, geom.velocities());
     Grid elevation = Orogeny.apply(boundaries, standingReg, state.elevation());
     return new Snapshot(moved, geom.velocities(), after, elevation);

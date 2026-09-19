@@ -102,7 +102,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [flows.md](product/flows.md) | G-009 F-042 diagnostics; G-008 done (through F-040) |
 | [glossary.md](product/glossary.md) | Active — DiagnosticsHub; collectors; sphere polar wrap; ridge accretion |
 | [style-guide.md](product/style-guide.md) | Active — G-009 runner (F-042 hub); G-008 studio shipped |
-| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) · [tectonics.md](product/wiki/tectonics.md) (F-041 G-009 locks) |
+| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-043 ridge live; sphere poles until F-045) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -154,6 +154,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-040.md](blockers/F-040.md) | done — traditional console; G-008 closed |
 | [F-041.md](blockers/F-041.md) | done — G-009 docs lock |
 | [F-042.md](blockers/F-042.md) | done — DiagnosticsHub + CLI diag/stats |
+| [F-043.md](blockers/F-043.md) | done — ridge accretion diverge fill |
 
 ---
 

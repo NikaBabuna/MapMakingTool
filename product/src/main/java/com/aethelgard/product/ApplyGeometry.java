@@ -47,7 +47,9 @@ public final class ApplyGeometry implements SubSystem {
     AreaFlux flux = requireFlux(readField(io, WorldFields.AREA_FLUX));
     int generationIndex = Math.toIntExact(io.poolValue()) - 1;
     Result result = apply(plates, boundaries, flux, registry, velocities);
-    Grid moved = PlateKinematics.advect(result.plates(), result.velocities(), generationIndex);
+    // Re-trace on remapped plates so ridge pairs match post-fission ids.
+    Boundaries ridge = Boundaries.trace(result.plates(), result.velocities());
+    Grid moved = PlateKinematics.advect(result.plates(), result.velocities(), generationIndex, ridge);
     PlateRegistry after = PlateRegistry.from(moved, result.velocities());
     io.write(WorldFields.PLATES, moved);
     io.write(WorldFields.PLATE_REGISTRY, after);
@@ -149,13 +151,11 @@ public final class ApplyGeometry implements SubSystem {
         }
       }
     }
-    // Any remaining sink: B1-nearest owned cell
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        if (cells[y][x] != SINK) {
-          continue;
+        if (cells[y][x] == SINK) {
+          throw new IllegalStateException("sink remained after neighbor flood at (" + x + "," + y + ")");
         }
-        cells[y][x] = nearestOwner(cells, width, height, x, y);
       }
     }
   }
@@ -195,30 +195,6 @@ public final class ApplyGeometry implements SubSystem {
       }
     }
     return n;
-  }
-
-  private static int nearestOwner(int[][] cells, int width, int height, int x, int y) {
-    int bestId = 0;
-    long bestD2 = Long.MAX_VALUE;
-    boolean found = false;
-    for (int sy = 0; sy < height; sy++) {
-      for (int sx = 0; sx < width; sx++) {
-        int id = cells[sy][sx];
-        if (id < 0) {
-          continue;
-        }
-        long d2 = Plates.dist2(x, y, sx, sy, width, height);
-        if (!found || d2 < bestD2 || (d2 == bestD2 && id < bestId)) {
-          found = true;
-          bestD2 = d2;
-          bestId = id;
-        }
-      }
-    }
-    if (!found) {
-      throw new IllegalStateException("no living plate to flood sink at (" + x + "," + y + ")");
-    }
-    return bestId;
   }
 
   private static Lifecycle fissionAndCrumbs(

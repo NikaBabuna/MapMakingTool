@@ -34,7 +34,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Torus** | Earlier G-008 lock (wrap both axes). **Amended F-034** to cylinder. |
 | **Cylinder map** | G-008: wrap X; hard polar Y. **Superseded on paper** by G-009 sphere polar wrap (F-041 / code F-045). |
 | **Sphere polar wrap** | Crossing north re-enters from north at antipodal longitude (heading flip); same for south. Planned code F-045. |
-| **Ridge accretion** | SEPARATE new crust belongs only to the two contacting plates — no nearest-third void fill (G-009 / F-043). |
+| **Ridge accretion** | SEPARATE new crust extends the two contacting plates only — no nearest-third void fill (F-043 live). |
 | **Simulation runner** | G-009 product feel: Unity-like control, shared CLI/terminal, visible performance. |
 | **Session diagnostics** | Planned (F-042): per-Step timings, memory, counters — queryable via commands. |
 | **DiagnosticsHub** | Session-owned controllable diagnostics: named collectors, enable/disable, ring history (F-042). Not Pool state. |
