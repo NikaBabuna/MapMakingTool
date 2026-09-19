@@ -7,8 +7,8 @@
 
 # World
 
-**Code status (through F-035):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + area_flux + motion_intent — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).  
-**G-008 further targets:** apply flux / fission / edge-driven motion / studio panels — see [tectonics.md](tectonics.md).
+**Code status (through F-037):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + area_flux + motion_intent + IntegrateVelocity — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).
+**G-008 further targets:** orogeny rewrite / studio panels — see [tectonics.md](tectonics.md).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 
@@ -50,15 +50,15 @@ Later climate (rainfall, temperature, …) is more layers of the same shape, not
 |-------|--------|-------------|
 | `elevation` | every cell `0` | orogeny — [elevation.md](elevation.md) |
 | `plates` | B1 nearest-site (N=12–24, wrap X) | apply flux/fission then advection |
-| `plate_registry` | STATIC area + `(vx,vy)` | refreshed after geometry |
+| `plate_registry` | STATIC area + `(vx,vy)` | refreshed after integrate + geometry |
 | `boundaries` | STATIC classified contacts | refreshed each generation |
 | `area_flux` | STATIC Δarea + sinkΔ | refreshed; **applied** each generation |
-| `motion_intent` | STATIC preferred Δv | refreshed; integrate F-037 |
-| `plate_velocity` | STATIC `(vx,vy)` in `{-1,0,1}` | rewritten on fission/death |
+| `motion_intent` | STATIC preferred Δv | refreshed; drives IntegrateVelocity |
+| `plate_velocity` | STATIC `(vx,vy)` in `{-1,0,1}` | integrate each generation; fission remap |
 
 ### G-008 planned fields
 
-See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Edge-driven velocity integrate is F-037.
+See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Edge-driven velocity integrate shipped in F-037.
 
 ---
 

@@ -25,7 +25,7 @@ import java.util.Objects;
  *
  * <p>Schema: elevation / plates / plate_registry / boundaries / area_flux / motion_intent /
  * plate_velocity are STATIC. One tectonics System claims {@code world/tectonics} after Step 0 and
- * runs TraceBoundaries → BoundaryInteraction → ApplyGeometry → Orogeny.
+ * runs TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny.
  */
 public final class ProductHost {
 
@@ -45,6 +45,8 @@ public final class ProductHost {
    */
   public static EngineSetup setup() {
     CategoryTree tree = ProductCategories.tree();
+    IntegrateVelocity integrate = new IntegrateVelocity();
+    ApplyGeometry applyGeometry = new ApplyGeometry();
     EngineSystem tectonics =
         new EngineSystem(
             new SystemConfig(
@@ -53,9 +55,10 @@ public final class ProductHost {
                 List.of(
                     new TraceBoundaries(),
                     new BoundaryInteraction(),
-                    new ApplyGeometry(),
+                    integrate,
+                    applyGeometry,
                     new Orogeny()),
-                null));
+                conflict -> List.of(integrate, applyGeometry)));
     FieldSchema schema =
         FieldSchema.of(
             Map.of(

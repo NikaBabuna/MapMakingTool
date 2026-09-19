@@ -1,8 +1,8 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/PlateVelocities.java
- * Purpose: CONSTANT per-plate integer velocities seeded from WorldSpec.seed
- * Audience: ProductHost / PlateKinematics / tests
- * Update when: Velocity seed rule changes
+ * Purpose: STATIC per-plate integer velocities (seed + edge-driven integrate)
+ * Audience: ProductHost / PlateKinematics / IntegrateVelocity / tests
+ * Update when: Velocity seed or unit clamp rule changes
  */
 
 package com.aethelgard.product;
@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Per-plate {@code (vx, vy)} in {@code {-1, 0, 1}}, seeded from {@code seed}. Wiki: {@code
- * docs/product/wiki/elevation.md}.
+ * Per-plate {@code (vx, vy)} in {@code {-1, 0, 1}}. Seeded at Step 0 from {@code seed}; nudged each
+ * generation by {@link IntegrateVelocity}. Wiki: {@code docs/product/wiki/elevation.md}.
  *
  * <p>Axis {@code 2} is {@code vx}; axis {@code 3} is {@code vy}. If every plate would be {@code
  * (0, 0)}, plate {@code 0} is forced to {@code (1, 0)}.

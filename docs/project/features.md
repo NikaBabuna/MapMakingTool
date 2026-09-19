@@ -122,7 +122,7 @@ Goal doc: [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tecton
 | F-034 | Boundary trace + classify | done | [F-034.md](../blockers/F-034.md) |
 | F-035 | Precedence + area flux + motion intent | done | [F-035.md](../blockers/F-035.md) |
 | F-036 | Flux apply, flood, fission, death | done | [F-036.md](../blockers/F-036.md) |
-| F-037 | Edge-driven velocity integrate | not started | |
+| F-037 | Edge-driven velocity integrate | done | [F-037.md](../blockers/F-037.md) |
 | F-038 | Orogeny from standing boundaries | not started | |
 | F-039 | Multi-panel studio + mappy style | not started | |
 | F-040 | Traditional console; close G-008 | not started | |

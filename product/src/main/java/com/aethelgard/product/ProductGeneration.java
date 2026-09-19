@@ -1,6 +1,6 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/ProductGeneration.java
- * Purpose: One-generation plate pipeline helper (apply → advect → standing orogeny)
+ * Purpose: One-generation plate pipeline helper (integrate → apply → advect → standing orogeny)
  * Audience: Tests / debugging
  * Update when: Generation Sub-System order changes
  */
@@ -10,8 +10,8 @@ package com.aethelgard.product;
 import java.util.Objects;
 
 /**
- * Mirrors the tectonics System order for independent witnesses: boundaries/flux from standing
- * plates, ApplyGeometry, advection, orogeny on standing plates.
+ * Mirrors the tectonics System order for independent witnesses: boundaries/flux/intent from
+ * standing plates, IntegrateVelocity, ApplyGeometry, advection, orogeny on standing plates.
  */
 public final class ProductGeneration {
 
@@ -38,8 +38,10 @@ public final class ProductGeneration {
     PlateRegistry standingReg = PlateRegistry.from(standing, standingVel);
     Boundaries boundaries = Boundaries.trace(standing, standingVel);
     AreaFlux flux = AreaFlux.from(boundaries, standingReg);
+    MotionIntent intent = MotionIntent.from(boundaries, standingReg);
+    PlateVelocities integrated = IntegrateVelocity.integrate(standingVel, intent);
     ApplyGeometry.Result geom =
-        ApplyGeometry.apply(standing, boundaries, flux, standingReg, standingVel);
+        ApplyGeometry.apply(standing, boundaries, flux, standingReg, integrated);
     Grid moved = PlateKinematics.advect(geom.plates(), geom.velocities(), generationIndex);
     PlateRegistry after = PlateRegistry.from(moved, geom.velocities());
     Grid elevation = Orogeny.apply(standing, standingVel, state.elevation());

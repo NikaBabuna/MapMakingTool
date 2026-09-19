@@ -59,7 +59,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 - [x] 1920×1080 VIEW in code; wiki + witnesses
 - [x] Initial realistic plate partition (F-033)
 - [x] Boundaries + flux + flood + fission/death
-- [ ] Edge-driven motion; Constant random velocities gone
+- [x] Edge-driven motion; Constant random velocities gone
 - [ ] Orogeny from new boundary model
 - [ ] Studio panels + mappy style + traditional console
 - [x] Zoom clamp + horizontal-only loopback pan (F-032/F-033)
@@ -78,7 +78,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | F-034 | Boundary trace + classify → `boundaries` | done |
 | F-035 | Precedence + area flux + motion intent | done |
 | F-036 | Apply flux, flood, fission, death; registry | done |
-| F-037 | Integrate edge-driven velocities | not started |
+| F-037 | Integrate edge-driven velocities | done |
 | F-038 | Orogeny from standing boundaries | not started |
 | F-039 | Multi-panel studio + mappy style | not started |
 | F-040 | Traditional console; Goal close | not started |
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 7 / 11 |
-| Claim boxes | 4 / 8 |
-| Last Accept | F-036 |
+| Steps done | 8 / 11 |
+| Claim boxes | 5 / 8 |
+| Last Accept | F-037 |

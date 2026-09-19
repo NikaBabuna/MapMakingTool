@@ -17,15 +17,16 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
 | **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
-| **Plate velocity** | **Code today:** STATIC field (`plate_velocity`) of per-site `(vx, vy)` in `{-1,0,1}` (F-036). **G-008:** edge-driven integrate from `motion_intent` (F-037). |
+| **Plate velocity** | STATIC field (`plate_velocity`) of per-plate `(vx, vy)` in `{-1,0,1}`: seeded at Step 0, then edge-driven by `IntegrateVelocity` from `motion_intent` (F-037). |
 | **Plates** | Layer (`plates`) of integer plate ids. **Code today:** B1 nearest-site N=12–24 at Step 0; apply flux/fission then advection each generation. |
 | **Suture** | Contact between different plate ids; cylinder 4-neighbor orogeny on **standing** plates. |
 | **Voronoi plates** | Historical name for nearest-site partition; distance is **B1** latitude-weighted cylindrical (wrap X, cosQ on Y). Ties take the lower site index. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
 | **Orogeny** | Generative rule: standing-plate cylinder contacts; converge +1, diverge −1, transform/interior 0. |
 | **Kinematics System** | Legacy name; advection now runs inside `ApplyGeometry` (F-036). |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → ApplyGeometry → Orogeny. |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny. |
 | **ApplyGeometry** | Sub-System: apply `area_flux`, flood sink, fission/crumbs/death, advect, refresh registry + velocities. |
+| **IntegrateVelocity** | Sub-System: `v' = clamp(v + sgn(intent), -1, 1)` per axis; all-stop → plate 0 `(1,0)` (F-037). |
 | **B1 distance** | Equirectangular weight: east–west Δ scaled by `cosQ(y)` (F-036). |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries, area_flux, motion_intent). |
@@ -34,8 +35,8 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Cylinder map** | Wrap X (longitude); polar edges on Y (no wrap). Sphere-on-rectangle analogue. |
 | **Boundaries** | STATIC Pool object (`boundaries`): classified contacts (separate / collide / pass-by). |
 | **Area flux** | STATIC Pool object (`area_flux`): per-plate Δarea + sinkΔ budgets (F-035); applied in F-036. |
-| **Motion intent** | STATIC Pool object (`motion_intent`): per-plate preferred Δv from edges (F-035); integrated in F-037. |
-| **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + initial velocity (F-033). Edge-driven integrate F-037. |
+| **Motion intent** | STATIC Pool object (`motion_intent`): per-plate preferred Δv from edges (F-035); applied by `IntegrateVelocity` (F-037). |
+| **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.05% area absorbed). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |

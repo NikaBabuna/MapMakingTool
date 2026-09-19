@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Per-plate actor data at Step 0: cell {@code area} and initial {@code (vx, vy)}. Wiki: {@code
- * docs/product/wiki/tectonics.md}. Edge-driven velocity integrate is F-037; until then Constant
- * {@link PlateVelocities} remains the motion source and is seeded in lockstep.
+ * Per-plate actor data: cell {@code area} and {@code (vx, vy)}. Wiki: {@code
+ * docs/product/wiki/tectonics.md}. Velocities are seeded at Step 0 then edge-driven via {@link
+ * IntegrateVelocity}.
  */
 public final class PlateRegistry {
 
@@ -48,7 +48,27 @@ public final class PlateRegistry {
     this.vy = Arrays.copyOf(vy, vy.length);
   }
 
-  /** Build registry from a Step-0 plates grid and velocities (same N). */
+  /** Same areas as {@code base}; velocities taken from {@code velocities} (same N). */
+  public static PlateRegistry withVelocities(PlateRegistry base, PlateVelocities velocities) {
+    Objects.requireNonNull(base, "base");
+    Objects.requireNonNull(velocities, "velocities");
+    if (base.count() != velocities.count()) {
+      throw new IllegalArgumentException(
+          "registry count " + base.count() + " != velocity count " + velocities.count());
+    }
+    int n = base.count();
+    int[] area = new int[n];
+    int[] vx = new int[n];
+    int[] vy = new int[n];
+    for (int i = 0; i < n; i++) {
+      area[i] = base.area(i);
+      vx[i] = velocities.vx(i);
+      vy[i] = velocities.vy(i);
+    }
+    return new PlateRegistry(base.seed(), area, vx, vy);
+  }
+
+  /** Build registry from a plates grid and velocities (same N). */
   public static PlateRegistry from(Grid plates, PlateVelocities velocities) {
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(velocities, "velocities");

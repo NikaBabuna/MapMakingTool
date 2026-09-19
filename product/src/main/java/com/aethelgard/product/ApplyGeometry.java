@@ -40,7 +40,8 @@ public final class ApplyGeometry implements SubSystem {
   @Override
   public void execute(SubSystemIo io) {
     Grid plates = requireGrid(io.readPool(WorldFields.PLATES), WorldFields.PLATES);
-    PlateVelocities velocities = requireVelocities(io.readPool(WorldFields.PLATE_VELOCITY));
+    // Prefer IntegrateVelocity staging so fission inherits edge-driven velocities.
+    PlateVelocities velocities = requireVelocities(readField(io, WorldFields.PLATE_VELOCITY));
     PlateRegistry registry = PlateRegistry.from(plates, velocities);
     Boundaries boundaries = requireBoundaries(readField(io, WorldFields.BOUNDARIES));
     AreaFlux flux = requireFlux(readField(io, WorldFields.AREA_FLUX));

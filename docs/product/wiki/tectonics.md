@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-036 — B1 latitude-weighted partition; `area_flux` applied each generation (sink/flood/fission/crumb/death); `plate_velocity` STATIC; Constant-bridge retired for schema. Edge-driven integrate from `motion_intent` still F-037; orogeny-from-boundaries F-038.
+**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-037 — edge-driven `IntegrateVelocity` from `motion_intent` each generation; B1 partition; `area_flux` apply/fission; `plate_velocity` STATIC. Orogeny-from-boundaries still F-038.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -22,7 +22,7 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 | **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). Earlier G-008 text said **torus**; amended F-034. |
 | **Sphere analogue** | Cylinder map (wrap longitude / polar edges) — not a 3D globe mesh. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + apply/fission live (F-033–F-036). IntegrateVelocity from intent still F-037; orogeny rewrite F-038.
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-037). Orogeny rewrite F-038.
 
 ---
 
@@ -63,7 +63,7 @@ Elevation at Step 0 remains **0** everywhere.
 
 ### Velocities (initial only)
 
-Registry may store an initial `(vx, vy)` per plate for Step 0. **Constant-forever random velocities are retired.** Edge-driven integration is **F-037**. Until then, document intent only; do not pretend F-020 Constant field is the end state.
+Registry may store an initial `(vx, vy)` per plate for Step 0. **Constant-forever random velocities are retired.** Each generation, `IntegrateVelocity` nudges standing velocities from `motion_intent`: `v' = clamp(v + sgn(intent), -1, 1)` (all-stop → plate 0 `(1,0)`).
 
 ---
 
@@ -107,7 +107,7 @@ Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay smal
 | `motion_intent` | object | Static | Preferred Δv / v from edges (may fold into registry later) |
 | `tectonic_events` | object ledger | Static | Birth/death/split for next-Step emission / debug |
 
-`plate_velocity` as a **Constant** forever field is **superseded** by registry + F-037.
+`plate_velocity` is STATIC; seeded at Step 0 then rewritten by `IntegrateVelocity` + fission remap (F-036/F-037).
 
 ---
 

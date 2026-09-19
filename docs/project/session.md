@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-036 Accepted · next F-037
+**Status:** F-037 Accepted · next F-038
 
 ---
 
@@ -29,19 +29,19 @@ Ship **G-008** — boundary tectonics + large cylinder world + cartography studi
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030–F-036 | Foundations through apply/fission + B1 | done |
-| F-037–F-040 | Edge motion → Goal close | not started |
+| F-030–F-037 | Foundations through edge-driven velocities | done |
+| F-038–F-040 | Orogeny → studio → Goal close | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-036 Accept)
+- [x] Incremental suite green (F-037 Accept)
 
 ---
 
 ## Notes
 
-- B1 latitude-weighted partition shipped in F-036.
-- Next: **F-037** integrate edge-driven velocities from `motion_intent`.
+- Edge-driven integrate shipped in F-037.
+- Next: **F-038** orogeny from standing boundaries.

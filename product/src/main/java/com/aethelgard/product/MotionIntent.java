@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Preferred edge-driven velocity nudge per plate (not applied until F-037). Wiki: {@code
- * docs/product/wiki/tectonics.md}.
+ * Preferred edge-driven velocity nudge per plate (integrated by {@link IntegrateVelocity}). Wiki:
+ * {@code docs/product/wiki/tectonics.md}.
  */
 public final class MotionIntent {
 

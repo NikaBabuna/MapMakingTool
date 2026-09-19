@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 F-036 apply+B1; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-037 integrate; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -45,7 +45,7 @@ cli →  product  →  engine
 | Schema | all of `elevation` / `plates` / `plate_registry` / `boundaries` / `area_flux` / `motion_intent` / `plate_velocity` → STATIC |
 | Values | Immutable `Grid`; `PlateRegistry`; `Boundaries`; `AreaFlux`; `MotionIntent`; `PlateVelocities` |
 | Create | Seeds zero elevation, B1 plates (N=12–24), registry, boundaries, area_flux, motion_intent, velocities |
-| Systems | One `tectonics` System: TraceBoundaries → BoundaryInteraction → ApplyGeometry (apply+advect) → Orogeny |
+| Systems | One `tectonics` System: TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (apply+advect) → Orogeny |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (**1920×1080**, seed `0`, F-031) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
@@ -53,7 +53,7 @@ cli →  product  →  engine
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
 | Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry + boundaries + area_flux + motion_intent; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, kinematics advects ownership (wrap X; Y off-map dropped). Orogeny and `TraceBoundaries` use standing plates. Elevation may go negative. The seed is not its own Pool field.
+`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, then advects ownership (wrap X; Y off-map dropped). Orogeny and `TraceBoundaries` use standing plates/velocities. Elevation may go negative. The seed is not its own Pool field.
 
 ---
 
@@ -130,7 +130,7 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **ApplyGeometry** (flux+fission+advect). IntegrateVelocity from intent F-037; orogeny-from-boundaries F-038.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry** (flux+fission+advect). Orogeny-from-boundaries F-038.
 
 ---
 
