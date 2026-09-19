@@ -144,7 +144,7 @@ Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runne
 | F-047 | Raster + host memory | done | [F-047.md](../blockers/F-047.md) |
 | F-048 | Shared command model | done | [F-048.md](../blockers/F-048.md) |
 | F-049 | CLI as full runner | done | [F-049.md](../blockers/F-049.md) |
-| F-050 | Scrap + rebuild terminal | not started | |
+| F-050 | Scrap + rebuild terminal | done | [F-050.md](../blockers/F-050.md) |
 | F-051 | Runner chrome | not started | |
 | F-052 | Perf + detail panels | not started | |
 | F-053 | UI/UX pass | not started | |

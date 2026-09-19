@@ -7,8 +7,9 @@
  * Update when: Tool controls, layout, or QoL shortcuts change
  */
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MapCanvas, resetViewport } from "@/components/MapCanvas";
+import { Terminal } from "@/components/Terminal";
 import {
   fetchHealth,
   fetchRaster,
@@ -63,12 +64,7 @@ export function MapTool() {
   const [seedText, setSeedText] = useState("0");
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<MapSpeedName>("Normal");
-  const [consoleLine, setConsoleLine] = useState("");
-  const [consoleLog, setConsoleLog] = useState<string[]>([]);
-  const [consoleOpen, setConsoleOpen] = useState(false);
-  const [consoleHistory, setConsoleHistory] = useState<string[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const consoleInputRef = useRef<HTMLInputElement>(null);
+  const [terminalOpen, setTerminalOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(true);
   const [inspectOpen, setInspectOpen] = useState(true);
   const [legendOpen, setLegendOpen] = useState(true);
@@ -308,66 +304,13 @@ export function MapTool() {
     }
   }
 
-  useEffect(() => {
-    if (consoleOpen) {
-      consoleInputRef.current?.focus();
-    }
-  }, [consoleOpen]);
-
-  async function onConsole() {
-    const line = consoleLine.trim();
-    if (!line) {
-      return;
-    }
-    try {
-      const result = await postCommand(line);
-      setConsoleLog((prev) =>
-        [`aethelgard> ${line}`, result.output || `(exit ${result.exitCode})`, ...prev].slice(0, 40),
-      );
-      setConsoleHistory((prev) => {
-        if (prev[0] === line) {
-          return prev;
-        }
-        return [line, ...prev].slice(0, 32);
-      });
-      setHistoryIndex(-1);
-      setStatus(result.status);
-      busyRef.current = result.status.busy;
-      const bytes = await fetchRaster();
-      setRaster(bytes);
-      setConsoleLine("");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    }
-  }
-
-  function onConsoleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      void onConsole();
-      return;
-    }
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      if (consoleHistory.length === 0) {
-        return;
-      }
-      const next = Math.min(historyIndex + 1, consoleHistory.length - 1);
-      setHistoryIndex(next);
-      setConsoleLine(consoleHistory[next] ?? "");
-      return;
-    }
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      if (historyIndex <= 0) {
-        setHistoryIndex(-1);
-        setConsoleLine("");
-        return;
-      }
-      const next = historyIndex - 1;
-      setHistoryIndex(next);
-      setConsoleLine(consoleHistory[next] ?? "");
-    }
+  async function onTerminalRun(line: string) {
+    const result = await postCommand(line);
+    setStatus(result.status);
+    busyRef.current = result.status.busy;
+    const bytes = await fetchRaster();
+    setRaster(bytes);
+    return result;
   }
 
   useEffect(() => {
@@ -419,7 +362,7 @@ export function MapTool() {
       }
       if (key === "`" || key === "c" || key === "C") {
         e.preventDefault();
-        setConsoleOpen((o) => !o);
+        setTerminalOpen((o) => !o);
         return;
       }
       if (key === "d" || key === "D") {
@@ -517,12 +460,12 @@ export function MapTool() {
           </button>
           <button
             type="button"
-            className={`btn${consoleOpen ? " is-pressed" : ""}`}
-            aria-pressed={consoleOpen}
-            onClick={() => setConsoleOpen((o) => !o)}
-            title="Toggle console (` / C)"
+            className={`btn${terminalOpen ? " is-pressed" : ""}`}
+            aria-pressed={terminalOpen}
+            onClick={() => setTerminalOpen((o) => !o)}
+            title="Toggle terminal (` / C)"
           >
-            Console
+            Terminal
           </button>
           <button type="button" className="btn" onClick={fitView} title="Reset view (R)">
             Reset view
@@ -629,41 +572,7 @@ export function MapTool() {
           </aside>
         ) : null}
 
-        <div
-          className="console-drawer terminal"
-          hidden={!consoleOpen}
-          role="region"
-          aria-label="Terminal console"
-        >
-          <div className="terminal-titlebar">
-            <span className="terminal-title">Console</span>
-            <span className="terminal-hint">↑↓ history · Enter run</span>
-          </div>
-          <pre className="console-log terminal-log">
-            {consoleLog.join("\n") || "Placeholder verbs: status · advance · dump · at X Y · layers"}
-          </pre>
-          <div className="console-row terminal-input-row">
-            <span className="terminal-prompt" aria-hidden>
-              aethelgard&gt;
-            </span>
-            <input
-              ref={consoleInputRef}
-              className="terminal-input"
-              value={consoleLine}
-              placeholder="status"
-              spellCheck={false}
-              autoComplete="off"
-              onChange={(e) => {
-                setConsoleLine(e.target.value);
-                setHistoryIndex(-1);
-              }}
-              onKeyDown={onConsoleKeyDown}
-            />
-            <button type="button" className="btn terminal-run" onClick={() => void onConsole()}>
-              Run
-            </button>
-          </div>
-        </div>
+        <Terminal open={terminalOpen} onRun={onTerminalRun} />
       </div>
 
       {confirmNew ? (

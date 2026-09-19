@@ -2,7 +2,7 @@
  * File: ui/src/test/java/com/aethelgard/ui/host/TerminalConsoleTest.java
  * Purpose: F-040 structural witness — traditional console + G-008 close
  * Audience: Agents / CI
- * Update when: F-040 FRs change
+ * Update when: Terminal location or G-008 close claims change
  */
 
 package com.aethelgard.ui.host;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 class TerminalConsoleTest {
 
   @Test
-  @DisplayName("FR-1..FR-4/FR-7: terminal console styling, prompt, history; no JFrame")
+  @DisplayName("FR-1..FR-4/FR-7: terminal styling, prompt, history; no JFrame")
   void traditionalTerminal() throws Exception {
     Path root = findRepoRoot();
 
@@ -26,14 +26,21 @@ class TerminalConsoleTest {
     assertTrue(style.toLowerCase().contains("terminal") || style.contains("phosphor"));
     assertTrue(style.contains("aethelgard>"));
 
+    Path terminalPath = root.resolve("ui/web/src/components/Terminal.tsx");
+    String terminal =
+        Files.isRegularFile(terminalPath)
+            ? Files.readString(terminalPath)
+            : Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
+    assertTrue(terminal.contains("aethelgard>"));
+    assertTrue(terminal.contains("ArrowUp"));
+    assertTrue(terminal.contains("ArrowDown"));
+    assertTrue(terminal.contains("history") || terminal.contains("HISTORY"));
+
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
-    assertTrue(tool.contains("aethelgard>"));
-    assertTrue(tool.contains("terminal"));
-    assertTrue(tool.contains("ArrowUp"));
-    assertTrue(tool.contains("ArrowDown"));
-    assertTrue(tool.contains("consoleHistory") || tool.contains("historyIndex"));
-    assertTrue(tool.contains("postCommand"));
+    assertTrue(tool.contains("postCommand") || tool.contains("Terminal"));
+    assertTrue(tool.toLowerCase().contains("terminal"));
     assertFalse(tool.contains("JFrame"));
+    assertFalse(terminal.contains("JFrame"));
 
     String css = Files.readString(root.resolve("ui/web/src/app/globals.css"));
     assertTrue(css.contains("console-drawer.terminal") || css.contains(".terminal"));
@@ -46,7 +53,6 @@ class TerminalConsoleTest {
     Path root = findRepoRoot();
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    // Active Goal may be none (post-close) or a later Goal (e.g. G-009)
     assertTrue(
         goals.contains("**Active Goal:** none")
             || goals.contains("G-009")

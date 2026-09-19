@@ -46,7 +46,7 @@ class WebFrontTest {
     assertTrue(tool.contains("Elevation"));
     assertTrue(tool.contains("Plates"));
     assertTrue(tool.contains("Overlay"));
-    assertTrue(tool.contains("Console"));
+    assertTrue(tool.contains("Terminal") || tool.contains("Console"));
     assertTrue(tool.contains("Working...") || tool.contains("statusText"));
     assertFalse(tool.contains("JFrame"));
     assertFalse(tool.contains("javax.swing"));

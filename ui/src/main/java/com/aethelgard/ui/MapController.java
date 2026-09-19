@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <p>Owns a {@link ProductSession}. {@link #advance()} runs one generation Step on the caller.
  * {@link #advanceAsync()} runs it on the injected {@link Executor} and reports {@link #busy()} /
- * {@link #WORKING_STATUS} while in flight. Play uses an injected {@link PlayScheduler}. Console
+ * {@link #WORKING_STATUS} while in flight. Play uses an injected {@link PlayScheduler}. Terminal
  * lines go through {@link CommandDispatch} on the same session.
  */
 public final class MapController {
@@ -271,8 +271,9 @@ public final class MapController {
   }
 
   /**
-   * Placeholder console line on this session. Ignored while {@link #busy()} ({@code error: busy}).
-   * Refreshes the raster after the dispatcher returns so map Advance and console share one view.
+   * Runs one shared-dispatcher line on this session. Ignored while {@link #busy()} ({@code error:
+   * busy}). Refreshes the raster after the dispatcher returns so map Advance and terminal share one
+   * view.
    */
   public CliResult runCommand(String line) {
     if (busy.get()) {

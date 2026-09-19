@@ -61,7 +61,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 - [x] Slivers / stacking borders addressed (F-044)
 - [x] Sphere polar wrap end-to-end (F-045)
 - [x] Diagnostics recorded + queryable (F-042+)
-- [ ] Shared command surface + full CLI + rebuilt terminal (F-048–F-050)
+- [x] Shared command surface + full CLI + rebuilt terminal (F-048–F-050)
 - [ ] Runner chrome + perf panels + UX pass (F-051–F-053)
 - [x] Perf/memory improvements witnessed (F-046–F-047)
 - [ ] Determinism; no `engine` production edits; suite green
@@ -81,7 +81,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-047 | Raster + host memory | done |
 | F-048 | Shared command model | done |
 | F-049 | CLI as full runner | done |
-| F-050 | Scrap + rebuild terminal | not started |
+| F-050 | Scrap + rebuild terminal | done |
 | F-051 | Runner chrome | not started |
 | F-052 | Perf + detail panels | not started |
 | F-053 | UI/UX pass | not started |
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 9 / 14 |
-| Claim boxes | 5 / 8 |
-| Last Accept | F-049 |
+| Steps done | 10 / 14 |
+| Claim boxes | 6 / 8 |
+| Last Accept | F-050 |

@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done (through **F-040** traditional console). **G-009** through **F-049** CLI runner._
+_Status: **G-007** done. **G-008** done (through **F-040** traditional console). **G-009** through **F-050** rebuilt terminal._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -21,7 +21,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Diagnostics | Controllable hub + first collectors + CLI | **F-042** done |
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
 | Perf | Step path + raster/host memory | **F-046** / **F-047** done |
-| Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-049** done; F-050 |
+| Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-050** done |
 | Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
 
 ### Flow: Raster / host memory (F-047)
@@ -47,6 +47,14 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 1 | `Main` / `CliRunner` creates one `ProductSession` (`--seed` or default 0; DEFAULT 8×8). |
 | 2 | Optional `--steps N` → `session advance N` then `session get dump` when no `-c`. |
 | 3 | Repeatable `-c` / `--command` lines share that session; first failure exits non-zero. |
+
+### Flow: Rebuilt terminal (F-050)
+
+| Step | Action |
+|------|--------|
+| 1 | Toggle **Terminal** (`` ` `` / `C`) — drawer under the map, not a studio panel. |
+| 2 | Empty state shows noun/verb hints; type `help` or `session get`; ↑/↓ history. |
+| 3 | Transcript shows `aethelgard>` commands vs results; errors for non-zero exit. Same dispatcher as CLI. |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
 
@@ -100,12 +108,12 @@ Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 | 2 | Switch **Plates** or **Overlay**. The world does not advance. |
 | 3 | **Play** (client timer → `/api/advance`) or **Advance**. Status **Working...** while busy. **Pause** stops the timer. |
 | 4 | Click a cell. **Inspect** panel shows x, y, elevation, plate id, velocity. Legend follows the layer. Collapse panel bodies independently. |
-| 5 | **Dock** toggles the right rail (`localStorage` `aethelgard.dockOpen`). Panel bodies use `aethelgard.panelInspectOpen` / `panelLegendOpen`. **Console** opens the terminal drawer (`aethelgard>` prompt; ↑/↓ history). |
+| 5 | **Dock** toggles the right rail (`localStorage` `aethelgard.dockOpen`). Panel bodies use `aethelgard.panelInspectOpen` / `panelLegendOpen`. **Terminal** opens the drawer (`aethelgard>` prompt; ↑/↓ history). |
 | 6 | Change **Seed**, **Random**, or **New world** (confirm when Step > 0). Ignored while busy. |
-| 7 | Shortcuts: Space Play; `A`/`.` Advance; `1`–`3` layers; `[`/`]` speed; `N` New world; `` ` ``/`C` console; `D` dock; `R` reset view. |
-| 8 | Console placeholder verbs via `CommandDispatch`. |
+| 7 | Shortcuts: Space Play; `A`/`.` Advance; `1`–`3` layers; `[`/`]` speed; `N` New world; `` ` ``/`C` terminal; `D` dock; `R` reset view. |
+| 8 | Terminal noun/verb via `CommandDispatch` (F-048–F-050). |
 
-**Edges / failures:** Invalid seed text keeps the previous seed. Console unknown verbs print `error:`. Host offline shows banner + **Retry**. Tests never construct `JFrame`.
+**Edges / failures:** Invalid seed text keeps the previous seed. Unknown commands print `error:`. Host offline shows banner + **Retry**. Tests never construct `JFrame`.
 
 ---
 
@@ -116,7 +124,7 @@ Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 | Step | Action |
 |------|--------|
 | 1 | Run `run-product.cmd`. Tauri starts Next (`beforeDevCommand`), waits for `:3000`, spawns MapHost, opens the window. |
-| 2 | **Aethelgard** studio shows VIEW **1920×1080**. Switch layers, **Advance**, **Play**/Pause, speed, reseed, inspect, Console drawer. |
+| 2 | **Aethelgard** studio shows VIEW **1920×1080**. Switch layers, **Advance**, **Play**/Pause, speed, reseed, inspect, Terminal drawer. |
 | 3 | While busy, status is **Working...**; Advance and New world do not queue. |
 
 **Edges / failures:** Host offline shows a banner + Retry. Default host URL `NEXT_PUBLIC_MAP_HOST` = `http://127.0.0.1:7420`. If you see “Waiting for your frontend dev server…”, Next failed to start — check `ui/web` deps (`npm install`) and that port 3000 is free.

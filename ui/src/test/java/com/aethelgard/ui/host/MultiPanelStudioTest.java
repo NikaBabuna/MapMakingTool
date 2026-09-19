@@ -36,7 +36,7 @@ class MultiPanelStudioTest {
     assertTrue(tool.contains("aethelgard.panelInspectOpen"));
     assertTrue(tool.contains("aethelgard.panelLegendOpen"));
     assertTrue(tool.contains("postAdvance"));
-    assertTrue(tool.contains("Console"));
+    assertTrue(tool.contains("Terminal") || tool.contains("Console"));
     assertFalse(tool.contains("JFrame"));
 
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));

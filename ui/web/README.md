@@ -30,7 +30,7 @@ Open http://localhost:3000. Host default: `http://127.0.0.1:7420` (`NEXT_PUBLIC_
 
 ## Behavior
 
-Map-first multi-panel studio: thin top bar, full-bleed map with neatline/graticule/coords HUD, right rail of Inspect + Legend panel cards, traditional terminal Console drawer (`aethelgard>` prompt, ↑/↓ history). Layers, Advance, Play/Pause (client timer → `/api/advance`), speed, seed + Random + New world, pan/zoom, inspect, legend. Busy shows Working… overlay and ignores extra Advance / New world.
+Map-first multi-panel studio: thin top bar, full-bleed map with neatline/graticule/coords HUD, right rail of Inspect + Legend panel cards, rebuilt **Terminal** drawer (`Terminal.tsx`, `aethelgard>` prompt, noun/verb hints, ↑/↓ history). Layers, Advance, Play/Pause (client timer → `/api/advance`), speed, seed + Random + New world, pan/zoom, inspect, legend. Busy shows Working… overlay and ignores extra Advance / New world.
 
 Shortcuts: Space Play; A/. Advance; 1–3 layers; [/] speed; N New world; `/C console; D dock; R reset view.
 

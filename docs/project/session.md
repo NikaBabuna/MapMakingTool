@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-049 Accepted · Active Goal G-009 · next negotiate F-050
+**Status:** F-050 Accepted · Active Goal G-009 · next negotiate F-051
 
 ---
 
@@ -29,19 +29,19 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-047 | Raster + host memory | done |
 | F-048 | Noun/verb command language | done |
 | F-049 | CLI as full runner | done |
+| F-050 | Scrap + rebuild terminal | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] F-049 Accepted (witness + SYNC)
+- [x] F-050 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-049: `--seed`, `--steps` via `CommandDispatch`, repeatable `-c`/`--command` on one session.
+- F-050: `Terminal.tsx`; scraped placeholder verb copy; shared CommandDispatch.

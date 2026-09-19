@@ -47,8 +47,9 @@ class ConsoleUiTest {
 
     assertFalse(Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java")));
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
-    assertTrue(tool.contains("Console") || tool.contains("console"));
+    assertTrue(tool.contains("Terminal") || tool.contains("console"));
     assertTrue(tool.contains("postCommand") || tool.contains("/api/command"));
+    assertTrue(Files.isRegularFile(root.resolve("ui/web/src/components/Terminal.tsx")));
 
     String controller =
         Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapController.java"));

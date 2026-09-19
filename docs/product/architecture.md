@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-049; G-008 done)  
+**Status:** active (G-009 in progress through F-050; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -67,9 +67,9 @@ MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the s
 
 Headless paint and session control live in `MapController` + `ElevationRaster`. Interactive UI is **Next** (`ui/web/`) behind **Tauri** (`ui/desktop/`). Swing was **removed** (F-026).
 
-Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Console**. While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
+Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Terminal** (F-050). While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
 
-Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
+Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated `Terminal.tsx` drawer (F-050). **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB` in a **flat** `int[]` (F-047). `MapController` **reuses** a **double buffer** when width×height is unchanged (prior snapshot keeps correct pixels). `MapHost` **caches/reuses** one packed `byte[]` keyed by step + layer + paint generation — refill on invalidate, O(1) allocations under Play soak. Same grids + layer → identical RGB.
 
@@ -128,7 +128,7 @@ Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.V
 
 ## Next.js tool (F-025 / G-007)
 
-Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is **multi-panel studio cartography** with a **traditional terminal** console drawer — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
+Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is **multi-panel studio cartography** with a rebuilt **Terminal** drawer (`Terminal.tsx`, F-050) — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
 
 ## Tauri desktop (F-026)
 
@@ -193,6 +193,10 @@ ui/
     package.json
     README.md
     src/
+      components/
+        MapTool.tsx
+        Terminal.tsx              # F-050 rebuilt terminal
+        MapCanvas.tsx
   desktop/                      # Tauri 2 shell (F-026)
     package.json
     README.md

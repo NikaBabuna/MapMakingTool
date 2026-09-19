@@ -7,7 +7,7 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 **done** (F-040). **G-009 planned:** simulation-runner chrome, shared terminal/CLI, perf visibility._
+_Status: **active** — G-007 studio cartography (done). G-008 **done** (F-040). **G-009:** terminal rebuilt (F-050); runner chrome planned F-051+._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
@@ -18,7 +18,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | Item | Intent | Status |
 |------|--------|--------|
 | **Feel** | Unity-like simulation runner: dense control over session env (seed, speed, play, layers, …) | planned F-051+ |
-| **Terminal** | Traditional terminal on **shared** noun/verb dispatcher with CLI | **F-048**–**F-049** language/runner; rebuild chrome F-050 |
+| **Terminal** | Traditional terminal on **shared** noun/verb dispatcher with CLI | **F-050** rebuilt; language F-048–F-049 |
 | **Perf** | Visible step timings / memory (panel + commands) | **F-042** hub; panel F-052 |
 | **Look** | UI/UX polish; map-first serious tool, not marketing page | planned F-053 |
 
@@ -30,20 +30,27 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 |------|--------|--------|
 | **Studio** | Distinct titled **Inspect** + **Legend** panel cards on the right rail | **F-039** |
 | **Look** | Chart/atlas cues: **neatline**, **graticule**/ticks, coords + scale HUD | **F-039** |
-| **Console** | Traditional terminal appearance (`aethelgard>` prompt, phosphor-on-black) | **F-040** |
+| **Console** | Traditional terminal appearance (`aethelgard>` prompt, phosphor-on-black) | **F-040** (chrome rebuilt F-050) |
 | **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
 | **Loopback pan** | Drag pan: **X wraps**; **Y clamped** at polar edges | **F-038** |
 
 ---
 
+## Rebuilt terminal (F-050)
+
+- Drawer under the map (not a slate studio-panel card); chrome labeled **Terminal**.
+- Near-black well (`#070a08`), mono type, green phosphor text (`#8dffaa` / `#7dff9a`).
+- Prompt prefix **`aethelgard>`** on the input line; transcript shows command lines vs results; non-zero exits styled as errors.
+- Empty state promotes noun/verb (`help` · `session get` · `list pool` …) — no placeholder-verb copy.
+- Input placeholder: `help`. ↑ / ↓ recalls prior commands (cap 32). Enter runs; autofocus when opened.
+- Dedicated `Terminal.tsx` component; MapTool posts via `/api/command` (same `CommandDispatch` as CLI).
+- Contrast: Inspect/Legend stay cool slate panels; the terminal is CRT/terminal.
+
+---
+
 ## Traditional terminal console (F-040)
 
-- Drawer under the map (not a slate studio-panel card).
-- Near-black well (`#070a08`), mono type, green phosphor text (`#8dffaa` / `#7dff9a`).
-- Prompt prefix **`aethelgard>`** on the input line; log echoes the same prompt.
-- ↑ / ↓ recalls prior commands (cap 32). Enter runs; autofocus when opened.
-- Same `CommandDispatch` noun/verb language as CLI (F-048); deprecated flat aliases still work.
-- Contrast: Inspect/Legend stay cool slate panels; the console is CRT/terminal.
+Superseded chrome copy by **F-050**; phosphor tokens and prompt retained.
 
 ---
 
@@ -93,7 +100,7 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
 | **Map stage** | Full-bleed in the remaining viewport; neatline + graticule + HUD |
 | **Right rail** | Stacked **studio-panel** cards: Inspect, Legend; whole rail toggles via Dock |
 | **Panel collapse** | Each panel body collapses independently |
-| **Console** | On-demand **terminal** drawer (phosphor prompt; not a studio-panel card) |
+| **Terminal** | On-demand **terminal** drawer (phosphor prompt; not a studio-panel card) |
 
 ### Persistence (`localStorage`)
 
@@ -114,8 +121,8 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
 | `1` / `2` / `3` | Elevation / Plates / Overlay |
 | `[` / `]` | Speed slower / faster |
 | `N` | New world (same confirm as UI) |
-| `` ` `` or `C` | Toggle console |
+| `` ` `` or `C` | Toggle terminal |
 | `D` | Toggle dock |
 | `R` | Reset map view |
 
-Ignore shortcuts while focus is in an input / textarea / select (except Enter in seed/console fields as documented).
+Ignore shortcuts while focus is in an input / textarea / select (except Enter in seed/terminal fields as documented).

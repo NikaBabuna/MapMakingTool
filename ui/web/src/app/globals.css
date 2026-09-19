@@ -601,6 +601,28 @@ input:focus-visible,
   max-height: 12rem;
 }
 
+.terminal-empty {
+  margin: 0;
+  color: rgba(120, 180, 140, 0.55);
+}
+
+.terminal-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-line.is-command {
+  color: #b8ffc8;
+}
+
+.terminal-line.is-output {
+  color: #8dffaa;
+}
+
+.terminal-line.is-error {
+  color: #ff8f8f;
+}
+
 .confirm-backdrop {
   position: fixed;
   inset: 0;
