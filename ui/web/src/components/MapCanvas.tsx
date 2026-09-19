@@ -20,7 +20,6 @@ import {
 
 type Props = {
   buffer: ArrayBuffer | null;
-  busy: boolean;
   viewport: Viewport;
   onViewportChange: (next: Viewport) => void;
   onCell: (x: number, y: number) => void;
@@ -37,7 +36,6 @@ type Props = {
 
 export function MapCanvas({
   buffer,
-  busy,
   viewport,
   onViewportChange,
   onCell,
@@ -179,7 +177,7 @@ export function MapCanvas({
   return (
     <div
       ref={stageRef}
-      className={`map-stage${busy ? " is-busy" : ""}${panning ? " is-panning" : ""}`}
+      className={`map-stage${panning ? " is-panning" : ""}`}
       onWheel={(e) => {
         e.preventDefault();
         const pt = stagePoint(e.clientX, e.clientY);
@@ -206,6 +204,9 @@ export function MapCanvas({
         if (e.button !== 0) {
           return;
         }
+        if ((e.target as HTMLElement).closest(".map-layer-switch")) {
+          return;
+        }
         (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
         dragRef.current = { x: e.clientX, y: e.clientY, moved: false };
         setPanning(true);
@@ -230,6 +231,11 @@ export function MapCanvas({
       }}
       onPointerLeave={() => setHoverCell(null)}
       onPointerUp={(e) => {
+        if ((e.target as HTMLElement).closest(".map-layer-switch")) {
+          dragRef.current = null;
+          setPanning(false);
+          return;
+        }
         const wasDrag = dragRef.current?.moved ?? false;
         dragRef.current = null;
         setPanning(false);
@@ -277,7 +283,13 @@ export function MapCanvas({
         <span className="map-hud-scale">×{scaleLabel}</span>
       </div>
       {layers && onLayer ? (
-        <div className="map-layer-switch" role="group" aria-label="Map layer">
+        <div
+          className="map-layer-switch"
+          role="group"
+          aria-label="Map layer"
+          onPointerDown={(e) => e.stopPropagation()}
+          onPointerUp={(e) => e.stopPropagation()}
+        >
           {layers.map((name) => (
             <button
               key={name}
@@ -294,9 +306,6 @@ export function MapCanvas({
           ))}
         </div>
       ) : null}
-      <div className="map-busy" aria-hidden={!busy}>
-        Working…
-      </div>
     </div>
   );
 }

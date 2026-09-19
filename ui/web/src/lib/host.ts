@@ -28,6 +28,14 @@ export type Inspect = {
 
 export type LegendRow = { rgb: number; label: string };
 
+export type DiagSample = {
+  last: number | null;
+  mean: number | null;
+  n: number;
+};
+
+export type HostDiag = Record<string, DiagSample>;
+
 export type HostStatus = {
   step: number;
   seed: number;
@@ -40,6 +48,7 @@ export type HostStatus = {
   statusText: string;
   inspect: Inspect | null;
   legend: LegendRow[];
+  diag?: HostDiag;
 };
 
 export function hostBase(): string {

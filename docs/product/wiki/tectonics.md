@@ -160,5 +160,5 @@ Implementation Steps: **F-034–F-038**.
 - **Camera:** **X wrap**; **dark blank N/S** margins (no vertical loop tiles). Zoomed out: map centered. Zoomed in: free pan **between** top and bottom edges — cannot pan past the map band. Sphere physics still uses antipodal polar wrap (`SphereTopology`); view does not.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
-- **G-009:** shared CLI/terminal (**F-048**–**F-050**); runner chrome + perf panels (F-051–F-053).
+- **G-009:** shared CLI/terminal (**F-048**–**F-050**); runner chrome + perf rail (**F-051**–**F-052**); UX pass F-053.
 - **F-046:** crumb absorb **0.01%**; session phase collectors (`phase.trace` … `phase.orogeny`) on `DiagnosticsHub`.

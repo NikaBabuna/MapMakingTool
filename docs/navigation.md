@@ -97,11 +97,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-009 F-051 runner shell; F-050 Terminal; physical map palette |
+| [architecture.md](product/architecture.md) | Active — G-009 through F-052; Perf rail; always-on Terminal; brighter/deeper paint |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-009 F-051 runner shell; F-050 Terminal; F-049 CLI; G-008 done |
-| [glossary.md](product/glossary.md) | Active — runner shell; MapSpeed 1x…Fastest; Terminal; CommandDispatch |
-| [style-guide.md](product/style-guide.md) | Active — F-051 gray runner shell + physical map; F-052 perf panels next |
+| [flows.md](product/flows.md) | G-009 through F-052; F-050 Terminal; F-049 CLI; G-008 done |
+| [glossary.md](product/glossary.md) | Active — Perf rail; runner shell; MapSpeed; Terminal; CommandDispatch |
+| [style-guide.md](product/style-guide.md) | Active — F-052 Perf rail + always-on Terminal; brighter/deeper map; F-053 polish next |
 | [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
@@ -163,6 +163,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-049.md](blockers/F-049.md) | done — CLI as full headless runner |
 | [F-050.md](blockers/F-050.md) | done — scrap + rebuild in-app terminal |
 | [F-051.md](blockers/F-051.md) | done — runner shell foundation |
+| [F-052.md](blockers/F-052.md) | done — Perf rail + runner fixes |
 
 ---
 

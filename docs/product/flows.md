@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** through **F-051** runner shell._
+_Status: **G-007** done. **G-008** done. **G-009** through **F-052** perf rail + runner fixes._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -22,7 +22,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
 | Perf | Step path + raster/host memory | **F-046** / **F-047** done |
 | Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-050** done |
-| Studio | Runner chrome; perf panels; UX; Goal close | **F-051** done; F-052–F-054 |
+| Studio | Runner chrome; perf panels; UX; Goal close | **F-051**–**F-052** done; F-053–F-054 |
 
 ### Flow: Raster / host memory (F-047)
 
@@ -48,11 +48,11 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 2 | Optional `--steps N` → `session advance N` then `session get dump` when no `-c`. |
 | 3 | Repeatable `-c` / `--command` lines share that session; first failure exits non-zero. |
 
-### Flow: Rebuilt terminal (F-050)
+### Flow: Rebuilt terminal (F-050 / F-052)
 
 | Step | Action |
 |------|--------|
-| 1 | Toggle **Terminal** (`` ` `` / `C`) — drawer under the map, not a studio panel. |
+| 1 | Terminal is always visible as a bottom panel; `` ` `` / `C` focuses the input. |
 | 2 | Empty state shows noun/verb hints; type `help` or `session get`; ↑/↓ history. |
 | 3 | Transcript shows `aethelgard>` commands vs results; errors for non-zero exit. Same dispatcher as CLI. |
 
@@ -60,10 +60,18 @@ Before production feature code, extend this file per [../process/quality.md](../
 
 | Step | Action |
 |------|--------|
-| 1 | Top bar: brand + host dot; Play / Pause / Speed; Reset view / World / Terminal. |
+| 1 | Top bar: brand + host dot; Play / Pause / Speed; Reset view / World. |
 | 2 | World rail shows step, size, seed; Reset world; Inspect/Legend sections. |
-| 3 | Layer chips on map bottom-left; map uses physical atlas colors. |
-| 4 | Terminal is a continuous gray-on-dark surface (inline prompt). |
+| 3 | Layer chips on map top-left; map uses physical atlas colors. |
+
+### Flow: Perf rail (F-052)
+
+| Step | Action |
+|------|--------|
+| 1 | Left Perf rail lists mean paint/advance/phase/heap from `/api/status` `diag`. |
+| 2 | Advance or paint → hub samples update; rail shows averages (or `—` when empty). |
+| 3 | No Working… map overlay; busy still disables Reset world / ignores Advance. |
+| 4 | Brighter bathymetry + land clamp 64 on Elevation paint. |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
 

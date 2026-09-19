@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-051; G-008 done)  
+**Status:** active (G-009 in progress through F-052; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -67,15 +67,15 @@ MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the s
 
 Headless paint and session control live in `MapController` + `ElevationRaster`. Interactive UI is **Next** (`ui/web/`) behind **Tauri** (`ui/desktop/`). Swing was **removed** (F-026).
 
-Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. **F-051** runner shell: Play/Pause/Speed (`1x`…`Fastest`), World rail (step/seed/reset), map layer HUD, Terminal. While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
+Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. **F-052** runner: Play/Pause/Speed (`1x`…`Fastest`), left Perf rail, World rail (step/seed/reset), map layer HUD top-left, always-on Terminal panel. While compute is in flight status text may read **Working...** (World rail chip) and further Advances are ignored — **no map overlay**. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
 
-Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated `Terminal.tsx` drawer. **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
+Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated always-on `Terminal.tsx` panel. **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB` in a **flat** `int[]` (F-047). `MapController` **reuses** a **double buffer** when width×height is unchanged (prior snapshot keeps correct pixels). `MapHost` **caches/reuses** one packed `byte[]` keyed by step + layer + paint generation — refill on invalidate, O(1) allocations under Play soak. Same grids + layer → identical RGB.
 
-**Land ramp** (`e >= 0`, F-051 physical atlas; clamp 32): piecewise RGB stops at e = 0, 8, 16, 24, 32 (`ElevationRaster.LAND_STOP_*`).
+**Land ramp** (`e >= 0`, F-052 brighter atlas; clamp 64): piecewise RGB stops at e = 0, 12, 24, 40, 64 (`ElevationRaster.LAND_STOP_*`).
 
-**Ocean** (`e < 0`): constant `(42, 78, 108)`.
+**Ocean** (`e < 0`): bathymetry ramp stops at e = −64…−1 (`ElevationRaster.OCEAN_STOP_*`); shallow swatch `OCEAN_RGB` = (−1).
 
 **Hillshade** (Elevation and Overlay land cells; toroidal west/north). Ocean is not hillshaded. Flat land (`dw = dn = 0`) matches the land ramp.
 
@@ -107,7 +107,7 @@ Headless CLI (F-049): one `ProductSession` per invocation (`WorldSpec.DEFAULT` g
 | Route | Meaning |
 |-------|---------|
 | `GET /health` | `ok` |
-| `GET /api/status` | JSON: step, seed, width, height, layer, speed, playing, busy, statusText, inspect, legend |
+| `GET /api/status` | JSON: step, seed, width, height, layer, speed, playing, busy, statusText, inspect, legend, **diag** `{ id: { last, mean, n } }` |
 | `GET /api/raster` | Packed RGB (`X-Width` / `X-Height`; body = BE width/height + BE `0xRRGGBB` ints) — same formulas as `ElevationRaster` |
 | `POST /api/advance` | `advanceAsync` |
 | `POST /api/play` / `pause` | Play / pause |
@@ -121,7 +121,7 @@ Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.V
 
 ## Next.js tool (F-025 / G-007)
 
-Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is **multi-panel studio cartography** with a rebuilt **Terminal** drawer (`Terminal.tsx`, F-050) — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
+Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is a **simulation runner** with left Perf rail, World rail, and always-on **Terminal** panel (`Terminal.tsx`, F-052) — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
 
 ## Tauri desktop (F-026)
 

@@ -2,12 +2,12 @@
 
 /*
  * File: ui/web/src/components/Terminal.tsx
- * Purpose: In-app terminal drawer on shared CommandDispatch (F-050)
+ * Purpose: Always-on terminal panel on shared CommandDispatch (F-052)
  * Audience: MapTool
  * Update when: Terminal UX or transcript shape changes
  */
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, forwardRef, type KeyboardEvent } from "react";
 import type { CommandResult } from "@/lib/host";
 
 const HISTORY_CAP = 32;
@@ -21,13 +21,19 @@ export type TerminalEntry = {
   text: string;
 };
 
+export type TerminalHandle = {
+  focus: () => void;
+};
+
 type TerminalProps = {
-  open: boolean;
   /** Runs one dispatcher line; MapTool refreshes map/status from the result. */
   onRun: (line: string) => Promise<CommandResult>;
 };
 
-export function Terminal({ open, onRun }: TerminalProps) {
+export const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Terminal(
+  { onRun },
+  ref,
+) {
   const [line, setLine] = useState("");
   const [log, setLog] = useState<TerminalEntry[]>([]);
   const [history, setHistory] = useState<string[]>([]);
@@ -35,11 +41,9 @@ export function Terminal({ open, onRun }: TerminalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (open) {
-      inputRef.current?.focus();
-    }
-  }, [open]);
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+  }));
 
   useEffect(() => {
     const el = logRef.current;
@@ -118,15 +122,10 @@ export function Terminal({ open, onRun }: TerminalProps) {
   }
 
   return (
-    <div
-      className="console-drawer terminal"
-      hidden={!open}
-      role="region"
-      aria-label="Terminal"
-    >
+    <div className="terminal-panel terminal" role="region" aria-label="Terminal">
       <div className="terminal-titlebar">
         <span className="terminal-title">Terminal</span>
-        <span className="terminal-hint">↑↓ history · Enter · help</span>
+        <span className="terminal-hint">↑↓ history · Enter · help · ` focuses</span>
       </div>
       <div className="console-log terminal-log" ref={logRef}>
         {log.length === 0 ? (
@@ -162,4 +161,4 @@ export function Terminal({ open, onRun }: TerminalProps) {
       </div>
     </div>
   );
-}
+});

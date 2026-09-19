@@ -59,7 +59,7 @@ class MapViewTest {
   }
 
   @Test
-  @DisplayName("F-018 / F-051: physical atlas ramp; ocean for negatives")
+  @DisplayName("F-018 / F-052: brighter atlas ramp; bathymetry for negatives")
   void absoluteRampFormula() {
     assertEquals(
         pack(ElevationRaster.LAND_STOP_R[0], ElevationRaster.LAND_STOP_G[0], ElevationRaster.LAND_STOP_B[0]),
@@ -69,10 +69,11 @@ class MapViewTest {
             ElevationRaster.LAND_STOP_R[ElevationRaster.LAND_STOP_R.length - 1],
             ElevationRaster.LAND_STOP_G[ElevationRaster.LAND_STOP_G.length - 1],
             ElevationRaster.LAND_STOP_B[ElevationRaster.LAND_STOP_B.length - 1]),
-        ElevationRaster.rgbOf(32));
-    assertEquals(ElevationRaster.rgbOf(32), ElevationRaster.rgbOf(99));
-    assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-4));
-    assertEquals(pack(42, 78, 108), ElevationRaster.rgbOf(-1));
+        ElevationRaster.rgbOf(64));
+    assertEquals(ElevationRaster.rgbOf(64), ElevationRaster.rgbOf(99));
+    assertEquals(ElevationRaster.oceanRamp(-4), ElevationRaster.rgbOf(-4));
+    assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-1));
+    assertEquals(pack(72, 128, 168), ElevationRaster.rgbOf(-1));
     assertNotEquals(ElevationRaster.rgbOf(0), ElevationRaster.rgbOf(-4));
     assertEquals(ElevationRaster.landRamp(8), ElevationRaster.rgbOf(8));
   }

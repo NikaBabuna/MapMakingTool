@@ -2,14 +2,14 @@
 
 /*
  * File: ui/web/src/components/MapTool.tsx
- * Purpose: Studio cartography tool chrome against MapHost
+ * Purpose: Simulation runner chrome against MapHost (F-052)
  * Audience: App page
  * Update when: Tool controls, layout, or QoL shortcuts change
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MapCanvas, resetViewport } from "@/components/MapCanvas";
-import { Terminal } from "@/components/Terminal";
+import { Terminal, type TerminalHandle } from "@/components/Terminal";
 import {
   fetchHealth,
   fetchRaster,
@@ -25,6 +25,7 @@ import {
   postSpeed,
   SPEED_MS,
   HostStatus,
+  DiagSample,
 } from "@/lib/host";
 import { IDENTITY_VIEWPORT, Viewport, fittedViewport } from "@/lib/viewport";
 import { rgbCss } from "@/lib/raster";
@@ -34,6 +35,20 @@ const SPEEDS: MapSpeedName[] = ["1x", "2x", "4x", "Fastest"];
 const DOCK_KEY = "aethelgard.dockOpen";
 const INSPECT_PANEL_KEY = "aethelgard.panelInspectOpen";
 const LEGEND_PANEL_KEY = "aethelgard.panelLegendOpen";
+const PERF_PANEL_KEY = "aethelgard.panelPerfOpen";
+
+/** Ordered metric rows for the left Perf rail (extensible). */
+const PERF_ROWS: { id: string; label: string; kind: "ns" | "bytes" }[] = [
+  { id: "paint.wall", label: "Frame (paint)", kind: "ns" },
+  { id: "advance.wall", label: "Advance", kind: "ns" },
+  { id: "phase.trace", label: "Phase · trace", kind: "ns" },
+  { id: "phase.interaction", label: "Phase · interaction", kind: "ns" },
+  { id: "phase.integrate", label: "Phase · integrate", kind: "ns" },
+  { id: "phase.apply", label: "Phase · apply", kind: "ns" },
+  { id: "phase.orogeny", label: "Phase · orogeny", kind: "ns" },
+  { id: "heap.used", label: "Heap used", kind: "bytes" },
+  { id: "heap.max", label: "Heap max", kind: "bytes" },
+];
 
 function readFlag(key: string, fallback: boolean): boolean {
   if (typeof window === "undefined") {
@@ -58,16 +73,42 @@ function isTypingTarget(el: EventTarget | null): boolean {
   return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
 }
 
+function formatNs(sample: DiagSample | undefined): string {
+  if (!sample || sample.n === 0 || sample.mean == null) {
+    return "—";
+  }
+  const ms = sample.mean / 1_000_000;
+  if (ms >= 10) {
+    return `${ms.toFixed(1)} ms`;
+  }
+  if (ms >= 1) {
+    return `${ms.toFixed(2)} ms`;
+  }
+  return `${(sample.mean / 1000).toFixed(0)} µs`;
+}
+
+function formatBytes(sample: DiagSample | undefined): string {
+  if (!sample || sample.n === 0 || sample.mean == null) {
+    return "—";
+  }
+  const mb = sample.mean / (1024 * 1024);
+  return `${mb.toFixed(1)} MiB`;
+}
+
+function formatDiag(sample: DiagSample | undefined, kind: "ns" | "bytes"): string {
+  return kind === "bytes" ? formatBytes(sample) : formatNs(sample);
+}
+
 export function MapTool() {
   const [status, setStatus] = useState<HostStatus | null>(null);
   const [raster, setRaster] = useState<ArrayBuffer | null>(null);
   const [seedText, setSeedText] = useState("0");
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<MapSpeedName>("1x");
-  const [terminalOpen, setTerminalOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(true);
   const [inspectOpen, setInspectOpen] = useState(true);
   const [legendOpen, setLegendOpen] = useState(true);
+  const [perfOpen, setPerfOpen] = useState(true);
   const [viewport, setViewport] = useState<Viewport>(IDENTITY_VIEWPORT);
   const stageMetricsRef = useRef({
     stageW: 1,
@@ -76,6 +117,7 @@ export function MapTool() {
     displayH: 1080,
   });
   const fittedOnceRef = useRef(false);
+  const terminalRef = useRef<TerminalHandle>(null);
   const [error, setError] = useState<string | null>(null);
   const [online, setOnline] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
@@ -86,6 +128,7 @@ export function MapTool() {
     setDockOpen(readDockOpen());
     setInspectOpen(readFlag(INSPECT_PANEL_KEY, true));
     setLegendOpen(readFlag(LEGEND_PANEL_KEY, true));
+    setPerfOpen(readFlag(PERF_PANEL_KEY, true));
   }, []);
 
   useEffect(() => {
@@ -108,6 +151,13 @@ export function MapTool() {
     }
     window.localStorage.setItem(LEGEND_PANEL_KEY, legendOpen ? "1" : "0");
   }, [legendOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.localStorage.setItem(PERF_PANEL_KEY, perfOpen ? "1" : "0");
+  }, [perfOpen]);
 
   const refresh = useCallback(async () => {
     const next = await fetchStatus();
@@ -362,7 +412,7 @@ export function MapTool() {
       }
       if (key === "`" || key === "c" || key === "C") {
         e.preventDefault();
-        setTerminalOpen((o) => !o);
+        terminalRef.current?.focus();
         return;
       }
       if (key === "d" || key === "D") {
@@ -381,6 +431,7 @@ export function MapTool() {
 
   const busy = status?.busy ?? false;
   const statusText = status?.statusText ?? (online ? "Connecting…" : "Host offline");
+  const diag = status?.diag;
 
   return (
     <div className={`studio${dockOpen ? "" : " dock-closed-root"}`}>
@@ -441,15 +492,6 @@ export function MapTool() {
           >
             World
           </button>
-          <button
-            type="button"
-            className={`btn${terminalOpen ? " is-pressed" : ""}`}
-            aria-pressed={terminalOpen}
-            onClick={() => setTerminalOpen((o) => !o)}
-            title="Toggle terminal (` / C)"
-          >
-            Terminal
-          </button>
         </div>
       </header>
 
@@ -462,144 +504,173 @@ export function MapTool() {
         </p>
       ) : null}
 
-      <div className={`studio-work${dockOpen ? "" : " dock-closed"}`}>
-        <MapCanvas
-          buffer={raster}
-          busy={busy}
-          viewport={viewport}
-          onViewportChange={setViewport}
-          onStageMetrics={onStageMetrics}
-          onCell={(x, y) => void onCell(x, y)}
-          layer={status?.layer ?? "Elevation"}
-          layers={LAYERS}
-          onLayer={(name) => void onLayer(name as MapLayerName)}
-        />
-
-        {dockOpen ? (
-          <aside className="side-rail world-rail" aria-label="World">
-            <article className="studio-panel" data-panel="world">
+      <div className="studio-body">
+        <div className={`studio-work${dockOpen ? "" : " dock-closed"}`}>
+          <aside className="side-rail perf-rail" aria-label="Performance">
+            <article className="studio-panel" data-panel="perf">
               <header className="panel-chrome">
-                <h2>World</h2>
-              </header>
-              <div className="panel-body">
-                <dl className="inspect-grid world-grid">
-                  <div>
-                    <dt>Step</dt>
-                    <dd>{status?.step ?? "—"}</dd>
-                  </div>
-                  <div>
-                    <dt>Size</dt>
-                    <dd>
-                      {status ? `${status.width}×${status.height}` : "—"}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Seed</dt>
-                    <dd className="mono">{status?.seed ?? "—"}</dd>
-                  </div>
-                </dl>
-                <label className="field seed">
-                  <span>Seed</span>
-                  <input
-                    value={seedText}
-                    disabled={busy}
-                    onChange={(e) => setSeedText(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        requestNewWorld();
-                      }
-                    }}
-                  />
-                </label>
-                <div className="world-actions">
-                  <button type="button" className="btn" disabled={busy} onClick={randomSeed} title="Random seed">
-                    Random
-                  </button>
-                  <button type="button" className="btn" disabled={busy} onClick={requestNewWorld}>
-                    Reset world
-                  </button>
-                </div>
-                <p className={`status-chip${busy ? " is-busy" : ""}`} aria-live="polite">
-                  {statusText}
-                </p>
-              </div>
-            </article>
-
-            <article className="studio-panel" data-panel="inspect">
-              <header className="panel-chrome">
-                <h2>Inspect</h2>
+                <h2>Perf</h2>
                 <button
                   type="button"
                   className="panel-toggle"
-                  aria-expanded={inspectOpen}
-                  onClick={() => setInspectOpen((o) => !o)}
-                  title={inspectOpen ? "Collapse Inspect" : "Expand Inspect"}
+                  aria-expanded={perfOpen}
+                  onClick={() => setPerfOpen((o) => !o)}
+                  title={perfOpen ? "Collapse Perf" : "Expand Perf"}
                 >
-                  {inspectOpen ? "−" : "+"}
+                  {perfOpen ? "−" : "+"}
                 </button>
               </header>
-              {inspectOpen ? (
+              {perfOpen ? (
                 <div className="panel-body">
-                  {status?.inspect ? (
-                    <dl className="inspect-grid">
-                      <div>
-                        <dt>Cell</dt>
-                        <dd>
-                          {status.inspect.x}, {status.inspect.y}
-                        </dd>
+                  <dl className="perf-grid">
+                    {PERF_ROWS.map((row) => (
+                      <div key={row.id} data-diag={row.id}>
+                        <dt>{row.label}</dt>
+                        <dd className="mono">{formatDiag(diag?.[row.id], row.kind)}</dd>
                       </div>
-                      <div>
-                        <dt>Elevation</dt>
-                        <dd>{status.inspect.elevation}</dd>
-                      </div>
-                      <div>
-                        <dt>Plate</dt>
-                        <dd>{status.inspect.plateId}</dd>
-                      </div>
-                      <div>
-                        <dt>Velocity</dt>
-                        <dd>
-                          {status.inspect.vx}, {status.inspect.vy}
-                        </dd>
-                      </div>
-                    </dl>
-                  ) : (
-                    <p className="muted">Click the map to inspect a cell.</p>
-                  )}
-                </div>
-              ) : null}
-            </article>
-
-            <article className="studio-panel" data-panel="legend">
-              <header className="panel-chrome">
-                <h2>Legend</h2>
-                <button
-                  type="button"
-                  className="panel-toggle"
-                  aria-expanded={legendOpen}
-                  onClick={() => setLegendOpen((o) => !o)}
-                  title={legendOpen ? "Collapse Legend" : "Expand Legend"}
-                >
-                  {legendOpen ? "−" : "+"}
-                </button>
-              </header>
-              {legendOpen ? (
-                <div className="panel-body">
-                  <ul className="legend-list">
-                    {(status?.legend ?? []).map((row) => (
-                      <li key={`${row.rgb}-${row.label}`}>
-                        <span className="swatch" style={{ background: rgbCss(row.rgb) }} />
-                        {row.label}
-                      </li>
                     ))}
-                  </ul>
+                  </dl>
+                  <p className="muted perf-hint">Means from DiagnosticsHub · same session as stats</p>
                 </div>
               ) : null}
             </article>
           </aside>
-        ) : null}
 
-        <Terminal open={terminalOpen} onRun={onTerminalRun} />
+          <MapCanvas
+            buffer={raster}
+            viewport={viewport}
+            onViewportChange={setViewport}
+            onStageMetrics={onStageMetrics}
+            onCell={(x, y) => void onCell(x, y)}
+            layer={status?.layer ?? "Elevation"}
+            layers={LAYERS}
+            onLayer={(name) => void onLayer(name as MapLayerName)}
+          />
+
+          {dockOpen ? (
+            <aside className="side-rail world-rail" aria-label="World">
+              <article className="studio-panel" data-panel="world">
+                <header className="panel-chrome">
+                  <h2>World</h2>
+                </header>
+                <div className="panel-body">
+                  <dl className="inspect-grid world-grid">
+                    <div>
+                      <dt>Step</dt>
+                      <dd>{status?.step ?? "—"}</dd>
+                    </div>
+                    <div>
+                      <dt>Size</dt>
+                      <dd>{status ? `${status.width}×${status.height}` : "—"}</dd>
+                    </div>
+                    <div>
+                      <dt>Seed</dt>
+                      <dd className="mono">{status?.seed ?? "—"}</dd>
+                    </div>
+                  </dl>
+                  <label className="field seed">
+                    <span>Seed</span>
+                    <input
+                      value={seedText}
+                      disabled={busy}
+                      onChange={(e) => setSeedText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          requestNewWorld();
+                        }
+                      }}
+                    />
+                  </label>
+                  <div className="world-actions">
+                    <button type="button" className="btn" disabled={busy} onClick={randomSeed} title="Random seed">
+                      Random
+                    </button>
+                    <button type="button" className="btn" disabled={busy} onClick={requestNewWorld}>
+                      Reset world
+                    </button>
+                  </div>
+                  <p className={`status-chip${busy ? " is-busy" : ""}`} aria-live="polite">
+                    {statusText}
+                  </p>
+                </div>
+              </article>
+
+              <article className="studio-panel" data-panel="inspect">
+                <header className="panel-chrome">
+                  <h2>Inspect</h2>
+                  <button
+                    type="button"
+                    className="panel-toggle"
+                    aria-expanded={inspectOpen}
+                    onClick={() => setInspectOpen((o) => !o)}
+                    title={inspectOpen ? "Collapse Inspect" : "Expand Inspect"}
+                  >
+                    {inspectOpen ? "−" : "+"}
+                  </button>
+                </header>
+                {inspectOpen ? (
+                  <div className="panel-body">
+                    {status?.inspect ? (
+                      <dl className="inspect-grid">
+                        <div>
+                          <dt>Cell</dt>
+                          <dd>
+                            {status.inspect.x}, {status.inspect.y}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Elevation</dt>
+                          <dd>{status.inspect.elevation}</dd>
+                        </div>
+                        <div>
+                          <dt>Plate</dt>
+                          <dd>{status.inspect.plateId}</dd>
+                        </div>
+                        <div>
+                          <dt>Velocity</dt>
+                          <dd>
+                            {status.inspect.vx}, {status.inspect.vy}
+                          </dd>
+                        </div>
+                      </dl>
+                    ) : (
+                      <p className="muted">Click the map to inspect a cell.</p>
+                    )}
+                  </div>
+                ) : null}
+              </article>
+
+              <article className="studio-panel" data-panel="legend">
+                <header className="panel-chrome">
+                  <h2>Legend</h2>
+                  <button
+                    type="button"
+                    className="panel-toggle"
+                    aria-expanded={legendOpen}
+                    onClick={() => setLegendOpen((o) => !o)}
+                    title={legendOpen ? "Collapse Legend" : "Expand Legend"}
+                  >
+                    {legendOpen ? "−" : "+"}
+                  </button>
+                </header>
+                {legendOpen ? (
+                  <div className="panel-body">
+                    <ul className="legend-list">
+                      {(status?.legend ?? []).map((row) => (
+                        <li key={`${row.rgb}-${row.label}`}>
+                          <span className="swatch" style={{ background: rgbCss(row.rgb) }} />
+                          {row.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </article>
+            </aside>
+          ) : null}
+        </div>
+
+        <Terminal ref={terminalRef} onRun={onTerminalRun} />
       </div>
 
       {confirmNew ? (

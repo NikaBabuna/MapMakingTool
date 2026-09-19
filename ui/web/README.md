@@ -30,8 +30,8 @@ Open http://localhost:3000. Host default: `http://127.0.0.1:7420` (`NEXT_PUBLIC_
 
 ## Behavior
 
-Map-first **runner shell** (F-051): gray chrome; top bar identity · transport (Play/Pause/`1x`…`Fastest`) · view; World rail (step/seed/reset + Inspect/Legend); layer chips on the map; continuous Terminal drawer. Physical atlas elevation colors. Play is a client timer → `/api/advance`. Busy shows Working… and ignores extra Advance / Reset world.
+Map-first **runner** (F-052): gray chrome; top bar identity · transport (Play/Pause/`1x`…`Fastest`) · view; left **Perf** rail (hub means); World rail (step/seed/reset + Inspect/Legend); layer chips **top-left**; always-on Terminal panel. Brighter bathymetry + land clamp 64. Play is a client timer → `/api/advance`. Busy gates Advance / Reset world (no Working… map overlay).
 
-Shortcuts: Space Play/Pause; A/. Advance; 1–3 layers; [/] speed; N Reset world; `/C terminal; D World rail; R reset view.
+Shortcuts: Space Play/Pause; A/. Advance; 1–3 layers; [/] speed; N Reset world; `/C focus terminal; D World rail; R reset view.
 
 Docs: [docs/product/style-guide.md](../../docs/product/style-guide.md) · [docs/product/architecture.md](../../docs/product/architecture.md) · [docs/product/flows.md](../../docs/product/flows.md)

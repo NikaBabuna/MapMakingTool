@@ -26,11 +26,12 @@ import org.junit.jupiter.api.Test;
 class ToolUiTest {
 
   @Test
-  @DisplayName("FR-1: negatives are ocean; physical land ramp; same grid → same RGB")
+  @DisplayName("FR-1: negatives are bathymetry; physical land ramp; same grid → same RGB")
   void oceanAndLandRamp() {
-    assertEquals(ElevationRaster.OCEAN_RGB, pack(42, 78, 108));
+    assertEquals(ElevationRaster.OCEAN_RGB, pack(72, 128, 168));
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-1));
-    assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-12));
+    assertNotEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-12));
+    assertEquals(ElevationRaster.oceanRamp(-12), ElevationRaster.rgbOf(-12));
     assertEquals(
         pack(ElevationRaster.LAND_STOP_R[0], ElevationRaster.LAND_STOP_G[0], ElevationRaster.LAND_STOP_B[0]),
         ElevationRaster.landRamp(0));
@@ -39,8 +40,8 @@ class ToolUiTest {
             ElevationRaster.LAND_STOP_R[ElevationRaster.LAND_STOP_R.length - 1],
             ElevationRaster.LAND_STOP_G[ElevationRaster.LAND_STOP_G.length - 1],
             ElevationRaster.LAND_STOP_B[ElevationRaster.LAND_STOP_B.length - 1]),
-        ElevationRaster.landRamp(32));
-    assertEquals(ElevationRaster.landRamp(32), ElevationRaster.rgbOf(32));
+        ElevationRaster.landRamp(64));
+    assertEquals(ElevationRaster.landRamp(64), ElevationRaster.rgbOf(64));
 
     Grid grid =
         new Grid(
@@ -52,7 +53,7 @@ class ToolUiTest {
     ElevationRaster b = ElevationRaster.of(grid);
     assertEquals(a, b);
     assertEquals(ElevationRaster.elevationCell(grid, 0, 1), a.rgb(0, 1));
-    assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.elevationCell(grid, 1, 0));
+    assertEquals(ElevationRaster.oceanRamp(-3), ElevationRaster.elevationCell(grid, 1, 0));
   }
 
   @Test
@@ -82,7 +83,7 @@ class ToolUiTest {
               {10, 10},
               {10, -2}
             });
-    assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.elevationCell(ocean, 1, 1));
+    assertEquals(ElevationRaster.oceanRamp(-2), ElevationRaster.elevationCell(ocean, 1, 1));
   }
 
   @Test
@@ -252,10 +253,12 @@ class ToolUiTest {
   void legendShellAndHouse() throws Exception {
     MapController map = new MapController(new WorldSpec(8, 8, 0L));
     List<LegendEntry> elevation = map.legend();
-    assertEquals("Ocean (e < 0)", elevation.get(0).label());
-    assertEquals(ElevationRaster.OCEAN_RGB, elevation.get(0).rgb());
-    assertEquals("Low (0)", elevation.get(1).label());
-    assertEquals("High (32)", elevation.get(2).label());
+    assertEquals("Deep (≤ −64)", elevation.get(0).label());
+    assertEquals(ElevationRaster.oceanRamp(ElevationRaster.OCEAN_FLOOR), elevation.get(0).rgb());
+    assertEquals("Shallow (−1)", elevation.get(1).label());
+    assertEquals(ElevationRaster.OCEAN_RGB, elevation.get(1).rgb());
+    assertEquals("Low (0)", elevation.get(2).label());
+    assertEquals("High (64)", elevation.get(3).label());
 
     map.setLayer(MapLayer.PLATES);
     List<LegendEntry> plates = map.legend();

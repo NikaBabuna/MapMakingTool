@@ -7,8 +7,8 @@
 
 # Current session
 
-**Updated:** 2026-09-19  
-**Status:** F-051 Accepted · Active Goal G-009 · next negotiate F-052
+**Updated:** 2026-09-20  
+**Status:** F-052 Accepted · Active Goal G-009 · next negotiate F-053
 
 ---
 
@@ -29,19 +29,17 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-049 | CLI as full runner | done |
-| F-050 | Scrap + rebuild terminal | done |
-| F-051 | Runner shell foundation | done |
+| F-052 | Perf rail + runner fixes | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] F-051 Accepted (witness + SYNC)
+- [x] F-052 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-051: gray runner shell; physical atlas map; `1x`…`Fastest`; World rail; map layer HUD; terminal restyle.
+- F-052: left Perf rail; always-on Terminal; layer top-left + fix; brighter/deeper paint; no Working overlay; status `diag`.

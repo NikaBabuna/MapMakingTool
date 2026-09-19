@@ -30,6 +30,11 @@ public interface DiagnosticCollector {
   /** Latest sample, or empty if none. */
   Long latest();
 
+  /**
+   * Arithmetic mean of retained samples, or empty if none. Truncates toward zero (long division).
+   */
+  Long mean();
+
   /** Oldest→newest copy of retained samples. */
   long[] samples();
 

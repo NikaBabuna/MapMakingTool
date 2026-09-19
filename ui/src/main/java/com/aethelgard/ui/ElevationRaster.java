@@ -15,20 +15,31 @@ import java.util.Objects;
  * Deterministic RGB image of a map layer. One packed {@code 0xRRGGBB} per cell in a flat {@code
  * int[]} (row-major). Paint may reuse a caller buffer when dimensions match (F-047).
  *
- * <p>Physical atlas ramp (F-051) for {@code e >= 0}; ocean for negatives; hillshade on land for
- * Elevation and Overlay. Formulas: product architecture + this class.
+ * <p>Physical atlas ramp (F-052): brighter land stops clamp 64; bathymetry for negatives; hillshade
+ * on land for Elevation and Overlay. Formulas: product architecture + this class.
  */
 public final class ElevationRaster {
 
-  public static final int CLAMP = 32;
-  /** Deep atlas sea (physical map). */
-  public static final int OCEAN_RGB = pack(42, 78, 108);
-  /** Landstops for piecewise atlas ramp (e = 0, 8, 16, 24, 32). */
-  public static final int[] LAND_STOP_E = {0, 8, 16, 24, 32};
+  public static final int CLAMP = 64;
+  /** Deepest bathymetry stop (e ≤ −64). */
+  public static final int OCEAN_FLOOR = -64;
+  /**
+   * Shallow ocean swatch (e = −1) — legacy {@code OCEAN_RGB} name kept for tests/legend that want a
+   * single sea chip.
+   */
+  public static final int OCEAN_RGB = pack(72, 128, 168);
+  /** Bathymetry stops (e = −64, −32, −16, −8, −1). */
+  public static final int[] OCEAN_STOP_E = {-64, -32, -16, -8, -1};
 
-  public static final int[] LAND_STOP_R = {118, 142, 168, 186, 228};
-  public static final int[] LAND_STOP_G = {138, 148, 138, 148, 216};
-  public static final int[] LAND_STOP_B = {98, 108, 100, 108, 188};
+  public static final int[] OCEAN_STOP_R = {18, 32, 48, 60, 72};
+  public static final int[] OCEAN_STOP_G = {48, 72, 96, 112, 128};
+  public static final int[] OCEAN_STOP_B = {78, 108, 132, 152, 168};
+  /** Landstops for piecewise atlas ramp (e = 0, 12, 24, 40, 64). */
+  public static final int[] LAND_STOP_E = {0, 12, 24, 40, 64};
+
+  public static final int[] LAND_STOP_R = {142, 168, 196, 214, 248};
+  public static final int[] LAND_STOP_G = {168, 178, 168, 176, 236};
+  public static final int[] LAND_STOP_B = {118, 128, 118, 128, 210};
   public static final int HILLSHADE_FLAT = 12;
   public static final int HILLSHADE_MIN = 6;
   public static final int HILLSHADE_MAX = 18;
@@ -98,18 +109,44 @@ public final class ElevationRaster {
   }
 
   /**
-   * Unshaded cell color: ocean if {@code elevation < 0}, else physical land ramp (clamp 32).
+   * Unshaded cell color: bathymetry if {@code elevation < 0}, else physical land ramp (clamp 64).
    *
-   * <p>Ocean {@code (42, 78, 108)}. Land interpolates atlas stops at e = 0, 8, 16, 24, 32 (F-051).
+   * <p>Ocean interpolates stops at e = −64…−1. Land interpolates atlas stops at e = 0…64 (F-052).
    */
   public static int rgbOf(int elevation) {
     if (elevation < 0) {
-      return OCEAN_RGB;
+      return oceanRamp(elevation);
     }
     return landRamp(elevation);
   }
 
-  /** Physical atlas land ramp; {@code elevation} is treated as {@code max(0, min(e, 32))}. */
+  /** Bathymetry ramp; {@code elevation} is treated as {@code max(OCEAN_FLOOR, min(e, -1))}. */
+  public static int oceanRamp(int elevation) {
+    int e = elevation;
+    if (e > -1) {
+      e = -1;
+    } else if (e < OCEAN_FLOOR) {
+      e = OCEAN_FLOOR;
+    }
+    for (int i = 0; i < OCEAN_STOP_E.length - 1; i++) {
+      int e0 = OCEAN_STOP_E[i];
+      int e1 = OCEAN_STOP_E[i + 1];
+      if (e <= e1) {
+        int span = e1 - e0;
+        int t = span == 0 ? 0 : e - e0;
+        int r = OCEAN_STOP_R[i] + ((OCEAN_STOP_R[i + 1] - OCEAN_STOP_R[i]) * t) / span;
+        int g = OCEAN_STOP_G[i] + ((OCEAN_STOP_G[i + 1] - OCEAN_STOP_G[i]) * t) / span;
+        int b = OCEAN_STOP_B[i] + ((OCEAN_STOP_B[i + 1] - OCEAN_STOP_B[i]) * t) / span;
+        return pack(r, g, b);
+      }
+    }
+    return pack(
+        OCEAN_STOP_R[OCEAN_STOP_R.length - 1],
+        OCEAN_STOP_G[OCEAN_STOP_G.length - 1],
+        OCEAN_STOP_B[OCEAN_STOP_B.length - 1]);
+  }
+
+  /** Physical atlas land ramp; {@code elevation} is treated as {@code max(0, min(e, 64))}. */
   public static int landRamp(int elevation) {
     int e = elevation;
     if (e < 0) {
@@ -229,7 +266,7 @@ public final class ElevationRaster {
   public static int elevationCell(Grid elevation, int x, int y) {
     int e = elevation.get(x, y);
     if (e < 0) {
-      return OCEAN_RGB;
+      return oceanRamp(e);
     }
     int rgb = landRamp(e);
     int width = elevation.width();

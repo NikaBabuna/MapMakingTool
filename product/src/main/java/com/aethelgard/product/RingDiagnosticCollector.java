@@ -79,6 +79,19 @@ public final class RingDiagnosticCollector implements DiagnosticCollector {
   }
 
   @Override
+  public synchronized Long mean() {
+    if (size == 0) {
+      return null;
+    }
+    long sum = 0;
+    int start = size < ring.length ? 0 : next;
+    for (int i = 0; i < size; i++) {
+      sum += ring[(start + i) % ring.length];
+    }
+    return sum / size;
+  }
+
+  @Override
   public synchronized long[] samples() {
     long[] out = new long[size];
     int start = size < ring.length ? 0 : next;
@@ -91,6 +104,7 @@ public final class RingDiagnosticCollector implements DiagnosticCollector {
   @Override
   public synchronized String summaryLine() {
     Long last = latest();
+    Long avg = mean();
     return id
         + " enabled="
         + enabled
@@ -99,6 +113,8 @@ public final class RingDiagnosticCollector implements DiagnosticCollector {
         + "/"
         + ring.length
         + " last="
-        + (last == null ? "-" : last);
+        + (last == null ? "-" : last)
+        + " mean="
+        + (avg == null ? "-" : avg);
   }
 }

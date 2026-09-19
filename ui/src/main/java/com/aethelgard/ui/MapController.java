@@ -291,9 +291,10 @@ public final class MapController {
 
   private List<LegendEntry> elevationLegend() {
     return List.of(
-        new LegendEntry(ElevationRaster.OCEAN_RGB, "Ocean (e < 0)"),
+        new LegendEntry(ElevationRaster.oceanRamp(ElevationRaster.OCEAN_FLOOR), "Deep (≤ −64)"),
+        new LegendEntry(ElevationRaster.OCEAN_RGB, "Shallow (−1)"),
         new LegendEntry(ElevationRaster.landRamp(0), "Low (0)"),
-        new LegendEntry(ElevationRaster.landRamp(ElevationRaster.CLAMP), "High (32)"));
+        new LegendEntry(ElevationRaster.landRamp(ElevationRaster.CLAMP), "High (64)"));
   }
 
   private List<LegendEntry> plateLegend() {

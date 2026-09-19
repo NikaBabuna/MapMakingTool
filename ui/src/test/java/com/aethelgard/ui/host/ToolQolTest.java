@@ -34,7 +34,8 @@ class ToolQolTest {
     String css = Files.readString(root.resolve("ui/web/src/app/globals.css"));
     assertTrue(css.contains("prefers-reduced-motion"));
     assertTrue(css.contains("focus-visible"));
-    assertTrue(css.contains("map-busy"));
+    assertTrue(css.contains("status-chip") || css.contains("is-busy"));
+    assertFalse(css.contains(".map-busy"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("Space"));

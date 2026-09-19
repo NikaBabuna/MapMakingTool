@@ -7,9 +7,9 @@
 
 # Style guide
 
-_Status: **active** — G-009 **F-051** runner shell. G-008 studio done. Terminal language F-048–F-050; terminal look F-051._
+_Status: **active** — G-009 **F-052** perf rail + runner fixes. G-008 studio done. Terminal always-on; brighter/deeper map. Residual polish **F-053**._
 
-Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** remains the map-desk metaphor; F-051 reframes the chrome as a quiet **runner shell**.
+Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** (G-007/G-008 multi-panel Inspect/Legend + mappy neatline) remains the map-desk metaphor; F-051+ reframes chrome as a quiet **runner shell**. Terminal language F-048–F-050 (rebuilt `Terminal.tsx`); F-052 makes the terminal an always-on panel.
 
 ---
 
@@ -17,25 +17,24 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 
 | Item | Intent | Status |
 |------|--------|--------|
-| **Feel** | Quiet simulation runner; stable layout **slots** for later controls | **F-051** |
-| **Terminal** | Real terminal surface on shared noun/verb dispatcher | **F-050** component; **F-051** look |
-| **Perf** | Visible step timings / memory (panel + commands) | **F-042** hub; panel **F-052** |
+| **Feel** | Quiet simulation runner; stable layout slots | **F-051** |
+| **Terminal** | Always-on bottom panel on shared dispatcher | **F-052** |
+| **Perf** | Left rail: mean timings / memory from DiagnosticsHub | **F-052** |
 | **Look** | Residual polish if needed | planned F-053 |
 
 ---
 
-## Runner shell (F-051)
-
-Stable regions (grow by filling slots, not lengthening the top bar):
+## Runner shell (F-051 / F-052)
 
 | Slot | Content |
 |------|---------|
 | **Top · identity** | Brand wordmark + host **dot only** (green/red) |
 | **Top · transport** | Play · Pause · Speed (`1x` / `2x` / `4x` / `Fastest`) |
-| **Top · view** | Reset view · World (rail toggle) · Terminal |
-| **Map HUD** | Layer switch **bottom-left** on the map |
+| **Top · view** | Reset view · World (rail toggle) |
+| **Left · Perf** | Mean paint/advance/phase/heap from `/api/status` `diag` |
+| **Map HUD** | Layer switch **top-left** on the map (pointer-isolated from pan) |
 | **World rail** | Step, size, seed, reset world; Inspect/Legend sections |
-| **Terminal** | Full-width drawer under the stage |
+| **Terminal** | Always-visible bottom panel |
 
 **Principles:** map first; chrome gray and quiet; one job per region; progressive disclosure; same session as CLI/terminal language.
 
@@ -50,22 +49,23 @@ Stable regions (grow by filling slots, not lengthening the top bar):
 
 ---
 
-## Terminal (F-051 look)
+## Terminal (F-052 panel)
 
+- Always present under the map stage (`terminal-panel`); not a hide-by-default drawer.
 - Continuous dark surface (`--terminal-bg`); **no boxed input field**.
 - Prompt prefix **`aethelgard>`** + typing on one row; scrollback above; light-gray text (`--terminal-fg`), dim hints.
-- Empty state promotes noun/verb (`help` · `session get` · `list pool` …) — no placeholder-verb copy.
-- Input placeholder: `help`. ↑ / ↓ history (cap 32); Enter runs; autofocus when opened.
+- Empty state promotes noun/verb (`help` · `session get` · `list pool` …).
+- Input placeholder: `help`. ↑ / ↓ history (cap 32); Enter runs; `` ` `` / `C` focuses the input.
 - Same `CommandDispatch` via `/api/command`.
 
 ---
 
-## Physical map palette (F-051)
+## Physical map palette (F-052)
 
-Elevation reads like a printed atlas (deterministic in `ElevationRaster`):
+Elevation reads like a brighter printed atlas (deterministic in `ElevationRaster`):
 
-- **Ocean** (`e < 0`): `(42, 78, 108)`
-- **Land** piecewise stops at e = 0, 8, 16, 24, 32 (lowland greens → highland browns → pale peaks)
+- **Ocean bathymetry** (`e < 0`): piecewise stops at e = −64, −32, −16, −8, −1 (deep navy → shallow cyan)
+- **Land** piecewise stops at e = 0, 12, 24, 40, 64 (brighter lowland greens → highland → pale peaks)
 - Hillshade retained on land
 - **Plates:** muted gray interior + dark boundary
 
@@ -74,9 +74,9 @@ Elevation reads like a printed atlas (deterministic in `ElevationRaster`):
 ## Map interaction
 
 - Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]**. Vertical pan clamped at poles when zoomed.
-- Drag pan: **X loopback**, **Y polar clamp**; blank N/S margins.
+- Drag pan: **X loopback**, **Y polar clamp**; blank N/S margins. Layer HUD does not capture pan.
 - Inspect click → World rail Inspect section.
-- **Reset view** (`R`); busy overlay; do not queue Advance / Reset world.
+- **Reset view** (`R`); no Working… map overlay — busy still gates Advance / Reset world (World rail status chip).
 - Neatline + graticule/ticks + coords HUD remain.
 
 Avoid: purple gradients; cream+terracotta; glow-heavy chrome; attention-seeking accents.
@@ -95,8 +95,9 @@ Avoid: purple gradients; cream+terracotta; glow-heavy chrome; attention-seeking 
 | `--accent` | Quiet focus | `#6e6e72` |
 | `--ok` / `--danger` | Host dot | muted green / red |
 | `--terminal-bg` / `--terminal-fg` | Terminal | `#121214` / `#c8c8c8` |
+| `--perf-w` | Left Perf rail | `220px` |
 
-Fonts: `--font-ui` (sans), `--font-mono` (seed, terminal, coords).
+Fonts: `--font-ui` (sans), `--font-mono` (seed, terminal, coords, perf).
 
 ---
 
@@ -105,9 +106,10 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, terminal, coords).
 | Region | Rule |
 |--------|------|
 | **Top bar** | Three slots: identity \| transport \| view |
-| **Map stage** | Full-bleed; layer HUD bottom-left |
+| **Left Perf** | Always present; body collapsible (`aethelgard.panelPerfOpen`) |
+| **Map stage** | Full-bleed; layer HUD top-left |
 | **World rail** | World + Inspect + Legend; toggle via **World** / `D` |
-| **Terminal** | On-demand drawer (not a studio-panel card) |
+| **Terminal** | Permanent bottom panel |
 
 ### Persistence (`localStorage`)
 
@@ -116,6 +118,7 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, terminal, coords).
 | `aethelgard.dockOpen` | World rail visible |
 | `aethelgard.panelInspectOpen` | Inspect expanded |
 | `aethelgard.panelLegendOpen` | Legend expanded |
+| `aethelgard.panelPerfOpen` | Perf body expanded |
 
 ---
 
@@ -128,7 +131,7 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, terminal, coords).
 | `1` / `2` / `3` | Elevation / Plates / Overlay |
 | `[` / `]` | Speed slower / faster |
 | `N` | Reset world / New world (confirm when Step > 0) |
-| `` ` `` or `C` | Toggle terminal |
+| `` ` `` or `C` | Focus terminal |
 | `D` | Toggle World rail |
 | `R` | Reset map view |
 

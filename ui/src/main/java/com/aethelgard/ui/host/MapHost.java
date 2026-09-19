@@ -15,6 +15,8 @@ import com.aethelgard.ui.LegendEntry;
 import com.aethelgard.ui.MapController;
 import com.aethelgard.ui.MapLayer;
 import com.aethelgard.ui.MapSpeed;
+import com.aethelgard.product.DiagnosticCollector;
+import com.aethelgard.product.DiagnosticsHub;
 import com.aethelgard.product.WorldSpec;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -441,8 +443,30 @@ public final class MapHost implements AutoCloseable {
           .append(jsonString(row.label()))
           .append('}');
     }
-    sb.append("]}");
+    sb.append("],\"diag\":");
+    appendDiag(sb, controller.session().diagnostics());
+    sb.append('}');
     return sb.toString();
+  }
+
+  /** Compact diagnostics snapshot: id → { last, mean, n }. */
+  static void appendDiag(StringBuilder sb, DiagnosticsHub hub) {
+    sb.append('{');
+    List<DiagnosticCollector> collectors = hub.collectors();
+    for (int i = 0; i < collectors.size(); i++) {
+      if (i > 0) {
+        sb.append(',');
+      }
+      DiagnosticCollector c = collectors.get(i);
+      Long last = c.latest();
+      Long mean = c.mean();
+      sb.append('"').append(c.id()).append("\":{");
+      sb.append("\"last\":").append(last == null ? "null" : last);
+      sb.append(",\"mean\":").append(mean == null ? "null" : mean);
+      sb.append(",\"n\":").append(c.size());
+      sb.append('}');
+    }
+    sb.append('}');
   }
 
   private static void field(StringBuilder sb, String name, long value, boolean first) {

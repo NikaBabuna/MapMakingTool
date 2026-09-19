@@ -50,9 +50,10 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **CommandDispatch** | Single execute entry for headless CLI, MapHost `/api/command`, and in-app console (F-048; deprecated flat aliases remain). |
 | **CliRunner** | Headless full runner (F-049): one session per invocation; `--seed` / `--steps` / `-c` over `CommandDispatch`. |
 | **MapSpeed** | Play tick rate labels: `1x` / `2x` / `4x` / `Fastest` (F-051). |
-| **Runner shell** | F-051 layout slots: identity / transport / view / World rail / map HUD / terminal. |
-| **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): flat `int[]` pixels; ocean + hillshaded land, plate colors, or overlay. Controllers may reuse the buffer (F-047). |
-| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
+| **Runner shell** | Layout slots: identity / transport / view / Perf rail / World rail / map HUD / terminal (F-051–F-052). |
+| **Perf rail** | Left sidebar listing DiagnosticsHub mean samples via `/api/status` `diag` (F-052). |
+| **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): flat `int[]` pixels; bathymetry + hillshaded land (clamp 64), plate colors, or overlay. Controllers may reuse the buffer (F-047). |
+| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy. No Swing. No map Working… overlay (F-052). |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |
 | **ui/web** | Next.js studio cartography tool (F-025 / G-007). HTTP client to `MapHost`; client-timed Play; map-first shell. |

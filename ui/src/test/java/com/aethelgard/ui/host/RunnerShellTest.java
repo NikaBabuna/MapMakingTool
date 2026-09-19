@@ -52,7 +52,7 @@ class RunnerShellTest {
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
     assertTrue(canvas.contains("map-layer-switch") || canvas.contains("onLayer"));
 
-    assertEquals(0x2a4e6c, ElevationRaster.OCEAN_RGB);
+    assertEquals(0x4880a8, ElevationRaster.OCEAN_RGB);
     assertEquals(MapSpeed.X1.periodMillis(), 250);
     assertEquals(MapSpeed.FASTEST.label(), "Fastest");
 
@@ -75,13 +75,13 @@ class RunnerShellTest {
   }
 
   @Test
-  @DisplayName("FR-6: docs mention F-051; no F-052 Accept; no JFrame")
+  @DisplayName("FR-6: docs mention F-051; shell preserved under F-052; no JFrame")
   void docsAndScope() throws Exception {
     Path root = findRepoRoot();
     String blocker = Files.readString(root.resolve("docs/blockers/F-051.md"));
-    assertFalse(blocker.contains("F-052 Accepted"));
+    assertTrue(blocker.contains("FR-1"));
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-051"));
+    assertTrue(arch.contains("F-051") || arch.contains("F-052"));
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
     assertFalse(tool.contains("JFrame"));
   }
