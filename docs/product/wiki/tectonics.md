@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-037 — edge-driven `IntegrateVelocity` from `motion_intent` each generation; B1 partition; `area_flux` apply/fission; `plate_velocity` STATIC. Orogeny-from-boundaries still F-038.
+**Doc status:** F-030 locks (amended F-034 cylinder; F-036 B1; F-038 boundary orogeny). **Code status:** F-038 — elevation from standing `boundaries` (COLLIDE winner +1 / loser −1; SEPARATE both −1; PASS_BY 0); edge-driven integrate; B1; apply/fission.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -22,7 +22,7 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 | **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). Earlier G-008 text said **torus**; amended F-034. |
 | **Sphere analogue** | Cylinder map (wrap longitude / polar edges) — not a 3D globe mesh. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-037). Orogeny rewrite F-038.
+**Runtime note:** VIEW is **1920×1080** (F-031). Boundary tectonics through F-038 (integrate + boundary orogeny). Studio panels F-039.
 
 ---
 
@@ -75,9 +75,9 @@ Plates are the only tectonic actors. **Number, motion, and size** come from boun
 
 | Kind | Area flux | Motion feedback (intent) | Relief (orogeny) |
 |------|-----------|---------------------------|------------------|
-| **Separate** (diverge) | Create crust; both sides can grow | Ridge push (away) | Typically lower |
-| **Collide** (converge) | Destroy crust into **sink**; loser shrinks | Dampen closing; slab-style pull on loser | Uplift / trench |
-| **Pass-by** (transform) | ≈ none | Slide; little normal change | Little |
+| **Separate** (diverge) | Create crust; both sides can grow | Ridge push (away) | Both contact cells **−1** |
+| **Collide** (converge) | Destroy crust into **sink**; loser shrinks | Dampen closing; slab-style pull on loser | Winner **+1**; loser **−1** |
+| **Pass-by** (transform) | ≈ none | Slide; little normal change | **0** |
 
 ### Collide precedence (v1)
 

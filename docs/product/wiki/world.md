@@ -7,8 +7,8 @@
 
 # World
 
-**Code status (through F-037):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + area_flux + motion_intent + IntegrateVelocity — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).
-**G-008 further targets:** orogeny rewrite / studio panels — see [tectonics.md](tectonics.md).
+**Code status (through F-038):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + flux/intent + integrate + boundary orogeny — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).
+**G-008 further targets:** studio panels — see [tectonics.md](tectonics.md).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 

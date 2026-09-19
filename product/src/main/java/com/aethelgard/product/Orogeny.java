@@ -1,21 +1,22 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/Orogeny.java
- * Purpose: Tectonics Sub-System — elevation from standing-plate relative motion
+ * Purpose: Tectonics Sub-System — elevation from standing classified boundaries
  * Audience: Product tectonics EngineSystem
- * Update when: Orogeny contact rule changes
+ * Update when: Boundary orogeny relief rule changes
  */
 
 package com.aethelgard.product;
 
 import com.aethelgard.engine.system.SubSystem;
 import com.aethelgard.engine.system.SubSystemIo;
+import java.util.Objects;
 import java.util.Set;
 
 /**
- * Reads standing {@code plates}, CONSTANT {@code plate_velocity}, and {@code elevation}. Writes a
- * new elevation grid. Cylinder 4-neighbors (wrap X; Y clipped): converge {@code +1}, diverge {@code
- * -1}, transform or interior {@code 0}. Any converge wins over diverge. Does not see kinematics
- * output this Step.
+ * Reads standing {@code plates}, {@code elevation}, {@code plate_registry}, and staged/pool {@code
+ * boundaries}; writes elevation. COLLIDE: winner +1 / loser −1; SEPARATE: both −1; PASS_BY: 0.
+ * Per-cell: any winner COLLIDE wins over loser/SEPARATE. Does not see this Step’s geometry write.
+ * Wiki: {@code docs/product/wiki/tectonics.md}.
  */
 public final class Orogeny implements SubSystem {
 
@@ -33,17 +34,18 @@ public final class Orogeny implements SubSystem {
   public void execute(SubSystemIo io) {
     Grid plates = requireGrid(io.readPool(WorldFields.PLATES), WorldFields.PLATES);
     Grid elevation = requireGrid(io.readPool(WorldFields.ELEVATION), WorldFields.ELEVATION);
-    PlateVelocities velocities = requireVelocities(io.readPool(WorldFields.PLATE_VELOCITY));
-    io.write(WorldFields.ELEVATION, apply(plates, velocities, elevation));
+    PlateRegistry registry = requireRegistry(io.readPool(WorldFields.PLATE_REGISTRY));
+    Boundaries boundaries = requireBoundaries(readBoundaries(io));
+    io.write(WorldFields.ELEVATION, apply(plates, boundaries, registry, elevation));
   }
 
-  /**
-   * One generation of orogeny on standing plates. No floor: elevation may go negative.
-   */
-  public static Grid apply(Grid plates, PlateVelocities velocities, Grid elevation) {
-    if (plates == null || velocities == null || elevation == null) {
-      throw new NullPointerException("plates, velocities, elevation");
-    }
+  /** One generation of boundary orogeny on standing plates. No floor: elevation may go negative. */
+  public static Grid apply(
+      Grid plates, Boundaries boundaries, PlateRegistry registry, Grid elevation) {
+    Objects.requireNonNull(plates, "plates");
+    Objects.requireNonNull(boundaries, "boundaries");
+    Objects.requireNonNull(registry, "registry");
+    Objects.requireNonNull(elevation, "elevation");
     if (plates.width() != elevation.width() || plates.height() != elevation.height()) {
       throw new IllegalStateException(
           "plates "
@@ -58,48 +60,68 @@ public final class Orogeny implements SubSystem {
     int[][] next = new int[elevation.height()][elevation.width()];
     for (int y = 0; y < elevation.height(); y++) {
       for (int x = 0; x < elevation.width(); x++) {
-        next[y][x] = elevation.get(x, y) + delta(plates, velocities, x, y);
+        next[y][x] = elevation.get(x, y) + delta(x, y, plates, boundaries, registry);
       }
     }
     return new Grid(next);
   }
 
   /**
-   * Cell delta: {@code +1} if any cylinder 4-neighbor is a converging foreign plate; else {@code
-   * -1} if any is diverging; else {@code 0}. Y off-map neighbors are ignored (polar edge).
+   * Cell delta from standing contacts that touch {@code (x,y)}. Winner COLLIDE → {@code +1}; else
+   * loser COLLIDE or SEPARATE → {@code -1}; else {@code 0}.
    */
-  public static int delta(Grid plates, PlateVelocities velocities, int x, int y) {
-    int a = plates.get(x, y);
-    boolean converge = false;
-    boolean diverge = false;
+  public static int delta(
+      int x, int y, Grid plates, Boundaries boundaries, PlateRegistry registry) {
+    Objects.requireNonNull(plates, "plates");
+    Objects.requireNonNull(boundaries, "boundaries");
+    Objects.requireNonNull(registry, "registry");
     int width = plates.width();
     int height = plates.height();
-    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int[] d : dirs) {
-      int nx = d[0];
-      int ny = d[1];
-      int bx = Math.floorMod(x + nx, width);
-      int by = y + ny;
+    boolean win = false;
+    boolean lose = false;
+    boolean separate = false;
+    for (BoundaryContact c : boundaries.contacts()) {
+      int ax = c.x();
+      int ay = c.y();
+      int bx = Math.floorMod(ax + c.nx(), width);
+      int by = ay + c.ny();
       if (by < 0 || by >= height) {
         continue;
       }
-      int closing = closing(a, plates.get(bx, by), velocities, nx, ny);
-      if (closing > 0) {
-        converge = true;
-      } else if (closing < 0) {
-        diverge = true;
+      boolean onA = ax == x && ay == y;
+      boolean onB = bx == x && by == y;
+      if (!onA && !onB) {
+        continue;
+      }
+      switch (c.kind()) {
+        case COLLIDE -> {
+          int loseId = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+          int myId = onA ? c.plateA() : c.plateB();
+          if (myId == loseId) {
+            lose = true;
+          } else {
+            win = true;
+          }
+        }
+        case SEPARATE -> separate = true;
+        case PASS_BY -> {
+          // no relief
+        }
       }
     }
-    if (converge) {
+    if (win) {
       return 1;
     }
-    if (diverge) {
+    if (lose || separate) {
       return -1;
     }
     return 0;
   }
 
-  /** {@code n · (vA − vB)} for a foreign neighbor; {@code 0} when the plates match. */
+  /**
+   * Closing used by boundary classification: {@code n · (vA − vB)}. Kept here so {@link Boundaries}
+   * and tests share one definition.
+   */
   static int closing(int plateA, int plateB, PlateVelocities velocities, int nx, int ny) {
     if (plateA == plateB) {
       return 0;
@@ -107,6 +129,14 @@ public final class Orogeny implements SubSystem {
     int dvx = velocities.vx(plateA) - velocities.vx(plateB);
     int dvy = velocities.vy(plateA) - velocities.vy(plateB);
     return nx * dvx + ny * dvy;
+  }
+
+  private static Object readBoundaries(SubSystemIo io) {
+    Object staged = io.readStaging(WorldFields.BOUNDARIES);
+    if (staged != null) {
+      return staged;
+    }
+    return io.readPool(WorldFields.BOUNDARIES);
   }
 
   private static Grid requireGrid(Object value, String field) {
@@ -117,14 +147,25 @@ public final class Orogeny implements SubSystem {
         "field '" + field + "' must be Grid, was " + value.getClass().getName());
   }
 
-  private static PlateVelocities requireVelocities(Object value) {
-    if (value instanceof PlateVelocities velocities) {
-      return velocities;
+  private static PlateRegistry requireRegistry(Object value) {
+    if (value instanceof PlateRegistry registry) {
+      return registry;
     }
     throw new IllegalStateException(
         "field '"
-            + WorldFields.PLATE_VELOCITY
-            + "' must be PlateVelocities, was "
-            + value.getClass().getName());
+            + WorldFields.PLATE_REGISTRY
+            + "' must be PlateRegistry, was "
+            + (value == null ? "null" : value.getClass().getName()));
+  }
+
+  private static Boundaries requireBoundaries(Object value) {
+    if (value instanceof Boundaries boundaries) {
+      return boundaries;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.BOUNDARIES
+            + "' must be Boundaries, was "
+            + (value == null ? "null" : value.getClass().getName()));
   }
 }

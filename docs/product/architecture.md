@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 F-037 integrate; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-038 boundary orogeny + camera/plates paint; G-007 studio done; F-026 Tauri)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -130,7 +130,7 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry** (flux+fission+advect). Orogeny-from-boundaries F-038.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1; boundaries; flux/intent; IntegrateVelocity; ApplyGeometry; **boundary orogeny** (F-038). Studio panels F-039.
 
 ---
 

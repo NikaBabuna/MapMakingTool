@@ -7,7 +7,7 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 camera **F-032/F-033** (zoom clamp + **horizontal-only** loopback pan); panels/console still planned._
+_Status: **active** — G-007 studio cartography (done). G-008 camera **F-038** (zoom + **X loop / Y clamp** pan); panels/console still planned._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
@@ -21,14 +21,14 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | **Look** | More **mappy** (chart/atlas cues) | planned F-039 |
 | **Console** | Traditional terminal appearance | planned F-040 |
 | **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
-| **Loopback pan** | **Horizontal only** (left/right); wraps on X; vertical locked; **blank** N/S of map | **F-034** |
+| **Loopback pan** | Drag pan: **X wraps**; **Y clamped** at polar edges (no pan past map top/bottom; blank N/S remain). Fit scale stays vertically centered. | **F-038** |
 
 ---
 
 ## Map interaction (G-007 / F-028 / F-032 / F-033)
 
 - Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map). Vertical position re-locks to stage center.
-- Drag to pan **left/right only** with horizontal loopback; no up/down pan. Regions above/below the map band stay **blank** (no vertical loop tiles).
+- Drag to pan: horizontal loopback; vertical pan when zoomed, **clamped** so the map cannot leave polar edges. Regions above/below the map band stay **blank** (no vertical loop tiles).
 - Inspect clicks map into world cells (x wraps; y must hit the map band).
 - **Reset view** (`R`) restores fitted centered transform.
 - Busy: map overlay + status chip; do not queue Advance / New world.

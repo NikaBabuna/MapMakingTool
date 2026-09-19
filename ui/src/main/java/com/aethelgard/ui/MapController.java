@@ -16,7 +16,6 @@ import com.aethelgard.product.WorldSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -269,17 +268,9 @@ public final class MapController {
   }
 
   private List<LegendEntry> plateLegend() {
-    TreeSet<Integer> ids = new TreeSet<>();
-    for (int y = 0; y < plates.height(); y++) {
-      for (int x = 0; x < plates.width(); x++) {
-        ids.add(plates.get(x, y));
-      }
-    }
-    List<LegendEntry> rows = new ArrayList<>();
-    for (int id : ids) {
-      rows.add(new LegendEntry(ElevationRaster.plateRgb(id), "Plate " + id));
-    }
-    return rows;
+    return List.of(
+        new LegendEntry(ElevationRaster.PLATE_INTERIOR_RGB, "Interior"),
+        new LegendEntry(ElevationRaster.PLATE_BOUNDARY_RGB, "Boundary"));
   }
 
   private void capture() {
