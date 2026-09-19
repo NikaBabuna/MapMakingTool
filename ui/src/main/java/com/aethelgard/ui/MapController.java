@@ -1,7 +1,7 @@
 /*
  * File: ui/src/main/java/com/aethelgard/ui/MapController.java
  * Purpose: Headless map tool logic — session, layers, play, inspect (no Swing)
- * Audience: Tests / Swing shell
+ * Audience: Tests / MapHost / Next front
  * Update when: Map window behavior changes
  */
 

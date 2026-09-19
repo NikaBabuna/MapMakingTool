@@ -29,5 +29,5 @@ Before non-trivial work, read in order:
 - Do not Accept if Active Goal entry points disagree with `docs/project/goals.md`
 - Explain in clear English what changed and what it means
 
-Active Goal: [G-006](docs/project/goals/G-006-webview-front.md) (`in progress`) · Last: [G-005](docs/project/goals/G-005-living-map.md) (`done`)  
+Active Goal: none · Last: [G-006](docs/project/goals/G-006-webview-front.md) (`done`)  
 Full checklist: `AGENTS.md`

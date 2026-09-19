@@ -223,16 +223,17 @@ MapMakingTool/
 
 Artifact `com.aethelgard:cli` depends on `product`. Run headlessly from tests via `CliRunner.run(args)`. Heartbeat `--initial` is retired.
 
-### UI (F-023)
+### UI (F-026)
 
 | Type | Role |
 |------|------|
 | `ElevationRaster` | Headless RGB of Elevation / Plates / Overlay (ocean, hillshade) |
 | `MapController` | Headless layers / play / newWorld / inspect / `runCommand` (no Swing) |
-| `MapFrame` | Dark tool window + Console (not constructed in tests) |
-| `ProductApp` | `main` entry on the EDT; wires `SwingPlayScheduler` |
+| `MapHost` / `MapHostApp` | Localhost HTTP facade + entry (port 7420) |
+| `ui/web` | Next.js tool UI |
+| `ui/desktop` | Tauri 2 shell (spawn/stop host; webview → :3000) |
 
-Artifact `com.aethelgard:ui` depends on `product` and `cli` (console dispatcher only). Launch: `run-product.cmd` / `run-ui.cmd`.
+Artifact `com.aethelgard:ui` depends on `product` and `cli` (console dispatcher only). Launch: `run-product.cmd`. Swing interactive UI removed.
 
 ---
 

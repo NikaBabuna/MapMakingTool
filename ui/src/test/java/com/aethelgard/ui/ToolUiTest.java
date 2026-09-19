@@ -228,7 +228,7 @@ class ToolUiTest {
   }
 
   @Test
-  @DisplayName("FR-7: legend tracks layer; chrome in MapFrame; no JFrame in tests; house holds")
+  @DisplayName("FR-7: legend tracks layer; Next/Tauri chrome; no Swing in ui main; house holds")
   void legendShellAndHouse() throws Exception {
     MapController map = new MapController(new WorldSpec(8, 8, 0L));
     List<LegendEntry> elevation = map.legend();
@@ -248,33 +248,44 @@ class ToolUiTest {
     assertEquals("Suture", overlay.get(overlay.size() - 1).label());
 
     Path root = findRepoRoot();
-    String frame =
-        Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java"));
-    assertTrue(frame.contains("JFrame"));
-    assertTrue(frame.contains("0x12141A"));
-    assertTrue(frame.contains("Advance"));
-    assertTrue(frame.contains("Play"));
-    assertTrue(frame.contains("Pause"));
-    assertTrue(frame.contains("New world"));
-    assertTrue(frame.contains("Seed"));
-    assertTrue(frame.contains("Inspect"));
-    assertTrue(frame.contains("Legend"));
-    assertTrue(frame.contains("advanceAsync"));
-    assertFalse(frame.contains("controller.advance()"));
+    assertFalse(Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java")));
+    assertFalse(Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/ProductApp.java")));
+    assertFalse(
+        Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/SwingPlayScheduler.java")));
+
+    String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
+    assertTrue(tool.contains("Advance"));
+    assertTrue(tool.contains("Play"));
+    assertTrue(tool.contains("Pause") || tool.contains("playing"));
+    assertTrue(tool.contains("New world"));
+    assertTrue(tool.contains("Seed") || tool.contains("seed"));
+    assertTrue(tool.contains("Inspect") || tool.contains("inspect"));
+    assertTrue(tool.contains("Legend") || tool.contains("legend"));
+    assertTrue(tool.contains("postAdvance"));
 
     String layers = Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapLayer.java"));
     assertTrue(layers.contains("Elevation"));
     assertTrue(layers.contains("Plates"));
     assertTrue(layers.contains("Overlay"));
 
-    String app =
-        Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/ProductApp.java"));
-    assertTrue(app.contains("SwingPlayScheduler"));
-
     String controller =
         Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapController.java"));
     assertFalse(controller.contains("javax.swing"));
     assertFalse(controller.contains("java.awt"));
+
+    try (var walk = Files.walk(root.resolve("ui/src/main/java"))) {
+      assertTrue(
+          walk.filter(p -> p.toString().endsWith(".java"))
+              .map(
+                  p -> {
+                    try {
+                      return Files.readString(p);
+                    } catch (Exception e) {
+                      throw new RuntimeException(e);
+                    }
+                  })
+              .noneMatch(s -> s.contains("javax.swing") || s.contains("JFrame")));
+    }
 
     String productHost =
         Files.readString(

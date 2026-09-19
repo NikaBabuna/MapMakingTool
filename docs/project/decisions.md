@@ -160,7 +160,7 @@ The interactive map front is a **local web app** inside a **Tauri 2** webview. S
 
 **Amends ADR-010:** G-005 live access was in-process only (“no socket”). G-006 allows **same-machine localhost HTTP** between webview front and Java host. Still one session owner; advances stay serialized. Not a remote multiplayer host. Commands remain placeholders — do not put verb names into Systems or Pool fields.
 
-**Swing:** demoted as the primary product map once the webview path lands. Headless map/raster tests remain the behavioral bar.
+**Swing:** **removed** as the product map (F-026). Headless map/raster tests remain the behavioral bar.
 
 **Why:** Visual iteration and hot reload need a web front; a webview shell keeps the “local app” feel without moving simulation out of Java.
 

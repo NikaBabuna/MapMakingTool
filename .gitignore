@@ -38,3 +38,8 @@ ui/web/node_modules/
 ui/web/.next/
 ui/web/out/
 ui/web/.env*.local
+
+# Tauri desktop (ui/desktop)
+ui/desktop/node_modules/
+ui/desktop/src-tauri/target/
+ui/desktop/src-tauri/gen/

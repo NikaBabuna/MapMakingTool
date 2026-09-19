@@ -49,7 +49,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | Layout: monorepo (engine + product) | Accepted — see ADR-001, ADR-007 |
 | JDK | Java 21 — recorded in [../engine/architecture.md](../engine/architecture.md) |
 | Agent process | Goal / Session / Step — see ADR-004 |
-| Interactive UI: Tauri 2 + Next.js + Java HTTP host | Accepted for G-006 — see ADR-011 (Swing map demoted) |
+| Interactive UI: Tauri 2 + Next.js + Java HTTP host | Accepted for G-006 — see ADR-011 (Swing map **removed**) |
 
 ---
 

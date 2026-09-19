@@ -7,11 +7,11 @@
 
 # Product architecture
 
-**Status:** active (F-025 Next `ui/web`; F-024 MapHost; F-023 console; G-006 in progress)  
+**Status:** active (F-026 Tauri; F-025 Next; F-024 MapHost; **G-006 done**)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
-**ADR:** [ADR-010](../project/decisions.md)
+**ADR:** [ADR-010](../project/decisions.md) · [ADR-011](../project/decisions.md)
 
 ---
 
@@ -57,11 +57,13 @@ cli →  product  →  engine
 
 ---
 
-## Map view (in `ui`, F-022)
+## Map view (in `ui`, F-022–F-026)
 
-The **UI** module paints product values. Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Dark tool chrome (`0x12141A`): layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect sidebar, legend, **Console**. Advance and play ticks run **one** generation Step on a worker thread (not the Swing EDT) via `ProductSession`. While compute is in flight the status text is **Working...** and further Advances (and play ticks) are ignored. `newWorld(seed)` is ignored while busy.
+Headless paint and session control live in `MapController` + `ElevationRaster`. Interactive UI is **Next** (`ui/web/`) behind **Tauri** (`ui/desktop/`). Swing was **removed** (F-026).
 
-Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (`MapController.runCommand`). After `advance`, the raster refreshes. Placeholder verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`. Unstable — not a product API.
+Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Console**. While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
+
+Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Placeholder verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`. Unstable — not a product API.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB`. Same grids + layer → identical RGB.
 
@@ -89,13 +91,13 @@ c' = min(255, (c * lit) / 12)
 
 **Overlay:** elevation paint, then each channel `c / 3` when plate id differs from toroidal east or south neighbor.
 
-Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused. Play uses an injected `PlayScheduler` (`SwingPlayScheduler` in `ProductApp`).
+Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused.
 
-`MapController` has no Swing types. `MapFrame` / `ProductApp` / `SwingPlayScheduler` are interactive only (`com.aethelgard.ui`).
+`MapController` has no Swing types. No `MapFrame` / `ProductApp` / `SwingPlayScheduler`.
 
-Launch from repo root: `run-product.cmd` or `run-ui.cmd` (`mvnw -pl ui -am install -DskipTests` then `mvnw -pl ui exec:java`).
+Launch from repo root: `run-product.cmd` (Next + Tauri; Tauri spawns `MapHostApp`).
 
-Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `settledWorld()`. Bare argv is one dispatcher line (`status`, `advance 3`, `at 1 2`, …). Placeholder (ADR-010).
+Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `settledWorld()`. Bare argv is one dispatcher line. Placeholder (ADR-010).
 
 ---
 
@@ -116,15 +118,19 @@ Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `se
 | `POST /api/inspect?x=&y=` | Cell inspect |
 | `POST /api/command` | Plain-text line → `CommandDispatch` |
 
-Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.VIEW`). CORS `*` for local Next. Swing map remains until F-026.
+Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.VIEW`). CORS `*` for local Next. Writes temp PID file for Tauri quit.
 
 ## Next.js tool (F-025)
 
-Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is an elevated dark tool (not a Swing clone); map pixels still come from `ElevationRaster` via the host. Dev: warm host + `npm run dev` — [ui/web/README.md](../../ui/web/README.md).
+Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is an elevated dark tool; map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
+
+## Tauri desktop (F-026)
+
+Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On start spawns `MapHostApp`; on quit stops it via PID file. Primary launch: `run-product.cmd`. [ui/desktop/README.md](../../ui/desktop/README.md).
 
 ---
 
-## Source layout (through F-025)
+## Source layout (through F-026)
 
 ```
 product/
@@ -166,8 +172,6 @@ ui/
     CellInspect.java
     LegendEntry.java
     MapController.java
-    MapFrame.java
-    ProductApp.java
     ExecutorPlayScheduler.java
     host/
       MapHost.java
@@ -175,9 +179,11 @@ ui/
   web/                          # Next.js tool (F-025)
     package.json
     README.md
-    src/app/
-    src/components/
-    src/lib/
+    src/
+  desktop/                      # Tauri 2 shell (F-026)
+    package.json
+    README.md
+    src-tauri/
   src/test/java/com/aethelgard/ui/
     MapViewTest.java
     ToolUiTest.java
@@ -185,6 +191,7 @@ ui/
     host/
       MapHostTest.java
       WebFrontTest.java
+      DesktopShellTest.java
 
 cli/
   src/main/java/com/aethelgard/cli/

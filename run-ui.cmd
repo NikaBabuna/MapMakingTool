@@ -1,5 +1,3 @@
 @echo off
-REM Launch the Aethelgard map window (CMD-friendly). Same as run-product.cmd.
-
-cd /d "%~dp0"
-call run-product.cmd
+REM Alias for run-product.cmd (Aethelgard desktop launch).
+call "%~dp0run-product.cmd" %*

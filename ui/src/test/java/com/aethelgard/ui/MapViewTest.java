@@ -121,20 +121,21 @@ class MapViewTest {
   }
 
   @Test
-  @DisplayName("FR-5: MapFrame/ProductApp live in ui; Advance uses advanceAsync")
-  void swingShellInUi() throws Exception {
+  @DisplayName("FR-5: interactive shell is Next/Tauri; MapHost is ui entry (F-026)")
+  void desktopShellInUi() throws Exception {
     Path root = findRepoRoot();
+    assertFalse(
+        Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/ProductApp.java")));
+    assertFalse(Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java")));
+    assertFalse(
+        Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/SwingPlayScheduler.java")));
     assertTrue(
-        Files.isRegularFile(root.resolve("ui/src/main/java/com/aethelgard/ui/ProductApp.java")));
-    Path frame = root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java");
-    assertTrue(Files.isRegularFile(frame));
-    String text = Files.readString(frame);
-    assertTrue(text.contains("JFrame"));
-    assertTrue(text.contains("Advance"));
-    assertTrue(text.contains("advanceAsync"));
-    assertFalse(text.contains("controller.advance()"));
+        Files.isRegularFile(root.resolve("ui/src/main/java/com/aethelgard/ui/host/MapHostApp.java")));
+    assertTrue(Files.isDirectory(root.resolve("ui/desktop/src-tauri")));
+    assertTrue(Files.isDirectory(root.resolve("ui/web")));
     String uiPom = Files.readString(root.resolve("ui/pom.xml"));
-    assertTrue(uiPom.contains("com.aethelgard.ui.ProductApp"));
+    assertTrue(uiPom.contains("com.aethelgard.ui.host.MapHostApp"));
+    assertFalse(uiPom.contains("com.aethelgard.ui.ProductApp"));
   }
 
   @Test
@@ -142,15 +143,15 @@ class MapViewTest {
   void docsLaunchFromUi() throws Exception {
     Path root = findRepoRoot();
     String runProduct = Files.readString(root.resolve("run-product.cmd"));
-    assertTrue(runProduct.contains("-pl ui"));
-    assertFalse(runProduct.contains("-pl product exec"));
+    assertTrue(runProduct.toLowerCase().contains("desktop") || runProduct.contains("MapHost"));
+    assertFalse(runProduct.contains("ProductApp"));
     String runUi = Files.readString(root.resolve("run-ui.cmd"));
-    assertTrue(runUi.toLowerCase().contains("run-product") || runUi.contains("-pl ui"));
+    assertTrue(runUi.toLowerCase().contains("run-product") || runUi.contains("desktop"));
 
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("ElevationRaster"));
     assertTrue(arch.contains("com.aethelgard.ui"));
-    assertTrue(arch.toLowerCase().contains("working"));
+    assertTrue(arch.contains("MapHost") || arch.contains("ui/web"));
 
     String goal =
         Files.readString(root.resolve("docs/project/goals/G-001-engine-skeleton.md"));

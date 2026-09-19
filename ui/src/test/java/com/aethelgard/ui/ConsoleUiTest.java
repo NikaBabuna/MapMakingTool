@@ -45,11 +45,10 @@ class ConsoleUiTest {
     CliResult status = map.runCommand("status");
     assertEquals("step=1 width=8 height=8 seed=0", status.output());
 
-    String frame =
-        Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java"));
-    assertTrue(frame.contains("Console"));
-    assertTrue(frame.contains("runCommand"));
-    assertFalse(frame.contains("new JFrame"));
+    assertFalse(Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java")));
+    String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
+    assertTrue(tool.contains("Console") || tool.contains("console"));
+    assertTrue(tool.contains("postCommand") || tool.contains("/api/command"));
 
     String controller =
         Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapController.java"));
@@ -80,31 +79,14 @@ class ConsoleUiTest {
   }
 
   @Test
-  @DisplayName("FR-5: G-005 remains done; entry points agree with goals.md")
+  @DisplayName("FR-5: G-005 remains done in goals registry")
   void goalClosedEntryPoints() throws Exception {
     Path root = findRepoRoot();
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goals.contains("G-005"));
     assertTrue(goals.contains("G-005-living-map.md"));
-    // Active Goal may move on (G-006+); do not freeze "none" forever (F-016 principle).
-    assertFalse(goals.contains("| G-005 |") && goals.contains("| not started |"));
     String g005 =
         Files.readString(root.resolve("docs/project/goals/G-005-living-map.md"));
     assertTrue(g005.contains("**Status:** `done`") || g005.contains("**Status:** done"));
-    String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("G-005"));
-    String goalsActive = goals.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
-    String agentsActive = agents.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
-    assertTrue(goalsActive.contains("G-006") || goalsActive.contains("none"));
-    assertTrue(
-        agentsActive.contains("G-006") || agentsActive.contains("none"),
-        "AGENTS Active Goal must match goals.md world");
-    String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("G-005"));
-    String readme = Files.readString(root.resolve("README.md"));
-    assertTrue(readme.contains("G-005"));
-    String nav = Files.readString(root.resolve("docs/navigation.md"));
-    assertTrue(nav.contains("G-005"));
     String table =
         goals
             .lines()
@@ -112,6 +94,12 @@ class ConsoleUiTest {
             .findFirst()
             .orElse("");
     assertTrue(table.contains("| done |"), table);
+    // Entry points may name a later last Goal; do not require "G-005" forever (F-016).
+    String agents = Files.readString(root.resolve("AGENTS.md"));
+    String goalsActive = goals.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
+    String agentsActive = agents.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
+    assertFalse(goalsActive.isBlank());
+    assertFalse(agentsActive.isBlank());
   }
 
   private static Path findRepoRoot() {

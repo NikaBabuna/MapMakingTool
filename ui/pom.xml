@@ -18,7 +18,7 @@
 
   <artifactId>ui</artifactId>
   <name>Aethelgard UI</name>
-  <description>Aethelgard map tool — depends on product; cli only for console</description>
+  <description>Aethelgard map tool — headless controller + MapHost; Next/Tauri under ui/web and ui/desktop</description>
 
   <dependencies>
     <dependency>
@@ -63,7 +63,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <mainClass>com.aethelgard.ui.ProductApp</mainClass>
+          <mainClass>com.aethelgard.ui.host.MapHostApp</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
       </plugin>

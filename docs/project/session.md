@@ -8,20 +8,20 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-025 Accepted · propose F-026 next
+**Status:** F-026 Accepted · G-006 closed
 
 ---
 
 ## Session goal
 
-Accept **F-025** (Next.js tool UI under `ui/web/`).
+Accept **F-026** and close **G-006**.
 
 ---
 
 ## Active Goal
 
-**Active Goal:** [G-006 — Local webview front](goals/G-006-webview-front.md) — **in progress**  
-**Last completed:** [G-005 — Living map](goals/G-005-living-map.md) — **done**
+**Active Goal:** none  
+**Last completed:** [G-006 — Local webview front](goals/G-006-webview-front.md) — **done**
 
 ---
 
@@ -30,21 +30,22 @@ Accept **F-025** (Next.js tool UI under `ui/web/`).
 | Step | Work | Status |
 |------|------|--------|
 | F-024 | Java session HTTP host | done |
-| F-025 | Next.js tool UI (`ui/web/`) | done |
+| F-025 | Next.js tool UI | done |
+| F-026 | Tauri + remove Swing; close G-006 | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-025 Accept)
+- [x] Incremental suite green (F-026 Accept; G-006 closed)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-026** — Tauri shell + demote Swing; close G-006.
+1. Propose next **Goal** (climate / continents / timeline — not a lone Step).
 
 ## Notes
 
-- Front: `ui/web/` · host: `MapHostApp` :7420 · Play: client timer → `/api/advance`.
+- Primary launch: `run-product.cmd` · Swing removed · host PID file for Tauri quit.

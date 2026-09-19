@@ -33,10 +33,11 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the future Next/Tauri front (G-006). |
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |
 | **ui/web** | Next.js living-map tool (F-025). HTTP client to `MapHost`; client-timed Play. |
+| **ui/desktop** | Tauri 2 shell (F-026). Spawns/stops `MapHostApp`; webview → Next. |
 | **CommandDispatch** | Placeholder verb table in `cli` (`status`, `advance`, `dump`, `at`, `layers`). Unstable. Not a product API. |
 | **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. |
 | **MapSpeed** | Play tick period: Slow 1000 ms, Normal 250 ms, Fast 100 ms. |
-| **PlayScheduler** | Injected repeating ticks for Play. Production: `SwingPlayScheduler`. |
+| **PlayScheduler** | Injected repeating ticks for Play. Host: `ExecutorPlayScheduler`. Next Play is client-timed. |
 | **CellInspect** | Click-inspect snapshot: x, y, elevation, plate id, vx, vy. |
 | **LegendEntry** | Headless legend row: packed RGB + label. |
 | **Seed** | Initial configuration that deterministically produces a world variant |

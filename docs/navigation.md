@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** [G-006 Local webview front](project/goals/G-006-webview-front.md) (`in progress`) · Last: [G-005 Living map](project/goals/G-005-living-map.md) (**done**)  
+**Active Goal:** none · Last: [G-006 Local webview front](project/goals/G-006-webview-front.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -55,7 +55,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | done |
 | [goals/G-004-see-the-world.md](project/goals/G-004-see-the-world.md) | done |
 | [goals/G-005-living-map.md](project/goals/G-005-living-map.md) | done |
-| [goals/G-006-webview-front.md](project/goals/G-006-webview-front.md) | in progress |
+| [goals/G-006-webview-front.md](project/goals/G-006-webview-front.md) | done |
 | [session.md](project/session.md) | Active (temporary) |
 | [features.md](project/features.md) | Active — G-001–G-006 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
@@ -70,7 +70,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-025 Next front; G-006 in progress) |
+| [architecture.md](architecture.md) | Active (roll-up; G-006 done; Tauri + Next + MapHost) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -94,10 +94,10 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-025 `ui/web`; F-024 MapHost; F-023 console; G-006 in progress |
+| [architecture.md](product/architecture.md) | Active — F-026 Tauri; F-025 `ui/web`; F-024 MapHost; G-006 done |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | See the world; tool UI; console; Next tool (F-025); MapHost (F-024) |
-| [glossary.md](product/glossary.md) | Active — ProductSession; MapHost; ui/web (F-025) |
+| [flows.md](product/flows.md) | Desktop/Next tool; MapHost; G-006 done |
+| [glossary.md](product/glossary.md) | Active — MapHost; ui/web; ui/desktop |
 | [style-guide.md](product/style-guide.md) | Deferred |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-021 orogeny; F-022 display note) |
 
@@ -134,6 +134,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-023.md](blockers/F-023.md) | done — placeholder CLI + in-UI console |
 | [F-024.md](blockers/F-024.md) | done — Java session HTTP host (`ui.host`) |
 | [F-025.md](blockers/F-025.md) | done — Next.js tool UI (`ui/web`) |
+| [F-026.md](blockers/F-026.md) | done — Tauri desktop; Swing removed; G-006 closed |
 
 ---
 
@@ -143,7 +144,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 |------|----------------|
 | [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
 | [../cli/](../cli/) | [README](../cli/README.md) — headless runner |
-| [../ui/](../ui/) | [README](../ui/README.md) — skeleton Step advance / view · [web front](../ui/web/README.md) |
+| [../ui/](../ui/) | [README](../ui/README.md) — MapHost + headless map · [web](../ui/web/README.md) · [desktop](../ui/desktop/README.md) |
 | [../product/](../product/) | [README](../product/README.md) — Maven module |
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
 | [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
