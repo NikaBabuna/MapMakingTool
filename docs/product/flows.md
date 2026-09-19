@@ -51,11 +51,11 @@ Before production feature code, extend this file per [../process/quality.md](../
 
 | Step | Action |
 |------|--------|
-| 1 | Start `MapHostApp` (port 7420). In `ui/web`, `npm run dev`. Open http://localhost:3000. |
+| 1 | Run `run-product.cmd`. Tauri starts Next (`beforeDevCommand`), waits for `:3000`, spawns MapHost, opens the window. |
 | 2 | **Aethelgard** tool shows VIEW 512×512. Switch layers, **Advance**, **Play**/Pause (client timer → `/api/advance`), change speed, reseed, inspect, Console. |
 | 3 | While busy, status is **Working...**; Advance and New world do not queue. |
 
-**Edges / failures:** Host offline shows a banner. Default host URL `NEXT_PUBLIC_MAP_HOST` = `http://127.0.0.1:7420`. Preferred: `run-product.cmd` (starts Next + Tauri; Tauri spawns MapHost).
+**Edges / failures:** Host offline shows a banner. Default host URL `NEXT_PUBLIC_MAP_HOST` = `http://127.0.0.1:7420`. If you see “Waiting for your frontend dev server…”, Next failed to start — check `ui/web` deps (`npm install`) and that port 3000 is free.
 
 ---
 

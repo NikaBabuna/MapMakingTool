@@ -6,7 +6,10 @@
   "build": {
     "frontendDist": "../public",
     "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "",
+    "beforeDevCommand": {
+      "cwd": "../web",
+      "script": "npm run dev"
+    },
     "beforeBuildCommand": ""
   },
   "app": {
