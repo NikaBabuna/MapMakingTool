@@ -7,8 +7,8 @@
 
 # World
 
-**Code status (through F-031):** VIEW launch is **1920×1080** in code; plates still follow [elevation.md](elevation.md) until later G-008 Steps.  
-**G-008 further targets:** torus camera, boundary tectonics — see [tectonics.md](tectonics.md).
+**Code status (through F-035):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + area_flux + motion_intent — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).  
+**G-008 further targets:** apply flux / fission / edge-driven motion / studio panels — see [tectonics.md](tectonics.md).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 
@@ -34,7 +34,7 @@ A `WorldSpec` also records a long **seed**. Under G-008 the seed places **initia
 
 ### Topology (G-008)
 
-**Torus:** both axes wrap (`floorMod`). The finite looping rectangle is the closed surface for this Goal (sphere analogue — not a 3D mesh).
+**Cylinder:** wrap X (`floorMod`); Y does **not** wrap (polar edges). Sphere-on-rectangle analogue — not a 3D mesh.
 
 ---
 
@@ -44,7 +44,7 @@ A **layer** is one named field on the Pool. Grid layers share world geometry. Pe
 
 Later climate (rainfall, temperature, …) is more layers of the same shape, not a second world object.
 
-### Code today (F-033)
+### Code today (F-035)
 
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
@@ -52,11 +52,13 @@ Later climate (rainfall, temperature, …) is more layers of the same shape, not
 | `plates` | cylindrical nearest-site (N=12–24, wrap X) | kinematics advection |
 | `plate_registry` | STATIC area + initial `(vx,vy)` | unchanged until F-036 |
 | `boundaries` | STATIC classified contacts | refreshed each generation (F-034) |
+| `area_flux` | STATIC Δarea + sinkΔ | refreshed each generation (F-035); apply F-036 |
+| `motion_intent` | STATIC preferred Δv | refreshed each generation (F-035); integrate F-037 |
 | `plate_velocity` | Constant `(vx,vy)` in `{-1,0,1}` (bridge) | unchanged until F-037 |
 
 ### G-008 planned fields
 
-See [tectonics.md](tectonics.md) — `boundaries`, `area_flux`, `motion_intent`, `tectonic_events`. Constant-forever `plate_velocity` is **superseded** (F-037).
+See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Constant-forever `plate_velocity` is **superseded** (F-037).
 
 ---
 

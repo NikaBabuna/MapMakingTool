@@ -96,7 +96,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-008 F-030 docs; G-007 studio; Tauri + Next + MapHost |
+| [architecture.md](product/architecture.md) | Active — G-008 F-035 interaction; G-007 studio; Tauri + Next + MapHost |
 | [concept.md](product/concept.md) | Active |
 | [flows.md](product/flows.md) | G-007 done; G-008 intent planned (F-030) |
 | [glossary.md](product/glossary.md) | Active — torus; plate registry; fission; VIEW target |
@@ -143,6 +143,9 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-030.md](blockers/F-030.md) | done — G-008 wiki + decisions |
 | [F-031.md](blockers/F-031.md) | done — VIEW 1920×1080 |
 | [F-032.md](blockers/F-032.md) | done — loopback pan + zoom clamp |
+| [F-033.md](blockers/F-033.md) | done — plate partition + registry |
+| [F-034.md](blockers/F-034.md) | done — boundaries + cylinder map |
+| [F-035.md](blockers/F-035.md) | done — precedence + area_flux + motion_intent |
 
 ---
 

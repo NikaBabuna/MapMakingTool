@@ -23,9 +23,10 @@ import java.util.Objects;
  * Product entry for constructing an {@link Engine}. Setup is owned here so later Steps can add
  * schema and Systems without callers talking to engine defaults directly.
  *
- * <p>Schema: elevation / plates / plate_registry / boundaries (STATIC), plate_velocity (CONSTANT
- * bridge). Kinematics and tectonics Systems claim {@code world/tectonics} after Step 0. Tectonics
- * runs {@link TraceBoundaries} then {@link Orogeny}.
+ * <p>Schema: elevation / plates / plate_registry / boundaries / area_flux / motion_intent (STATIC),
+ * plate_velocity (CONSTANT bridge). Kinematics and tectonics Systems claim {@code world/tectonics}
+ * after Step 0. Tectonics runs {@link TraceBoundaries}, {@link BoundaryInteraction}, then {@link
+ * Orogeny}.
  */
 public final class ProductHost {
 
@@ -55,7 +56,7 @@ public final class ProductHost {
             new SystemConfig(
                 TECTONICS_SYSTEM_ID,
                 tree.get(ProductCategories.TECTONICS),
-                List.of(new TraceBoundaries(), new Orogeny()),
+                List.of(new TraceBoundaries(), new BoundaryInteraction(), new Orogeny()),
                 null));
     FieldSchema schema =
         FieldSchema.of(
@@ -64,6 +65,8 @@ public final class ProductHost {
                 WorldFields.PLATES, FieldType.STATIC,
                 WorldFields.PLATE_REGISTRY, FieldType.STATIC,
                 WorldFields.BOUNDARIES, FieldType.STATIC,
+                WorldFields.AREA_FLUX, FieldType.STATIC,
+                WorldFields.MOTION_INTENT, FieldType.STATIC,
                 WorldFields.PLATE_VELOCITY, FieldType.CONSTANT));
     return new EngineSetup(
         tree,
@@ -84,7 +87,8 @@ public final class ProductHost {
 
   /**
    * Creates a run from {@code spec}: seeds zero elevation, cylindrical nearest-site plates
-   * (N=12–24), plate_registry, boundaries, and CONSTANT plate_velocity. Completes Step 0.
+   * (N=12–24), plate_registry, boundaries, area_flux, motion_intent, and CONSTANT plate_velocity.
+   * Completes Step 0.
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */
@@ -95,6 +99,8 @@ public final class ProductHost {
     PlateVelocities velocities = PlateVelocities.seed(spec.seed());
     PlateRegistry registry = PlateRegistry.from(plates, velocities);
     Boundaries boundaries = Boundaries.trace(plates, velocities);
+    AreaFlux areaFlux = AreaFlux.from(boundaries, registry);
+    MotionIntent motionIntent = MotionIntent.from(boundaries, registry);
     EngineConfig config =
         new EngineConfig(
             0L,
@@ -104,6 +110,8 @@ public final class ProductHost {
                 WorldFields.PLATES, plates,
                 WorldFields.PLATE_REGISTRY, registry,
                 WorldFields.BOUNDARIES, boundaries,
+                WorldFields.AREA_FLUX, areaFlux,
+                WorldFields.MOTION_INTENT, motionIntent,
                 WorldFields.PLATE_VELOCITY, velocities));
     return Engine.create(config, setup());
   }

@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-034 Accepted · next F-035
+**Status:** F-035 Accepted · next F-036
 
 ---
 
@@ -29,20 +29,19 @@ Ship **G-008** — boundary tectonics + large cylinder world + cartography studi
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030–F-033 | Foundations through partition | done |
-| F-034 | Boundaries + cylinder map (X wrap, Y polar) | done |
-| F-035–F-040 | Per Goal plan | not started |
+| F-030–F-035 | Foundations through interaction budgets | done |
+| F-036–F-040 | Apply flux → Goal close | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-034 Accept)
+- [x] Incremental suite green (F-035 Accept)
 
 ---
 
 ## Notes
 
-- Cylinder: wrap **X**; polar **Y**; UI blank N/S; classified `boundaries`.
-- Next: **F-035** precedence + area flux + motion intent.
+- Cylinder: wrap **X**; polar **Y**; latitude-weighted partition deferred.
+- Next: **F-036** apply flux, flood, fission, death; registry update.

@@ -35,7 +35,11 @@ public final class WorldDump {
     PlateRegistry registry =
         (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
     Boundaries boundaries = (Boundaries) engine.settled().field(WorldFields.BOUNDARIES);
-    return format(spec, engine.stepIndex(), elevation, plates, velocities, registry, boundaries);
+    AreaFlux areaFlux = (AreaFlux) engine.settled().field(WorldFields.AREA_FLUX);
+    MotionIntent motionIntent = (MotionIntent) engine.settled().field(WorldFields.MOTION_INTENT);
+    return format(
+        spec, engine.stepIndex(), elevation, plates, velocities, registry, boundaries, areaFlux,
+        motionIntent);
   }
 
   /**
@@ -47,7 +51,16 @@ public final class WorldDump {
     PlateVelocities velocities = PlateVelocities.seed(spec.seed());
     PlateRegistry registry = PlateRegistry.from(plates, velocities);
     Boundaries boundaries = Boundaries.trace(plates, velocities);
-    return format(spec, steps, elevation, plates, velocities, registry, boundaries);
+    return format(
+        spec,
+        steps,
+        elevation,
+        plates,
+        velocities,
+        registry,
+        boundaries,
+        AreaFlux.from(boundaries, registry),
+        MotionIntent.from(boundaries, registry));
   }
 
   /**
@@ -57,14 +70,18 @@ public final class WorldDump {
    */
   public static String format(
       WorldSpec spec, int steps, Grid elevation, Grid plates, PlateVelocities velocities) {
+    PlateRegistry registry = PlateRegistry.from(plates, velocities);
+    Boundaries boundaries = Boundaries.trace(plates, velocities);
     return format(
         spec,
         steps,
         elevation,
         plates,
         velocities,
-        PlateRegistry.from(plates, velocities),
-        Boundaries.trace(plates, velocities));
+        registry,
+        boundaries,
+        AreaFlux.from(boundaries, registry),
+        MotionIntent.from(boundaries, registry));
   }
 
   /**
@@ -79,8 +96,17 @@ public final class WorldDump {
       Grid plates,
       PlateVelocities velocities,
       PlateRegistry registry) {
+    Boundaries boundaries = Boundaries.trace(plates, velocities);
     return format(
-        spec, steps, elevation, plates, velocities, registry, Boundaries.trace(plates, velocities));
+        spec,
+        steps,
+        elevation,
+        plates,
+        velocities,
+        registry,
+        boundaries,
+        AreaFlux.from(boundaries, registry),
+        MotionIntent.from(boundaries, registry));
   }
 
   /**
@@ -96,12 +122,41 @@ public final class WorldDump {
       PlateVelocities velocities,
       PlateRegistry registry,
       Boundaries boundaries) {
+    return format(
+        spec,
+        steps,
+        elevation,
+        plates,
+        velocities,
+        registry,
+        boundaries,
+        AreaFlux.from(boundaries, registry),
+        MotionIntent.from(boundaries, registry));
+  }
+
+  /**
+   * Stable snapshot. Lines use {@code \n}. Ends with a trailing newline.
+   *
+   * @param steps last completed Step index (0 after create)
+   */
+  public static String format(
+      WorldSpec spec,
+      int steps,
+      Grid elevation,
+      Grid plates,
+      PlateVelocities velocities,
+      PlateRegistry registry,
+      Boundaries boundaries,
+      AreaFlux areaFlux,
+      MotionIntent motionIntent) {
     Objects.requireNonNull(spec, "spec");
     Objects.requireNonNull(elevation, "elevation");
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(velocities, "velocities");
     Objects.requireNonNull(registry, "registry");
     Objects.requireNonNull(boundaries, "boundaries");
+    Objects.requireNonNull(areaFlux, "areaFlux");
+    Objects.requireNonNull(motionIntent, "motionIntent");
     if (steps < 0) {
       throw new IllegalArgumentException("steps must be >= 0, was " + steps);
     }
@@ -150,6 +205,15 @@ public final class WorldDump {
           .append(' ')
           .append(c.kind().name())
           .append('\n');
+    }
+    out.append("area_flux:\n");
+    out.append(areaFlux.sinkDelta()).append('\n');
+    for (int i = 0; i < areaFlux.plateCount(); i++) {
+      out.append(areaFlux.deltaArea(i)).append('\n');
+    }
+    out.append("motion_intent:\n");
+    for (int i = 0; i < motionIntent.plateCount(); i++) {
+      out.append(motionIntent.ix(i)).append(' ').append(motionIntent.iy(i)).append('\n');
     }
     return out.toString();
   }

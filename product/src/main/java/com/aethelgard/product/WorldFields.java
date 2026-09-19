@@ -25,5 +25,11 @@ public final class WorldFields {
   /** Classified plate contacts — {@link Boundaries}; STATIC. */
   public static final String BOUNDARIES = "boundaries";
 
+  /** Per-plate area create/destroy budgets — {@link AreaFlux}; STATIC. */
+  public static final String AREA_FLUX = "area_flux";
+
+  /** Per-plate preferred Δv from edges — {@link MotionIntent}; STATIC. */
+  public static final String MOTION_INTENT = "motion_intent";
+
   private WorldFields() {}
 }

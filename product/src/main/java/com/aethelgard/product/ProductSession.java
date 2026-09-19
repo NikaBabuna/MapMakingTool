@@ -92,6 +92,18 @@ public final class ProductSession {
     }
   }
 
+  public AreaFlux areaFlux() {
+    synchronized (lock) {
+      return (AreaFlux) engine.settled().field(WorldFields.AREA_FLUX);
+    }
+  }
+
+  public MotionIntent motionIntent() {
+    synchronized (lock) {
+      return (MotionIntent) engine.settled().field(WorldFields.MOTION_INTENT);
+    }
+  }
+
   /** Headless snapshot ({@link WorldDump}); same lock as {@link #advance(int)}. */
   public String settledWorld() {
     synchronized (lock) {

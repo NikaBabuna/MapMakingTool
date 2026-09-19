@@ -24,13 +24,15 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
 | **Orogeny** | Generative rule: standing-plate cylinder contacts; converge +1, diverge −1, transform/interior 0. |
 | **Kinematics System** | Product `EngineSystem` (`kinematics`) that advects `plates` each generation Step. |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-Systems `TraceBoundaries` + `Orogeny`. |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-Systems `TraceBoundaries` + `BoundaryInteraction` + `Orogeny`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
-| **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries). |
+| **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries, area_flux, motion_intent). |
 | **WorldSpec.VIEW** | Product window launch spec: **1920×1080** cells, seed 0 (F-031). Dump fixture stays `DEFAULT` small. |
 | **Torus** | Earlier G-008 lock (wrap both axes). **Amended F-034** to cylinder. |
 | **Cylinder map** | Wrap X (longitude); polar edges on Y (no wrap). Sphere-on-rectangle analogue. |
 | **Boundaries** | STATIC Pool object (`boundaries`): classified contacts (separate / collide / pass-by). |
+| **Area flux** | STATIC Pool object (`area_flux`): per-plate Δarea + sinkΔ budgets (F-035); applied in F-036. |
+| **Motion intent** | STATIC Pool object (`motion_intent`): per-plate preferred Δv from edges (F-035); integrated in F-037. |
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + initial velocity (F-033). Edge-driven integrate F-037. |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.05% area absorbed). |

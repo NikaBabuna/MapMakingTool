@@ -76,7 +76,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | F-032 | Toroidal wrap in product; studio loopback pan + zoom clamp | done |
 | F-033 | Initial plate partition + registry skeleton | done |
 | F-034 | Boundary trace + classify → `boundaries` | done |
-| F-035 | Precedence + area flux + motion intent | not started |
+| F-035 | Precedence + area flux + motion intent | done |
 | F-036 | Apply flux, flood, fission, death; registry | not started |
 | F-037 | Integrate edge-driven velocities | not started |
 | F-038 | Orogeny from standing boundaries | not started |
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 5 / 11 |
+| Steps done | 6 / 11 |
 | Claim boxes | 3 / 8 |
-| Last Accept | F-034 |
+| Last Accept | F-035 |

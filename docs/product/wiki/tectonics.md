@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (amended F-034 cylinder). **Code status:** F-034 — Step-0 cylindrical partition (N=12–24) + `plate_registry` + classified `boundaries`. Boundary flux / fission / edge-driven motion still F-035–F-038; advance still uses Constant `plate_velocity` + advection until then.
+**Doc status:** F-030 locks (amended F-034 cylinder). **Code status:** F-035 — Step-0 cylindrical partition (N=12–24) + `plate_registry` + classified `boundaries` + `area_flux` + `motion_intent`. Apply flux / fission / edge-driven integrate still F-036–F-038; advance still uses Constant `plate_velocity` + advection until then.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -22,7 +22,7 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 | **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). |
 | **Sphere analogue** | Cylinder map (wrap longitude / polar edges) — not a 3D globe mesh. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). Step-0 plates + `boundaries` live (F-033/F-034). Flux / fission / edge-driven motion still use advection+orogeny until F-035–F-038.
+**Runtime note:** VIEW is **1920×1080** (F-031). Step-0 plates + `boundaries` + `area_flux` + `motion_intent` live (F-033–F-035). Apply flux / fission / IntegrateVelocity still F-036–F-038; advection+orogeny until then.
 
 ---
 
@@ -120,7 +120,7 @@ world/tectonics/
 | Stage | Sub-Systems (names intent) | Writes |
 |-------|----------------------------|--------|
 | Boundaries | TraceContacts, ClassifyEdges | `boundaries` |
-| Interaction | Precedence, FluxBudget, Resistance | `area_flux`, `motion_intent` |
+| Interaction | Precedence, FluxBudget, Resistance (`BoundaryInteraction`) | `area_flux`, `motion_intent` |
 | Geometry | ApplyFlux, FloodAssign, Connectivity (fission/death/crumbs), RegistryUpdate | `plates`, `plate_registry`, `tectonic_events` |
 | Motion | IntegrateVelocity | `plate_registry` velocities |
 | Lifecycle | FractureDetect / Spawn (optional thin) | registry / plates |
