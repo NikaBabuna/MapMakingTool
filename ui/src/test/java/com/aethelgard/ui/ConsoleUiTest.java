@@ -80,26 +80,38 @@ class ConsoleUiTest {
   }
 
   @Test
-  @DisplayName("FR-5: G-005 closed; entry points have no Active Goal")
+  @DisplayName("FR-5: G-005 remains done; entry points agree with goals.md")
   void goalClosedEntryPoints() throws Exception {
     Path root = findRepoRoot();
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goals.contains("**Active Goal:** none"));
     assertTrue(goals.contains("G-005"));
+    assertTrue(goals.contains("G-005-living-map.md"));
+    // Active Goal may move on (G-006+); do not freeze "none" forever (F-016 principle).
+    assertFalse(goals.contains("| G-005 |") && goals.contains("| not started |"));
     String g005 =
         Files.readString(root.resolve("docs/project/goals/G-005-living-map.md"));
     assertTrue(g005.contains("**Status:** `done`") || g005.contains("**Status:** done"));
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("**Active Goal:** none"));
     assertTrue(agents.contains("G-005"));
+    String goalsActive = goals.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
+    String agentsActive = agents.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
+    assertTrue(goalsActive.contains("G-006") || goalsActive.contains("none"));
+    assertTrue(
+        agentsActive.contains("G-006") || agentsActive.contains("none"),
+        "AGENTS Active Goal must match goals.md world");
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("none"));
     assertTrue(phase.contains("G-005"));
     String readme = Files.readString(root.resolve("README.md"));
     assertTrue(readme.contains("G-005"));
     String nav = Files.readString(root.resolve("docs/navigation.md"));
-    assertTrue(nav.contains("none"));
     assertTrue(nav.contains("G-005"));
+    String table =
+        goals
+            .lines()
+            .filter(l -> l.contains("| G-005 |"))
+            .findFirst()
+            .orElse("");
+    assertTrue(table.contains("| done |"), table);
   }
 
   private static Path findRepoRoot() {

@@ -5,7 +5,7 @@
 Procedural fantasy world generator — simulate tectonics, climate, and terrain so maps stay physically consistent, with a scrubbable history of how the world formed.
 
 **Status:** alpha  
-**Current Goal:** none (last [Living map (G-005)](docs/project/goals/G-005-living-map.md))  
+**Current Goal:** [Local webview front (G-006)](docs/project/goals/G-006-webview-front.md)  
 **CI:** GitHub Actions on `main` — JDK 21 + `./mvnw test` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
 
 ---
@@ -15,7 +15,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | | |
 |-|-|
 | [Docs tree](docs/README.md) | Documentation folders |
-| [Goals index](docs/project/goals.md) | Active Goal none · last [G-005](docs/project/goals/G-005-living-map.md) |
+| [Goals index](docs/project/goals.md) | Active [G-006](docs/project/goals/G-006-webview-front.md) · last [G-005](docs/project/goals/G-005-living-map.md) |
 | [How AI works](docs/process/step-procedure.md) | Goal / Session / Step |
 | [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
 | [Engine module](engine/README.md) | Code module index |

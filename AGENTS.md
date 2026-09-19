@@ -4,7 +4,7 @@
 
 Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](docs/process/protocol-overview.md).
 
-**Active Goal:** none · Last completed: [G-005 Living map](docs/project/goals/G-005-living-map.md) (`done`)  
+**Active Goal:** [G-006 Local webview front](project/goals/G-006-webview-front.md) (`in progress`) · Last completed: [G-005 Living map](project/goals/G-005-living-map.md) (`done`)  
 **Current Session:** [docs/project/session.md](docs/project/session.md)
 
 ---

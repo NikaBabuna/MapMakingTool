@@ -7,20 +7,20 @@
 
 # Current session
 
-**Updated:** 2026-09-17  
-**Status:** F-023 Accepted · G-005 closed
+**Updated:** 2026-09-19  
+**Status:** F-024 Accepted · propose F-025 next
 
 ---
 
 ## Session goal
 
-Accept **F-023** (placeholder CLI + in-UI console) and close **G-005**.
+Accept **F-024** (Java session HTTP host under `ui`).
 
 ---
 
 ## Active Goal
 
-**Active Goal:** none  
+**Active Goal:** [G-006 — Local webview front](goals/G-006-webview-front.md) — **in progress**  
 **Last completed:** [G-005 — Living map](goals/G-005-living-map.md) — **done**
 
 ---
@@ -29,21 +29,22 @@ Accept **F-023** (placeholder CLI + in-UI console) and close **G-005**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-023 | Placeholder CLI + in-UI console | done |
+| F-024 | Java session HTTP host (MapController parity) | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (145 tests, last Accept F-023; G-005 closed)
+- [x] Incremental suite green (F-024 Accept)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose next **Goal** (not a lone Step). Candidates: climate / further generation, or tectonics that look like continents.
+1. Propose **F-025** — Next.js tool UI parity against `MapHost`.
 
 ## Notes
 
-- CLI commands remain **placeholders**. Replacing the verb table must not rewrite Systems.
+- Host lives under `ui` (`com.aethelgard.ui.host`). No root `host/` module.
+- Swing map still primary until F-026.

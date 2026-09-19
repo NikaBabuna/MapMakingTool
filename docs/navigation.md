@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** none · Last: [G-005 Living map](project/goals/G-005-living-map.md) (**done**)  
+**Active Goal:** [G-006 Local webview front](project/goals/G-006-webview-front.md) (`in progress`) · Last: [G-005 Living map](project/goals/G-005-living-map.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -55,11 +55,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | done |
 | [goals/G-004-see-the-world.md](project/goals/G-004-see-the-world.md) | done |
 | [goals/G-005-living-map.md](project/goals/G-005-living-map.md) | done |
+| [goals/G-006-webview-front.md](project/goals/G-006-webview-front.md) | in progress |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-005 Steps registered |
+| [features.md](project/features.md) | Active — G-001–G-006 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (10 ADRs) |
+| [decisions.md](project/decisions.md) | Active (11 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -69,7 +70,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; F-023 console; G-005 done) |
+| [architecture.md](architecture.md) | Active (roll-up; G-006 webview front in progress; G-005 done) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -81,7 +82,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; F-023 console; F-019 `cli` → `product` |
+| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; F-023 console; F-024 MapHost in `ui`; F-019 `cli` → `product` |
 | [specs/](engine/specs/) | Active — through G-002 (host-ready) |
 | [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open; #2a decided (ADR-009) |
 
@@ -93,10 +94,10 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-023 console; F-022 tool UI; F-019 `ProductSession` |
+| [architecture.md](product/architecture.md) | Active — F-024 MapHost; F-023 console; F-022 tool UI; F-019 `ProductSession`; G-006 in progress |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | See the world (F-018); tool UI (F-022); console (F-023); G-005 done |
-| [glossary.md](product/glossary.md) | Active — ProductSession; tool UI; CommandDispatch (F-023) |
+| [flows.md](product/flows.md) | See the world (F-018); tool UI (F-022); console (F-023); MapHost (F-024); G-005 done |
+| [glossary.md](product/glossary.md) | Active — ProductSession; tool UI; CommandDispatch; MapHost (F-024) |
 | [style-guide.md](product/style-guide.md) | Deferred |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-021 orogeny; F-022 display note) |
 
@@ -131,6 +132,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-021.md](blockers/F-021.md) | done — motion-based orogeny |
 | [F-022.md](blockers/F-022.md) | done — tool UI |
 | [F-023.md](blockers/F-023.md) | done — placeholder CLI + in-UI console |
+| [F-024.md](blockers/F-024.md) | done — Java session HTTP host (`ui.host`) |
 
 ---
 

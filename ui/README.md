@@ -17,7 +17,18 @@ Maven artifact `com.aethelgard:ui` — Aethelgard map view of product values.
 
 `ElevationRaster` — packed RGB for Elevation (ocean + hillshade), Plates, and Overlay (F-022 formulas).
 
-## Interactive
+## Localhost host (F-024)
+
+`com.aethelgard.ui.host.MapHost` — HTTP on `127.0.0.1` over `MapController`. Entry: `MapHostApp` (port 7420).
+
+```bat
+mvnw -pl ui -am install -DskipTests
+mvnw -pl ui exec:java -Dexec.mainClass=com.aethelgard.ui.host.MapHostApp
+```
+
+Routes: `/health`, `/api/status`, `/api/raster`, `/api/advance`, `/api/play`, `/api/pause`, `/api/layer`, `/api/speed`, `/api/new-world`, `/api/inspect`, `/api/command`. See [docs/product/architecture.md](../docs/product/architecture.md).
+
+## Interactive (Swing — until F-026)
 
 From the repo root in **cmd** (recommended):
 

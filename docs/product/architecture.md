@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-023 console; F-022 tool UI; F-021 orogeny; F-019 session; **G-005 done**)  
+**Status:** active (F-024 MapHost; F-023 console; F-022 tool UI; F-019 session; G-006 in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -99,7 +99,28 @@ Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `se
 
 ---
 
-## Source layout (through F-023)
+## Localhost HTTP host (F-024)
+
+`com.aethelgard.ui.host.MapHost` serves one `MapController` on **127.0.0.1** (JDK `HttpServer`). No new Maven module — lives under `ui`. Product/engine stay free of HTTP UI types.
+
+| Route | Meaning |
+|-------|---------|
+| `GET /health` | `ok` |
+| `GET /api/status` | JSON: step, seed, width, height, layer, speed, playing, busy, statusText, inspect, legend |
+| `GET /api/raster` | Packed RGB (`X-Width` / `X-Height`; body = BE width/height + BE `0xRRGGBB` ints) — same formulas as `ElevationRaster` |
+| `POST /api/advance` | `advanceAsync` |
+| `POST /api/play` / `pause` | Play / pause |
+| `POST /api/layer` | `?layer=` or body (Elevation / Plates / Overlay) |
+| `POST /api/speed` | `?speed=` or body (Slow / Normal / Fast) |
+| `POST /api/new-world?seed=` | Reseed |
+| `POST /api/inspect?x=&y=` | Cell inspect |
+| `POST /api/command` | Plain-text line → `CommandDispatch` |
+
+Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.VIEW`). CORS `*` for local Next. Swing map remains until F-026.
+
+---
+
+## Source layout (through F-024)
 
 ```
 product/
@@ -143,10 +164,16 @@ ui/
     MapController.java
     MapFrame.java
     ProductApp.java
+    ExecutorPlayScheduler.java
+    host/
+      MapHost.java
+      MapHostApp.java
   src/test/java/com/aethelgard/ui/
     MapViewTest.java
     ToolUiTest.java
     ConsoleUiTest.java
+    host/
+      MapHostTest.java
 
 cli/
   src/main/java/com/aethelgard/cli/

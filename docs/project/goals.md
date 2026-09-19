@@ -9,7 +9,7 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** none · Last completed: [G-005 Living map](goals/G-005-living-map.md)
+**Active Goal:** [G-006 Local webview front](goals/G-006-webview-front.md) · Last completed: [G-005 Living map](goals/G-005-living-map.md)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
@@ -18,6 +18,7 @@ A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal
 | G-003 | First product world (elevation slice on the host) | done | [goals/G-003-first-product-world.md](goals/G-003-first-product-world.md) |
 | G-004 | See the world (Voronoi tectonics + large colored map) | done | [goals/G-004-see-the-world.md](goals/G-004-see-the-world.md) |
 | G-005 | Living map (product session, tool UI, moving plates, placeholder CLI) | done | [goals/G-005-living-map.md](goals/G-005-living-map.md) |
+| G-006 | Local webview front (Tauri + Next + Java host) | in progress | [goals/G-006-webview-front.md](goals/G-006-webview-front.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 
