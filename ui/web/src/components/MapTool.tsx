@@ -30,7 +30,7 @@ import { IDENTITY_VIEWPORT, Viewport, fittedViewport } from "@/lib/viewport";
 import { rgbCss } from "@/lib/raster";
 
 const LAYERS: MapLayerName[] = ["Elevation", "Plates", "Overlay"];
-const SPEEDS: MapSpeedName[] = ["Slow", "Normal", "Fast"];
+const SPEEDS: MapSpeedName[] = ["1x", "2x", "4x", "Fastest"];
 const DOCK_KEY = "aethelgard.dockOpen";
 const INSPECT_PANEL_KEY = "aethelgard.panelInspectOpen";
 const LEGEND_PANEL_KEY = "aethelgard.panelLegendOpen";
@@ -63,7 +63,7 @@ export function MapTool() {
   const [raster, setRaster] = useState<ArrayBuffer | null>(null);
   const [seedText, setSeedText] = useState("0");
   const [playing, setPlaying] = useState(false);
-  const [speed, setSpeed] = useState<MapSpeedName>("Normal");
+  const [speed, setSpeed] = useState<MapSpeedName>("1x");
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(true);
   const [inspectOpen, setInspectOpen] = useState(true);
@@ -113,7 +113,7 @@ export function MapTool() {
     const next = await fetchStatus();
     setStatus(next);
     setSeedText(String(next.seed));
-    setSpeed(next.speed);
+    setSpeed(next.speed as MapSpeedName);
     busyRef.current = next.busy;
     const bytes = await fetchRaster();
     setRaster(bytes);
@@ -384,43 +384,41 @@ export function MapTool() {
 
   return (
     <div className={`studio${dockOpen ? "" : " dock-closed-root"}`}>
-      <header className="studio-bar">
-        <h1 className="studio-brand">Aethelgard</h1>
-        <div className={`host-pill${online ? " is-on" : ""}`} title={hostBase()}>
-          <span className="host-dot" />
-          {online ? "Host linked" : "Host offline"}
+      <header className="studio-bar runner-bar">
+        <div className="runner-slot runner-identity">
+          <h1 className="studio-brand">Aethelgard</h1>
+          <span
+            className={`host-dot${online ? " is-on" : ""}`}
+            title={online ? `Online · ${hostBase()}` : "Offline"}
+            aria-label={online ? "Host online" : "Host offline"}
+          />
         </div>
 
-        <div className="studio-toolbar" role="toolbar" aria-label="Map controls">
-          <label className="field">
-            <span>Layer</span>
-            <select
-              value={status?.layer ?? "Elevation"}
-              onChange={(e) => void onLayer(e.target.value as MapLayerName)}
-            >
-              {LAYERS.map((layer) => (
-                <option key={layer} value={layer}>
-                  {layer}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <button type="button" className="btn primary" disabled={busy} onClick={() => void onAdvance()}>
-            Advance
-          </button>
+        <div className="runner-slot runner-transport" role="toolbar" aria-label="Transport">
           <button
             type="button"
             className={`btn${playing ? " is-pressed" : ""}`}
-            onClick={() => setPlaying((p) => !p)}
+            disabled={busy && !playing}
+            onClick={() => setPlaying(true)}
             aria-pressed={playing}
           >
-            {playing ? "Pause" : "Play"}
+            Play
           </button>
-
-          <label className="field">
-            <span>Speed</span>
-            <select value={speed} onChange={(e) => void onSpeed(e.target.value as MapSpeedName)}>
+          <button
+            type="button"
+            className="btn"
+            disabled={!playing}
+            onClick={() => setPlaying(false)}
+          >
+            Pause
+          </button>
+          <label className="field speed-field">
+            <span className="sr-only">Speed</span>
+            <select
+              value={speed}
+              aria-label="Speed"
+              onChange={(e) => void onSpeed(e.target.value as MapSpeedName)}
+            >
               {SPEEDS.map((s) => (
                 <option key={s} value={s}>
                   {s}
@@ -428,35 +426,20 @@ export function MapTool() {
               ))}
             </select>
           </label>
+        </div>
 
-          <label className="field seed">
-            <span>Seed</span>
-            <input
-              value={seedText}
-              disabled={busy}
-              onChange={(e) => setSeedText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  requestNewWorld();
-                }
-              }}
-            />
-          </label>
-          <button type="button" className="btn" disabled={busy} onClick={randomSeed} title="Random seed">
-            Random
+        <div className="runner-slot runner-view">
+          <button type="button" className="btn" onClick={fitView} title="Reset view (R)">
+            Reset view
           </button>
-          <button type="button" className="btn" disabled={busy} onClick={requestNewWorld}>
-            New world
-          </button>
-
           <button
             type="button"
             className={`btn${dockOpen ? " is-pressed" : ""}`}
             aria-pressed={dockOpen}
             onClick={() => setDockOpen((o) => !o)}
-            title="Toggle dock (D)"
+            title="Toggle world panel (D)"
           >
-            Dock
+            World
           </button>
           <button
             type="button"
@@ -467,13 +450,6 @@ export function MapTool() {
           >
             Terminal
           </button>
-          <button type="button" className="btn" onClick={fitView} title="Reset view (R)">
-            Reset view
-          </button>
-
-          <div className={`status-chip${busy ? " is-busy" : ""}`} aria-live="polite">
-            {statusText}
-          </div>
         </div>
       </header>
 
@@ -494,10 +470,61 @@ export function MapTool() {
           onViewportChange={setViewport}
           onStageMetrics={onStageMetrics}
           onCell={(x, y) => void onCell(x, y)}
+          layer={status?.layer ?? "Elevation"}
+          layers={LAYERS}
+          onLayer={(name) => void onLayer(name as MapLayerName)}
         />
 
         {dockOpen ? (
-          <aside className="side-rail" aria-label="Studio panels">
+          <aside className="side-rail world-rail" aria-label="World">
+            <article className="studio-panel" data-panel="world">
+              <header className="panel-chrome">
+                <h2>World</h2>
+              </header>
+              <div className="panel-body">
+                <dl className="inspect-grid world-grid">
+                  <div>
+                    <dt>Step</dt>
+                    <dd>{status?.step ?? "—"}</dd>
+                  </div>
+                  <div>
+                    <dt>Size</dt>
+                    <dd>
+                      {status ? `${status.width}×${status.height}` : "—"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Seed</dt>
+                    <dd className="mono">{status?.seed ?? "—"}</dd>
+                  </div>
+                </dl>
+                <label className="field seed">
+                  <span>Seed</span>
+                  <input
+                    value={seedText}
+                    disabled={busy}
+                    onChange={(e) => setSeedText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        requestNewWorld();
+                      }
+                    }}
+                  />
+                </label>
+                <div className="world-actions">
+                  <button type="button" className="btn" disabled={busy} onClick={randomSeed} title="Random seed">
+                    Random
+                  </button>
+                  <button type="button" className="btn" disabled={busy} onClick={requestNewWorld}>
+                    Reset world
+                  </button>
+                </div>
+                <p className={`status-chip${busy ? " is-busy" : ""}`} aria-live="polite">
+                  {statusText}
+                </p>
+              </div>
+            </article>
+
             <article className="studio-panel" data-panel="inspect">
               <header className="panel-chrome">
                 <h2>Inspect</h2>

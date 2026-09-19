@@ -44,7 +44,7 @@ class TerminalConsoleTest {
 
     String css = Files.readString(root.resolve("ui/web/src/app/globals.css"));
     assertTrue(css.contains("console-drawer.terminal") || css.contains(".terminal"));
-    assertTrue(css.contains("terminal-prompt") || css.contains("#7dff9a"));
+    assertTrue(css.contains("terminal-prompt") || css.contains("--terminal-fg"));
   }
 
   @Test

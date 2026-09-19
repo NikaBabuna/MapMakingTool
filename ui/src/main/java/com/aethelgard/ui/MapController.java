@@ -46,7 +46,7 @@ public final class MapController {
   private PlateVelocities velocities;
   private ElevationRaster raster;
   private MapLayer layer = MapLayer.ELEVATION;
-  private MapSpeed speed = MapSpeed.NORMAL;
+  private MapSpeed speed = MapSpeed.X1;
   private boolean playing;
   private CellInspect inspected;
   private long lastPaintNanos;

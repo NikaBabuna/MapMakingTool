@@ -30,6 +30,9 @@ type Props = {
     displayW: number;
     displayH: number;
   }) => void;
+  layer?: string;
+  layers?: string[];
+  onLayer?: (layer: string) => void;
 };
 
 export function MapCanvas({
@@ -39,6 +42,9 @@ export function MapCanvas({
   onViewportChange,
   onCell,
   onStageMetrics,
+  layer,
+  layers,
+  onLayer,
 }: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
   const sourceRef = useRef<HTMLCanvasElement>(null);
@@ -270,6 +276,24 @@ export function MapCanvas({
         </span>
         <span className="map-hud-scale">×{scaleLabel}</span>
       </div>
+      {layers && onLayer ? (
+        <div className="map-layer-switch" role="group" aria-label="Map layer">
+          {layers.map((name) => (
+            <button
+              key={name}
+              type="button"
+              className={`map-layer-btn${layer === name ? " is-active" : ""}`}
+              aria-pressed={layer === name}
+              onClick={(e) => {
+                e.stopPropagation();
+                onLayer(name);
+              }}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div className="map-busy" aria-hidden={!busy}>
         Working…
       </div>

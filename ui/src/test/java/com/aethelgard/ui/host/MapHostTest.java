@@ -68,7 +68,7 @@ class MapHostTest {
       assertTrue(status.contains("\"width\":8"));
       assertTrue(status.contains("\"height\":8"));
       assertTrue(status.contains("\"layer\":\"Elevation\""));
-      assertTrue(status.contains("\"speed\":\"Normal\""));
+      assertTrue(status.contains("\"speed\":\"1x\""));
       assertTrue(status.contains("\"playing\":false"));
       assertTrue(status.contains("\"busy\":false"));
       assertTrue(status.contains("\"statusText\":\"Step 0\""));
@@ -89,8 +89,8 @@ class MapHostTest {
 
       post(host, "/api/layer?layer=Plates");
       assertTrue(get(host, "/api/status").contains("\"layer\":\"Plates\""));
-      post(host, "/api/speed?speed=Fast");
-      assertTrue(get(host, "/api/status").contains("\"speed\":\"Fast\""));
+      post(host, "/api/speed?speed=4x");
+      assertTrue(get(host, "/api/status").contains("\"speed\":\"4x\""));
 
       post(host, "/api/play");
       assertTrue(get(host, "/api/status").contains("\"playing\":true"));

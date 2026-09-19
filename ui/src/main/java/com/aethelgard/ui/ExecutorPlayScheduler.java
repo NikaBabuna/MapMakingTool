@@ -34,8 +34,9 @@ public final class ExecutorPlayScheduler implements PlayScheduler, AutoCloseable
   public void start(int periodMillis, Runnable tick) {
     Objects.requireNonNull(tick, "tick");
     stop();
+    int period = Math.max(1, periodMillis);
     ScheduledFuture<?> started =
-        scheduler.scheduleAtFixedRate(tick, periodMillis, periodMillis, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(tick, period, period, TimeUnit.MILLISECONDS);
     future.set(started);
   }
 

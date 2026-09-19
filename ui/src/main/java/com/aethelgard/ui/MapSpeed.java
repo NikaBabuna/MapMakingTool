@@ -1,17 +1,19 @@
 /*
  * File: ui/src/main/java/com/aethelgard/ui/MapSpeed.java
  * Purpose: Play-tick periods for the map window
- * Audience: MapController / tests
+ * Audience: MapController / MapHost / tests
  * Update when: Speed table changes
  */
 
 package com.aethelgard.ui;
 
-/** Play speeds. Periods are milliseconds between ticks. Default is {@link #NORMAL}. */
+/** Play speeds. Periods are milliseconds between ticks. Default is {@link #X1}. */
 public enum MapSpeed {
-  SLOW("Slow", 1000),
-  NORMAL("Normal", 250),
-  FAST("Fast", 100);
+  X1("1x", 250),
+  X2("2x", 125),
+  X4("4x", 62),
+  /** As fast as the scheduler allows (1 ms tick; UI may treat 0 as synonym). */
+  FASTEST("Fastest", 1);
 
   private final String label;
   private final int periodMillis;
@@ -27,10 +29,5 @@ public enum MapSpeed {
 
   public int periodMillis() {
     return periodMillis;
-  }
-
-  @Override
-  public String toString() {
-    return label;
   }
 }

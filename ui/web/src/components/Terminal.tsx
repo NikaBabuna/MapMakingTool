@@ -126,7 +126,7 @@ export function Terminal({ open, onRun }: TerminalProps) {
     >
       <div className="terminal-titlebar">
         <span className="terminal-title">Terminal</span>
-        <span className="terminal-hint">↑↓ history · Enter run · help</span>
+        <span className="terminal-hint">↑↓ history · Enter · help</span>
       </div>
       <div className="console-log terminal-log" ref={logRef}>
         {log.length === 0 ? (

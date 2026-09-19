@@ -7,7 +7,7 @@
 
 # Aethelgard web front
 
-Next.js **studio cartography** tool for the living map. Talks to Java [`MapHost`](../src/main/java/com/aethelgard/ui/host/MapHost.java) over localhost HTTP. Lives under `ui/web/`.
+Next.js **runner shell** tool for the living map. Talks to Java [`MapHost`](../src/main/java/com/aethelgard/ui/host/MapHost.java) over localhost HTTP. Lives under `ui/web/`.
 
 ## Dev loop
 
@@ -30,8 +30,8 @@ Open http://localhost:3000. Host default: `http://127.0.0.1:7420` (`NEXT_PUBLIC_
 
 ## Behavior
 
-Map-first multi-panel studio: thin top bar, full-bleed map with neatline/graticule/coords HUD, right rail of Inspect + Legend panel cards, rebuilt **Terminal** drawer (`Terminal.tsx`, `aethelgard>` prompt, noun/verb hints, ↑/↓ history). Layers, Advance, Play/Pause (client timer → `/api/advance`), speed, seed + Random + New world, pan/zoom, inspect, legend. Busy shows Working… overlay and ignores extra Advance / New world.
+Map-first **runner shell** (F-051): gray chrome; top bar identity · transport (Play/Pause/`1x`…`Fastest`) · view; World rail (step/seed/reset + Inspect/Legend); layer chips on the map; continuous Terminal drawer. Physical atlas elevation colors. Play is a client timer → `/api/advance`. Busy shows Working… and ignores extra Advance / Reset world.
 
-Shortcuts: Space Play; A/. Advance; 1–3 layers; [/] speed; N New world; `/C console; D dock; R reset view.
+Shortcuts: Space Play/Pause; A/. Advance; 1–3 layers; [/] speed; N Reset world; `/C terminal; D World rail; R reset view.
 
 Docs: [docs/product/style-guide.md](../../docs/product/style-guide.md) · [docs/product/architecture.md](../../docs/product/architecture.md) · [docs/product/flows.md](../../docs/product/flows.md)

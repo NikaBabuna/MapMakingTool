@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done (through **F-040** traditional console). **G-009** through **F-050** rebuilt terminal._
+_Status: **G-007** done. **G-008** done. **G-009** through **F-051** runner shell._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -22,7 +22,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
 | Perf | Step path + raster/host memory | **F-046** / **F-047** done |
 | Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-050** done |
-| Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
+| Studio | Runner chrome; perf panels; UX; Goal close | **F-051** done; F-052–F-054 |
 
 ### Flow: Raster / host memory (F-047)
 
@@ -55,6 +55,15 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 1 | Toggle **Terminal** (`` ` `` / `C`) — drawer under the map, not a studio panel. |
 | 2 | Empty state shows noun/verb hints; type `help` or `session get`; ↑/↓ history. |
 | 3 | Transcript shows `aethelgard>` commands vs results; errors for non-zero exit. Same dispatcher as CLI. |
+
+### Flow: Runner shell (F-051)
+
+| Step | Action |
+|------|--------|
+| 1 | Top bar: brand + host dot; Play / Pause / Speed; Reset view / World / Terminal. |
+| 2 | World rail shows step, size, seed; Reset world; Inspect/Legend sections. |
+| 3 | Layer chips on map bottom-left; map uses physical atlas colors. |
+| 4 | Terminal is a continuous gray-on-dark surface (inline prompt). |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
 

@@ -8,12 +8,13 @@
 export const DEFAULT_HOST = "http://127.0.0.1:7420";
 
 export type MapLayerName = "Elevation" | "Plates" | "Overlay";
-export type MapSpeedName = "Slow" | "Normal" | "Fast";
+export type MapSpeedName = "1x" | "2x" | "4x" | "Fastest";
 
 export const SPEED_MS: Record<MapSpeedName, number> = {
-  Slow: 1000,
-  Normal: 250,
-  Fast: 100,
+  "1x": 250,
+  "2x": 125,
+  "4x": 62,
+  Fastest: 1,
 };
 
 export type Inspect = {

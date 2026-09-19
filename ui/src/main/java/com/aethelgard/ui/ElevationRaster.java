@@ -15,27 +15,28 @@ import java.util.Objects;
  * Deterministic RGB image of a map layer. One packed {@code 0xRRGGBB} per cell in a flat {@code
  * int[]} (row-major). Paint may reuse a caller buffer when dimensions match (F-047).
  *
- * <p>Land ramp (F-018) for {@code e >= 0}; ocean for negatives; hillshade on land for Elevation and
- * Overlay. Formulas: {@code docs/blockers/F-022.md} and product architecture.
+ * <p>Physical atlas ramp (F-051) for {@code e >= 0}; ocean for negatives; hillshade on land for
+ * Elevation and Overlay. Formulas: product architecture + this class.
  */
 public final class ElevationRaster {
 
   public static final int CLAMP = 32;
-  public static final int OCEAN_RGB = pack(18, 56, 92);
-  public static final int DARK_R = 12;
-  public static final int DARK_G = 10;
-  public static final int DARK_B = 18;
-  public static final int LIGHT_R = 255;
-  public static final int LIGHT_G = 196;
-  public static final int LIGHT_B = 96;
+  /** Deep atlas sea (physical map). */
+  public static final int OCEAN_RGB = pack(42, 78, 108);
+  /** Landstops for piecewise atlas ramp (e = 0, 8, 16, 24, 32). */
+  public static final int[] LAND_STOP_E = {0, 8, 16, 24, 32};
+
+  public static final int[] LAND_STOP_R = {118, 142, 168, 186, 228};
+  public static final int[] LAND_STOP_G = {138, 148, 138, 148, 216};
+  public static final int[] LAND_STOP_B = {98, 108, 100, 108, 188};
   public static final int HILLSHADE_FLAT = 12;
   public static final int HILLSHADE_MIN = 6;
   public static final int HILLSHADE_MAX = 18;
   public static final long PLATE_GOLDEN = 0x9E3779B97F4A7C15L;
-  /** Plates-layer interior fill (no per-id rainbow). */
-  public static final int PLATE_INTERIOR_RGB = pack(72, 78, 88);
+  /** Plates-layer interior fill (muted gray). */
+  public static final int PLATE_INTERIOR_RGB = pack(88, 92, 96);
   /** Plates-layer boundary stroke. */
-  public static final int PLATE_BOUNDARY_RGB = pack(18, 20, 24);
+  public static final int PLATE_BOUNDARY_RGB = pack(36, 38, 42);
 
   private final int width;
   private final int height;
@@ -97,15 +98,9 @@ public final class ElevationRaster {
   }
 
   /**
-   * Unshaded cell color: ocean if {@code elevation < 0}, else land ramp (clamp 32).
+   * Unshaded cell color: ocean if {@code elevation < 0}, else physical land ramp (clamp 32).
    *
-   * <pre>
-   *   e = min(elevation, 32)   // when elevation &gt;= 0
-   *   R = 12 + (243 * e) / 32
-   *   G = 10 + (186 * e) / 32
-   *   B = 18 + (78 * e) / 32
-   *   ocean = (18, 56, 92)
-   * </pre>
+   * <p>Ocean {@code (42, 78, 108)}. Land interpolates atlas stops at e = 0, 8, 16, 24, 32 (F-051).
    */
   public static int rgbOf(int elevation) {
     if (elevation < 0) {
@@ -114,7 +109,7 @@ public final class ElevationRaster {
     return landRamp(elevation);
   }
 
-  /** F-018 land ramp; {@code elevation} is treated as {@code max(0, min(e, 32))}. */
+  /** Physical atlas land ramp; {@code elevation} is treated as {@code max(0, min(e, 32))}. */
   public static int landRamp(int elevation) {
     int e = elevation;
     if (e < 0) {
@@ -122,10 +117,19 @@ public final class ElevationRaster {
     } else if (e > CLAMP) {
       e = CLAMP;
     }
-    int r = DARK_R + ((LIGHT_R - DARK_R) * e) / CLAMP;
-    int g = DARK_G + ((LIGHT_G - DARK_G) * e) / CLAMP;
-    int b = DARK_B + ((LIGHT_B - DARK_B) * e) / CLAMP;
-    return pack(r, g, b);
+    for (int i = 0; i < LAND_STOP_E.length - 1; i++) {
+      int e0 = LAND_STOP_E[i];
+      int e1 = LAND_STOP_E[i + 1];
+      if (e <= e1) {
+        int span = e1 - e0;
+        int t = span == 0 ? 0 : e - e0;
+        int r = LAND_STOP_R[i] + ((LAND_STOP_R[i + 1] - LAND_STOP_R[i]) * t) / span;
+        int g = LAND_STOP_G[i] + ((LAND_STOP_G[i + 1] - LAND_STOP_G[i]) * t) / span;
+        int b = LAND_STOP_B[i] + ((LAND_STOP_B[i + 1] - LAND_STOP_B[i]) * t) / span;
+        return pack(r, g, b);
+      }
+    }
+    return pack(LAND_STOP_R[LAND_STOP_R.length - 1], LAND_STOP_G[LAND_STOP_G.length - 1], LAND_STOP_B[LAND_STOP_B.length - 1]);
   }
 
   /**

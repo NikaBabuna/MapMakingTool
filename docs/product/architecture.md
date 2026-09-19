@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-050; G-008 done)  
+**Status:** active (G-009 in progress through F-051; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -67,22 +67,15 @@ MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the s
 
 Headless paint and session control live in `MapController` + `ElevationRaster`. Interactive UI is **Next** (`ui/web/`) behind **Tauri** (`ui/desktop/`). Swing was **removed** (F-026).
 
-Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Terminal** (F-050). While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
+Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. **F-051** runner shell: Play/Pause/Speed (`1x`…`Fastest`), World rail (step/seed/reset), map layer HUD, Terminal. While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
 
-Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated `Terminal.tsx` drawer (F-050). **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
+Terminal lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Dedicated `Terminal.tsx` drawer. **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB` in a **flat** `int[]` (F-047). `MapController` **reuses** a **double buffer** when width×height is unchanged (prior snapshot keeps correct pixels). `MapHost` **caches/reuses** one packed `byte[]` keyed by step + layer + paint generation — refill on invalidate, O(1) allocations under Play soak. Same grids + layer → identical RGB.
 
-**Land ramp** (`e >= 0`, F-018; clamp 32):
+**Land ramp** (`e >= 0`, F-051 physical atlas; clamp 32): piecewise RGB stops at e = 0, 8, 16, 24, 32 (`ElevationRaster.LAND_STOP_*`).
 
-```
-e = min(elevation, 32)
-R = 12 + (243 * e) / 32
-G = 10 + (186 * e) / 32
-B = 18 + (78 * e) / 32
-```
-
-**Ocean** (`e < 0`): constant `(18, 56, 92)` / `0x12385C`.
+**Ocean** (`e < 0`): constant `(42, 78, 108)`.
 
 **Hillshade** (Elevation and Overlay land cells; toroidal west/north). Ocean is not hillshaded. Flat land (`dw = dn = 0`) matches the land ramp.
 
@@ -93,17 +86,17 @@ lit = clamp(12 + 2*dw + 2*dn, 6, 18)
 c' = min(255, (c * lit) / 12)
 ```
 
-**Plates (F-045 bold):** gray interior; boundary = half-edge **core** (east/south via `SphereTopology`) **dilated** by one orthogonal step (≥2 cells) so strokes survive zoom-out nearest-neighbor.
+**Plates (F-045 bold / F-051 muted):** gray interior; boundary = half-edge **core** (east/south via `SphereTopology`) **dilated** by one orthogonal step (≥2 cells) so strokes survive zoom-out nearest-neighbor.
 
 **Overlay:** elevation paint, then darken on the same bold stroke rule.
 
-Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused.
+Play speeds (F-051): `1x` 250 ms, `2x` 125 ms, `4x` 62 ms, `Fastest` 1 ms. Default paused at `1x`.
 
 `MapController` has no Swing types. No `MapFrame` / `ProductApp` / `SwingPlayScheduler`.
 
 Launch from repo root: `run-product.cmd` (Next + Tauri; Tauri spawns `MapHostApp`).
 
-Headless CLI (F-049): one `ProductSession` per invocation (`WorldSpec.DEFAULT` geometry; `--seed` overrides seed). `--steps N` advances via `session advance N` then dumps via `session get dump`. Repeatable `-c` / `--command` lines share that session through `CommandDispatch`. Bare argv (no flags) is one dispatcher line. No stdin REPL (terminal chrome is F-050).
+Headless CLI (F-049): one `ProductSession` per invocation (`WorldSpec.DEFAULT` geometry; `--seed` overrides seed). `--steps N` advances via `session advance N` then dumps via `session get dump`. Repeatable `-c` / `--command` lines share that session through `CommandDispatch`. Bare argv (no flags) is one dispatcher line.
 
 ---
 
@@ -119,7 +112,7 @@ Headless CLI (F-049): one `ProductSession` per invocation (`WorldSpec.DEFAULT` g
 | `POST /api/advance` | `advanceAsync` |
 | `POST /api/play` / `pause` | Play / pause |
 | `POST /api/layer` | `?layer=` or body (Elevation / Plates / Overlay) |
-| `POST /api/speed` | `?speed=` or body (Slow / Normal / Fast) |
+| `POST /api/speed` | `?speed=` or body (`1x` / `2x` / `4x` / `Fastest`) |
 | `POST /api/new-world?seed=` | Reseed |
 | `POST /api/inspect?x=&y=` | Cell inspect |
 | `POST /api/command` | Plain-text line → `CommandDispatch` |

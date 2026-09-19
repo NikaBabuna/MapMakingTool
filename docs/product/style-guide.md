@@ -7,71 +7,79 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 **done** (F-040). **G-009:** terminal rebuilt (F-050); runner chrome planned F-051+._
+_Status: **active** — G-009 **F-051** runner shell. G-008 studio done. Terminal language F-048–F-050; terminal look F-051._
 
-Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
+Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** remains the map-desk metaphor; F-051 reframes the chrome as a quiet **runner shell**.
 
 ---
 
-## G-009 runner (planned)
+## G-009 runner
 
 | Item | Intent | Status |
 |------|--------|--------|
-| **Feel** | Unity-like simulation runner: dense control over session env (seed, speed, play, layers, …) | planned F-051+ |
-| **Terminal** | Traditional terminal on **shared** noun/verb dispatcher with CLI | **F-050** rebuilt; language F-048–F-049 |
-| **Perf** | Visible step timings / memory (panel + commands) | **F-042** hub; panel F-052 |
-| **Look** | UI/UX polish; map-first serious tool, not marketing page | planned F-053 |
+| **Feel** | Quiet simulation runner; stable layout **slots** for later controls | **F-051** |
+| **Terminal** | Real terminal surface on shared noun/verb dispatcher | **F-050** component; **F-051** look |
+| **Perf** | Visible step timings / memory (panel + commands) | **F-042** hub; panel **F-052** |
+| **Look** | Residual polish if needed | planned F-053 |
 
 ---
 
-## G-008 studio (shipped)
+## Runner shell (F-051)
 
-| Item | Intent | Status |
-|------|--------|--------|
-| **Studio** | Distinct titled **Inspect** + **Legend** panel cards on the right rail | **F-039** |
-| **Look** | Chart/atlas cues: **neatline**, **graticule**/ticks, coords + scale HUD | **F-039** |
-| **Console** | Traditional terminal appearance (`aethelgard>` prompt, phosphor-on-black) | **F-040** (chrome rebuilt F-050) |
-| **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
-| **Loopback pan** | Drag pan: **X wraps**; **Y clamped** at polar edges | **F-038** |
+Stable regions (grow by filling slots, not lengthening the top bar):
+
+| Slot | Content |
+|------|---------|
+| **Top · identity** | Brand wordmark + host **dot only** (green/red) |
+| **Top · transport** | Play · Pause · Speed (`1x` / `2x` / `4x` / `Fastest`) |
+| **Top · view** | Reset view · World (rail toggle) · Terminal |
+| **Map HUD** | Layer switch **bottom-left** on the map |
+| **World rail** | Step, size, seed, reset world; Inspect/Legend sections |
+| **Terminal** | Full-width drawer under the stage |
+
+**Principles:** map first; chrome gray and quiet; one job per region; progressive disclosure; same session as CLI/terminal language.
+
+### Speeds
+
+| Label | Period |
+|-------|--------|
+| `1x` | 250 ms (default) |
+| `2x` | 125 ms |
+| `4x` | 62 ms |
+| `Fastest` | 1 ms tick (scheduler floor) |
 
 ---
 
-## Rebuilt terminal (F-050)
+## Terminal (F-051 look)
 
-- Drawer under the map (not a slate studio-panel card); chrome labeled **Terminal**.
-- Near-black well (`#070a08`), mono type, green phosphor text (`#8dffaa` / `#7dff9a`).
-- Prompt prefix **`aethelgard>`** on the input line; transcript shows command lines vs results; non-zero exits styled as errors.
+- Continuous dark surface (`--terminal-bg`); **no boxed input field**.
+- Prompt prefix **`aethelgard>`** + typing on one row; scrollback above; light-gray text (`--terminal-fg`), dim hints.
 - Empty state promotes noun/verb (`help` · `session get` · `list pool` …) — no placeholder-verb copy.
-- Input placeholder: `help`. ↑ / ↓ recalls prior commands (cap 32). Enter runs; autofocus when opened.
-- Dedicated `Terminal.tsx` component; MapTool posts via `/api/command` (same `CommandDispatch` as CLI).
-- Contrast: Inspect/Legend stay cool slate panels; the terminal is CRT/terminal.
+- Input placeholder: `help`. ↑ / ↓ history (cap 32); Enter runs; autofocus when opened.
+- Same `CommandDispatch` via `/api/command`.
 
 ---
 
-## Traditional terminal console (F-040)
+## Physical map palette (F-051)
 
-Superseded chrome copy by **F-050**; phosphor tokens and prompt retained.
+Elevation reads like a printed atlas (deterministic in `ElevationRaster`):
+
+- **Ocean** (`e < 0`): `(42, 78, 108)`
+- **Land** piecewise stops at e = 0, 8, 16, 24, 32 (lowland greens → highland browns → pale peaks)
+- Hillshade retained on land
+- **Plates:** muted gray interior + dark boundary
 
 ---
 
-## Map interaction (G-007 / F-028 / F-032 / F-038 / F-039)
+## Map interaction
 
-- Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map). Vertical pan clamped at polar edges when zoomed.
-- Drag to pan with **X loopback** and **Y polar clamp**; regions above/below the map band stay **blank** (no vertical loop tiles).
-- Inspect clicks map into world cells (x wraps; y must hit the map band).
-- **Reset view** (`R`) restores fitted centered transform.
-- Busy: map overlay + status chip; do not queue Advance / New world. Status polls use cached step (non-blocking).
-- **Plates** layer: gray interior + dark **bold** boundary stroke (half-edge core + dilate; sphere neighbors).
-- **Mappy stage:** neatline frame + faint graticule/ticks; HUD shows hover cell coords and zoom scale.
+- Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]**. Vertical pan clamped at poles when zoomed.
+- Drag pan: **X loopback**, **Y polar clamp**; blank N/S margins.
+- Inspect click → World rail Inspect section.
+- **Reset view** (`R`); busy overlay; do not queue Advance / Reset world.
+- Neatline + graticule/ticks + coords HUD remain.
 
-**Studio cartography** — the window is a working map desk, not a marketing page.
-
-- Map fills the work area.
-- Chrome is thin bars and **multi-panel** cards.
-- Brand is a quiet wordmark in the top bar (not a gradient hero headline).
-- Type is restrained UI sans + mono for seed/coords/console.
-
-Avoid: purple-on-white / purple–indigo gradients; cream + terracotta + display serif; dense broadsheet newspaper grids; glow-heavy “AI dark” chrome.
+Avoid: purple gradients; cream+terracotta; glow-heavy chrome; attention-seeking accents.
 
 ---
 
@@ -79,16 +87,16 @@ Avoid: purple-on-white / purple–indigo gradients; cream + terracotta + display
 
 | Token | Role | Example |
 |-------|------|---------|
-| `--ink` | App ground | `#12161c` |
-| `--ink-lift` | Raised panels | `#1a2029` |
-| `--panel` | Dock / bar fill | `rgba(26, 32, 41, 0.92)` |
-| `--line` | Hairline borders | `rgba(148, 163, 184, 0.22)` |
-| `--text` | Primary text | `#e8eef4` |
-| `--muted` | Secondary labels | `#8b9aab` |
-| `--accent` | Primary action | `#5b8fa8` |
-| `--ok` / `--danger` | Host / error | green / coral |
+| `--ink` | App ground | `#1c1c1e` |
+| `--ink-lift` | Raised | `#262628` |
+| `--panel` | Bar / rail | `#2a2a2c` |
+| `--line` | Hairlines | `rgba(255,255,255,0.1)` |
+| `--text` / `--muted` | Type | `#d0d0d2` / `#8a8a8e` |
+| `--accent` | Quiet focus | `#6e6e72` |
+| `--ok` / `--danger` | Host dot | muted green / red |
+| `--terminal-bg` / `--terminal-fg` | Terminal | `#121214` / `#c8c8c8` |
 
-Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
+Fonts: `--font-ui` (sans), `--font-mono` (seed, terminal, coords).
 
 ---
 
@@ -96,33 +104,32 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
 
 | Region | Rule |
 |--------|------|
-| **Top bar** | Thin; brand wordmark + host pill + tool controls + status |
-| **Map stage** | Full-bleed in the remaining viewport; neatline + graticule + HUD |
-| **Right rail** | Stacked **studio-panel** cards: Inspect, Legend; whole rail toggles via Dock |
-| **Panel collapse** | Each panel body collapses independently |
-| **Terminal** | On-demand **terminal** drawer (phosphor prompt; not a studio-panel card) |
+| **Top bar** | Three slots: identity \| transport \| view |
+| **Map stage** | Full-bleed; layer HUD bottom-left |
+| **World rail** | World + Inspect + Legend; toggle via **World** / `D` |
+| **Terminal** | On-demand drawer (not a studio-panel card) |
 
 ### Persistence (`localStorage`)
 
 | Key | Meaning |
 |-----|---------|
-| `aethelgard.dockOpen` | Right rail visible |
-| `aethelgard.panelInspectOpen` | Inspect panel body expanded |
-| `aethelgard.panelLegendOpen` | Legend panel body expanded |
+| `aethelgard.dockOpen` | World rail visible |
+| `aethelgard.panelInspectOpen` | Inspect expanded |
+| `aethelgard.panelLegendOpen` | Legend expanded |
 
 ---
 
-## Keyboard (G-007 / F-029)
+## Keyboard
 
 | Key | Action |
 |-----|--------|
 | `Space` | Play / Pause |
-| `A` or `.` | Advance |
+| `A` or `.` | Advance one step |
 | `1` / `2` / `3` | Elevation / Plates / Overlay |
 | `[` / `]` | Speed slower / faster |
-| `N` | New world (same confirm as UI) |
+| `N` | Reset world / New world (confirm when Step > 0) |
 | `` ` `` or `C` | Toggle terminal |
-| `D` | Toggle dock |
+| `D` | Toggle World rail |
 | `R` | Reset map view |
 
 Ignore shortcuts while focus is in an input / textarea / select (except Enter in seed/terminal fields as documented).

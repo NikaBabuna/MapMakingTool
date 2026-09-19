@@ -26,13 +26,20 @@ import org.junit.jupiter.api.Test;
 class ToolUiTest {
 
   @Test
-  @DisplayName("FR-1: negatives are ocean; land ramp unchanged; same grid → same RGB")
+  @DisplayName("FR-1: negatives are ocean; physical land ramp; same grid → same RGB")
   void oceanAndLandRamp() {
-    assertEquals(pack(18, 56, 92), ElevationRaster.OCEAN_RGB);
+    assertEquals(ElevationRaster.OCEAN_RGB, pack(42, 78, 108));
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-1));
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-12));
-    assertEquals(pack(12, 10, 18), ElevationRaster.landRamp(0));
-    assertEquals(pack(255, 196, 96), ElevationRaster.landRamp(32));
+    assertEquals(
+        pack(ElevationRaster.LAND_STOP_R[0], ElevationRaster.LAND_STOP_G[0], ElevationRaster.LAND_STOP_B[0]),
+        ElevationRaster.landRamp(0));
+    assertEquals(
+        pack(
+            ElevationRaster.LAND_STOP_R[ElevationRaster.LAND_STOP_R.length - 1],
+            ElevationRaster.LAND_STOP_G[ElevationRaster.LAND_STOP_G.length - 1],
+            ElevationRaster.LAND_STOP_B[ElevationRaster.LAND_STOP_B.length - 1]),
+        ElevationRaster.landRamp(32));
     assertEquals(ElevationRaster.landRamp(32), ElevationRaster.rgbOf(32));
 
     Grid grid =
@@ -142,10 +149,11 @@ class ToolUiTest {
     MapController map = new MapController(new WorldSpec(8, 8, 0L), queue::add, scheduler);
 
     assertFalse(map.playing());
-    assertEquals(MapSpeed.NORMAL, map.speed());
-    assertEquals(250, MapSpeed.NORMAL.periodMillis());
-    assertEquals(1000, MapSpeed.SLOW.periodMillis());
-    assertEquals(100, MapSpeed.FAST.periodMillis());
+    assertEquals(MapSpeed.X1, map.speed());
+    assertEquals(250, MapSpeed.X1.periodMillis());
+    assertEquals(125, MapSpeed.X2.periodMillis());
+    assertEquals(62, MapSpeed.X4.periodMillis());
+    assertEquals(1, MapSpeed.FASTEST.periodMillis());
 
     map.playTick();
     assertEquals(0, map.stepIndex(), "paused tick is a no-op");
@@ -155,9 +163,9 @@ class ToolUiTest {
     assertEquals(1, scheduler.starts);
     assertEquals(250, scheduler.lastPeriod);
 
-    map.setSpeed(MapSpeed.FAST);
-    assertEquals(MapSpeed.FAST, map.speed());
-    assertEquals(100, scheduler.lastPeriod);
+    map.setSpeed(MapSpeed.X4);
+    assertEquals(MapSpeed.X4, map.speed());
+    assertEquals(62, scheduler.lastPeriod);
     assertEquals(2, scheduler.starts);
 
     map.playTick();
@@ -277,14 +285,16 @@ class ToolUiTest {
         Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/SwingPlayScheduler.java")));
 
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
-    assertTrue(tool.contains("Advance"));
+    assertTrue(tool.contains("Advance") || tool.contains("onAdvance"));
     assertTrue(tool.contains("Play"));
     assertTrue(tool.contains("Pause") || tool.contains("playing"));
-    assertTrue(tool.contains("New world"));
+    assertTrue(tool.contains("Reset world") || tool.contains("New world"));
     assertTrue(tool.contains("Seed") || tool.contains("seed"));
     assertTrue(tool.contains("Inspect") || tool.contains("inspect"));
     assertTrue(tool.contains("Legend") || tool.contains("legend"));
     assertTrue(tool.contains("postAdvance"));
+    assertTrue(tool.contains("1x") || tool.contains("Fastest"));
+    assertTrue(tool.contains("runner-") || tool.contains("World"));
 
     String layers = Files.readString(root.resolve("ui/src/main/java/com/aethelgard/ui/MapLayer.java"));
     assertTrue(layers.contains("Elevation"));

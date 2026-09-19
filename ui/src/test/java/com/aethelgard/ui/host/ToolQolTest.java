@@ -29,7 +29,7 @@ class ToolQolTest {
     assertTrue(tool.contains("confirmNew") || tool.contains("alertdialog"));
     assertTrue(tool.contains("Retry"));
     assertTrue(tool.contains("aria-pressed") || tool.contains("aria-label"));
-    assertTrue(tool.contains("role=\"toolbar\""));
+    assertTrue(tool.contains("role=\"toolbar\"") || tool.contains("runner-transport"));
 
     String css = Files.readString(root.resolve("ui/web/src/app/globals.css"));
     assertTrue(css.contains("prefers-reduced-motion"));
@@ -38,7 +38,7 @@ class ToolQolTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("Space"));
-    assertTrue(style.contains("New world"));
+    assertTrue(style.contains("New world") || style.contains("Reset world"));
 
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
     assertTrue(flows.contains("shortcut") || flows.contains("Shortcuts") || flows.contains("G-007"));

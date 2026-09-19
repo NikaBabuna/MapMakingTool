@@ -25,7 +25,7 @@ class StudioChromeTest {
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("Studio cartography"));
     assertTrue(style.contains("aethelgard.dockOpen"));
-    assertTrue(style.contains("--accent") || style.contains("cool slate"));
+    assertTrue(style.contains("--accent") || style.contains("gray") || style.contains("--ink"));
 
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
     assertTrue(tool.contains("studio"));

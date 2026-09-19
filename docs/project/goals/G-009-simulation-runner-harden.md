@@ -82,7 +82,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-048 | Shared command model | done |
 | F-049 | CLI as full runner | done |
 | F-050 | Scrap + rebuild terminal | done |
-| F-051 | Runner chrome | not started |
+| F-051 | Runner chrome | done |
 | F-052 | Perf + detail panels | not started |
 | F-053 | UI/UX pass | not started |
 | F-054 | Goal close | not started |
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 10 / 14 |
+| Steps done | 11 / 14 |
 | Claim boxes | 6 / 8 |
-| Last Accept | F-050 |
+| Last Accept | F-051 |

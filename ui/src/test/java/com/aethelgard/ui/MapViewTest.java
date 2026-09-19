@@ -59,19 +59,22 @@ class MapViewTest {
   }
 
   @Test
-  @DisplayName("F-018 FR-2 / F-022: absolute integer ramp; ocean for negatives")
+  @DisplayName("F-018 / F-051: physical atlas ramp; ocean for negatives")
   void absoluteRampFormula() {
-    assertEquals(pack(12, 10, 18), ElevationRaster.rgbOf(0));
-    assertEquals(pack(255, 196, 96), ElevationRaster.rgbOf(32));
+    assertEquals(
+        pack(ElevationRaster.LAND_STOP_R[0], ElevationRaster.LAND_STOP_G[0], ElevationRaster.LAND_STOP_B[0]),
+        ElevationRaster.rgbOf(0));
+    assertEquals(
+        pack(
+            ElevationRaster.LAND_STOP_R[ElevationRaster.LAND_STOP_R.length - 1],
+            ElevationRaster.LAND_STOP_G[ElevationRaster.LAND_STOP_G.length - 1],
+            ElevationRaster.LAND_STOP_B[ElevationRaster.LAND_STOP_B.length - 1]),
+        ElevationRaster.rgbOf(32));
     assertEquals(ElevationRaster.rgbOf(32), ElevationRaster.rgbOf(99));
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-4));
-    assertEquals(pack(18, 56, 92), ElevationRaster.rgbOf(-1));
+    assertEquals(pack(42, 78, 108), ElevationRaster.rgbOf(-1));
     assertNotEquals(ElevationRaster.rgbOf(0), ElevationRaster.rgbOf(-4));
-    int e = 8;
-    int r = 12 + (243 * e) / 32;
-    int g = 10 + (186 * e) / 32;
-    int b = 18 + (78 * e) / 32;
-    assertEquals(pack(r, g, b), ElevationRaster.rgbOf(e));
+    assertEquals(ElevationRaster.landRamp(8), ElevationRaster.rgbOf(8));
   }
 
   @Test
