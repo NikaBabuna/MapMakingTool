@@ -22,5 +22,8 @@ public final class WorldFields {
   /** Per-plate actors — {@link PlateRegistry}; STATIC (area + initial velocity). */
   public static final String PLATE_REGISTRY = "plate_registry";
 
+  /** Classified plate contacts — {@link Boundaries}; STATIC. */
+  public static final String BOUNDARIES = "boundaries";
+
   private WorldFields() {}
 }

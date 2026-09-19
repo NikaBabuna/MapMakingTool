@@ -8,10 +8,11 @@
 package com.aethelgard.product;
 
 /**
- * Toroidal nearest-site plate seed from {@code seed}. Wiki: {@code docs/product/wiki/tectonics.md}.
+ * Toroidal-X / clipped-Y nearest-site plate seed from {@code seed}. Wiki: {@code
+ * docs/product/wiki/tectonics.md}.
  *
  * <p>Site count is {@code 12 + floorMod(seed, 13)} (12–24). Each cell takes the nearest site under
- * toroidal (minimum-image) Euclidean distance; ties take the lower site index.
+ * cylindrical distance (wrap X, flat Y); ties take the lower site index.
  */
 public final class Plates {
 
@@ -50,9 +51,8 @@ public final class Plates {
   }
 
   /**
-   * Assign each cell the nearest site index under toroidal distance. {@code siteX} and {@code
-   * siteY} must be the same length \(N \ge 1\). Ties take the lower index (first strictly-closer
-   * wins while scanning {@code 0..N-1}).
+   * Assign each cell the nearest site index under cylindrical distance (wrap X, flat Y). {@code
+   * siteX} and {@code siteY} must be the same length \(N \ge 1\). Ties take the lower index.
    */
   public static Grid assign(int width, int height, int[] siteX, int[] siteY) {
     requirePositive(width, "width");
@@ -72,9 +72,9 @@ public final class Plates {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2Toroidal(x, y, siteX[0], siteY[0], width, height);
+        long bestD2 = dist2Cylinder(x, y, siteX[0], siteY[0], width);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2Toroidal(x, y, siteX[i], siteY[i], width, height);
+          long d2 = dist2Cylinder(x, y, siteX[i], siteY[i], width);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -108,10 +108,10 @@ public final class Plates {
         || different(plates, x, y + 1, id);
   }
 
-  /** Toroidal squared Euclidean distance (minimum-image). */
-  public static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+  /** Cylindrical squared Euclidean distance (wrap X; flat Y). */
+  public static long dist2Cylinder(int x, int y, int sx, int sy, int width) {
     long dx = toroidalDelta(x, sx, width);
-    long dy = toroidalDelta(y, sy, height);
+    long dy = (long) y - (long) sy;
     return dx * dx + dy * dy;
   }
 

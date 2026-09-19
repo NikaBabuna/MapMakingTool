@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-034:** classified `boundaries`; cylinder topology (wrap X, polar Y); UI blank N/S.
 - **2026-09-19** — **F-033:** toroidal plate partition N=12–24 + `plate_registry`; studio pan **horizontal only**.
 - **2026-09-19** — **F-032:** studio loopback pan + zoom-to-fit clamp (tiled torus draw); Voronoi distance still F-033.
 - **2026-09-19** — **F-031:** `WorldSpec.VIEW` is **1920×1080**; host/raster smoke; DEFAULT dump unchanged.

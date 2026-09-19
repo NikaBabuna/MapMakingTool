@@ -42,9 +42,10 @@ cli →  product  →  engine
 
 | Piece | F-021 |
 |-------|--------|
-| Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.STATIC`; `plate_registry` → `FieldType.STATIC`; `plate_velocity` → `FieldType.CONSTANT` (bridge) |
-| Values | Immutable `Grid` of `int` cells; `PlateRegistry`; `PlateVelocities` per-site `(vx, vy)` |
-| Create | `ProductHost.create(WorldSpec)` / `new ProductSession(spec)` seeds **zero** elevation, **toroidal nearest-site** `plates` (N=12–24), STATIC `plate_registry`, and CONSTANT velocities from `seed` |
+| Schema | `elevation` / `plates` / `plate_registry` / `boundaries` → STATIC; `plate_velocity` → CONSTANT (bridge) |
+| Values | Immutable `Grid`; `PlateRegistry`; `Boundaries`; `PlateVelocities` |
+| Create | Seeds zero elevation, cylindrical plates (N=12–24), registry, boundaries, CONSTANT velocities |
+| Systems | `kinematics` (`PlateKinematics`); `tectonics` (`TraceBoundaries`, `Orogeny`); same standing snapshot |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (**1920×1080**, seed `0`, F-031) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
@@ -53,7 +54,7 @@ cli →  product  →  engine
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
 | Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places toroidal nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (toroidal Euclidean); ties take the lower site index. After Step 0, kinematics advects ownership (toroidal wrap; leftover cells nearest moved site, toroidal). Orogeny uses **standing** plates: toroidal 4-neighbor converge `+1` / diverge `−1` / transform `0` (any converge wins). Elevation may go negative. The seed is not its own Pool field.
+`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, kinematics advects ownership (wrap X; Y off-map dropped). Orogeny and `TraceBoundaries` use standing plates. Elevation may go negative. The seed is not its own Pool field.
 
 ---
 

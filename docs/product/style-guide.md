@@ -21,14 +21,14 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | **Look** | More **mappy** (chart/atlas cues) | planned F-039 |
 | **Console** | Traditional terminal appearance | planned F-040 |
 | **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
-| **Loopback pan** | **Horizontal only** (left/right); wraps on torus; vertical locked to stage center | **F-033** |
+| **Loopback pan** | **Horizontal only** (left/right); wraps on X; vertical locked; **blank** N/S of map | **F-034** |
 
 ---
 
 ## Map interaction (G-007 / F-028 / F-032 / F-033)
 
 - Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map). Vertical position re-locks to stage center.
-- Drag to pan **left/right only** with horizontal loopback; no up/down pan.
+- Drag to pan **left/right only** with horizontal loopback; no up/down pan. Regions above/below the map band stay **blank** (no vertical loop tiles).
 - Inspect clicks map into world cells (x wraps; y must hit the map band).
 - **Reset view** (`R`) restores fitted centered transform.
 - Busy: map overlay + status chip; do not queue Advance / New world.

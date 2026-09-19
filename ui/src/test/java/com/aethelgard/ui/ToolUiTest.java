@@ -120,8 +120,12 @@ class ToolUiTest {
     assertEquals(
         ElevationRaster.darken(ElevationRaster.elevationCell(elev, 0, 0)),
         ElevationRaster.overlayCell(elev, plates, 0, 0));
-    // (1,1) east wraps to (0,1)=0, south wraps to (1,0)=1 → south differs
-    assertNotEquals(interior, ElevationRaster.overlayCell(elev, plates, 1, 1));
+    // (1,1) east wraps to (0,1)=0 (same); south off-map (polar) → no darken
+    assertEquals(interior, ElevationRaster.overlayCell(elev, plates, 1, 1));
+    // (1,0) south is (1,1)=0 different → suture (no Y wrap needed)
+    assertEquals(
+        ElevationRaster.darken(ElevationRaster.elevationCell(elev, 1, 0)),
+        ElevationRaster.overlayCell(elev, plates, 1, 0));
   }
 
   @Test

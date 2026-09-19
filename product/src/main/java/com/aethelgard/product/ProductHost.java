@@ -23,17 +23,16 @@ import java.util.Objects;
  * Product entry for constructing an {@link Engine}. Setup is owned here so later Steps can add
  * schema and Systems without callers talking to engine defaults directly.
  *
- * <p>Schema: {@link WorldFields#ELEVATION} / {@link WorldFields#PLATES} / {@link
- * WorldFields#PLATE_REGISTRY} (STATIC), {@link WorldFields#PLATE_VELOCITY} (CONSTANT bridge until
- * F-037). Kinematics and tectonics Systems claim {@code world/tectonics} after Step 0 via {@link
- * GenerationTickPolicy}. Tectonics runs {@link Orogeny}.
+ * <p>Schema: elevation / plates / plate_registry / boundaries (STATIC), plate_velocity (CONSTANT
+ * bridge). Kinematics and tectonics Systems claim {@code world/tectonics} after Step 0. Tectonics
+ * runs {@link TraceBoundaries} then {@link Orogeny}.
  */
 public final class ProductHost {
 
   /** Provenance / claimer id for the kinematics System. */
   public static final String KINEMATICS_SYSTEM_ID = "kinematics";
 
-  /** Provenance / claimer id for the tectonics (orogeny) System. */
+  /** Provenance / claimer id for the tectonics System. */
   public static final String TECTONICS_SYSTEM_ID = "tectonics";
 
   private ProductHost() {}
@@ -56,7 +55,7 @@ public final class ProductHost {
             new SystemConfig(
                 TECTONICS_SYSTEM_ID,
                 tree.get(ProductCategories.TECTONICS),
-                List.of(new Orogeny()),
+                List.of(new TraceBoundaries(), new Orogeny()),
                 null));
     FieldSchema schema =
         FieldSchema.of(
@@ -64,6 +63,7 @@ public final class ProductHost {
                 WorldFields.ELEVATION, FieldType.STATIC,
                 WorldFields.PLATES, FieldType.STATIC,
                 WorldFields.PLATE_REGISTRY, FieldType.STATIC,
+                WorldFields.BOUNDARIES, FieldType.STATIC,
                 WorldFields.PLATE_VELOCITY, FieldType.CONSTANT));
     return new EngineSetup(
         tree,
@@ -83,9 +83,8 @@ public final class ProductHost {
   }
 
   /**
-   * Creates a run from {@code spec}: seeds zero {@code elevation}, toroidal nearest-site {@code
-   * plates} (N=12–24), STATIC {@code plate_registry}, and CONSTANT {@code plate_velocity} in
-   * lockstep. Completes Step 0 (no generation tick).
+   * Creates a run from {@code spec}: seeds zero elevation, cylindrical nearest-site plates
+   * (N=12–24), plate_registry, boundaries, and CONSTANT plate_velocity. Completes Step 0.
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */
@@ -95,6 +94,7 @@ public final class ProductHost {
     Grid plates = Plates.seed(spec.width(), spec.height(), spec.seed());
     PlateVelocities velocities = PlateVelocities.seed(spec.seed());
     PlateRegistry registry = PlateRegistry.from(plates, velocities);
+    Boundaries boundaries = Boundaries.trace(plates, velocities);
     EngineConfig config =
         new EngineConfig(
             0L,
@@ -103,6 +103,7 @@ public final class ProductHost {
                 WorldFields.ELEVATION, elevation,
                 WorldFields.PLATES, plates,
                 WorldFields.PLATE_REGISTRY, registry,
+                WorldFields.BOUNDARIES, boundaries,
                 WorldFields.PLATE_VELOCITY, velocities));
     return Engine.create(config, setup());
   }

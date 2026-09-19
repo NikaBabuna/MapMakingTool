@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (approved). **Code status:** F-033 — Step-0 toroidal partition (N=12–24) + `plate_registry` skeleton live. Boundary Systems / edge-driven motion still F-034–F-038; runtime advance still uses Constant `plate_velocity` + advection until then.
+**Doc status:** F-030 locks (amended F-034 cylinder). **Code status:** F-034 — Step-0 cylindrical partition (N=12–24) + `plate_registry` + classified `boundaries`. Boundary flux / fission / edge-driven motion still F-035–F-038; advance still uses Constant `plate_velocity` + advection until then.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -19,16 +19,16 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 |------|------|
 | **VIEW** | **1920×1080** cells, seed `0` for the product window (`WorldSpec.VIEW`). |
 | **DEFAULT** | Dump / fast tests may stay a small rectangle (e.g. 8×8); not required to be 1920×1080. |
-| **Topology** | **Torus** — both axes wrap with `floorMod`. Neighbors, site distance, pan, and ownership treat opposite edges as adjacent. |
-| **Sphere analogue** | The looping rectangle *is* the finite closed surface for this Goal (not a 3D globe mesh). |
+| **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). |
+| **Sphere analogue** | Cylinder map (wrap longitude / polar edges) — not a 3D globe mesh. |
 
-**Runtime note:** VIEW is **1920×1080** in code (**F-031**). Step-0 plates use this page’s partition (**F-033**). Boundary flux / fission / edge-driven motion still follow [elevation.md](elevation.md) advection+orogeny until F-034–F-038.
+**Runtime note:** VIEW is **1920×1080** (F-031). Step-0 plates + `boundaries` live (F-033/F-034). Flux / fission / edge-driven motion still use advection+orogeny until F-035–F-038.
 
 ---
 
 ## Initial plates (Step 0)
 
-Full cover of the torus: every cell has exactly one plate id. Shapes should look realistic (irregular, varied sizes).
+Full cover of the cylinder: every cell has exactly one plate id. Shapes should look realistic (irregular, varied sizes).
 
 ### Count
 
@@ -47,7 +47,7 @@ Same SplitMix / `mix(seed, siteIndex, axis)` family as today’s wiki (see [elev
 
 ### Assignment
 
-For each cell, nearest site under **toroidal** Euclidean distance (minimum-image on the torus). Squared distance in 64-bit ints. **Ties → lower site index.**
+For each cell, nearest site under **cylindrical** Euclidean distance (wrap X; flat Y). Squared distance in 64-bit ints. **Ties → lower site index.**
 
 Elevation at Step 0 remains **0** everywhere.
 
@@ -132,6 +132,5 @@ Implementation Steps: **F-034–F-038**.
 
 ## Studio UI
 
-- **F-032:** loopback pan + zoom clamp (fit min) — shipped in `ui/web`.
-- **F-033:** pan is **horizontal only** (left/right loopback); vertical locked to stage center.
+- **F-032 / F-033 / F-034:** zoom clamp; **horizontal-only** loopback pan; **blank** above/below the map (no vertical loop tiles). Sphere-on-rectangle camera.
 - **F-039 / F-040:** multi-panel mappy studio + traditional console — planned.

@@ -13,8 +13,9 @@ import java.util.Set;
 
 /**
  * Reads standing {@code plates}, CONSTANT {@code plate_velocity}, and {@code elevation}. Writes a
- * new elevation grid. Toroidal 4-neighbors: converge {@code +1}, diverge {@code -1}, transform or
- * interior {@code 0}. Any converge wins over diverge. Does not see kinematics output this Step.
+ * new elevation grid. Cylinder 4-neighbors (wrap X; Y clipped): converge {@code +1}, diverge {@code
+ * -1}, transform or interior {@code 0}. Any converge wins over diverge. Does not see kinematics
+ * output this Step.
  */
 public final class Orogeny implements SubSystem {
 
@@ -64,8 +65,8 @@ public final class Orogeny implements SubSystem {
   }
 
   /**
-   * Cell delta: {@code +1} if any toroidal 4-neighbor is a converging foreign plate; else {@code
-   * -1} if any is diverging; else {@code 0}.
+   * Cell delta: {@code +1} if any cylinder 4-neighbor is a converging foreign plate; else {@code
+   * -1} if any is diverging; else {@code 0}. Y off-map neighbors are ignored (polar edge).
    */
   public static int delta(Grid plates, PlateVelocities velocities, int x, int y) {
     int a = plates.get(x, y);
@@ -78,7 +79,10 @@ public final class Orogeny implements SubSystem {
       int nx = d[0];
       int ny = d[1];
       int bx = Math.floorMod(x + nx, width);
-      int by = Math.floorMod(y + ny, height);
+      int by = y + ny;
+      if (by < 0 || by >= height) {
+        continue;
+      }
       int closing = closing(a, plates.get(bx, by), velocities, nx, ny);
       if (closing > 0) {
         converge = true;

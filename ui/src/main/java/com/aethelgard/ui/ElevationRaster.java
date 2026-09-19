@@ -160,8 +160,8 @@ public final class ElevationRaster {
   }
 
   /**
-   * Elevation-layer pixel: ocean or hillshaded land. West/north neighbors wrap with {@code
-   * floorMod}.
+   * Elevation-layer pixel: ocean or hillshaded land. West wraps on X; north is clipped (polar
+   * edge — no Y wrap).
    */
   public static int elevationCell(Grid elevation, int x, int y) {
     int e = elevation.get(x, y);
@@ -170,22 +170,27 @@ public final class ElevationRaster {
     }
     int rgb = landRamp(e);
     int west = Math.floorMod(x - 1, elevation.width());
-    int north = Math.floorMod(y - 1, elevation.height());
     int dw = e - elevation.get(west, y);
-    int dn = e - elevation.get(x, north);
+    int dn = 0;
+    if (y > 0) {
+      dn = e - elevation.get(x, y - 1);
+    }
     return applyHillshade(rgb, hillshadeLit(dw, dn));
   }
 
   /**
-   * Overlay pixel: elevation paint, then darken if plate differs from toroidal east or south
-   * neighbor.
+   * Overlay pixel: elevation paint, then darken if plate differs from east (wrap X) or south
+   * (clipped Y) neighbor.
    */
   public static int overlayCell(Grid elevation, Grid plates, int x, int y) {
     int rgb = elevationCell(elevation, x, y);
     int id = plates.get(x, y);
     int east = Math.floorMod(x + 1, plates.width());
-    int south = Math.floorMod(y + 1, plates.height());
-    if (id != plates.get(east, y) || id != plates.get(x, south)) {
+    boolean foreign = id != plates.get(east, y);
+    if (y + 1 < plates.height() && id != plates.get(x, y + 1)) {
+      foreign = true;
+    }
+    if (foreign) {
       return darken(rgb);
     }
     return rgb;

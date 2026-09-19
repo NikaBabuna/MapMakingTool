@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-033 Accepted · next F-034
+**Status:** F-034 Accepted · next F-035
 
 ---
 
 ## Session goal
 
-Ship **G-008** — boundary tectonics + large torus world + cartography studio (F-030 → F-040).
+Ship **G-008** — boundary tectonics + large cylinder world + cartography studio (F-030 → F-040).
 
 ---
 
@@ -29,22 +29,20 @@ Ship **G-008** — boundary tectonics + large torus world + cartography studio (
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030 | Wiki + decisions (docs only) | done |
-| F-031 | Large rectangular world 1920×1080 | done |
-| F-032 | Loopback pan + zoom clamp | done |
-| F-033 | Partition + registry + horizontal-only pan | done |
-| F-034–F-040 | Per Goal plan | not started |
+| F-030–F-033 | Foundations through partition | done |
+| F-034 | Boundaries + cylinder map (X wrap, Y polar) | done |
+| F-035–F-040 | Per Goal plan | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-033 Accept)
+- [x] Incremental suite green (F-034 Accept)
 
 ---
 
 ## Notes
 
-- VIEW **1920×1080**; toroidal N=12–24 plates; `plate_registry` skeleton; pan left/right only.
-- Next: **F-034** boundary trace + classify.
+- Cylinder: wrap **X**; polar **Y**; UI blank N/S; classified `boundaries`.
+- Next: **F-035** precedence + area flux + motion intent.

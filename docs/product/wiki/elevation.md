@@ -7,12 +7,12 @@
 
 # Elevation process
 
-> **Code status (through F-033):** Step-0 plates are **toroidal nearest-site** (N=12–24) per [tectonics.md](tectonics.md). `plate_registry` is seeded. Advance still uses Constant `plate_velocity` + advection + standing orogeny (this page) until F-034–F-038.  
+> **Code status (through F-034):** Step-0 plates are **cylindrical nearest-site** (N=12–24, wrap X / flat Y). `plate_registry` + classified `boundaries` seeded. Advance still uses Constant `plate_velocity` + advection + standing orogeny until F-035–F-038.  
 > **G-008:** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md).
 
 Relief is **caused** by plates converging and diverging at sutures. It is not painted at Step 0.
 
-Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics / orogeny** (writes `elevation`). They read the same standing Pool snapshot; neither sees the other's output this Step.
+Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics** (`TraceBoundaries` + `Orogeny`). They read the same standing Pool snapshot; neither sees the other's output this Step.
 
 ---
 
@@ -20,9 +20,9 @@ Category: `world/tectonics`. The product emission policy ticks this category aft
 
 A **plates** layer (same width and height as elevation) stores an integer **plate id** per cell.
 
-Plate count and sites are a deterministic function of `WorldSpec.seed`. Each cell belongs to the **nearest site** under **toroidal** distance (G-008 / F-033). Authority: [tectonics.md](tectonics.md).
+Plate count and sites are a deterministic function of `WorldSpec.seed`. Each cell belongs to the **nearest site** under **cylindrical** distance (G-008 / F-033–F-034). Authority: [tectonics.md](tectonics.md).
 
-A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **Constant** after seed (bridge until F-037). A **plate_registry** STATIC object mirrors area + initial velocities at Step 0. `plates` is **Static** (kinematics rewrites ownership after Step 0).
+A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **Constant** after seed (bridge until F-037). A **plate_registry** STATIC object mirrors area + initial velocities at Step 0. A **boundaries** STATIC object lists classified contacts. `plates` is **Static** (kinematics rewrites ownership after Step 0).
 
 ### Count
 
@@ -66,7 +66,7 @@ Axis `0` is east–west; axis `1` is north–south.
 
 ### Assignment
 
-For each cell \((x, y)\), take the site \(i\) with the smallest **toroidal** Euclidean distance (minimum-image on each axis). Compare squared distance as 64-bit integers (no square root). **Ties take the lower site index.**
+For each cell \((x, y)\), take the site \(i\) with the smallest **cylindrical** Euclidean distance (wrap X; flat Y). Compare squared distance as 64-bit integers (no square root). **Ties take the lower site index.**
 
 The cell’s plate id is that site index.
 
@@ -93,9 +93,9 @@ Each generation Step (every `advance` after create) both Systems run against the
 
 Generation index \(G\) is `1` on the first tectonics tick, `2` on the next, and so on (Pool heartbeat value after that Step’s update, minus one, under the default host compute).
 
-1. Translate each cell by its plate’s \((v_x, v_y)\) with **toroidal wrap**: \(x' = \mathrm{floorMod}(x + v_x, \mathrm{width})\), same for \(y\).
+1. Translate each cell by its plate’s \((v_x, v_y)\): **wrap X**; **Y off-map claims are dropped** (polar edge).
 2. If exactly one cell claims a destination, that destination keeps the claimant’s plate id.
-3. Leftover cells (zero claimants or two or more) take the **nearest moved site**, **toroidal** Euclidean, lower index on ties — the same rule as Step-0 partition.
+3. Leftover cells (zero claimants or two or more) take the **nearest moved site**, cylindrical distance, lower index on ties — the same rule as Step-0 partition.
 
 Moved site \(i\) after \(G\) generation Steps:
 

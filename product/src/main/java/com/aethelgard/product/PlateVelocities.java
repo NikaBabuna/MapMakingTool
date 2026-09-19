@@ -96,24 +96,43 @@ public final class PlateVelocities {
   }
 
   /**
-   * Site {@code plateIndex} column after {@code generationIndex} generation Steps (toroidal).
-   * {@code generationIndex == 0} is the Step-0 Voronoi site.
+   * Site {@code plateIndex} column after {@code generationIndex} generation Steps (wrap X).
+   * {@code generationIndex == 0} is the Step-0 site.
    */
   public int movedSiteX(int width, int plateIndex, int generationIndex) {
     requireGeneration(generationIndex);
     int orig = Plates.siteX(width, seed, plateIndex);
-    return wrap(orig, vx(plateIndex), generationIndex, width);
+    return wrapX(orig, vx(plateIndex), generationIndex, width);
   }
 
-  /** Site {@code plateIndex} row after {@code generationIndex} generation Steps (toroidal). */
+  /**
+   * Site {@code plateIndex} row after {@code generationIndex} generation Steps (Y clipped to
+   * {@code [0, height)} — polar edge, no wrap).
+   */
   public int movedSiteY(int height, int plateIndex, int generationIndex) {
     requireGeneration(generationIndex);
     int orig = Plates.siteY(height, seed, plateIndex);
-    return wrap(orig, vy(plateIndex), generationIndex, height);
+    return clampY(orig, vy(plateIndex), generationIndex, height);
   }
 
-  static int wrap(int origin, int velocity, int generationIndex, int period) {
+  static int wrapX(int origin, int velocity, int generationIndex, int period) {
     return (int) Math.floorMod(origin + (long) generationIndex * velocity, (long) period);
+  }
+
+  static int clampY(int origin, int velocity, int generationIndex, int height) {
+    long y = (long) origin + (long) generationIndex * velocity;
+    if (y < 0L) {
+      return 0;
+    }
+    if (y >= height) {
+      return height - 1;
+    }
+    return (int) y;
+  }
+
+  /** @deprecated use {@link #wrapX} */
+  static int wrap(int origin, int velocity, int generationIndex, int period) {
+    return wrapX(origin, velocity, generationIndex, period);
   }
 
   @Override

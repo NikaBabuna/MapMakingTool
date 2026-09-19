@@ -23,14 +23,14 @@ class PlatePartitionTest {
   private static final long BRONZE = 0x94D049BB133111EBL;
 
   @Test
-  @DisplayName("FR-1: count 12–24; toroidal nearest-site; ties lower index")
+  @DisplayName("FR-1: count 12–24; cylindrical nearest-site; ties lower index")
   void toroidalPartitionRule() {
     assertEquals(12, Plates.count(0L));
     assertEquals(24, Plates.count(-1L));
     assertEquals(22, Plates.count(10L));
     assertEquals(12, Plates.count(13L));
 
-    // Flat would give site 1 at x=7; torus wraps toward site 0
+    // Flat would give site 1 at x=7; cylinder wraps X toward site 0
     Grid wrap = Plates.assign(8, 1, new int[] {0, 1}, new int[] {0, 0});
     assertEquals(0, wrap.get(7, 0));
 
@@ -110,9 +110,9 @@ class PlatePartitionTest {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2Toroidal(x, y, xs[0], ys[0], width, height);
+        long bestD2 = dist2Cylinder(x, y, xs[0], ys[0], width);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2Toroidal(x, y, xs[i], ys[i], width, height);
+          long d2 = dist2Cylinder(x, y, xs[i], ys[i], width);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -124,9 +124,9 @@ class PlatePartitionTest {
     return new Grid(cells);
   }
 
-  private static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+  private static long dist2Cylinder(int x, int y, int sx, int sy, int width) {
     long dx = Math.min(Math.abs((long) x - sx), (long) width - Math.abs((long) x - sx));
-    long dy = Math.min(Math.abs((long) y - sy), (long) height - Math.abs((long) y - sy));
+    long dy = (long) y - (long) sy;
     return dx * dx + dy * dy;
   }
 

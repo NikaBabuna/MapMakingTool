@@ -34,7 +34,8 @@ public final class WorldDump {
         (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
     PlateRegistry registry =
         (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
-    return format(spec, engine.stepIndex(), elevation, plates, velocities, registry);
+    Boundaries boundaries = (Boundaries) engine.settled().field(WorldFields.BOUNDARIES);
+    return format(spec, engine.stepIndex(), elevation, plates, velocities, registry, boundaries);
   }
 
   /**
@@ -45,7 +46,8 @@ public final class WorldDump {
   public static String format(WorldSpec spec, int steps, Grid elevation, Grid plates) {
     PlateVelocities velocities = PlateVelocities.seed(spec.seed());
     PlateRegistry registry = PlateRegistry.from(plates, velocities);
-    return format(spec, steps, elevation, plates, velocities, registry);
+    Boundaries boundaries = Boundaries.trace(plates, velocities);
+    return format(spec, steps, elevation, plates, velocities, registry, boundaries);
   }
 
   /**
@@ -55,7 +57,14 @@ public final class WorldDump {
    */
   public static String format(
       WorldSpec spec, int steps, Grid elevation, Grid plates, PlateVelocities velocities) {
-    return format(spec, steps, elevation, plates, velocities, PlateRegistry.from(plates, velocities));
+    return format(
+        spec,
+        steps,
+        elevation,
+        plates,
+        velocities,
+        PlateRegistry.from(plates, velocities),
+        Boundaries.trace(plates, velocities));
   }
 
   /**
@@ -70,11 +79,29 @@ public final class WorldDump {
       Grid plates,
       PlateVelocities velocities,
       PlateRegistry registry) {
+    return format(
+        spec, steps, elevation, plates, velocities, registry, Boundaries.trace(plates, velocities));
+  }
+
+  /**
+   * Stable snapshot. Lines use {@code \n}. Ends with a trailing newline.
+   *
+   * @param steps last completed Step index (0 after create)
+   */
+  public static String format(
+      WorldSpec spec,
+      int steps,
+      Grid elevation,
+      Grid plates,
+      PlateVelocities velocities,
+      PlateRegistry registry,
+      Boundaries boundaries) {
     Objects.requireNonNull(spec, "spec");
     Objects.requireNonNull(elevation, "elevation");
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(velocities, "velocities");
     Objects.requireNonNull(registry, "registry");
+    Objects.requireNonNull(boundaries, "boundaries");
     if (steps < 0) {
       throw new IllegalArgumentException("steps must be >= 0, was " + steps);
     }
@@ -105,6 +132,23 @@ public final class WorldDump {
           .append(registry.vx(i))
           .append(' ')
           .append(registry.vy(i))
+          .append('\n');
+    }
+    out.append("boundaries:\n");
+    for (BoundaryContact c : boundaries.contacts()) {
+      out.append(c.x())
+          .append(' ')
+          .append(c.y())
+          .append(' ')
+          .append(c.nx())
+          .append(' ')
+          .append(c.ny())
+          .append(' ')
+          .append(c.plateA())
+          .append(' ')
+          .append(c.plateB())
+          .append(' ')
+          .append(c.kind().name())
           .append('\n');
     }
     return out.toString();

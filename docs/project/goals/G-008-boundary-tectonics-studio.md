@@ -19,7 +19,7 @@
 
 When this Goal is `done`:
 
-1. **World geometry.** Primary view is **1920×1080** (rectangular). Space is a **finite loop** (torus): x and y wrap. Wiki and code agree.
+1. **World geometry.** Primary view is **1920×1080** (rectangular). Space is a **cylinder map** (wrap X; polar Y — sphere-on-rectangle). Wiki and code agree.
 2. **Initial plates.** At Step 0 the torus is fully partitioned into contiguous plates that **look realistic** (irregular, varied sizes — rule locked in F-030 / implemented F-033). Plates are the actors.
 3. **Boundary tectonics.** Contacts classify as separate / collide / pass-by. Size changes via area flux; collide precedence v1 = **smaller loses** (no crust types yet). Motion is edge-driven (push / pull / damp), not forever-Constant random `{-1,0,1}`.
 4. **Number.** Area → 0 ⇒ death. Connectivity break ⇒ **fission**. (Intentional rift-fracture birth may stay thin or follow-on if Steps stay small.)
@@ -46,7 +46,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | Topic | Decision |
 |-------|----------|
 | View size | **1920×1080** for starters |
-| Topology | 2D **torus** (wrap both axes) |
+| Topology | 2D **cylinder** (wrap X; polar Y) — amended F-034 from full torus |
 | Enclaves | **Fission** |
 | Collide precedence v1 | Smaller plate loses (types later) |
 | Initial plates | Realistic full partition (algorithm locked in F-030) |
@@ -75,7 +75,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | F-031 | Large rectangular world (1920×1080); host/session tolerate size | done |
 | F-032 | Toroidal wrap in product; studio loopback pan + zoom clamp | done |
 | F-033 | Initial plate partition + registry skeleton | done |
-| F-034 | Boundary trace + classify → `boundaries` | not started |
+| F-034 | Boundary trace + classify → `boundaries` | done |
 | F-035 | Precedence + area flux + motion intent | not started |
 | F-036 | Apply flux, flood, fission, death; registry | not started |
 | F-037 | Integrate edge-driven velocities | not started |
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 4 / 11 |
+| Steps done | 5 / 11 |
 | Claim boxes | 3 / 8 |
-| Last Accept | F-033 |
+| Last Accept | F-034 |

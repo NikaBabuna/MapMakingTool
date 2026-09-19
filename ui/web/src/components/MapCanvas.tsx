@@ -74,10 +74,9 @@ export function MapCanvas({
     ctx.clearRect(0, 0, stageW, stageH);
     ctx.imageSmoothingEnabled = false;
     ctx.setTransform(scale, 0, 0, scale, tx, ty);
+    // Horizontal loop tiles only; N/S of the map band stay blank (cylinder / polar edge)
     for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        ctx.drawImage(source, i * dw, j * dh);
-      }
+      ctx.drawImage(source, i * dw, 0);
     }
   }
 

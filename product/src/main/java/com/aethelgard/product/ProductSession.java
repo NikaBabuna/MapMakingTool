@@ -86,6 +86,12 @@ public final class ProductSession {
     }
   }
 
+  public Boundaries boundaries() {
+    synchronized (lock) {
+      return (Boundaries) engine.settled().field(WorldFields.BOUNDARIES);
+    }
+  }
+
   /** Headless snapshot ({@link WorldDump}); same lock as {@link #advance(int)}. */
   public String settledWorld() {
     synchronized (lock) {

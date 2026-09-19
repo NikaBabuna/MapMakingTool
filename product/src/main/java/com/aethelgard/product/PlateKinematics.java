@@ -13,8 +13,9 @@ import java.util.Set;
 
 /**
  * Reads standing {@code plates} and CONSTANT {@code plate_velocity}; writes a new plates grid.
- * Cells translate by their plate's {@code (vx, vy)} with toroidal wrap. Cells with zero or more
- * than one claimant are filled by nearest moved Voronoi site (lower index on ties).
+ * Cells translate by their plate's {@code (vx, vy)} with wrap on X only; Y off-map claims are
+ * dropped (polar edge). Cells with zero or more than one claimant are filled by nearest moved site
+ * (cylindrical distance; lower index on ties).
  *
  * <p>Does not write elevation. Collision uplift in the same Step reads the same standing plates.
  */
@@ -61,8 +62,11 @@ public final class PlateKinematics implements SubSystem {
           throw new IllegalStateException(
               "plate id " + plate + " out of 0.." + (n - 1) + " at (" + x + "," + y + ")");
         }
-        int nx = PlateVelocities.wrap(x, velocities.vx(plate), 1, width);
-        int ny = PlateVelocities.wrap(y, velocities.vy(plate), 1, height);
+        int nx = PlateVelocities.wrapX(x, velocities.vx(plate), 1, width);
+        int ny = y + velocities.vy(plate);
+        if (ny < 0 || ny >= height) {
+          continue;
+        }
         claims[ny][nx]++;
         who[ny][nx] = plate;
       }

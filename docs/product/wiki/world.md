@@ -49,8 +49,9 @@ Later climate (rainfall, temperature, …) is more layers of the same shape, not
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
 | `elevation` | every cell `0` | orogeny — [elevation.md](elevation.md) |
-| `plates` | toroidal nearest-site (N=12–24) | kinematics advection |
+| `plates` | cylindrical nearest-site (N=12–24, wrap X) | kinematics advection |
 | `plate_registry` | STATIC area + initial `(vx,vy)` | unchanged until F-036 |
+| `boundaries` | STATIC classified contacts | refreshed each generation (F-034) |
 | `plate_velocity` | Constant `(vx,vy)` in `{-1,0,1}` (bridge) | unchanged until F-037 |
 
 ### G-008 planned fields

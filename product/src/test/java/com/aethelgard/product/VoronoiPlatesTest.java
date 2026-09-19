@@ -63,18 +63,18 @@ class VoronoiPlatesTest {
     assertTrue(wiki.contains("0x9E3779B97F4A7C15"));
     assertTrue(wiki.contains("0xBF58476D1CE4E5B9"));
     assertTrue(wiki.contains("0x94D049BB133111EB"));
-    assertTrue(wiki.toLowerCase().contains("toroid") || wiki.contains("tectonics.md"));
+    assertTrue(wiki.toLowerCase().contains("toroid") || wiki.toLowerCase().contains("cylinder") || wiki.contains("tectonics.md"));
     assertTrue(wiki.toLowerCase().contains("lower site index"));
     assertTrue(wiki.toLowerCase().contains("supersed"));
     assertTrue(!wiki.contains("xBoundary") && !wiki.contains("x < xBoundary"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
-    assertTrue(world.toLowerCase().contains("toroid") || world.contains("12"));
+    assertTrue(world.toLowerCase().contains("toroid") || world.toLowerCase().contains("cylinder") || world.contains("12"));
     assertTrue(!world.toLowerCase().contains("two-plate vertical"));
 
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("plates"));
-    assertTrue(arch.toLowerCase().contains("toroid") || arch.contains("12"));
+    assertTrue(arch.toLowerCase().contains("toroid") || arch.toLowerCase().contains("cylinder") || arch.contains("12"));
     assertTrue(arch.toLowerCase().contains("lower site index"));
     assertTrue(arch.contains("12") && arch.contains("24"));
   }
@@ -144,9 +144,9 @@ class VoronoiPlatesTest {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2Toroidal(x, y, xs[0], ys[0], width, height);
+        long bestD2 = dist2Cylinder(x, y, xs[0], ys[0], width);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2Toroidal(x, y, xs[i], ys[i], width, height);
+          long d2 = dist2Cylinder(x, y, xs[i], ys[i], width);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -158,9 +158,9 @@ class VoronoiPlatesTest {
     return new Grid(cells);
   }
 
-  private static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+  private static long dist2Cylinder(int x, int y, int sx, int sy, int width) {
     long dx = Math.min(Math.abs((long) x - sx), (long) width - Math.abs((long) x - sx));
-    long dy = Math.min(Math.abs((long) y - sy), (long) height - Math.abs((long) y - sy));
+    long dy = (long) y - (long) sy;
     return dx * dx + dy * dy;
   }
 

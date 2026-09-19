@@ -119,7 +119,7 @@ Goal doc: [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tecton
 | F-031 | Large rectangular world 1920×1080 | done | [F-031.md](../blockers/F-031.md) |
 | F-032 | Toroidal wrap; loopback pan + zoom clamp | done | [F-032.md](../blockers/F-032.md) |
 | F-033 | Initial plate partition + registry skeleton | done | [F-033.md](../blockers/F-033.md) |
-| F-034 | Boundary trace + classify | not started | |
+| F-034 | Boundary trace + classify | done | [F-034.md](../blockers/F-034.md) |
 | F-035 | Precedence + area flux + motion intent | not started | |
 | F-036 | Flux apply, flood, fission, death | not started | |
 | F-037 | Edge-driven velocity integrate | not started | |

@@ -19,7 +19,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 |------|--------|-------|
 | World | VIEW **1920×1080**, torus loop | F-031–F-032 |
 | Plates | Initial partition + registry; then boundaries/flux/fission/motion | F-033–F-038 |
-| Camera | Zoom clamp; **horizontal-only** loopback pan | **F-032/F-033 done** |
+| Camera | Zoom clamp; horizontal-only pan; blank N/S (cylinder) | **F-032–F-034 done** |
 | Studio | Multi-panel, mappy style, traditional terminal console | F-039–F-040 |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md).

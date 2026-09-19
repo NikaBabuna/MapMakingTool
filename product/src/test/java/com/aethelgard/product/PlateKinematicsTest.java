@@ -214,7 +214,10 @@ class PlateKinematicsTest {
       for (int x = 0; x < width; x++) {
         int plate = plates.get(x, y);
         int nx = (int) Math.floorMod(x + (long) vel.vx(plate), (long) width);
-        int ny = (int) Math.floorMod(y + (long) vel.vy(plate), (long) height);
+        int ny = y + vel.vy(plate);
+        if (ny < 0 || ny >= height) {
+          continue;
+        }
         claims[ny][nx]++;
         who[ny][nx] = plate;
       }
@@ -225,7 +228,14 @@ class PlateKinematicsTest {
       int origX = (int) Math.floorMod(independentMix(vel.seed(), i, 0), (long) width);
       int origY = (int) Math.floorMod(independentMix(vel.seed(), i, 1), (long) height);
       siteX[i] = (int) Math.floorMod(origX + (long) generationIndex * vel.vx(i), (long) width);
-      siteY[i] = (int) Math.floorMod(origY + (long) generationIndex * vel.vy(i), (long) height);
+      long sy = (long) origY + (long) generationIndex * vel.vy(i);
+      if (sy < 0L) {
+        siteY[i] = 0;
+      } else if (sy >= height) {
+        siteY[i] = height - 1;
+      } else {
+        siteY[i] = (int) sy;
+      }
     }
     Grid fill = independentAssign(width, height, siteX, siteY);
     int[][] next = new int[height][width];
@@ -254,9 +264,9 @@ class PlateKinematicsTest {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2Toroidal(x, y, siteX[0], siteY[0], width, height);
+        long bestD2 = dist2Cylinder(x, y, siteX[0], siteY[0], width);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2Toroidal(x, y, siteX[i], siteY[i], width, height);
+          long d2 = dist2Cylinder(x, y, siteX[i], siteY[i], width);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -268,9 +278,9 @@ class PlateKinematicsTest {
     return new Grid(cells);
   }
 
-  private static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+  private static long dist2Cylinder(int x, int y, int sx, int sy, int width) {
     long dx = Math.min(Math.abs((long) x - sx), (long) width - Math.abs((long) x - sx));
-    long dy = Math.min(Math.abs((long) y - sy), (long) height - Math.abs((long) y - sy));
+    long dy = (long) y - (long) sy;
     return dx * dx + dy * dy;
   }
 

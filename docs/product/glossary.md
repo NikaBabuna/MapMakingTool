@@ -18,17 +18,19 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
 | **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
 | **Plate velocity** | **Code today:** Constant field (`plate_velocity`) of per-site `(vx, vy)` in `{-1,0,1}`. **G-008:** Constant-forever **superseded**; registry + edge-driven integrate (F-037). |
-| **Plates** | Layer (`plates`) of integer plate ids. **Code today:** toroidal nearest-site N=12–24 at Step 0; then kinematics advection. |
-| **Suture** | Contact between different plate ids; toroidal 4-neighbor orogeny on **standing** plates. |
-| **Voronoi plates** | Historical name for nearest-site partition; distance is **toroidal** (F-033). Ties take the lower site index. |
+| **Plates** | Layer (`plates`) of integer plate ids. **Code today:** cylindrical nearest-site N=12–24 at Step 0; then kinematics advection. |
+| **Suture** | Contact between different plate ids; cylinder 4-neighbor orogeny on **standing** plates. |
+| **Voronoi plates** | Historical name for nearest-site partition; distance is **cylindrical** (wrap X, flat Y). Ties take the lower site index. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
-| **Orogeny** | Generative rule: standing-plate toroidal contacts; converge +1, diverge −1, transform/interior 0. |
+| **Orogeny** | Generative rule: standing-plate cylinder contacts; converge +1, diverge −1, transform/interior 0. |
 | **Kinematics System** | Product `EngineSystem` (`kinematics`) that advects `plates` each generation Step. |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-System `Orogeny`. |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-Systems `TraceBoundaries` + `Orogeny`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
-| **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry). |
+| **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries). |
 | **WorldSpec.VIEW** | Product window launch spec: **1920×1080** cells, seed 0 (F-031). Dump fixture stays `DEFAULT` small. |
-| **Torus** | Finite looping rectangle — both axes wrap. G-008 sphere analogue (not a 3D mesh). |
+| **Torus** | Earlier G-008 lock (wrap both axes). **Amended F-034** to cylinder. |
+| **Cylinder map** | Wrap X (longitude); polar edges on Y (no wrap). Sphere-on-rectangle analogue. |
+| **Boundaries** | STATIC Pool object (`boundaries`): classified contacts (separate / collide / pass-by). |
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + initial velocity (F-033). Edge-driven integrate F-037. |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.05% area absorbed). |
