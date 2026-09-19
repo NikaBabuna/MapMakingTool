@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-043 Accepted · Active Goal G-009 · next negotiate F-044
+**Status:** F-043 Accepted · F-044 rolled back (compromised chat) · Active Goal G-009 · re-negotiate F-044
 
 ---
 
@@ -32,16 +32,18 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 | F-041 | Docs lock | done |
 | F-042 | Diagnostics hub | done |
 | F-043 | Ridge accretion | done |
+| F-044 | Slivers + border read | rolled back |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-043 Accept)
+- [x] Tree restored to F-043 Accept (F-044 commits reverted)
 
 ---
 
 ## Notes
 
-- F-043: ridge fill + neighbor flood; no global nearest refill; golden refreshed. Next: negotiate F-044 (slivers / borders).
+- **2026-09-19:** F-044 rolled back — chat compromised mid-Step; reverted Accept + progress-table commits. Last Accept **F-043**. Re-negotiate F-044 before any code.
+- F-043: ridge fill + neighbor flood; no global nearest refill.
