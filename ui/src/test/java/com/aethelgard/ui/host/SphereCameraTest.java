@@ -1,12 +1,13 @@
 /*
  * File: ui/src/test/java/com/aethelgard/ui/host/SphereCameraTest.java
- * Purpose: F-045 structural witness — antipodal vertical wrap pan
+ * Purpose: F-045 camera — X wrap + Y clamp to dark N/S margins
  * Audience: Agents / CI
- * Update when: Camera sphere rules change
+ * Update when: Camera sphere/UI rules change
  */
 
 package com.aethelgard.ui.host;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -17,15 +18,17 @@ import org.junit.jupiter.api.Test;
 class SphereCameraTest {
 
   @Test
-  @DisplayName("FR-3: viewport wrapPan antipodal Y; MapCanvas 3×3 antipodal tiles")
+  @DisplayName("FR-3: viewport X wrap + Y clamp; MapCanvas horizontal tiles only")
   void antipodalCamera() throws Exception {
     Path root = findRepoRoot();
     String viewport = Files.readString(root.resolve("ui/web/src/lib/viewport.ts"));
-    assertTrue(viewport.contains("antipodal") || viewport.contains("periodX / 2"));
-    assertTrue(viewport.contains("while (ty < 0)") || viewport.contains("periodY"));
+    assertTrue(viewport.contains("clampVertical"));
+    assertTrue(viewport.contains("wrapPan"));
+    assertTrue(viewport.contains("dark") || viewport.contains("map band") || viewport.contains("N/S"));
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
-    assertTrue(canvas.contains("antipodal") || canvas.contains("half"));
-    assertTrue(canvas.contains("j === 0") || canvas.contains("for (let j"));
+    assertTrue(canvas.contains("Horizontal loop") || canvas.contains("blank") || canvas.contains("dark"));
+    assertTrue(canvas.contains("for (let i = -1"));
+    assertFalse(canvas.contains("for (let j = -1"));
   }
 
   private static Path findRepoRoot() throws Exception {

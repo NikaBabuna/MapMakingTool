@@ -157,7 +157,7 @@ Implementation Steps: **F-034–F-038**.
 
 ## Studio UI
 
-- **F-045:** camera matches sphere — **X wrap**; **Y locked when zoomed out** (map fits stage); **antipodal Y loop** when zoomed in (3×3 tiles with half-width shift). Prior F-032/F-038 polar clamp + blank N/S superseded for zoomed-in travel.
+- **Camera:** **X wrap**; **dark blank N/S** margins (no vertical loop tiles). Zoomed out: map centered. Zoomed in: free pan **between** top and bottom edges — cannot pan past the map band. Sphere physics still uses antipodal polar wrap (`SphereTopology`); view does not.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009 (planned):** scrap placeholder console; shared CLI/terminal command surface; runner chrome + perf panels (F-048–F-053).

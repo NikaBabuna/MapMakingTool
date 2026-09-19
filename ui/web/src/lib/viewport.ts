@@ -1,6 +1,6 @@
 /*
  * File: ui/web/src/lib/viewport.ts
- * Purpose: Pure pan/zoom math for sphere-on-rectangle map stage ↔ world cells (F-045)
+ * Purpose: Pure pan/zoom math — X wrap; Y clamp to map band (dark N/S margins)
  * Audience: MapCanvas + unit witness
  * Update when: Viewport model changes
  */
@@ -43,10 +43,9 @@ export function lockVertical(vp: Viewport, stageH: number, displayH: number): Vi
 }
 
 /**
- * Clamp vertical pan at polar edges when the map fits or is only slightly taller.
- * When {@code mapH <= stageH}, lock centered (no Y travel). When zoomed in past the stage,
- * callers may still use antipodal {@link wrapPan}; this helper keeps the map from leaving
- * the polar band for the non-wrap path.
+ * Clamp vertical pan to the map band. Zoomed out ({@code mapH <= stageH}): stay centered
+ * (dark margins above/below). Zoomed in: free travel between top and bottom edges — cannot
+ * pan past the map into endless space or wrap over the poles.
  */
 export function clampVertical(vp: Viewport, stageH: number, displayH: number): Viewport {
   const mapH = displayH * vp.scale;
@@ -59,11 +58,6 @@ export function clampVertical(vp: Viewport, stageH: number, displayH: number): V
     ...vp,
     ty: Math.min(maxTy, Math.max(minTy, vp.ty)),
   };
-}
-
-/** True when the map is fully visible in the stage (fitted / zoomed out). */
-export function isZoomedOut(vp: Viewport, stageH: number, displayH: number): boolean {
-  return displayH * vp.scale <= stageH;
 }
 
 /** Center the map in the stage at the given scale. */
@@ -91,33 +85,22 @@ export function fittedViewport(
   return centeredViewport(stageW, stageH, displayW, displayH, scale);
 }
 
-/**
- * Wrap pan into one map period on X and Y. Crossing a vertical period shifts tx by half a
- * horizontal period (antipodal longitude — F-045 C2).
- */
-export function wrapPan(vp: Viewport, displayW: number, displayH: number): Viewport {
+/** Wrap horizontal pan into one map period; ty left unchanged. */
+export function wrapPan(vp: Viewport, displayW: number, _displayH?: number): Viewport {
   const periodX = displayW * vp.scale;
-  const periodY = displayH * vp.scale;
-  if (periodX <= 0 || periodY <= 0) {
+  if (periodX <= 0) {
     return vp;
   }
-  let tx = vp.tx;
-  let ty = vp.ty;
-  while (ty >= periodY) {
-    ty -= periodY;
-    tx -= periodX / 2;
-  }
-  while (ty < 0) {
-    ty += periodY;
-    tx += periodX / 2;
-  }
-  tx = floorMod(tx, periodX);
-  return { scale: vp.scale, tx, ty };
+  return {
+    scale: vp.scale,
+    tx: floorMod(vp.tx, periodX),
+    ty: vp.ty,
+  };
 }
 
 /**
  * Zoom toward a point in stage (CSS) coordinates; scale clamped to [minScale, MAX_SCALE].
- * Zoomed out: Y locked (no polar travel). Zoomed in: antipodal Y wrap retained.
+ * X wraps; Y clamped to map band (dark N/S margins).
  */
 export function zoomAt(
   vp: Viewport,
@@ -132,21 +115,19 @@ export function zoomAt(
   const nextScale = clampScale(vp.scale * factor, minScale);
   const worldX = (stageX - vp.tx) / vp.scale;
   const worldY = (stageY - vp.ty) / vp.scale;
-  const next = wrapPanX(
+  const next = wrapPan(
     {
       scale: nextScale,
       tx: stageX - worldX * nextScale,
       ty: stageY - worldY * nextScale,
     },
     displayW,
+    displayH,
   );
-  if (isZoomedOut(next, stageH, displayH)) {
-    return clampVertical(next, stageH, displayH);
-  }
-  return wrapPan(next, displayW, displayH);
+  return clampVertical(next, stageH, displayH);
 }
 
-/** Pan: X always wraps. Y locked when zoomed out; antipodal wrap when zoomed in. */
+/** Pan with X wrap and Y clamp to map band (dark borders top/bottom). */
 export function panBy(
   vp: Viewport,
   dx: number,
@@ -155,23 +136,14 @@ export function panBy(
   displayH: number,
   stageH: number,
 ): Viewport {
-  const moved = { ...vp, tx: vp.tx + dx, ty: vp.ty + (isZoomedOut(vp, stageH, displayH) ? 0 : dy) };
-  if (isZoomedOut(moved, stageH, displayH)) {
-    return clampVertical(wrapPanX(moved, displayW), stageH, displayH);
-  }
-  return wrapPan(moved, displayW, displayH);
+  const wrapped = wrapPan({ ...vp, tx: vp.tx + dx, ty: vp.ty + dy }, displayW, displayH);
+  return clampVertical(wrapped, stageH, displayH);
 }
 
-/** Wrap horizontal pan only. */
-export function wrapPanX(vp: Viewport, displayW: number): Viewport {
-  const periodX = displayW * vp.scale;
-  if (periodX <= 0) {
-    return vp;
-  }
-  return { ...vp, tx: floorMod(vp.tx, periodX) };
-}
-
-/** Map stage (CSS) point to world cell indices (sphere wrap X+Y with antipodal Y). */
+/**
+ * Map stage (CSS) point to world cell indices. Wrap X; Y clipped to the map band
+ * (null in the dark N/S margins).
+ */
 export function stageToCell(
   vp: Viewport,
   stageX: number,
@@ -184,18 +156,12 @@ export function stageToCell(
   if (displayW <= 0 || displayH <= 0 || worldW <= 0 || worldH <= 0) {
     return null;
   }
-  let localX = (stageX - vp.tx) / vp.scale;
-  let localY = (stageY - vp.ty) / vp.scale;
-  while (localY >= displayH) {
-    localY -= displayH;
-    localX += displayW / 2;
+  const localX = floorMod((stageX - vp.tx) / vp.scale, displayW);
+  const localY = (stageY - vp.ty) / vp.scale;
+  if (localY < 0 || localY >= displayH) {
+    return null;
   }
-  while (localY < 0) {
-    localY += displayH;
-    localX -= displayW / 2;
-  }
-  localX = floorMod(localX, displayW);
-  const x = Math.floor((localX / displayW) * worldW);
+  const x = Math.floor((localX / displayW) * worldW) % worldW;
   const y = Math.floor((localY / displayH) * worldH);
   if (y < 0 || y >= worldH) {
     return null;

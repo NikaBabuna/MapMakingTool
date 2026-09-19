@@ -80,19 +80,9 @@ export function MapCanvas({
     ctx.clearRect(0, 0, stageW, stageH);
     ctx.imageSmoothingEnabled = false;
     ctx.setTransform(scale, 0, 0, scale, tx, ty);
-    // Sphere loop tiles (F-045): 3×3 with antipodal X shift on vertical wraps
-    for (let j = -1; j <= 1; j++) {
-      for (let i = -1; i <= 1; i++) {
-        const dx = i * dw;
-        const dy = j * dh;
-        if (j === 0) {
-          ctx.drawImage(source, dx, dy);
-        } else {
-          const half = Math.floor(dw / 2);
-          ctx.drawImage(source, half, 0, dw - half, dh, dx, dy, dw - half, dh);
-          ctx.drawImage(source, 0, 0, half, dh, dx + (dw - half), dy, half, dh);
-        }
-      }
+    // Horizontal loop tiles only; N/S of the map band stay dark (blank margins)
+    for (let i = -1; i <= 1; i++) {
+      ctx.drawImage(source, i * dw, 0);
     }
   }
 
@@ -228,7 +218,7 @@ export function MapCanvas({
         dragRef.current.y = e.clientY;
         if (dragRef.current.moved) {
           const { dw, dh } = sizeRef.current;
-          // X wrap; Y locked when zoomed out, antipodal wrap when zoomed in (F-045 tweak)
+          // X wrap; Y clamp to map band (dark N/S margins)
           onViewportChange(panBy(viewportRef.current, dx, dy, dw, dh, stageSizeRef.current.h));
         }
       }}

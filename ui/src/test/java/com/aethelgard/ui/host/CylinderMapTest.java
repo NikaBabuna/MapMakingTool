@@ -1,12 +1,13 @@
 /*
  * File: ui/src/test/java/com/aethelgard/ui/host/CylinderMapTest.java
- * Purpose: F-034/F-045 structural witness — map loop tiles (sphere antipodal Y)
+ * Purpose: Structural witness — horizontal loop tiles; dark blank N/S
  * Audience: Agents / CI
  * Update when: Map tiling FRs change
  */
 
 package com.aethelgard.ui.host;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -17,13 +18,14 @@ import org.junit.jupiter.api.Test;
 class CylinderMapTest {
 
   @Test
-  @DisplayName("FR-5/F-045: MapCanvas sphere loop tiles (3×3 antipodal)")
+  @DisplayName("MapCanvas horizontal tiles only; dark blank N/S")
   void blankNorthSouth() throws Exception {
     Path root = findRepoRoot();
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
+    assertTrue(canvas.contains("Horizontal loop") || canvas.contains("blank") || canvas.contains("dark"));
     assertTrue(canvas.contains("for (let i = -1"));
-    assertTrue(canvas.contains("for (let j = -1") || canvas.contains("antipodal") || canvas.contains("half"));
-    assertTrue(canvas.contains("drawImage"));
+    assertFalse(canvas.contains("for (let j = -1"));
+    assertTrue(canvas.contains("drawImage(source, i * dw, 0)"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(
