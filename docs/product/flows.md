@@ -19,7 +19,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 |------|--------|-------|
 | Docs | Diverge ridge; sphere poles; commands; observability | **F-041** done |
 | Diagnostics | Controllable hub + first collectors + CLI | **F-042** done |
-| Physics | Diverge fill; slivers/borders; sphere wrap | **F-043** done; F-044–F-045 |
+| Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-044** done; F-045 |
 | Perf | Step path + raster/host memory | F-046–F-047 |
 | Control | Shared commands; CLI; rebuilt terminal | F-048–F-050 |
 | Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |

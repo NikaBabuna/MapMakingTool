@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 F-043 ridge accretion; F-042 DiagnosticsHub; G-008 done)  
+**Status:** active (G-009 F-044 Earth-like fission; F-043 ridge; F-042 DiagnosticsHub; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  

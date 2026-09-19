@@ -25,6 +25,12 @@ public final class ApplyGeometry implements SubSystem {
   /** Unowned / destroyed crust during apply; must not remain after flood. */
   public static final int SINK = -1;
 
+  /** Min breakaway area as fraction of world (0.5%) before minting a new plate. */
+  public static final int MIN_NEW_PLATE_PER_MILLE = 5;
+
+  /** Components with min axis span ≤ this are absorbed (ribbons). */
+  public static final int MAX_THIN_SPAN = 2;
+
   private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
   @Override
@@ -199,6 +205,8 @@ public final class ApplyGeometry implements SubSystem {
 
   private static Lifecycle fissionAndCrumbs(
       int[][] cells, int width, int height, PlateVelocities velocities) {
+    long world = (long) width * height;
+    int minNew = minNewPlateArea(width, height);
     int maxId = 0;
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -219,6 +227,7 @@ public final class ApplyGeometry implements SubSystem {
     boolean[][] seen = new boolean[height][width];
     int nextId = maxId + 1;
     int plateCount = vx.size();
+    List<List<int[]>> undersized = new ArrayList<>();
     for (int plate = 0; plate < plateCount; plate++) {
       List<List<int[]>> components = new ArrayList<>();
       for (int y = 0; y < height; y++) {
@@ -234,21 +243,64 @@ public final class ApplyGeometry implements SubSystem {
       if (components.size() <= 1) {
         continue;
       }
+      components.sort((a, b) -> Integer.compare(b.size(), a.size()));
+      // Largest keeps parent id (already painted as plate).
       for (int c = 1; c < components.size(); c++) {
-        int newId = nextId++;
-        vx.add(vx.get(plate));
-        vy.add(vy.get(plate));
-        for (int[] cell : components.get(c)) {
-          cells[cell[1]][cell[0]] = newId;
+        List<int[]> component = components.get(c);
+        if (qualifiesAsNewPlate(component, minNew)) {
+          int newId = nextId++;
+          vx.add(vx.get(plate));
+          vy.add(vy.get(plate));
+          for (int[] cell : component) {
+            cells[cell[1]][cell[0]] = newId;
+          }
+        } else {
+          undersized.add(component);
         }
       }
     }
-    absorbCrumbs(cells, width, height, vx.size());
+    for (List<int[]> component : undersized) {
+      for (int[] cell : component) {
+        cells[cell[1]][cell[0]] = SINK;
+      }
+    }
+    if (!undersized.isEmpty()) {
+      floodSink(cells, width, height);
+    }
+    absorbCrumbsAndThin(cells, width, height, vx.size(), world);
     return new Lifecycle(toArray(vx), toArray(vy));
   }
 
-  private static void absorbCrumbs(int[][] cells, int width, int height, int plateCount) {
+  /** Minimum cell count to mint a new plate (0.5% of world, at least 1). */
+  public static int minNewPlateArea(int width, int height) {
     long world = (long) width * height;
+    int n = (int) ((world * MIN_NEW_PLATE_PER_MILLE) / 1000L);
+    return Math.max(1, n);
+  }
+
+  static boolean qualifiesAsNewPlate(List<int[]> component, int minNew) {
+    return component.size() >= minNew && minAxisSpan(component) > MAX_THIN_SPAN;
+  }
+
+  /** Axis-aligned bounding-box thinner axis length. */
+  static int minAxisSpan(List<int[]> component) {
+    int minX = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE;
+    int minY = Integer.MAX_VALUE;
+    int maxY = Integer.MIN_VALUE;
+    for (int[] cell : component) {
+      minX = Math.min(minX, cell[0]);
+      maxX = Math.max(maxX, cell[0]);
+      minY = Math.min(minY, cell[1]);
+      maxY = Math.max(maxY, cell[1]);
+    }
+    int spanX = maxX - minX + 1;
+    int spanY = maxY - minY + 1;
+    return Math.min(spanX, spanY);
+  }
+
+  private static void absorbCrumbsAndThin(
+      int[][] cells, int width, int height, int plateCount, long world) {
     boolean[][] seen = new boolean[height][width];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -262,7 +314,11 @@ public final class ApplyGeometry implements SubSystem {
         }
         List<int[]> component = new ArrayList<>();
         floodComponent(cells, seen, width, height, x, y, id, component);
-        if (component.size() * 2000L >= world) {
+        boolean crumb = component.size() * 2000L < world;
+        int minNew = minNewPlateArea(width, height);
+        boolean thinScrap =
+            minAxisSpan(component) <= MAX_THIN_SPAN && component.size() < minNew;
+        if (!crumb && !thinScrap) {
           continue;
         }
         int neighbor = longestNeighbor(cells, width, height, component, id);

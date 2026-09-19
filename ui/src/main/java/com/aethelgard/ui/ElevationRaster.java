@@ -137,22 +137,19 @@ public final class ElevationRaster {
     return pack(r, g, b);
   }
 
-  /** True when a cylinder 4-neighbor has a different plate id (wrap X; Y clipped). */
+  /**
+   * True when the plate differs from the east (wrap X) and/or south (clipped Y) neighbor — single
+   * edge stroke (F-044).
+   */
   public static boolean isPlateBoundary(Grid plates, int x, int y) {
     Objects.requireNonNull(plates, "plates");
     int id = plates.get(x, y);
-    int width = plates.width();
-    int height = plates.height();
-    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int[] d : dirs) {
-      int nx = Math.floorMod(x + d[0], width);
-      int ny = y + d[1];
-      if (ny < 0 || ny >= height) {
-        continue;
-      }
-      if (plates.get(nx, ny) != id) {
-        return true;
-      }
+    int east = Math.floorMod(x + 1, plates.width());
+    if (plates.get(east, y) != id) {
+      return true;
+    }
+    if (y + 1 < plates.height() && plates.get(x, y + 1) != id) {
+      return true;
     }
     return false;
   }

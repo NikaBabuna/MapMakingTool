@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-043 ridge accretion live; F-041 G-009 locks (sphere polar wrap on paper). Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Ridge fill F-043; cylinder hard-Y until F-045. **F-042:** session `DiagnosticsHub`.
+**Doc status:** F-044 Earth-like fission + thin absorb; F-043 ridge accretion; F-041 sphere poles on paper. **Code status:** F-044 fission hygiene live; cylinder hard-Y until F-045. **F-042:** DiagnosticsHub.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -95,8 +95,8 @@ When types are equal (no oceanic/continental yet): **smaller plate by area loses
 | Event | Rule |
 |-------|------|
 | **Death** | Plate **area → 0** → remove from registry |
-| Fission | If a plate’s cells become **disconnected** (4-connected on the **sphere map** — wrap X; polar wrap Y per World geometry), each component becomes its own plate (new ids; inherit velocity). **Runtime until F-045:** cylinder connectivity (wrap X; no Y wrap). |
-| **Crumb absorb** | After fission, any component with area **&lt; 0.05%** of `width × height` is absorbed into the neighboring plate that shares the longest contact (deterministic tie: lower neighbor id) |
+| Fission | If a plate’s cells become **disconnected** (4-connected; wrap X; Y per topology), **substantial** components become plates: breakaway area ≥ **0.5%** of world **and** min axis span &gt; 2. **Largest** component keeps the parent id; children inherit velocity. Undersized pieces sink-flood into neighbors. **F-044.** |
+| **Crumb / thin absorb** | After fission: area &lt; **0.05%** of world, **or** (min axis span ≤ **2** **and** area &lt; min-new-plate 0.5%) → absorb into longest-contact neighbor (lower id ties). |
 
 Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay small.
 

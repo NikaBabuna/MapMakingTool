@@ -37,24 +37,19 @@ class GeometryApplyTest {
   }
 
   @Test
-  @DisplayName("FR-2: fission splits disconnected components; registry matches cells")
+  @DisplayName("FR-2: undersized fission scraps absorb; registry stays full cover")
   void fissionCrumbDeath() {
-    // Same id on both ends, foreign middle — after paint as one plate with gap via sink flood
+    // Same id on both ends, foreign middle — 1-cell scraps do not mint new plates (F-044)
     Grid plates = new Grid(new int[][] {{0, 1, 0}});
     PlateVelocities vel = new PlateVelocities(0L, new int[] {0, 0}, new int[] {0, 0});
-    // Force a no-op flux world then manually call fission path via apply with empty boundaries
     Boundaries empty = Boundaries.empty();
     AreaFlux zero = AreaFlux.zeros(2);
     ApplyGeometry.Result result =
         ApplyGeometry.apply(plates, empty, zero, PlateRegistry.from(plates, vel), vel);
-    // With empty flux, plates unchanged then dense remap keeps two components of id 0 as fission
-    assertTrue(result.registry().count() >= 2);
-    int sum = 0;
-    for (int i = 0; i < result.registry().count(); i++) {
-      sum += result.registry().area(i);
+    assertEquals(3, result.registry().totalArea());
+    for (int x = 0; x < 3; x++) {
+      assertTrue(result.plates().get(x, 0) >= 0);
     }
-    assertEquals(3, sum);
-    assertEquals(sum, result.registry().totalArea());
   }
 
   @Test

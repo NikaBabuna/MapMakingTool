@@ -58,7 +58,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 ## Product claims (tests by Goal end)
 
 - [x] Diverge: no third-plate fill of SEPARATE gaps (F-043)
-- [ ] Slivers / stacking borders addressed (F-044)
+- [x] Slivers / stacking borders addressed (F-044)
 - [ ] Sphere polar wrap end-to-end (F-045)
 - [x] Diagnostics recorded + queryable (F-042+)
 - [ ] Shared command surface + full CLI + rebuilt terminal (F-048–F-050)
@@ -75,7 +75,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-041 | Docs lock (wiki + ADR-012 + Goal) — **docs only** | done |
 | F-042 | Diagnostics core (timings, memory, dump) | done |
 | F-043 | Diverge / void-fill fix | done |
-| F-044 | Slivers + border read | not started |
+| F-044 | Slivers + border read | done |
 | F-045 | Sphere topology | not started |
 | F-046 | Step path hotspots | not started |
 | F-047 | Raster + host memory | not started |

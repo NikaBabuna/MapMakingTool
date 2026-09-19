@@ -62,11 +62,11 @@ class IntegrateVelocityTest {
             "orogeny"),
         subs.stream().map(SubSystem::id).toList());
 
-    // Two blobs of plate 0 separated vertically by plate 1 (no X-wrap join)
-    int[][] cells = new int[5][4];
-    for (int y = 0; y < 5; y++) {
+    // Two tall blobs of plate 0 (span Y ≥ 3) separated by plate 1
+    int[][] cells = new int[7][4];
+    for (int y = 0; y < 7; y++) {
       for (int x = 0; x < 4; x++) {
-        if (y == 2) {
+        if (y == 3) {
           cells[y][x] = 1;
         } else {
           cells[y][x] = 0;
