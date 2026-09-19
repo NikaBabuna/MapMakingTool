@@ -32,7 +32,11 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries, area_flux, motion_intent). |
 | **WorldSpec.VIEW** | Product window launch spec: **1920×1080** cells, seed 0 (F-031). Dump fixture stays `DEFAULT` small. |
 | **Torus** | Earlier G-008 lock (wrap both axes). **Amended F-034** to cylinder. |
-| **Cylinder map** | Wrap X (longitude); polar edges on Y (no wrap). Sphere-on-rectangle analogue. |
+| **Cylinder map** | G-008: wrap X; hard polar Y. **Superseded on paper** by G-009 sphere polar wrap (F-041 / code F-045). |
+| **Sphere polar wrap** | Crossing north re-enters from north at antipodal longitude (heading flip); same for south. Planned code F-045. |
+| **Ridge accretion** | SEPARATE new crust belongs only to the two contacting plates — no nearest-third void fill (G-009 / F-043). |
+| **Simulation runner** | G-009 product feel: Unity-like control, shared CLI/terminal, visible performance. |
+| **Session diagnostics** | Planned (F-042): per-Step timings, memory, counters — queryable via commands. |
 | **Boundaries** | STATIC Pool object (`boundaries`): classified contacts (separate / collide / pass-by). |
 | **Area flux** | STATIC Pool object (`area_flux`): per-plate Δarea + sinkΔ budgets (F-035); applied in F-036. |
 | **Motion intent** | STATIC Pool object (`motion_intent`): per-plate preferred Δv from edges (F-035); applied by `IntegrateVelocity` (F-037). |

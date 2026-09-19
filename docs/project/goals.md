@@ -9,7 +9,7 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** none · Last completed: [G-008 Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md)
+**Active Goal:** [G-009 Simulation runner harden](goals/G-009-simulation-runner-harden.md) · Last completed: [G-008 Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
@@ -21,6 +21,7 @@ A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal
 | G-006 | Local webview front (Tauri + Next + Java host) | done | [goals/G-006-webview-front.md](goals/G-006-webview-front.md) |
 | G-007 | Studio cartography tool (redesign + QoL) | done | [goals/G-007-studio-cartography.md](goals/G-007-studio-cartography.md) |
 | G-008 | Boundary tectonics + cartography studio | done | [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tectonics-studio.md) |
+| G-009 | Simulation runner harden | in progress | [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runner-harden.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 

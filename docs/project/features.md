@@ -129,6 +129,29 @@ Goal doc: [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tecton
 
 ---
 
+## G-009 — Simulation runner harden
+
+Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runner-harden.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-041 | Docs lock (wiki + ADR + Goal claims) | done | [F-041.md](../blockers/F-041.md) |
+| F-042 | Diagnostics core | not started | |
+| F-043 | Diverge / void-fill fix | not started | |
+| F-044 | Slivers + border read | not started | |
+| F-045 | Sphere topology | not started | |
+| F-046 | Step path hotspots | not started | |
+| F-047 | Raster + host memory | not started | |
+| F-048 | Shared command model | not started | |
+| F-049 | CLI as full runner | not started | |
+| F-050 | Scrap + rebuild terminal | not started | |
+| F-051 | Runner chrome | not started | |
+| F-052 | Perf + detail panels | not started | |
+| F-053 | UI/UX pass | not started | |
+| F-054 | Goal close | not started | |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` **before** writing code for that Step.  

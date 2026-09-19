@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-041 / G-009 open:** docs lock (diverge ridge; sphere polar wrap; ADR-012; shared commands/observability planned). Active Goal G-009. Runtime unchanged.
 - **2026-09-19** — **F-040 / G-008 close:** traditional terminal console (`aethelgard>`, ↑/↓ history); Active Goal none; last completed G-008.
 - **2026-09-19** — **F-039:** multi-panel Inspect/Legend cards + mappy neatline/graticule/HUD; panel `localStorage` prefs.
 - **2026-09-19** — **F-038:** boundary orogeny O(contacts) from standing `boundaries`; cached MapController step for non-blocking status; Y polar-clamp pan; plates interior/boundary paint; golden refreshed.

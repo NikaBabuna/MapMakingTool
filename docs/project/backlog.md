@@ -21,5 +21,6 @@ Items here are **not** in progress. Promote into a Goal or Step when ready.
 | Local webview front (Tauri + Next + Java host) | Promoted to [G-006](goals/G-006-webview-front.md) |
 | Studio cartography tool (redesign + QoL) | Promoted to [G-007](goals/G-007-studio-cartography.md) |
 | Boundary tectonics + cartography studio | Promoted to [G-008](goals/G-008-boundary-tectonics-studio.md) |
-| Climate / further generation layers | After G-008 |
+| Simulation runner harden | Promoted to [G-009](goals/G-009-simulation-runner-harden.md) |
+| Climate / further generation layers | After G-009 |
 | Package naming convention | Decided in F-001 / ADR-007 |

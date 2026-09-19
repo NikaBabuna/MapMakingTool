@@ -8,20 +8,20 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-040 Accepted · G-008 closed · Active Goal none
+**Status:** F-041 Accepted · continuing G-009 · next F-042
 
 ---
 
 ## Session goal
 
-Closed **G-008** (traditional terminal console + Goal Accept).
+Execute **G-009** Steps per plan (F-041 done; F-042+).
 
 ---
 
 ## Active Goal
 
-**Active Goal:** none  
-**Last completed:** [G-008 — Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) — **done**
+**Active Goal:** [G-009 — Simulation runner harden](goals/G-009-simulation-runner-harden.md)  
+**Last completed Goal:** [G-008](goals/G-008-boundary-tectonics-studio.md) — **done**
 
 ---
 
@@ -29,18 +29,18 @@ Closed **G-008** (traditional terminal console + Goal Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030–F-040 | G-008 complete | done |
+| F-041 | Docs lock | done |
+| F-042 | Diagnostics core | next |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-040 Accept)
+- [x] Incremental suite green (F-041 Accept)
 
 ---
 
 ## Notes
 
-- F-040: terminal console (`aethelgard>`, ↑/↓ history) + G-008 closed.
-- Next chat: **propose next Goal** (protocol — no lone Step).
+- F-041: ADR-012 + wiki locks; runtime unchanged.

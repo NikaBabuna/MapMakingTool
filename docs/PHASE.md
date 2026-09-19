@@ -62,4 +62,4 @@
 ## Agent work model
 
 Goal → Session → Step. Binding procedure: [process/step-procedure.md](process/step-procedure.md).  
-Active Goal: none · Last: [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) done.
+Active Goal: [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) · Last: [G-008](project/goals/G-008-boundary-tectonics-studio.md) done.

@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 done — F-040 traditional console; boundary tectonics + multi-panel studio)  
+**Status:** active (G-009 F-041 docs lock; G-008 done — F-040 traditional console; boundary tectonics + multi-panel studio)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  

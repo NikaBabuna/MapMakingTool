@@ -7,7 +7,8 @@
 
 # World
 
-**Code status (through F-040 / G-008 done):** VIEW **1920×1080**; cylindrical plates + registry + boundaries + flux/intent + IntegrateVelocity + boundary orogeny; multi-panel studio + traditional console — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).
+**Code status (through F-040 / G-008 done):** VIEW **1920×1080**; cylindrical plates + registry + boundaries + flux/intent + IntegrateVelocity + boundary orogeny; multi-panel studio + traditional console — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).  
+**G-009 (F-041 docs):** diverge ridge + sphere polar wrap locked on paper; runtime still G-008 until F-043–F-045.  
 **G-008:** complete.
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.

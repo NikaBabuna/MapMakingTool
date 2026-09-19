@@ -13,6 +13,21 @@ Before production feature code, extend this file per [../process/quality.md](../
 
 ---
 
+## G-009 simulation runner (planned)
+
+| Area | Intent | Steps |
+|------|--------|-------|
+| Docs | Diverge ridge; sphere poles; commands; observability | **F-041** |
+| Diagnostics | Timings, memory, counters | F-042 |
+| Physics | Diverge fill; slivers/borders; sphere wrap | F-043–F-045 |
+| Perf | Step path + raster/host memory | F-046–F-047 |
+| Control | Shared commands; CLI; rebuilt terminal | F-048–F-050 |
+| Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
+
+Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
+
+---
+
 ## G-008 (shipped)
 
 | Area | Intent | Steps |

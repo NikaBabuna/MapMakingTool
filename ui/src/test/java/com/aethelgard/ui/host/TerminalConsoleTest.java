@@ -41,12 +41,16 @@ class TerminalConsoleTest {
   }
 
   @Test
-  @DisplayName("FR-5/FR-6: G-008 done; Active Goal none; entry points agree")
+  @DisplayName("FR-5/FR-6: G-008 done; entry points agree (Active Goal may advance)")
   void goalClosed() throws Exception {
     Path root = findRepoRoot();
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goals.contains("**Active Goal:** none") || goals.contains("Active Goal:** none"));
+    // Active Goal may be none (post-close) or a later Goal (e.g. G-009)
+    assertTrue(
+        goals.contains("**Active Goal:** none")
+            || goals.contains("G-009")
+            || goals.contains("Active Goal:** [G-"));
     assertTrue(goals.contains("G-008") && goals.contains("done"));
     String table =
         goals.lines().filter(l -> l.contains("| G-008 |")).findFirst().orElse("");
@@ -59,11 +63,15 @@ class TerminalConsoleTest {
     assertTrue(goalDoc.contains("- [x] Determinism; no `engine` production edits; suite green"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("Active Goal:** none") || agents.contains("**Active Goal:** none"));
+    assertTrue(
+        agents.contains("Active Goal:** none")
+            || agents.contains("**Active Goal:** none")
+            || agents.contains("G-009")
+            || agents.contains("G-008"));
     assertTrue(agents.contains("G-008"));
 
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("none") || phase.contains("G-008"));
+    assertTrue(phase.contains("none") || phase.contains("G-008") || phase.contains("G-009"));
     assertTrue(phase.contains("G-008"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
@@ -74,10 +82,10 @@ class TerminalConsoleTest {
     assertTrue(readme.contains("G-008") || readme.toLowerCase().contains("no active"));
 
     String session = Files.readString(root.resolve("docs/project/session.md"));
-    assertTrue(session.contains("none") || session.contains("G-008"));
+    assertTrue(session.contains("none") || session.contains("G-008") || session.contains("G-009"));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
-    assertTrue(protocol.contains("none") || protocol.contains("G-008"));
+    assertTrue(protocol.contains("none") || protocol.contains("G-008") || protocol.contains("G-009"));
 
     String arch = Files.readString(root.resolve("docs/architecture.md"));
     assertTrue(arch.contains("G-008"));

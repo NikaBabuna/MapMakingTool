@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** none · Last: [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) (**done**)  
+**Active Goal:** [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) (**in progress**) · Last: [G-008](project/goals/G-008-boundary-tectonics-studio.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -58,11 +58,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-006-webview-front.md](project/goals/G-006-webview-front.md) | done |
 | [goals/G-007-studio-cartography.md](project/goals/G-007-studio-cartography.md) | done |
 | [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
+| [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | in progress |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-008 Steps registered |
+| [features.md](project/features.md) | Active — G-001–G-009 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (11 ADRs) |
+| [decisions.md](project/decisions.md) | Active (12 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -72,7 +73,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; G-008 done; Active Goal none) |
+| [architecture.md](architecture.md) | Active (roll-up; G-009 in progress; G-008 done) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -96,12 +97,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-008 done (F-040 terminal); Tauri + Next + MapHost |
+| [architecture.md](product/architecture.md) | Active — G-009 planned (F-041 locks); G-008 done (F-040 terminal); Tauri + Next + MapHost |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-008 done (through F-040) |
-| [glossary.md](product/glossary.md) | Active — torus; plate registry; fission; VIEW target |
-| [style-guide.md](product/style-guide.md) | Active — G-008 studio + traditional terminal shipped |
-| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) · [tectonics.md](product/wiki/tectonics.md) (F-030) |
+| [flows.md](product/flows.md) | G-009 planned; G-008 done (through F-040) |
+| [glossary.md](product/glossary.md) | Active — sphere polar wrap; ridge accretion; runner (planned) |
+| [style-guide.md](product/style-guide.md) | Active — G-009 runner planned; G-008 studio shipped |
+| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) · [tectonics.md](product/wiki/tectonics.md) (F-041 G-009 locks) |
 
 ---
 
@@ -151,6 +152,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-038.md](blockers/F-038.md) | done — boundary orogeny O(contacts) + status/camera/plates |
 | [F-039.md](blockers/F-039.md) | done — multi-panel studio + mappy style |
 | [F-040.md](blockers/F-040.md) | done — traditional console; G-008 closed |
+| [F-041.md](blockers/F-041.md) | done — G-009 docs lock |
 
 ---
 

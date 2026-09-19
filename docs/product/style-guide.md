@@ -7,9 +7,20 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 **done** (F-040 traditional terminal console)._
+_Status: **active** — G-007 studio cartography (done). G-008 **done** (F-040). **G-009 planned:** simulation-runner chrome, shared terminal/CLI, perf visibility._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
+
+---
+
+## G-009 runner (planned)
+
+| Item | Intent | Status |
+|------|--------|--------|
+| **Feel** | Unity-like simulation runner: dense control over session env (seed, speed, play, layers, …) | planned F-051+ |
+| **Terminal** | Scrap placeholder CRT skin; traditional terminal on **shared** command dispatcher with CLI | planned F-048–F-050 |
+| **Perf** | Visible step timings / memory (panel + commands) | planned F-042 / F-052 |
+| **Look** | UI/UX polish; map-first serious tool, not marketing page | planned F-053 |
 
 ---
 
