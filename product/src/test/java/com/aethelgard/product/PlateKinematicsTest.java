@@ -187,7 +187,7 @@ class PlateKinematicsTest {
   }
 
   private static PlateVelocities independentVelocities(long seed) {
-    int n = 6 + (int) Math.floorMod(seed, 10L);
+    int n = 12 + (int) Math.floorMod(seed, 13L);
     int[] vx = new int[n];
     int[] vy = new int[n];
     boolean any = false;
@@ -238,7 +238,7 @@ class PlateKinematicsTest {
   }
 
   private static Grid independentSeed(int width, int height, long seed) {
-    int n = 6 + (int) Math.floorMod(seed, 10L);
+    int n = 12 + (int) Math.floorMod(seed, 13L);
     int[] xs = new int[n];
     int[] ys = new int[n];
     for (int i = 0; i < n; i++) {
@@ -254,9 +254,9 @@ class PlateKinematicsTest {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2(x, y, siteX[0], siteY[0]);
+        long bestD2 = dist2Toroidal(x, y, siteX[0], siteY[0], width, height);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2(x, y, siteX[i], siteY[i]);
+          long d2 = dist2Toroidal(x, y, siteX[i], siteY[i], width, height);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -268,9 +268,9 @@ class PlateKinematicsTest {
     return new Grid(cells);
   }
 
-  private static long dist2(int x, int y, int sx, int sy) {
-    long dx = (long) x - (long) sx;
-    long dy = (long) y - (long) sy;
+  private static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+    long dx = Math.min(Math.abs((long) x - sx), (long) width - Math.abs((long) x - sx));
+    long dy = Math.min(Math.abs((long) y - sy), (long) height - Math.abs((long) y - sy));
     return dx * dx + dy * dy;
   }
 

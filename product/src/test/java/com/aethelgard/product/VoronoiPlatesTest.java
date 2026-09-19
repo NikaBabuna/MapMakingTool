@@ -32,18 +32,18 @@ class VoronoiPlatesTest {
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     assertZero(elevation);
     assertEquals(independentMix(0L, 3, 1), Plates.mix(0L, 3, 1));
-    assertEquals(6, Plates.count(0L));
+    assertEquals(12, Plates.count(0L));
     assertEquals(independentSeed(8, 8, 0L), plates);
-    assertIdsInRange(plates, 6);
+    assertIdsInRange(plates, 12);
 
-    assertEquals(15, Plates.count(-1L));
-    assertEquals(6, Plates.count(10L));
+    assertEquals(24, Plates.count(-1L));
+    assertEquals(22, Plates.count(10L));
     Grid other = (Grid) ProductHost.create(new WorldSpec(5, 4, 7L)).settled().field(WorldFields.PLATES);
     assertEquals(independentSeed(5, 4, 7L), other);
   }
 
   @Test
-  @DisplayName("FR-1: Euclidean nearest site; ties take lower index")
+  @DisplayName("FR-1: toroidal nearest site; ties take lower index")
   void nearestSiteAndLowerIndexTies() {
     Grid tied = Plates.assign(3, 1, new int[] {0, 2}, new int[] {0, 0});
     assertEquals(new Grid(new int[][] {{0, 0, 1}}), tied);
@@ -53,31 +53,30 @@ class VoronoiPlatesTest {
   }
 
   @Test
-  @DisplayName("FR-2: wiki and architecture document Voronoi mix; stripe is not current truth")
+  @DisplayName("FR-2: wiki and architecture document toroidal nearest-site mix")
   void wikiAndArchitectureDocumentMix() throws Exception {
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(wiki.toLowerCase().contains("voronoi"));
-    assertTrue(wiki.contains("6") && wiki.contains("15"));
+    assertTrue(wiki.toLowerCase().contains("voronoi") || wiki.toLowerCase().contains("nearest"));
+    assertTrue(wiki.contains("12") && wiki.contains("24"));
     assertTrue(wiki.contains("floorMod"));
     assertTrue(wiki.contains("0x9E3779B97F4A7C15"));
     assertTrue(wiki.contains("0xBF58476D1CE4E5B9"));
     assertTrue(wiki.contains("0x94D049BB133111EB"));
-    assertTrue(wiki.toLowerCase().contains("euclidean"));
+    assertTrue(wiki.toLowerCase().contains("toroid") || wiki.contains("tectonics.md"));
     assertTrue(wiki.toLowerCase().contains("lower site index"));
     assertTrue(wiki.toLowerCase().contains("supersed"));
     assertTrue(!wiki.contains("xBoundary") && !wiki.contains("x < xBoundary"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
-    assertTrue(world.toLowerCase().contains("voronoi"));
+    assertTrue(world.toLowerCase().contains("toroid") || world.contains("12"));
     assertTrue(!world.toLowerCase().contains("two-plate vertical"));
 
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.toLowerCase().contains("voronoi"));
     assertTrue(arch.contains("plates"));
-    assertTrue(arch.toLowerCase().contains("euclidean"));
+    assertTrue(arch.toLowerCase().contains("toroid") || arch.contains("12"));
     assertTrue(arch.toLowerCase().contains("lower site index"));
-    assertTrue(arch.contains("6") && arch.contains("15"));
+    assertTrue(arch.contains("12") && arch.contains("24"));
   }
 
   @Test
@@ -134,7 +133,7 @@ class VoronoiPlatesTest {
   }
 
   private static Grid independentSeed(int width, int height, long seed) {
-    int n = 6 + (int) Math.floorMod(seed, 10L);
+    int n = 12 + (int) Math.floorMod(seed, 13L);
     int[] xs = new int[n];
     int[] ys = new int[n];
     for (int i = 0; i < n; i++) {
@@ -145,9 +144,9 @@ class VoronoiPlatesTest {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2(x, y, xs[0], ys[0]);
+        long bestD2 = dist2Toroidal(x, y, xs[0], ys[0], width, height);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2(x, y, xs[i], ys[i]);
+          long d2 = dist2Toroidal(x, y, xs[i], ys[i], width, height);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -159,9 +158,9 @@ class VoronoiPlatesTest {
     return new Grid(cells);
   }
 
-  private static long dist2(int x, int y, int sx, int sy) {
-    long dx = (long) x - (long) sx;
-    long dy = (long) y - (long) sy;
+  private static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+    long dx = Math.min(Math.abs((long) x - sx), (long) width - Math.abs((long) x - sx));
+    long dy = Math.min(Math.abs((long) y - sy), (long) height - Math.abs((long) y - sy));
     return dx * dx + dy * dy;
   }
 

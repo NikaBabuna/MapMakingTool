@@ -9,11 +9,11 @@ package com.aethelgard.product;
 
 /**
  * Initial conditions for a product run. Width and height are cell counts. {@code seed} places the
- * Step-0 Voronoi plate sites and per-plate velocities; elevation cells start at 0.
+ * Step-0 toroidal nearest-site plates and per-plate velocities; elevation cells start at 0.
  *
  * @param width cell count east–west (≥ 1)
  * @param height cell count north–south (≥ 1)
- * @param seed recorded generation seed; places Step-0 Voronoi plate sites and velocities (F-020)
+ * @param seed recorded generation seed; places Step-0 plates and velocities (F-033)
  */
 public record WorldSpec(int width, int height, long seed) {
 

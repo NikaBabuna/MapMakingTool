@@ -44,17 +44,18 @@ A **layer** is one named field on the Pool. Grid layers share world geometry. Pe
 
 Later climate (rainfall, temperature, …) is more layers of the same shape, not a second world object.
 
-### Code today (pre–boundary tectonics)
+### Code today (F-033)
 
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
 | `elevation` | every cell `0` | orogeny — [elevation.md](elevation.md) |
-| `plates` | Voronoi nearest-site (6–15) | kinematics advection |
-| `plate_velocity` | Constant `(vx,vy)` in `{-1,0,1}` | unchanged |
+| `plates` | toroidal nearest-site (N=12–24) | kinematics advection |
+| `plate_registry` | STATIC area + initial `(vx,vy)` | unchanged until F-036 |
+| `plate_velocity` | Constant `(vx,vy)` in `{-1,0,1}` (bridge) | unchanged until F-037 |
 
 ### G-008 planned fields
 
-See [tectonics.md](tectonics.md) — `plates`, `elevation`, `plate_registry`, `boundaries`, `area_flux`, `motion_intent`, `tectonic_events`. Constant-forever `plate_velocity` is **superseded**.
+See [tectonics.md](tectonics.md) — `boundaries`, `area_flux`, `motion_intent`, `tectonic_events`. Constant-forever `plate_velocity` is **superseded** (F-037).
 
 ---
 

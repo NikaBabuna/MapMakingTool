@@ -9,10 +9,11 @@
  * Aethelgard product root package — simulation values only (no Swing).
  *
  * <p>Depends on {@code com.aethelgard.engine}. Must not be depended on by the engine. {@code ui}
- * and {@code cli} depend on this package (ADR-010). World state is Pool fields {@code elevation}
- * and {@code plates} ({@link com.aethelgard.product.Grid}), plus CONSTANT {@code plate_velocity}.
- * Generation is product {@code EngineSystem}s on category {@code world/tectonics} (kinematics +
- * orogeny). {@link com.aethelgard.product.ProductSession} owns a run. {@link
- * com.aethelgard.product.WorldDump} formats a settled snapshot.
+ * and {@code cli} depend on this package (ADR-010). World state is Pool fields {@code elevation},
+ * {@code plates} ({@link com.aethelgard.product.Grid}), STATIC {@code plate_registry}, and CONSTANT
+ * {@code plate_velocity} (bridge until F-037). Generation is product {@code EngineSystem}s on
+ * category {@code world/tectonics} (kinematics + orogeny). {@link
+ * com.aethelgard.product.ProductSession} owns a run. {@link com.aethelgard.product.WorldDump}
+ * formats a settled snapshot.
  */
 package com.aethelgard.product;

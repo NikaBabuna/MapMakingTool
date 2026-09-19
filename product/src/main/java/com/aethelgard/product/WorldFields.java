@@ -16,8 +16,11 @@ public final class WorldFields {
   /** Plate-id layer — {@link Grid} of {@code int} cells; STATIC after F-020 (kinematics writes). */
   public static final String PLATES = "plates";
 
-  /** Per-plate integer velocities — {@link PlateVelocities}; CONSTANT after seed. */
+  /** Per-plate integer velocities — {@link PlateVelocities}; CONSTANT after seed (bridge until F-037). */
   public static final String PLATE_VELOCITY = "plate_velocity";
+
+  /** Per-plate actors — {@link PlateRegistry}; STATIC (area + initial velocity). */
+  public static final String PLATE_REGISTRY = "plate_registry";
 
   private WorldFields() {}
 }

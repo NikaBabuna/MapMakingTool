@@ -32,7 +32,9 @@ public final class WorldDump {
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     PlateVelocities velocities =
         (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
-    return format(spec, engine.stepIndex(), elevation, plates, velocities);
+    PlateRegistry registry =
+        (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
+    return format(spec, engine.stepIndex(), elevation, plates, velocities, registry);
   }
 
   /**
@@ -41,7 +43,9 @@ public final class WorldDump {
    * @param steps last completed Step index (0 after create)
    */
   public static String format(WorldSpec spec, int steps, Grid elevation, Grid plates) {
-    return format(spec, steps, elevation, plates, PlateVelocities.seed(spec.seed()));
+    PlateVelocities velocities = PlateVelocities.seed(spec.seed());
+    PlateRegistry registry = PlateRegistry.from(plates, velocities);
+    return format(spec, steps, elevation, plates, velocities, registry);
   }
 
   /**
@@ -51,10 +55,26 @@ public final class WorldDump {
    */
   public static String format(
       WorldSpec spec, int steps, Grid elevation, Grid plates, PlateVelocities velocities) {
+    return format(spec, steps, elevation, plates, velocities, PlateRegistry.from(plates, velocities));
+  }
+
+  /**
+   * Stable snapshot. Lines use {@code \n}. Ends with a trailing newline.
+   *
+   * @param steps last completed Step index (0 after create)
+   */
+  public static String format(
+      WorldSpec spec,
+      int steps,
+      Grid elevation,
+      Grid plates,
+      PlateVelocities velocities,
+      PlateRegistry registry) {
     Objects.requireNonNull(spec, "spec");
     Objects.requireNonNull(elevation, "elevation");
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(velocities, "velocities");
+    Objects.requireNonNull(registry, "registry");
     if (steps < 0) {
       throw new IllegalArgumentException("steps must be >= 0, was " + steps);
     }
@@ -77,6 +97,15 @@ public final class WorldDump {
     out.append("plate_velocity:\n");
     for (int i = 0; i < velocities.count(); i++) {
       out.append(velocities.vx(i)).append(' ').append(velocities.vy(i)).append('\n');
+    }
+    out.append("plate_registry:\n");
+    for (int i = 0; i < registry.count(); i++) {
+      out.append(registry.area(i))
+          .append(' ')
+          .append(registry.vx(i))
+          .append(' ')
+          .append(registry.vy(i))
+          .append('\n');
     }
     return out.toString();
   }

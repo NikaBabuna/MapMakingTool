@@ -7,8 +7,8 @@
 
 # Elevation process
 
-> **Code status (through F-021 / F-029):** This page describes the **running** Voronoi + Constant-velocity + advection + standing orogeny rules.  
-> **G-008 (F-030):** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md). Do not treat this page as the G-008 end state.
+> **Code status (through F-033):** Step-0 plates are **toroidal nearest-site** (N=12–24) per [tectonics.md](tectonics.md). `plate_registry` is seeded. Advance still uses Constant `plate_velocity` + advection + standing orogeny (this page) until F-034–F-038.  
+> **G-008:** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md).
 
 Relief is **caused** by plates converging and diverging at sutures. It is not painted at Step 0.
 
@@ -20,17 +20,17 @@ Category: `world/tectonics`. The product emission policy ticks this category aft
 
 A **plates** layer (same width and height as elevation) stores an integer **plate id** per cell.
 
-Plate count and sites are a deterministic function of `WorldSpec.seed`. Each cell belongs to the **nearest site** (Voronoi). This supersedes the G-003 two-plate vertical suture.
+Plate count and sites are a deterministic function of `WorldSpec.seed`. Each cell belongs to the **nearest site** under **toroidal** distance (G-008 / F-033). Authority: [tectonics.md](tectonics.md).
 
-A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **Constant** after seed. `plates` is **Static** (kinematics rewrites ownership after Step 0).
+A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **Constant** after seed (bridge until F-037). A **plate_registry** STATIC object mirrors area + initial velocities at Step 0. `plates` is **Static** (kinematics rewrites ownership after Step 0).
 
 ### Count
 
 \[
-N = 6 + \mathrm{floorMod}(\mathrm{seed}, 10)
+N = 12 + \mathrm{floorMod}(\mathrm{seed}, 13)
 \]
 
-So \(N\) is an integer in **6–15**. `floorMod` is Java `Math.floorMod` (non-negative remainder). \(N\) is the **site count**. On a tiny grid some sites may share a cell or win no cells; occupied plate ids may be fewer than \(N\).
+So \(N\) is an integer in **12–24**. `floorMod` is Java `Math.floorMod` (non-negative remainder). \(N\) is the **site count**. On a tiny grid some sites may share a cell or win no cells; occupied plate ids may be fewer than \(N\).
 
 ### Site placement (SplitMix)
 
@@ -66,7 +66,7 @@ Axis `0` is east–west; axis `1` is north–south.
 
 ### Assignment
 
-For each cell \((x, y)\), take the site \(i\) with the smallest **Euclidean** distance. Compare squared distance \((x-x_i)^2 + (y-y_i)^2\) as 64-bit integers (no square root). **Ties take the lower site index.**
+For each cell \((x, y)\), take the site \(i\) with the smallest **toroidal** Euclidean distance (minimum-image on each axis). Compare squared distance as 64-bit integers (no square root). **Ties take the lower site index.**
 
 The cell’s plate id is that site index.
 
@@ -95,7 +95,7 @@ Generation index \(G\) is `1` on the first tectonics tick, `2` on the next, and 
 
 1. Translate each cell by its plate’s \((v_x, v_y)\) with **toroidal wrap**: \(x' = \mathrm{floorMod}(x + v_x, \mathrm{width})\), same for \(y\).
 2. If exactly one cell claims a destination, that destination keeps the claimant’s plate id.
-3. Leftover cells (zero claimants or two or more) take the **nearest moved site**, Euclidean, lower index on ties — the same rule as Step-0 Voronoi.
+3. Leftover cells (zero claimants or two or more) take the **nearest moved site**, **toroidal** Euclidean, lower index on ties — the same rule as Step-0 partition.
 
 Moved site \(i\) after \(G\) generation Steps:
 

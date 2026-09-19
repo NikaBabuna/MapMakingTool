@@ -80,6 +80,12 @@ public final class ProductSession {
     }
   }
 
+  public PlateRegistry plateRegistry() {
+    synchronized (lock) {
+      return (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
+    }
+  }
+
   /** Headless snapshot ({@link WorldDump}); same lock as {@link #advance(int)}. */
   public String settledWorld() {
     synchronized (lock) {

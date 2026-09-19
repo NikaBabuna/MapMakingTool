@@ -57,12 +57,12 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 ## Product claims (tests by Goal end)
 
 - [x] 1920×1080 VIEW in code; wiki + witnesses
-- [ ] Initial realistic plate partition
+- [x] Initial realistic plate partition (F-033)
 - [ ] Boundaries + flux + flood + fission/death
 - [ ] Edge-driven motion; Constant random velocities gone
 - [ ] Orogeny from new boundary model
 - [ ] Studio panels + mappy style + traditional console
-- [x] Zoom clamp + loopback pan (F-032); product neighbor wrap already existed
+- [x] Zoom clamp + horizontal-only loopback pan (F-032/F-033)
 - [ ] Determinism; no `engine` production edits; suite green
 
 ---
@@ -74,7 +74,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | F-030 | Wiki + decisions (torus, size, partition rule, Pool fields, fission) — **docs only** | done |
 | F-031 | Large rectangular world (1920×1080); host/session tolerate size | done |
 | F-032 | Toroidal wrap in product; studio loopback pan + zoom clamp | done |
-| F-033 | Initial plate partition + registry skeleton | not started |
+| F-033 | Initial plate partition + registry skeleton | done |
 | F-034 | Boundary trace + classify → `boundaries` | not started |
 | F-035 | Precedence + area flux + motion intent | not started |
 | F-036 | Apply flux, flood, fission, death; registry | not started |
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 3 / 11 |
-| Claim boxes | 2 / 8 |
-| Last Accept | F-032 |
+| Steps done | 4 / 11 |
+| Claim boxes | 3 / 8 |
+| Last Accept | F-033 |

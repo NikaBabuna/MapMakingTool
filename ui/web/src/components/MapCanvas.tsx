@@ -158,7 +158,18 @@ export function MapCanvas({
         const { dw, dh } = sizeRef.current;
         const minScale = fitScale(stageSizeRef.current.w, stageSizeRef.current.h, dw, dh);
         const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-        onViewportChange(zoomAt(viewportRef.current, pt.x, pt.y, factor, minScale, dw, dh));
+        onViewportChange(
+          zoomAt(
+            viewportRef.current,
+            pt.x,
+            pt.y,
+            factor,
+            minScale,
+            dw,
+            dh,
+            stageSizeRef.current.h,
+          ),
+        );
       }}
       onPointerDown={(e) => {
         if (e.button !== 0) {
@@ -181,7 +192,8 @@ export function MapCanvas({
         dragRef.current.y = e.clientY;
         if (dragRef.current.moved) {
           const { dw, dh } = sizeRef.current;
-          onViewportChange(panBy(viewportRef.current, dx, dy, dw, dh));
+          // Horizontal-only pan (F-033); dy ignored by panBy
+          onViewportChange(panBy(viewportRef.current, dx, 0, dw, dh));
         }
       }}
       onPointerUp={(e) => {

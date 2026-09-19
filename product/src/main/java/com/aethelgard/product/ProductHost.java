@@ -23,10 +23,10 @@ import java.util.Objects;
  * Product entry for constructing an {@link Engine}. Setup is owned here so later Steps can add
  * schema and Systems without callers talking to engine defaults directly.
  *
- * <p>F-020: schema includes {@link WorldFields#ELEVATION} (STATIC), {@link WorldFields#PLATES}
- * (STATIC), and {@link WorldFields#PLATE_VELOCITY} (CONSTANT). Kinematics and tectonics Systems
- * both claim {@code world/tectonics} after Step 0 via {@link GenerationTickPolicy}. Tectonics runs
- * {@link Orogeny}.
+ * <p>Schema: {@link WorldFields#ELEVATION} / {@link WorldFields#PLATES} / {@link
+ * WorldFields#PLATE_REGISTRY} (STATIC), {@link WorldFields#PLATE_VELOCITY} (CONSTANT bridge until
+ * F-037). Kinematics and tectonics Systems claim {@code world/tectonics} after Step 0 via {@link
+ * GenerationTickPolicy}. Tectonics runs {@link Orogeny}.
  */
 public final class ProductHost {
 
@@ -63,6 +63,7 @@ public final class ProductHost {
             Map.of(
                 WorldFields.ELEVATION, FieldType.STATIC,
                 WorldFields.PLATES, FieldType.STATIC,
+                WorldFields.PLATE_REGISTRY, FieldType.STATIC,
                 WorldFields.PLATE_VELOCITY, FieldType.CONSTANT));
     return new EngineSetup(
         tree,
@@ -82,9 +83,9 @@ public final class ProductHost {
   }
 
   /**
-   * Creates a run from {@code spec}: seeds {@code elevation} as a zero grid, Voronoi {@code plates}
-   * from {@code spec.seed()}, and CONSTANT {@code plate_velocity}. Completes Step 0 (no generation
-   * tick).
+   * Creates a run from {@code spec}: seeds zero {@code elevation}, toroidal nearest-site {@code
+   * plates} (N=12–24), STATIC {@code plate_registry}, and CONSTANT {@code plate_velocity} in
+   * lockstep. Completes Step 0 (no generation tick).
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */
@@ -93,6 +94,7 @@ public final class ProductHost {
     Grid elevation = Grid.zeros(spec.width(), spec.height());
     Grid plates = Plates.seed(spec.width(), spec.height(), spec.seed());
     PlateVelocities velocities = PlateVelocities.seed(spec.seed());
+    PlateRegistry registry = PlateRegistry.from(plates, velocities);
     EngineConfig config =
         new EngineConfig(
             0L,
@@ -100,6 +102,7 @@ public final class ProductHost {
             Map.of(
                 WorldFields.ELEVATION, elevation,
                 WorldFields.PLATES, plates,
+                WorldFields.PLATE_REGISTRY, registry,
                 WorldFields.PLATE_VELOCITY, velocities));
     return Engine.create(config, setup());
   }

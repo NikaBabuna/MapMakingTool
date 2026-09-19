@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (approved). **Code status:** not implemented — runtime still follows [elevation.md](elevation.md) (Voronoi 6–15, Constant velocities, advection kinematics) until F-031–F-038.
+**Doc status:** F-030 locks (approved). **Code status:** F-033 — Step-0 toroidal partition (N=12–24) + `plate_registry` skeleton live. Boundary Systems / edge-driven motion still F-034–F-038; runtime advance still uses Constant `plate_velocity` + advection until then.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -22,7 +22,7 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 | **Topology** | **Torus** — both axes wrap with `floorMod`. Neighbors, site distance, pan, and ownership treat opposite edges as adjacent. |
 | **Sphere analogue** | The looping rectangle *is* the finite closed surface for this Goal (not a 3D globe mesh). |
 
-**Runtime note:** VIEW is **1920×1080** in code (**F-031**). Boundary tectonics behavior still follows [elevation.md](elevation.md) until F-033–F-038.
+**Runtime note:** VIEW is **1920×1080** in code (**F-031**). Step-0 plates use this page’s partition (**F-033**). Boundary flux / fission / edge-driven motion still follow [elevation.md](elevation.md) advection+orogeny until F-034–F-038.
 
 ---
 
@@ -133,4 +133,5 @@ Implementation Steps: **F-034–F-038**.
 ## Studio UI
 
 - **F-032:** loopback pan + zoom clamp (fit min) — shipped in `ui/web`.
+- **F-033:** pan is **horizontal only** (left/right loopback); vertical locked to stage center.
 - **F-039 / F-040:** multi-panel mappy studio + traditional console — planned.

@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 F-030 docs; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-033 partition + registry; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -42,18 +42,18 @@ cli →  product  →  engine
 
 | Piece | F-021 |
 |-------|--------|
-| Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.STATIC`; `plate_velocity` → `FieldType.CONSTANT` |
-| Values | Immutable `Grid` of `int` cells; `PlateVelocities` per-site `(vx, vy)` |
-| Create | `ProductHost.create(WorldSpec)` / `new ProductSession(spec)` seeds **zero** elevation, a **Voronoi** `plates` grid, and CONSTANT velocities from `seed` (6–15 sites) |
+| Schema | `elevation` → `FieldType.STATIC`; `plates` → `FieldType.STATIC`; `plate_registry` → `FieldType.STATIC`; `plate_velocity` → `FieldType.CONSTANT` (bridge) |
+| Values | Immutable `Grid` of `int` cells; `PlateRegistry`; `PlateVelocities` per-site `(vx, vy)` |
+| Create | `ProductHost.create(WorldSpec)` / `new ProductSession(spec)` seeds **zero** elevation, **toroidal nearest-site** `plates` (N=12–24), STATIC `plate_registry`, and CONSTANT velocities from `seed` |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (**1920×1080**, seed `0`, F-031) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
 | Systems | `kinematics` (Sub-System `PlateKinematics`) and `tectonics` (Sub-System `Orogeny`); same snapshot; neither sees the other this Step |
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
-| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities; canonical golden is DEFAULT + `advance(3)` |
+| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places Voronoi plate sites (`N = 6 + floorMod(seed, 10)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (Euclidean); ties take the lower site index. After Step 0, kinematics advects ownership (toroidal wrap; leftover cells nearest moved site). Orogeny uses **standing** plates: toroidal 4-neighbor converge `+1` / diverge `−1` / transform `0` (any converge wins). Elevation may go negative. The seed is not its own Pool field.
+`WorldSpec.seed` places toroidal nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (toroidal Euclidean); ties take the lower site index. After Step 0, kinematics advects ownership (toroidal wrap; leftover cells nearest moved site, toroidal). Orogeny uses **standing** plates: toroidal 4-neighbor converge `+1` / diverge `−1` / transform `0` (any converge wins). Elevation may go negative. The seed is not its own Pool field.
 
 ---
 
@@ -128,13 +128,13 @@ Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over 
 
 Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On start spawns `MapHostApp`; on quit stops it via PID file. Primary launch: `run-product.cmd`. [ui/desktop/README.md](../../ui/desktop/README.md).
 
-## G-008 boundary tectonics (F-030 locks; F-031 size)
+## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080** in code (F-031); torus; initial plates N=12–24 (F-033); fission + crumb &lt; 0.05%; collide smaller-loses; Constant-forever velocities superseded. Boundary Systems **not** in code yet — F-033+.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080** (F-031); studio loopback **horizontal-only** pan (F-032/F-033); Step-0 toroidal plates N=12–24 + `plate_registry` (F-033). Boundary Systems / edge-driven motion **not** in code yet — F-034+.
 
 ---
 
-## Source layout (through F-026)
+## Source layout (through F-033)
 
 ```
 product/
@@ -149,6 +149,7 @@ product/
     WorldFields.java
     Grid.java
     Plates.java
+    PlateRegistry.java
     PlateVelocities.java
     PlateKinematics.java
     GenerationTickPolicy.java
@@ -160,9 +161,11 @@ product/
     WorldStateTest.java
     ElevationProcessTest.java
     VoronoiPlatesTest.java
+    PlatePartitionTest.java
     WorldDumpTest.java
     PlateKinematicsTest.java
     OrogenyTest.java
+    BoundaryTectonicsDocsTest.java
   src/test/resources/worlds/
     default-n3.txt
 

@@ -34,6 +34,14 @@ export function clampScale(scale: number, minScale: number): number {
   return Math.min(MAX_SCALE, Math.max(minScale, scale));
 }
 
+/** Vertically center the map in the stage at the given scale (tx unchanged). */
+export function lockVertical(vp: Viewport, stageH: number, displayH: number): Viewport {
+  return {
+    ...vp,
+    ty: (stageH - displayH * vp.scale) / 2,
+  };
+}
+
 /** Center the map in the stage at the given scale. */
 export function centeredViewport(
   stageW: number,
@@ -59,21 +67,23 @@ export function fittedViewport(
   return centeredViewport(stageW, stageH, displayW, displayH, scale);
 }
 
-/** Wrap pan translation into one map period at the current scale. */
-export function wrapPan(vp: Viewport, displayW: number, displayH: number): Viewport {
+/** Wrap horizontal pan into one map period; ty left unchanged. */
+export function wrapPan(vp: Viewport, displayW: number, _displayH: number): Viewport {
   const periodX = displayW * vp.scale;
-  const periodY = displayH * vp.scale;
-  if (periodX <= 0 || periodY <= 0) {
+  if (periodX <= 0) {
     return vp;
   }
   return {
     scale: vp.scale,
     tx: floorMod(vp.tx, periodX),
-    ty: floorMod(vp.ty, periodY),
+    ty: vp.ty,
   };
 }
 
-/** Zoom toward a point in stage (CSS) coordinates; scale clamped to [minScale, MAX_SCALE]. */
+/**
+ * Zoom toward a point in stage (CSS) coordinates; scale clamped to [minScale, MAX_SCALE].
+ * Vertical translation is re-locked to stage center (horizontal-only camera).
+ */
 export function zoomAt(
   vp: Viewport,
   stageX: number,
@@ -82,35 +92,34 @@ export function zoomAt(
   minScale: number,
   displayW: number,
   displayH: number,
+  stageH: number,
 ): Viewport {
   const nextScale = clampScale(vp.scale * factor, minScale);
-  if (nextScale === vp.scale) {
-    return wrapPan(vp, displayW, displayH);
-  }
   const worldX = (stageX - vp.tx) / vp.scale;
-  const worldY = (stageY - vp.ty) / vp.scale;
-  return wrapPan(
+  const next = wrapPan(
     {
       scale: nextScale,
       tx: stageX - worldX * nextScale,
-      ty: stageY - worldY * nextScale,
+      ty: vp.ty,
     },
     displayW,
     displayH,
   );
+  return lockVertical(next, stageH, displayH);
 }
 
+/** Pan horizontally only; dy is ignored. Vertical position stays locked via caller/lockVertical. */
 export function panBy(
   vp: Viewport,
   dx: number,
-  dy: number,
+  _dy: number,
   displayW: number,
   displayH: number,
 ): Viewport {
-  return wrapPan({ ...vp, tx: vp.tx + dx, ty: vp.ty + dy }, displayW, displayH);
+  return wrapPan({ ...vp, tx: vp.tx + dx }, displayW, displayH);
 }
 
-/** Map stage (CSS) point to world cell indices (toroidal). */
+/** Map stage (CSS) point to world cell indices (toroidal in x; y uses locked viewport). */
 export function stageToCell(
   vp: Viewport,
   stageX: number,
@@ -124,9 +133,15 @@ export function stageToCell(
     return null;
   }
   const localX = floorMod((stageX - vp.tx) / vp.scale, displayW);
-  const localY = floorMod((stageY - vp.ty) / vp.scale, displayH);
+  const localY = (stageY - vp.ty) / vp.scale;
+  if (localY < 0 || localY >= displayH) {
+    return null;
+  }
   const x = Math.floor((localX / displayW) * worldW) % worldW;
-  const y = Math.floor((localY / displayH) * worldH) % worldH;
+  const y = Math.floor((localY / displayH) * worldH);
+  if (y < 0 || y >= worldH) {
+    return null;
+  }
   return { x, y };
 }
 

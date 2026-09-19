@@ -34,6 +34,7 @@ class WorldDumpTest {
     assertTrue(a.contains("elevation:\n"));
     assertTrue(a.contains("plates:\n"));
     assertTrue(a.contains("plate_velocity:\n"));
+    assertTrue(a.contains("plate_registry:\n"));
     assertTrue(a.endsWith("\n"));
   }
 

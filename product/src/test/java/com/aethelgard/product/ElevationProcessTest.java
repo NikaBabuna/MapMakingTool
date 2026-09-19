@@ -65,7 +65,7 @@ class ElevationProcessTest {
     assertEquals(5, plates.width());
     assertEquals(3, plates.height());
     assertEquals(Plates.seed(5, 3, 2L), plates);
-    assertEquals(8, Plates.count(2L));
+    assertEquals(14, Plates.count(2L));
 
     Grid oneWide =
         (Grid) ProductHost.create(new WorldSpec(1, 4, 99L)).settled().field(WorldFields.PLATES);

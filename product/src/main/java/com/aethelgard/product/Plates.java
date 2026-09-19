@@ -1,6 +1,6 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/Plates.java
- * Purpose: Step-0 Voronoi plate partition from WorldSpec.seed
+ * Purpose: Step-0 toroidal nearest-site plate partition from WorldSpec.seed
  * Audience: ProductHost / Orogeny / tests
  * Update when: Plate-seed geometry rule changes
  */
@@ -8,10 +8,10 @@
 package com.aethelgard.product;
 
 /**
- * Voronoi plate seed from {@code seed}. Wiki: {@code docs/product/wiki/elevation.md}.
+ * Toroidal nearest-site plate seed from {@code seed}. Wiki: {@code docs/product/wiki/tectonics.md}.
  *
- * <p>Site count is {@code 6 + floorMod(seed, 10)} (6–15). Each cell takes the nearest site
- * (Euclidean); ties take the lower site index.
+ * <p>Site count is {@code 12 + floorMod(seed, 13)} (12–24). Each cell takes the nearest site under
+ * toroidal (minimum-image) Euclidean distance; ties take the lower site index.
  */
 public final class Plates {
 
@@ -21,9 +21,9 @@ public final class Plates {
 
   private Plates() {}
 
-  /** Site count \(N\) in {@code 6..15} from {@code seed}. */
+  /** Site count \(N\) in {@code 12..24} from {@code seed}. */
   public static int count(long seed) {
-    return 6 + (int) Math.floorMod(seed, 10L);
+    return 12 + (int) Math.floorMod(seed, 13L);
   }
 
   /**
@@ -50,9 +50,9 @@ public final class Plates {
   }
 
   /**
-   * Assign each cell the nearest site index. {@code siteX} and {@code siteY} must be the same
-   * length \(N \ge 1\). Ties take the lower index (first strictly-closer wins while scanning {@code
-   * 0..N-1}).
+   * Assign each cell the nearest site index under toroidal distance. {@code siteX} and {@code
+   * siteY} must be the same length \(N \ge 1\). Ties take the lower index (first strictly-closer
+   * wins while scanning {@code 0..N-1}).
    */
   public static Grid assign(int width, int height, int[] siteX, int[] siteY) {
     requirePositive(width, "width");
@@ -72,9 +72,9 @@ public final class Plates {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2(x, y, siteX[0], siteY[0]);
+        long bestD2 = dist2Toroidal(x, y, siteX[0], siteY[0], width, height);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2(x, y, siteX[i], siteY[i]);
+          long d2 = dist2Toroidal(x, y, siteX[i], siteY[i], width, height);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -99,7 +99,7 @@ public final class Plates {
     return assign(width, height, xs, ys);
   }
 
-  /** True when a 4-neighbor has a different plate id. */
+  /** True when a 4-neighbor has a different plate id (clipped edges; orogeny uses its own wrap). */
   public static boolean hasForeignNeighbor(Grid plates, int x, int y) {
     int id = plates.get(x, y);
     return different(plates, x - 1, y, id)
@@ -108,17 +108,24 @@ public final class Plates {
         || different(plates, x, y + 1, id);
   }
 
+  /** Toroidal squared Euclidean distance (minimum-image). */
+  public static long dist2Toroidal(int x, int y, int sx, int sy, int width, int height) {
+    long dx = toroidalDelta(x, sx, width);
+    long dy = toroidalDelta(y, sy, height);
+    return dx * dx + dy * dy;
+  }
+
+  private static long toroidalDelta(int a, int b, int period) {
+    long d = Math.abs((long) a - (long) b);
+    long wrap = (long) period - d;
+    return Math.min(d, wrap);
+  }
+
   private static long splitmix64(long z) {
     z += MIX_GOLDEN;
     z = (z ^ (z >>> 30)) * MIX_SILVER;
     z = (z ^ (z >>> 27)) * MIX_BRONZE;
     return z ^ (z >>> 31);
-  }
-
-  private static long dist2(int x, int y, int sx, int sy) {
-    long dx = (long) x - (long) sx;
-    long dy = (long) y - (long) sy;
-    return dx * dx + dy * dy;
   }
 
   private static boolean different(Grid plates, int x, int y, int id) {

@@ -7,7 +7,7 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 camera **F-032** done; panels/console still planned._
+_Status: **active** — G-007 studio cartography (done). G-008 camera **F-032/F-033** (zoom clamp + **horizontal-only** loopback pan); panels/console still planned._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
@@ -21,14 +21,15 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | **Look** | More **mappy** (chart/atlas cues) | planned F-039 |
 | **Console** | Traditional terminal appearance | planned F-040 |
 | **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
-| **Loopback pan** | Pan wraps with the **torus** (tiled draw) | **F-032** |
+| **Loopback pan** | **Horizontal only** (left/right); wraps on torus; vertical locked to stage center | **F-033** |
 
 ---
 
-## Map interaction (G-007 / F-028 / F-032)
+## Map interaction (G-007 / F-028 / F-032 / F-033)
 
-- Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map).
-- Drag to pan with **loopback** (toroidal); inspect clicks wrap into world cells.
+- Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map). Vertical position re-locks to stage center.
+- Drag to pan **left/right only** with horizontal loopback; no up/down pan.
+- Inspect clicks map into world cells (x wraps; y must hit the map band).
 - **Reset view** (`R`) restores fitted centered transform.
 - Busy: map overlay + status chip; do not queue Advance / New world.
 
