@@ -7,25 +7,30 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). **G-008 intent planned** (F-030; build F-032 / F-039 / F-040)._
+_Status: **active** — G-007 studio cartography (done). G-008 camera **F-032** done; panels/console still planned._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
 ---
 
-## G-008 intent (planned — not shipped in F-030)
+## G-008 intent (planned / partial)
 
-| Item | Intent |
-|------|--------|
-| **Studio** | Distinct panels/windows for controls, legend, inspect — cartography desk, not one flat page |
-| **Look** | More **mappy** (chart/atlas cues); less generic dark-tool chrome |
-| **Console** | Traditional terminal appearance (monospace, CRT/terminal chrome) |
-| **Map camera** | Zoom **in** allowed; cannot zoom out past map limits (no empty void beyond the world) |
-| **Loopback pan** | Pan wraps with the **torus** (scroll off an edge → opposite side) |
+| Item | Intent | Status |
+|------|--------|--------|
+| **Studio** | Distinct panels/windows for controls, legend, inspect | planned F-039 |
+| **Look** | More **mappy** (chart/atlas cues) | planned F-039 |
+| **Console** | Traditional terminal appearance | planned F-040 |
+| **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
+| **Loopback pan** | Pan wraps with the **torus** (tiled draw) | **F-032** |
 
 ---
 
-## Direction (G-007 shipped)
+## Map interaction (G-007 / F-028 / F-032)
+
+- Wheel zoom toward cursor; clamped to **[fitScale, MAX_SCALE]** (no empty void beyond the map).
+- Drag to pan with **loopback** (toroidal); inspect clicks wrap into world cells.
+- **Reset view** (`R`) restores fitted centered transform.
+- Busy: map overlay + status chip; do not queue Advance / New world.
 
 **Studio cartography** — the window is a working map desk, not a marketing page.
 
@@ -80,11 +85,3 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
 | `R` | Reset map view |
 
 Ignore shortcuts while focus is in an input / textarea / select (except Enter in seed/console fields as documented).
-
----
-
-## Map interaction (G-007 / F-028)
-
-- Wheel zoom toward cursor; drag to pan; **Reset view** (`R`) restores identity transform.
-- Click inspect maps through the viewport transform to world cells.
-- Busy: map overlay + status chip; do not queue Advance / New world.

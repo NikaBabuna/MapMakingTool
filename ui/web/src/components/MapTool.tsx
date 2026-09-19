@@ -25,7 +25,7 @@ import {
   SPEED_MS,
   HostStatus,
 } from "@/lib/host";
-import { IDENTITY_VIEWPORT, Viewport } from "@/lib/viewport";
+import { IDENTITY_VIEWPORT, Viewport, fittedViewport } from "@/lib/viewport";
 import { rgbCss } from "@/lib/raster";
 
 const LAYERS: MapLayerName[] = ["Elevation", "Plates", "Overlay"];
@@ -62,6 +62,13 @@ export function MapTool() {
   const [consoleOpen, setConsoleOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(true);
   const [viewport, setViewport] = useState<Viewport>(IDENTITY_VIEWPORT);
+  const [stageMetrics, setStageMetrics] = useState({
+    stageW: 1,
+    stageH: 1,
+    displayW: 1920,
+    displayH: 1080,
+  });
+  const fittedOnceRef = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [online, setOnline] = useState(false);
   const [confirmNew, setConfirmNew] = useState(false);
@@ -157,6 +164,30 @@ export function MapTool() {
     };
   }, [playing, speed]);
 
+  function fitView() {
+    setViewport(
+      resetViewport(
+        stageMetrics.stageW,
+        stageMetrics.stageH,
+        stageMetrics.displayW,
+        stageMetrics.displayH,
+      ),
+    );
+  }
+
+  function onStageMetrics(next: {
+    stageW: number;
+    stageH: number;
+    displayW: number;
+    displayH: number;
+  }) {
+    setStageMetrics(next);
+    if (!fittedOnceRef.current && next.stageW > 1 && next.displayW > 0) {
+      fittedOnceRef.current = true;
+      setViewport(fittedViewport(next.stageW, next.stageH, next.displayW, next.displayH));
+    }
+  }
+
   async function onAdvance() {
     if (busyRef.current) {
       return;
@@ -216,7 +247,7 @@ export function MapTool() {
       busyRef.current = next.busy;
       const bytes = await fetchRaster();
       setRaster(bytes);
-      setViewport(resetViewport());
+      fitView();
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -326,7 +357,7 @@ export function MapTool() {
       }
       if (key === "r" || key === "R") {
         e.preventDefault();
-        setViewport(resetViewport());
+        fitView();
       }
     }
     window.addEventListener("keydown", onKey);
@@ -421,7 +452,7 @@ export function MapTool() {
           >
             Console
           </button>
-          <button type="button" className="btn" onClick={() => setViewport(resetViewport())} title="Reset view (R)">
+          <button type="button" className="btn" onClick={fitView} title="Reset view (R)">
             Reset view
           </button>
 
@@ -446,6 +477,7 @@ export function MapTool() {
           busy={busy}
           viewport={viewport}
           onViewportChange={setViewport}
+          onStageMetrics={onStageMetrics}
           onCell={(x, y) => void onCell(x, y)}
         />
 

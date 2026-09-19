@@ -130,6 +130,7 @@ Implementation Steps: **F-034–F-038**.
 
 ---
 
-## Studio UI (planned — not F-030)
+## Studio UI
 
-See [style-guide.md](../style-guide.md) and [flows.md](../flows.md) G-008 intent: multi-panel studio, mappy look, traditional terminal console, zoom-in within map limits, loopback pan matching the torus (**F-032**, **F-039**, **F-040**).
+- **F-032:** loopback pan + zoom clamp (fit min) — shipped in `ui/web`.
+- **F-039 / F-040:** multi-panel mappy studio + traditional console — planned.

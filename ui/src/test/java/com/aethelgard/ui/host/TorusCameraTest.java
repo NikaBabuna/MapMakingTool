@@ -1,13 +1,12 @@
 /*
- * File: ui/src/test/java/com/aethelgard/ui/host/ViewportFrontTest.java
- * Purpose: F-028 structural + pure-math witness for pan/zoom (amended F-032 torus)
+ * File: ui/src/test/java/com/aethelgard/ui/host/TorusCameraTest.java
+ * Purpose: F-032 structural witness for loopback pan + zoom clamp
  * Audience: Agents / CI
- * Update when: Viewport FRs change
+ * Update when: F-032 FRs change
  */
 
 package com.aethelgard.ui.host;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -15,42 +14,38 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ViewportFrontTest {
+class TorusCameraTest {
 
   @Test
-  @DisplayName("FR-1..FR-4: viewport helpers + MapCanvas pan/zoom + reset (F-028/F-032)")
-  void panZoomAndCellPick() throws Exception {
+  @DisplayName("FR-1..FR-5: viewport fit/wrap + MapCanvas torus camera + docs")
+  void docsAndViewport() throws Exception {
     Path root = findRepoRoot();
 
     String viewport = Files.readString(root.resolve("ui/web/src/lib/viewport.ts"));
-    assertTrue(viewport.contains("zoomAt"));
-    assertTrue(viewport.contains("panBy"));
-    assertTrue(viewport.contains("stageToCell"));
     assertTrue(viewport.contains("fitScale"));
+    assertTrue(viewport.contains("wrapPan") || viewport.contains("floorMod"));
+    assertTrue(viewport.contains("fittedViewport"));
     assertTrue(viewport.contains("MAX_SCALE"));
+    assertTrue(viewport.contains("stageToCell"));
+    assertTrue(viewport.contains("floorMod((stageX") || viewport.contains("floorMod((stageX -"));
 
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
-    assertTrue(canvas.contains("zoomAt"));
-    assertTrue(canvas.contains("panBy"));
+    assertTrue(canvas.contains("fitScale"));
+    assertTrue(canvas.contains("drawImage"));
+    assertTrue(canvas.contains("for (let i = -1"));
     assertTrue(canvas.contains("stageToCell"));
-    assertTrue(canvas.contains("onWheel"));
+    assertTrue(canvas.contains("fittedViewport") || canvas.contains("resetViewport"));
 
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
-    assertTrue(tool.contains("Reset view") || tool.contains("fitView"));
-
-    double stageW = 800;
-    double displayW = 1920;
-    double fit = Math.min(stageW / displayW, 600.0 / 1080.0);
-    assertTrue(fit < 1.0);
-    assertEquals(stageW / displayW, Math.min(stageW / displayW, 600.0 / 1080.0), 1e-9);
-
-    // floorMod wrap
-    assertEquals(10, Math.floorMod(-5, 15));
+    assertTrue(tool.contains("fitView") || tool.contains("fittedViewport"));
+    assertTrue(tool.contains("Reset view"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("Wheel zoom") || style.contains("pan") || style.contains("loopback"));
+    assertTrue(style.toLowerCase().contains("loopback") || style.toLowerCase().contains("fit"));
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("Pan") || flows.contains("pan") || flows.contains("zoom") || flows.contains("F-032"));
+    assertTrue(flows.toLowerCase().contains("loopback") || flows.contains("F-032"));
+    String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
+    assertTrue(tectonics.toLowerCase().contains("torus"));
   }
 
   private static Path findRepoRoot() throws Exception {

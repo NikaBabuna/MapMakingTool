@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-031 Accepted · next F-032
+**Status:** F-032 Accepted · next F-033
 
 ---
 
@@ -31,17 +31,18 @@ Ship **G-008** — boundary tectonics + large torus world + cartography studio (
 |------|------|--------|
 | F-030 | Wiki + decisions (docs only) | done |
 | F-031 | Large rectangular world 1920×1080 | done |
-| F-032–F-040 | Per Goal plan | not started |
+| F-032 | Loopback pan + zoom clamp | done |
+| F-033–F-040 | Per Goal plan | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-031 Accept)
+- [x] Incremental suite green (F-032 Accept)
 
 ---
 
 ## Notes
 
-- VIEW **1920×1080** live. Next: **F-032** torus wrap + loopback pan + zoom clamp.
+- VIEW **1920×1080**; studio torus camera. Next: **F-033** initial plate partition + registry.

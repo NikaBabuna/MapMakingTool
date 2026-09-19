@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-032:** studio loopback pan + zoom-to-fit clamp (tiled torus draw); Voronoi distance still F-033.
 - **2026-09-19** — **F-031:** `WorldSpec.VIEW` is **1920×1080**; host/raster smoke; DEFAULT dump unchanged.
 - **2026-09-19** — **F-030:** G-008 wiki locks ([tectonics.md](../product/wiki/tectonics.md)); VIEW 1920×1080 documented; runtime unchanged.
 - **2026-09-19** — **G-008** Boundary tectonics + cartography studio registered (1920×1080 torus; plate do-over; studio panels). Steps F-030–F-040 planned. Active Goal G-008.

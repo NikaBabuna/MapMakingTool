@@ -142,6 +142,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-029.md](blockers/F-029.md) | done — shortcuts + QoL; G-007 closed |
 | [F-030.md](blockers/F-030.md) | done — G-008 wiki + decisions |
 | [F-031.md](blockers/F-031.md) | done — VIEW 1920×1080 |
+| [F-032.md](blockers/F-032.md) | done — loopback pan + zoom clamp |
 
 ---
 

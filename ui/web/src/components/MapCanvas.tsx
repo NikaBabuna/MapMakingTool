@@ -2,17 +2,17 @@
 
 /*
  * File: ui/web/src/components/MapCanvas.tsx
- * Purpose: Paint host raster with pan/zoom; forward click cells
+ * Purpose: Paint host raster with toroidal pan/zoom; forward click cells
  * Audience: MapTool
  * Update when: Display scaling or viewport interaction changes
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { decodePackedRaster } from "@/lib/raster";
 import {
-  IDENTITY_VIEWPORT,
   Viewport,
-  cssTransform,
+  fitScale,
+  fittedViewport,
   panBy,
   stageToCell,
   zoomAt,
@@ -24,37 +24,110 @@ type Props = {
   viewport: Viewport;
   onViewportChange: (next: Viewport) => void;
   onCell: (x: number, y: number) => void;
+  onStageMetrics?: (metrics: { stageW: number; stageH: number; displayW: number; displayH: number }) => void;
 };
 
-export function MapCanvas({ buffer, busy, viewport, onViewportChange, onCell }: Props) {
+export function MapCanvas({
+  buffer,
+  busy,
+  viewport,
+  onViewportChange,
+  onCell,
+  onStageMetrics,
+}: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sizeRef = useRef({ w: 512, h: 512, dw: 512, dh: 512 });
+  const sourceRef = useRef<HTMLCanvasElement>(null);
+  const viewRef = useRef<HTMLCanvasElement>(null);
+  const sizeRef = useRef({ w: 1920, h: 1080, dw: 1920, dh: 1080 });
+  const stageSizeRef = useRef({ w: 1, h: 1 });
   const dragRef = useRef<{ x: number; y: number; moved: boolean } | null>(null);
   const [panning, setPanning] = useState(false);
   const viewportRef = useRef(viewport);
   viewportRef.current = viewport;
 
+  function paint() {
+    const source = sourceRef.current;
+    const view = viewRef.current;
+    const stage = stageRef.current;
+    if (!source || !view || !stage) {
+      return;
+    }
+    const stageW = stage.clientWidth;
+    const stageH = stage.clientHeight;
+    if (stageW <= 0 || stageH <= 0) {
+      return;
+    }
+    if (view.width !== stageW || view.height !== stageH) {
+      view.width = stageW;
+      view.height = stageH;
+    }
+    const ctx = view.getContext("2d");
+    if (!ctx) {
+      return;
+    }
+    const { dw, dh } = sizeRef.current;
+    const { scale, tx, ty } = viewportRef.current;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, stageW, stageH);
+    ctx.imageSmoothingEnabled = false;
+    ctx.setTransform(scale, 0, 0, scale, tx, ty);
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        ctx.drawImage(source, i * dw, j * dh);
+      }
+    }
+  }
+
   useEffect(() => {
-    if (!buffer || !canvasRef.current) {
+    if (!buffer || !sourceRef.current) {
       return;
     }
     const { width, height, image } = decodePackedRaster(buffer);
     sizeRef.current.w = width;
     sizeRef.current.h = height;
-    const canvas = canvasRef.current;
-    if (canvas.width !== width || canvas.height !== height) {
-      canvas.width = width;
-      canvas.height = height;
-    }
     sizeRef.current.dw = width;
     sizeRef.current.dh = height;
-    const ctx = canvas.getContext("2d");
+    const source = sourceRef.current;
+    if (source.width !== width || source.height !== height) {
+      source.width = width;
+      source.height = height;
+    }
+    const ctx = source.getContext("2d");
     if (!ctx) {
       return;
     }
     ctx.putImageData(image, 0, 0);
-  }, [buffer]);
+    paint();
+    onStageMetrics?.({
+      stageW: stageSizeRef.current.w,
+      stageH: stageSizeRef.current.h,
+      displayW: width,
+      displayH: height,
+    });
+  }, [buffer, onStageMetrics]);
+
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) {
+      return;
+    }
+    const sync = () => {
+      const stageW = stage.clientWidth;
+      const stageH = stage.clientHeight;
+      stageSizeRef.current = { w: stageW, h: stageH };
+      const { dw, dh } = sizeRef.current;
+      onStageMetrics?.({ stageW, stageH, displayW: dw, displayH: dh });
+      paint();
+    };
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(stage);
+    return () => ro.disconnect();
+  }, [onStageMetrics]);
+
+  useEffect(() => {
+    paint();
+  }, [viewport]);
 
   function stagePoint(clientX: number, clientY: number): { x: number; y: number } | null {
     const stage = stageRef.current;
@@ -75,8 +148,10 @@ export function MapCanvas({ buffer, busy, viewport, onViewportChange, onCell }: 
         if (!pt) {
           return;
         }
+        const { dw, dh } = sizeRef.current;
+        const minScale = fitScale(stageSizeRef.current.w, stageSizeRef.current.h, dw, dh);
         const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-        onViewportChange(zoomAt(viewportRef.current, pt.x, pt.y, factor));
+        onViewportChange(zoomAt(viewportRef.current, pt.x, pt.y, factor, minScale, dw, dh));
       }}
       onPointerDown={(e) => {
         if (e.button !== 0) {
@@ -98,7 +173,8 @@ export function MapCanvas({ buffer, busy, viewport, onViewportChange, onCell }: 
         dragRef.current.x = e.clientX;
         dragRef.current.y = e.clientY;
         if (dragRef.current.moved) {
-          onViewportChange(panBy(viewportRef.current, dx, dy));
+          const { dw, dh } = sizeRef.current;
+          onViewportChange(panBy(viewportRef.current, dx, dy, dw, dh));
         }
       }}
       onPointerUp={(e) => {
@@ -135,9 +211,8 @@ export function MapCanvas({ buffer, busy, viewport, onViewportChange, onCell }: 
         setPanning(false);
       }}
     >
-      <div className="map-viewport" style={{ transform: cssTransform(viewport) }}>
-        <canvas ref={canvasRef} className="map-canvas" width={512} height={512} />
-      </div>
+      <canvas ref={sourceRef} className="map-source" width={1920} height={1080} aria-hidden />
+      <canvas ref={viewRef} className="map-view" />
       <div className="map-busy" aria-hidden={!busy}>
         Working…
       </div>
@@ -145,6 +220,11 @@ export function MapCanvas({ buffer, busy, viewport, onViewportChange, onCell }: 
   );
 }
 
-export function resetViewport(): Viewport {
-  return IDENTITY_VIEWPORT;
+export function resetViewport(
+  stageW: number,
+  stageH: number,
+  displayW: number,
+  displayH: number,
+): Viewport {
+  return fittedViewport(stageW, stageH, displayW, displayH);
 }
