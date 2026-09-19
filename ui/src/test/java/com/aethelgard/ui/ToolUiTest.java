@@ -102,7 +102,9 @@ class ToolUiTest {
     assertEquals(ElevationRaster.overlayCell(elev, plates, 0, 0), map.raster().rgb(0, 0));
 
     map.setLayer(MapLayer.ELEVATION);
-    assertEquals(elevation, map.raster());
+    assertEquals(
+        ElevationRaster.paint(elev, plates, MapLayer.ELEVATION),
+        map.raster());
   }
 
   @Test

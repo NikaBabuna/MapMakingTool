@@ -46,7 +46,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
-| **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |
+| **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): flat `int[]` pixels; ocean + hillshaded land, plate colors, or overlay. Controllers may reuse the buffer (F-047). |
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |

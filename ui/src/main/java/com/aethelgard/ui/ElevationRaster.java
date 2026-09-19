@@ -12,7 +12,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Deterministic RGB image of a map layer. One packed {@code 0xRRGGBB} per cell.
+ * Deterministic RGB image of a map layer. One packed {@code 0xRRGGBB} per cell in a flat {@code
+ * int[]} (row-major). Paint may reuse a caller buffer when dimensions match (F-047).
  *
  * <p>Land ramp (F-018) for {@code e >= 0}; ocean for negatives; hillshade on land for Elevation and
  * Overlay. Formulas: {@code docs/blockers/F-022.md} and product architecture.
@@ -38,11 +39,11 @@ public final class ElevationRaster {
 
   private final int width;
   private final int height;
-  private final int[][] rgb;
+  private final int[] rgb;
 
-  private ElevationRaster(int[][] rgb) {
-    this.height = rgb.length;
-    this.width = rgb[0].length;
+  private ElevationRaster(int width, int height, int[] rgb) {
+    this.width = width;
+    this.height = height;
     this.rgb = rgb;
   }
 
@@ -51,8 +52,16 @@ public final class ElevationRaster {
     return paint(elevation, null, MapLayer.ELEVATION);
   }
 
-  /** Raster of {@code elevation} and {@code plates} for {@code layer}. */
+  /** Raster of {@code elevation} and {@code plates} for {@code layer} (allocates a new buffer). */
   public static ElevationRaster paint(Grid elevation, Grid plates, MapLayer layer) {
+    return paint(elevation, plates, layer, null);
+  }
+
+  /**
+   * Raster into {@code reuse} when non-null and {@code length == width * height}; otherwise
+   * allocates. Same formulas as {@link #paint(Grid, Grid, MapLayer)}.
+   */
+  public static ElevationRaster paint(Grid elevation, Grid plates, MapLayer layer, int[] reuse) {
     Objects.requireNonNull(elevation, "elevation");
     Objects.requireNonNull(layer, "layer");
     if (layer != MapLayer.ELEVATION) {
@@ -71,10 +80,12 @@ public final class ElevationRaster {
     }
     int w = elevation.width();
     int h = elevation.height();
-    int[][] cells = new int[h][w];
+    int need = w * h;
+    int[] cells = (reuse != null && reuse.length == need) ? reuse : new int[need];
     for (int y = 0; y < h; y++) {
+      int row = y * w;
       for (int x = 0; x < w; x++) {
-        cells[y][x] =
+        cells[row + x] =
             switch (layer) {
               case ELEVATION -> elevationCell(elevation, x, y);
               case PLATES -> plateBoundaryCell(plates, x, y);
@@ -82,7 +93,7 @@ public final class ElevationRaster {
             };
       }
     }
-    return new ElevationRaster(cells);
+    return new ElevationRaster(w, h, cells);
   }
 
   /**
@@ -251,7 +262,17 @@ public final class ElevationRaster {
       throw new IllegalArgumentException(
           "cell (" + x + "," + y + ") out of " + width + "x" + height);
     }
-    return rgb[y][x];
+    return rgb[y * width + x];
+  }
+
+  /** True when this raster's backing store is exactly {@code buffer} (reuse witness). */
+  public boolean usesBuffer(int[] buffer) {
+    return rgb == buffer;
+  }
+
+  /** Row-major packed RGB (length {@code width * height}). */
+  public int[] pixels() {
+    return rgb;
   }
 
   @Override
@@ -262,12 +283,15 @@ public final class ElevationRaster {
     if (!(obj instanceof ElevationRaster other)) {
       return false;
     }
-    return width == other.width && height == other.height && Arrays.deepEquals(rgb, other.rgb);
+    return width == other.width && height == other.height && Arrays.equals(rgb, other.rgb);
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(rgb);
+    int result = width;
+    result = 31 * result + height;
+    result = 31 * result + Arrays.hashCode(rgb);
+    return result;
   }
 
   static int pack(int r, int g, int b) {

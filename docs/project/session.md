@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-046 Accepted · Active Goal G-009 · next negotiate F-047
+**Status:** F-047 Accepted · Active Goal G-009 · next negotiate F-048
 
 ---
 
@@ -29,19 +29,18 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-044 | Slivers + border read | done |
-| F-045 | Sphere topology (+ bold / natural borders) | done |
 | F-046 | Step path hotspots + crumb 0.01% | done |
+| F-047 | Raster + host memory | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] F-046 Accepted (witness + SYNC)
+- [x] F-047 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-046: phase collectors (`phase.*`); crumb absorb 0.01%; advection drops `whoMin` grid; no engine parallel.
+- F-047: flat ElevationRaster; MapController double-buffer reuse; MapHost packed-body cache (O(1) soak).

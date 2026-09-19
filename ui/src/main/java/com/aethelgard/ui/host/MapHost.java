@@ -58,6 +58,14 @@ public final class MapHost implements AutoCloseable {
   private final HttpServer server;
   private final boolean ownsLifecycle;
 
+  /** Reused packed raster body (F-047); invalidated when step or layer changes. */
+  private byte[] cachedPacked;
+
+  private int cachedPackedStep = Integer.MIN_VALUE;
+  private int cachedPaintGeneration = Integer.MIN_VALUE;
+  private MapLayer cachedPackedLayer;
+  private int packedBodyAllocations;
+
   private MapHost(
       MapController controller,
       ExecutorPlayScheduler playScheduler,
@@ -136,6 +144,16 @@ public final class MapHost implements AutoCloseable {
     return controller;
   }
 
+  /** Test hook: how many distinct packed {@code byte[]} bodies this host allocated. */
+  public int packedBodyAllocations() {
+    return packedBodyAllocations;
+  }
+
+  /** Test hook: identity of the current cached packed body, or {@code null}. */
+  public byte[] cachedPackedBody() {
+    return cachedPacked;
+  }
+
   @Override
   public void close() {
     server.stop(0);
@@ -181,7 +199,7 @@ public final class MapHost implements AutoCloseable {
       return;
     }
     ElevationRaster image = controller.raster();
-    byte[] body = packRaster(image);
+    byte[] body = packedRasterCached();
     Headers headers = exchange.getResponseHeaders();
     cors(headers);
     headers.set("Content-Type", "application/octet-stream");
@@ -191,6 +209,35 @@ public final class MapHost implements AutoCloseable {
     try (OutputStream out = exchange.getResponseBody()) {
       out.write(body);
     }
+  }
+
+  /**
+   * Returns the packed raster for the current controller step+layer, reusing one {@code byte[]}
+   * when size matches (F-047). Refills when step or layer changes.
+   */
+  byte[] packedRasterCached() {
+    ElevationRaster image = controller.raster();
+    int step = controller.stepIndex();
+    int gen = controller.paintGeneration();
+    MapLayer layer = controller.layer();
+    int need = 8 + (image.width() * image.height() * 4);
+    boolean sameKey =
+        cachedPacked != null
+            && cachedPackedStep == step
+            && cachedPaintGeneration == gen
+            && cachedPackedLayer == layer;
+    if (sameKey && cachedPacked.length == need) {
+      return cachedPacked;
+    }
+    if (cachedPacked == null || cachedPacked.length != need) {
+      cachedPacked = new byte[need];
+      packedBodyAllocations++;
+    }
+    packRasterInto(image, cachedPacked);
+    cachedPackedStep = step;
+    cachedPaintGeneration = gen;
+    cachedPackedLayer = layer;
+    return cachedPacked;
   }
 
   private void advance(HttpExchange exchange) throws IOException {
@@ -447,16 +494,26 @@ public final class MapHost implements AutoCloseable {
     int w = image.width();
     int h = image.height();
     byte[] body = new byte[8 + (w * h * 4)];
+    packRasterInto(image, body);
+    return body;
+  }
+
+  /** Packs into {@code body}; length must be {@code 8 + width * height * 4}. */
+  public static void packRasterInto(ElevationRaster image, byte[] body) {
+    int w = image.width();
+    int h = image.height();
+    int need = 8 + (w * h * 4);
+    if (body.length != need) {
+      throw new IllegalArgumentException("body length " + body.length + " != " + need);
+    }
     putInt(body, 0, w);
     putInt(body, 4, h);
     int o = 8;
-    for (int y = 0; y < h; y++) {
-      for (int x = 0; x < w; x++) {
-        putInt(body, o, image.rgb(x, y));
-        o += 4;
-      }
+    int[] pixels = image.pixels();
+    for (int i = 0; i < pixels.length; i++) {
+      putInt(body, o, pixels[i]);
+      o += 4;
     }
-    return body;
   }
 
   public static int readInt(byte[] body, int offset) {

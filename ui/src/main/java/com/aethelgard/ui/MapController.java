@@ -50,6 +50,14 @@ public final class MapController {
   private boolean playing;
   private CellInspect inspected;
   private long lastPaintNanos;
+  /** Reused paint backing stores when width×height unchanged (F-047). Double-buffered so prior
+   * snapshots keep correct pixels. */
+  private int[] paintBufferA;
+
+  private int[] paintBufferB;
+  private boolean paintIntoA = true;
+  /** Bumps on every paint so MapHost can invalidate packed cache (F-047). */
+  private int paintGeneration;
 
   public MapController(WorldSpec spec) {
     this(spec, Runnable::run, PlayScheduler.idle());
@@ -101,6 +109,11 @@ public final class MapController {
     return raster;
   }
 
+  /** Monotonic paint counter; changes whenever the visible raster is rebuilt. */
+  public int paintGeneration() {
+    return paintGeneration;
+  }
+
   public MapLayer layer() {
     return layer;
   }
@@ -141,7 +154,10 @@ public final class MapController {
    */
   public void setLayer(MapLayer layer) {
     this.layer = Objects.requireNonNull(layer, "layer");
-    raster = ElevationRaster.paint(elevation, plates, this.layer);
+    long t0 = System.nanoTime();
+    raster = paintReuse(elevation, plates, this.layer);
+    lastPaintNanos = System.nanoTime() - t0;
+    session.diagnostics().record(DiagnosticIds.PAINT_WALL, lastPaintNanos);
     fire();
   }
 
@@ -291,9 +307,27 @@ public final class MapController {
     velocities = session.plateVelocities();
     cachedStep = session.stepIndex();
     long t0 = System.nanoTime();
-    raster = ElevationRaster.paint(elevation, plates, layer);
+    raster = paintReuse(elevation, plates, layer);
     lastPaintNanos = System.nanoTime() - t0;
     session.diagnostics().record(DiagnosticIds.PAINT_WALL, lastPaintNanos);
+  }
+
+  private ElevationRaster paintReuse(Grid elev, Grid plateGrid, MapLayer mapLayer) {
+    int need = elev.width() * elev.height();
+    if (paintBufferA == null || paintBufferA.length != need) {
+      paintBufferA = new int[need];
+      paintBufferB = new int[need];
+      paintIntoA = true;
+    }
+    int[] target = paintIntoA ? paintBufferA : paintBufferB;
+    paintIntoA = !paintIntoA;
+    paintGeneration++;
+    return ElevationRaster.paint(elev, plateGrid, mapLayer, target);
+  }
+
+  /** Test hook: either slot of the double paint buffer. */
+  int[] paintBufferForTest() {
+    return paintBufferA;
   }
 
   private void fire() {

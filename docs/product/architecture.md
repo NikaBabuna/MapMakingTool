@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-046; G-008 done)  
+**Status:** active (G-009 in progress through F-047; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -71,7 +71,7 @@ Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Eleva
 
 Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`, `stats`, `diag list|on|off|clear`. Still unstable pending F-048 — not a product API.
 
-Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB`. Same grids + layer → identical RGB.
+Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB` in a **flat** `int[]` (F-047). `MapController` **reuses** a **double buffer** when width×height is unchanged (prior snapshot keeps correct pixels). `MapHost` **caches/reuses** one packed `byte[]` keyed by step + layer + paint generation — refill on invalidate, O(1) allocations under Play soak. Same grids + layer → identical RGB.
 
 **Land ramp** (`e >= 0`, F-018; clamp 32):
 

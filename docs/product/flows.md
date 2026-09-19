@@ -20,7 +20,15 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Docs | Diverge ridge; sphere poles; commands; observability | **F-041** done |
 | Diagnostics | Controllable hub + first collectors + CLI | **F-042** done |
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
-| Perf | Step path + raster/host memory | **F-046** done (phases + crumb 0.01%); F-047 |
+| Perf | Step path + raster/host memory | **F-046** / **F-047** done |
+
+### Flow: Raster / host memory (F-047)
+
+| Step | Action |
+|------|--------|
+| 1 | Advance or set layer → MapController paints into a reused flat buffer; `paint.wall` records. |
+| 2 | `GET /api/raster` packs once into a reused `byte[]`; repeat GETs at same step/layer hit cache. |
+| 3 | Next advance / layer / newWorld bumps paint generation → cache refills (same allocation if size unchanged). |
 | Control | Shared commands; CLI; rebuilt terminal | F-048–F-050 |
 | Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
 
