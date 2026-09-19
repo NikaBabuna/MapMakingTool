@@ -60,7 +60,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 - [ ] Diverge: no third-plate fill of SEPARATE gaps (F-043)
 - [ ] Slivers / stacking borders addressed (F-044)
 - [ ] Sphere polar wrap end-to-end (F-045)
-- [ ] Diagnostics recorded + queryable (F-042+)
+- [x] Diagnostics recorded + queryable (F-042+)
 - [ ] Shared command surface + full CLI + rebuilt terminal (F-048–F-050)
 - [ ] Runner chrome + perf panels + UX pass (F-051–F-053)
 - [ ] Perf/memory improvements witnessed (F-046–F-047)
@@ -73,7 +73,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | Step | Intent | Status |
 |------|--------|--------|
 | F-041 | Docs lock (wiki + ADR-012 + Goal) — **docs only** | done |
-| F-042 | Diagnostics core (timings, memory, dump) | not started |
+| F-042 | Diagnostics core (timings, memory, dump) | done |
 | F-043 | Diverge / void-fill fix | not started |
 | F-044 | Slivers + border read | not started |
 | F-045 | Sphere topology | not started |
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 14 |
-| Claim boxes | 0 / 8 |
-| Last Accept | F-041 |
+| Steps done | 2 / 14 |
+| Claim boxes | 1 / 8 |
+| Last Accept | F-042 |

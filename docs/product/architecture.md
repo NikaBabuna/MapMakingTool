@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 F-041 docs lock; G-008 done — F-040 traditional console; boundary tectonics + multi-panel studio)  
+**Status:** active (G-009 F-042 diagnostics hub; F-041 docs lock; G-008 done — F-040 traditional console; boundary tectonics + multi-panel studio)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -57,6 +57,10 @@ cli →  product  →  engine
 
 MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the session physics lock (F-038).
 
+### Session diagnostics (F-042)
+
+`ProductSession.diagnostics()` is a `DiagnosticsHub`: named collectors with enable/disable and bounded ring history (default capacity 64). Built-ins: `advance.wall`, `heap.used`, `heap.max`, `paint.wall`. Never writes Pool fields. CLI: `stats`, `diag list|on|off|clear`. MapController records paint into the same hub. Later collectors (sub-system phases, HTTP) register on this hub.
+
 ---
 
 ## Map view (in `ui`, F-022–F-026)
@@ -65,7 +69,7 @@ Headless paint and session control live in `MapController` + `ElevationRaster`. 
 
 Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Console**. While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
 
-Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Placeholder verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`. Unstable — not a product API.
+Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`, `stats`, `diag list|on|off|clear`. Still unstable pending F-048 — not a product API.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB`. Same grids + layer → identical RGB.
 

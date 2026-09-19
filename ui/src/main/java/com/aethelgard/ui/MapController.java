@@ -9,6 +9,7 @@ package com.aethelgard.ui;
 
 import com.aethelgard.cli.CliResult;
 import com.aethelgard.cli.CommandDispatch;
+import com.aethelgard.product.DiagnosticIds;
 import com.aethelgard.product.Grid;
 import com.aethelgard.product.PlateVelocities;
 import com.aethelgard.product.ProductSession;
@@ -48,6 +49,7 @@ public final class MapController {
   private MapSpeed speed = MapSpeed.NORMAL;
   private boolean playing;
   private CellInspect inspected;
+  private long lastPaintNanos;
 
   public MapController(WorldSpec spec) {
     this(spec, Runnable::run, PlayScheduler.idle());
@@ -80,6 +82,11 @@ public final class MapController {
 
   public ProductSession session() {
     return session;
+  }
+
+  /** Wall time of the last {@link ElevationRaster#paint} in {@link #capture()}. */
+  public long lastPaintNanos() {
+    return lastPaintNanos;
   }
 
   /**
@@ -283,7 +290,10 @@ public final class MapController {
     plates = session.plates();
     velocities = session.plateVelocities();
     cachedStep = session.stepIndex();
+    long t0 = System.nanoTime();
     raster = ElevationRaster.paint(elevation, plates, layer);
+    lastPaintNanos = System.nanoTime() - t0;
+    session.diagnostics().record(DiagnosticIds.PAINT_WALL, lastPaintNanos);
   }
 
   private void fire() {

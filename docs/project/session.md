@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-041 Accepted · continuing G-009 · next F-042
+**Status:** F-042 Accepted · Active Goal G-009 · next negotiate F-043
 
 ---
 
 ## Session goal
 
-Execute **G-009** Steps per plan (F-041 done; F-042+).
+Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 ---
 
@@ -30,17 +30,17 @@ Execute **G-009** Steps per plan (F-041 done; F-042+).
 | Step | Work | Status |
 |------|------|--------|
 | F-041 | Docs lock | done |
-| F-042 | Diagnostics core | next |
+| F-042 | Diagnostics hub | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-041 Accept)
+- [x] Incremental suite green (F-042 Accept)
 
 ---
 
 ## Notes
 
-- F-041: ADR-012 + wiki locks; runtime unchanged.
+- F-042: `DiagnosticsHub` + collectors + CLI `stats`/`diag`. Next: negotiate F-043 (diverge / void-fill).

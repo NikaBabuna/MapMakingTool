@@ -136,7 +136,7 @@ Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runne
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-041 | Docs lock (wiki + ADR + Goal claims) | done | [F-041.md](../blockers/F-041.md) |
-| F-042 | Diagnostics core | not started | |
+| F-042 | Diagnostics core | done | [F-042.md](../blockers/F-042.md) |
 | F-043 | Diverge / void-fill fix | not started | |
 | F-044 | Slivers + border read | not started | |
 | F-045 | Sphere topology | not started | |

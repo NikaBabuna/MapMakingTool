@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-041 G-009 locks (diverge ridge; sphere polar wrap on paper). Prior: F-030 locks; F-034 cylinder; F-036 B1. **Code status:** G-008 behavior still live (cylinder hard-Y; nearest void-fill) until F-043–F-045. G-009 runner/diagnostics planned F-042+.
+**Doc status:** F-041 G-009 locks (diverge ridge; sphere polar wrap on paper). Prior: F-030 locks; F-034 cylinder; F-036 B1. **Code status:** G-008 tectonics still live (cylinder hard-Y; nearest void-fill) until F-043–F-045. **F-042:** session `DiagnosticsHub` (not Pool).
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 

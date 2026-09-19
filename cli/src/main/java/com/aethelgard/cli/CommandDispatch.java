@@ -7,6 +7,7 @@
 
 package com.aethelgard.cli;
 
+import com.aethelgard.product.DiagnosticsHub;
 import com.aethelgard.product.Grid;
 import com.aethelgard.product.PlateVelocities;
 import com.aethelgard.product.ProductSession;
@@ -16,7 +17,8 @@ import java.util.Objects;
 
 /**
  * Thin placeholder language. Not a product API. Do not copy these verb names into product
- * Systems, Pool fields, or merge types.
+ * Systems, Pool fields, or merge types. F-042 adds {@code stats} / {@code diag} control of the
+ * session {@link DiagnosticsHub}.
  */
 public final class CommandDispatch {
 
@@ -37,6 +39,8 @@ public final class CommandDispatch {
         case "dump" -> dump(session, parts);
         case "at" -> at(session, parts);
         case "layers" -> layers(parts);
+        case "stats" -> stats(session, parts);
+        case "diag" -> diag(session, parts);
         default -> new CliResult(2, "error: unknown command: " + parts[0]);
       };
     } catch (IllegalArgumentException ex) {
@@ -107,6 +111,46 @@ public final class CommandDispatch {
     return new CliResult(
         0,
         WorldFields.ELEVATION + "\n" + WorldFields.PLATES + "\n" + WorldFields.PLATE_VELOCITY);
+  }
+
+  private static CliResult stats(ProductSession session, String[] parts) {
+    requireArity(parts, 1, "stats");
+    return new CliResult(0, session.diagnostics().report());
+  }
+
+  private static CliResult diag(ProductSession session, String[] parts) {
+    if (parts.length < 2) {
+      throw new IllegalArgumentException("diag requires a subcommand: list|on|off|clear");
+    }
+    DiagnosticsHub hub = session.diagnostics();
+    return switch (parts[1]) {
+      case "list" -> {
+        requireArity(parts, 2, "diag list");
+        yield new CliResult(0, hub.listReport());
+      }
+      case "on" -> {
+        requireArity(parts, 3, "diag on");
+        hub.setEnabled(parts[2], true);
+        yield new CliResult(0, parts[2] + " enabled=true");
+      }
+      case "off" -> {
+        requireArity(parts, 3, "diag off");
+        hub.setEnabled(parts[2], false);
+        yield new CliResult(0, parts[2] + " enabled=false");
+      }
+      case "clear" -> {
+        if (parts.length == 2) {
+          hub.clearAll();
+          yield new CliResult(0, "cleared=all");
+        }
+        if (parts.length == 3) {
+          hub.clear(parts[2]);
+          yield new CliResult(0, "cleared=" + parts[2]);
+        }
+        throw new IllegalArgumentException("diag clear takes 0 or 1 collector id");
+      }
+      default -> throw new IllegalArgumentException("unknown diag subcommand: " + parts[1]);
+    };
   }
 
   private static void requireArity(String[] parts, int expected, String verb) {

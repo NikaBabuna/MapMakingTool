@@ -97,11 +97,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-009 planned (F-041 locks); G-008 done (F-040 terminal); Tauri + Next + MapHost |
+| [architecture.md](product/architecture.md) | Active — G-009 F-042 DiagnosticsHub; F-041 locks; G-008 done |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-009 planned; G-008 done (through F-040) |
-| [glossary.md](product/glossary.md) | Active — sphere polar wrap; ridge accretion; runner (planned) |
-| [style-guide.md](product/style-guide.md) | Active — G-009 runner planned; G-008 studio shipped |
+| [flows.md](product/flows.md) | G-009 F-042 diagnostics; G-008 done (through F-040) |
+| [glossary.md](product/glossary.md) | Active — DiagnosticsHub; collectors; sphere polar wrap; ridge accretion |
+| [style-guide.md](product/style-guide.md) | Active — G-009 runner (F-042 hub); G-008 studio shipped |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) · [tectonics.md](product/wiki/tectonics.md) (F-041 G-009 locks) |
 
 ---
@@ -153,6 +153,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-039.md](blockers/F-039.md) | done — multi-panel studio + mappy style |
 | [F-040.md](blockers/F-040.md) | done — traditional console; G-008 closed |
 | [F-041.md](blockers/F-041.md) | done — G-009 docs lock |
+| [F-042.md](blockers/F-042.md) | done — DiagnosticsHub + CLI diag/stats |
 
 ---
 

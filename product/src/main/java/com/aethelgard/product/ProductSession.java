@@ -19,6 +19,7 @@ public final class ProductSession {
   private final WorldSpec spec;
   private final Engine engine;
   private final Object lock = new Object();
+  private final DiagnosticsHub diagnostics = DiagnosticsHub.withDefaults();
 
   public ProductSession(WorldSpec spec) {
     this.spec = Objects.requireNonNull(spec, "spec");
@@ -37,6 +38,11 @@ public final class ProductSession {
 
   public WorldSpec spec() {
     return spec;
+  }
+
+  /** Controllable diagnostics hub (not Pool state). */
+  public DiagnosticsHub diagnostics() {
+    return diagnostics;
   }
 
   public int stepIndex() {
@@ -58,7 +64,15 @@ public final class ProductSession {
       throw new IllegalArgumentException("n must be >= 0, was " + n);
     }
     synchronized (lock) {
-      engine.advance(n);
+      for (int i = 0; i < n; i++) {
+        long t0 = System.nanoTime();
+        engine.advance(1);
+        long dt = System.nanoTime() - t0;
+        diagnostics.record(DiagnosticIds.ADVANCE_WALL, dt);
+        Runtime rt = Runtime.getRuntime();
+        diagnostics.record(DiagnosticIds.HEAP_USED, rt.totalMemory() - rt.freeMemory());
+        diagnostics.record(DiagnosticIds.HEAP_MAX, rt.maxMemory());
+      }
     }
   }
 
