@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 3 / 14 |
-| Claim boxes | 2 / 8 |
-| Last Accept | F-043 |
+| Steps done | 4 / 14 |
+| Claim boxes | 3 / 8 |
+| Last Accept | F-044 |
