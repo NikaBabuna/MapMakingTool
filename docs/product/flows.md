@@ -19,7 +19,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 |------|--------|-------|
 | World | VIEW **1920×1080**, torus loop | F-031–F-032 |
 | Plates | Initial partition + registry; then boundaries/flux/fission/motion | F-033–F-038 |
-| Camera | Zoom clamp; X loop + Y polar clamp pan; blank N/S (cylinder) | **F-038** |
+| Camera | Zoom clamp; horizontal-only pan; blank N/S (cylinder) | **F-032–F-034 done** |
 | Studio | Multi-panel, mappy style, traditional terminal console | F-039–F-040 |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
@@ -35,7 +35,7 @@ Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 | 1 | Launch via `run-product.cmd` (MapHost + Next + Tauri). Studio tool shows `WorldSpec.VIEW` (**1920×1080**, seed 0) at **Step 0**. |
 | 2 | User clicks **Advance**. Status shows **Working...**; map busy overlay; extra Advances are ignored while busy. |
 | 3 | When the Step settles, the map paints the current layer. Status returns to `Step n`. |
-| 4 | Repeat Advance. **Pan** wraps on X; vertical pan when zoomed, clamped at poles; zoom in; cannot zoom out past fit-map. |
+| 4 | Repeat Advance. **Pan loops** (torus); zoom in; cannot zoom out past fit-map (F-032). |
 
 **Edges / failures:** Clicks while busy are ignored for Advance/New world. Tests never construct `JFrame`. Dump fixture remains `WorldSpec.DEFAULT` 8×8.
 

@@ -1,8 +1,8 @@
 /*
  * File: ui/src/test/java/com/aethelgard/ui/host/HorizontalPanTest.java
- * Purpose: F-038 structural witness — vertical pan clamped at polar edges
+ * Purpose: F-033 structural witness — horizontal-only studio pan
  * Audience: Agents / CI
- * Update when: F-038 camera FRs change
+ * Update when: F-033 pan FRs change
  */
 
 package com.aethelgard.ui.host;
@@ -17,27 +17,25 @@ import org.junit.jupiter.api.Test;
 class HorizontalPanTest {
 
   @Test
-  @DisplayName("FR-6: clampVertical; panBy takes dy; MapCanvas passes dy + stageH")
-  void verticalPanClampedAtPoles() throws Exception {
+  @DisplayName("FR-4: viewport pan ignores dy; lockVertical; docs say horizontal-only")
+  void horizontalOnlyPan() throws Exception {
     Path root = findRepoRoot();
     String viewport = Files.readString(root.resolve("ui/web/src/lib/viewport.ts"));
-    assertTrue(viewport.contains("clampVertical"));
-    assertTrue(viewport.contains("panBy"));
-    assertTrue(viewport.contains("stageH"));
-    assertTrue(
-        viewport.contains("polar")
-            || viewport.contains("mapH")
-            || viewport.contains("cannot leave"));
+    assertTrue(viewport.contains("lockVertical"));
+    assertTrue(viewport.contains("_dy") || viewport.contains("dy is ignored"));
+    assertTrue(viewport.contains("Horizontal-only") || viewport.contains("horizontal-only"));
 
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
-    assertTrue(canvas.contains("panBy(viewportRef.current, dx, dy"));
+    assertTrue(canvas.contains("panBy(viewportRef.current, dx, 0"));
     assertTrue(canvas.contains("stageSizeRef.current.h"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(
-        style.toLowerCase().contains("clamp")
-            || style.toLowerCase().contains("polar")
-            || style.toLowerCase().contains("vertical"));
+        style.toLowerCase().contains("horizontal")
+            || style.toLowerCase().contains("left/right")
+            || style.toLowerCase().contains("left–right"));
+    String flows = Files.readString(root.resolve("docs/product/flows.md"));
+    assertTrue(flows.toLowerCase().contains("horizontal") || flows.contains("F-033"));
   }
 
   private static Path findRepoRoot() throws Exception {

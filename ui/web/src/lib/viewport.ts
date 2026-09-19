@@ -1,6 +1,6 @@
 /*
  * File: ui/web/src/lib/viewport.ts
- * Purpose: Pure pan/zoom math for cylindrical map stage ↔ world cells
+ * Purpose: Pure pan/zoom math for toroidal map stage ↔ world cells
  * Audience: MapCanvas + unit witness
  * Update when: Viewport model changes
  */
@@ -39,24 +39,6 @@ export function lockVertical(vp: Viewport, stageH: number, displayH: number): Vi
   return {
     ...vp,
     ty: (stageH - displayH * vp.scale) / 2,
-  };
-}
-
-/**
- * Clamp vertical pan so the map cannot leave polar edges.
- * When the map fits in the stage, stay vertically centered; when taller, keep
- * [ty, ty+mapH] covering the stage (no blank beyond top/bottom of the map).
- */
-export function clampVertical(vp: Viewport, stageH: number, displayH: number): Viewport {
-  const mapH = displayH * vp.scale;
-  if (mapH <= stageH) {
-    return lockVertical(vp, stageH, displayH);
-  }
-  const minTy = stageH - mapH;
-  const maxTy = 0;
-  return {
-    ...vp,
-    ty: Math.min(maxTy, Math.max(minTy, vp.ty)),
   };
 }
 
@@ -100,7 +82,7 @@ export function wrapPan(vp: Viewport, displayW: number, _displayH: number): View
 
 /**
  * Zoom toward a point in stage (CSS) coordinates; scale clamped to [minScale, MAX_SCALE].
- * Vertical pan is clamped at polar edges (not forced to stage center when zoomed).
+ * Vertical translation is re-locked to stage center (horizontal-only camera).
  */
 export function zoomAt(
   vp: Viewport,
@@ -114,33 +96,30 @@ export function zoomAt(
 ): Viewport {
   const nextScale = clampScale(vp.scale * factor, minScale);
   const worldX = (stageX - vp.tx) / vp.scale;
-  const worldY = (stageY - vp.ty) / vp.scale;
   const next = wrapPan(
     {
       scale: nextScale,
       tx: stageX - worldX * nextScale,
-      ty: stageY - worldY * nextScale,
+      ty: vp.ty,
     },
     displayW,
     displayH,
   );
-  return clampVertical(next, stageH, displayH);
+  return lockVertical(next, stageH, displayH);
 }
 
-/** Pan with X wrap and Y clamp at polar edges. */
+/** Pan horizontally only; dy is ignored. Vertical position stays locked via caller/lockVertical. */
 export function panBy(
   vp: Viewport,
   dx: number,
-  dy: number,
+  _dy: number,
   displayW: number,
   displayH: number,
-  stageH: number,
 ): Viewport {
-  const wrapped = wrapPan({ ...vp, tx: vp.tx + dx, ty: vp.ty + dy }, displayW, displayH);
-  return clampVertical(wrapped, stageH, displayH);
+  return wrapPan({ ...vp, tx: vp.tx + dx }, displayW, displayH);
 }
 
-/** Map stage (CSS) point to world cell indices (wrap X; Y clipped to map band). */
+/** Map stage (CSS) point to world cell indices (toroidal in x; y uses locked viewport). */
 export function stageToCell(
   vp: Viewport,
   stageX: number,

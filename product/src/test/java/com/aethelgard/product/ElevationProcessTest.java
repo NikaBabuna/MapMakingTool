@@ -100,18 +100,15 @@ class ElevationProcessTest {
   }
 
   @Test
-  @DisplayName("FR-5: orogeny on standing boundaries; same seed matches")
+  @DisplayName("FR-5: orogeny on standing plates; same seed matches")
   void collisionUpliftMatchesRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
     PlateRegistry reg = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
-    Boundaries boundaries = Boundaries.trace(plates, vel);
     engine.advance(1);
-    assertEquals(
-        Orogeny.apply(plates, boundaries, reg, Grid.zeros(4, 2)),
-        engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(Orogeny.apply(plates, vel, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
 
     ProductGeneration.Snapshot state =
         new ProductGeneration.Snapshot(plates, vel, reg, Grid.zeros(4, 2));

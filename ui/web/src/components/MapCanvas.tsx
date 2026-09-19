@@ -191,8 +191,8 @@ export function MapCanvas({
         dragRef.current.y = e.clientY;
         if (dragRef.current.moved) {
           const { dw, dh } = sizeRef.current;
-          const stageH = stageSizeRef.current.h;
-          onViewportChange(panBy(viewportRef.current, dx, dy, dw, dh, stageH));
+          // Horizontal-only pan (F-033); dy ignored by panBy
+          onViewportChange(panBy(viewportRef.current, dx, 0, dw, dh));
         }
       }}
       onPointerUp={(e) => {

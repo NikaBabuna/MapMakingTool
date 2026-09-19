@@ -31,10 +31,6 @@ public final class ElevationRaster {
   public static final int HILLSHADE_MIN = 6;
   public static final int HILLSHADE_MAX = 18;
   public static final long PLATE_GOLDEN = 0x9E3779B97F4A7C15L;
-  /** Plates layer: non-boundary fill (no per-id rainbow). */
-  public static final int PLATE_INTERIOR_RGB = pack(200, 200, 200);
-  /** Plates layer: cell that touches a foreign plate (cylinder 4-neighbor). */
-  public static final int PLATE_BOUNDARY_RGB = pack(32, 32, 32);
 
   private final int width;
   private final int height;
@@ -77,7 +73,7 @@ public final class ElevationRaster {
         cells[y][x] =
             switch (layer) {
               case ELEVATION -> elevationCell(elevation, x, y);
-              case PLATES -> plateBoundaryCell(plates, x, y);
+              case PLATES -> plateRgb(plates.get(x, y));
               case OVERLAY -> overlayCell(elevation, plates, x, y);
             };
       }
@@ -118,7 +114,7 @@ public final class ElevationRaster {
   }
 
   /**
-   * Plate-id color (kept for tests / legacy; Plates layer uses {@link #plateBoundaryCell}).
+   * Plate-id color.
    *
    * <pre>
    *   z = plateId * 0x9E3779B97F4A7C15
@@ -135,31 +131,6 @@ public final class ElevationRaster {
     int g = 48 + (int) ((z >>> 8) & 0x7F);
     int b = 48 + (int) ((z >>> 16) & 0x7F);
     return pack(r, g, b);
-  }
-
-  /** True when any cylinder 4-neighbor has a different plate id. */
-  public static boolean isPlateBoundary(Grid plates, int x, int y) {
-    int id = plates.get(x, y);
-    int width = plates.width();
-    int height = plates.height();
-    if (id != plates.get(Math.floorMod(x + 1, width), y)) {
-      return true;
-    }
-    if (id != plates.get(Math.floorMod(x - 1, width), y)) {
-      return true;
-    }
-    if (y + 1 < height && id != plates.get(x, y + 1)) {
-      return true;
-    }
-    if (y > 0 && id != plates.get(x, y - 1)) {
-      return true;
-    }
-    return false;
-  }
-
-  /** Plates-layer pixel: gray interior, dark boundary. */
-  public static int plateBoundaryCell(Grid plates, int x, int y) {
-    return isPlateBoundary(plates, x, y) ? PLATE_BOUNDARY_RGB : PLATE_INTERIOR_RGB;
   }
 
   public static int hillshadeLit(int dw, int dn) {
