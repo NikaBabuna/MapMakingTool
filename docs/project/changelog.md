@@ -13,6 +13,8 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-030:** G-008 wiki locks ([tectonics.md](../product/wiki/tectonics.md)); VIEW 1920×1080 documented; runtime unchanged.
+- **2026-09-19** — **G-008** Boundary tectonics + cartography studio registered (1920×1080 torus; plate do-over; studio panels). Steps F-030–F-040 planned. Active Goal G-008.
 - **2026-09-19** — **F-029:** shortcuts, seed QoL, busy/offline polish, a11y; **G-007 complete**.
 - **2026-09-19** — **F-028:** pan/zoom + cell pick + reset view (`viewport.ts`).
 - **2026-09-19** — **F-027:** studio cartography style guide + map-first Next shell (collapsible dock, console drawer). F-026 Active-Goal witness amended for G-007.

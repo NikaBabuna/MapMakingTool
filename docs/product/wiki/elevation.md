@@ -7,6 +7,9 @@
 
 # Elevation process
 
+> **Code status (through F-021 / F-029):** This page describes the **running** Voronoi + Constant-velocity + advection + standing orogeny rules.  
+> **G-008 (F-030):** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md). Do not treat this page as the G-008 end state.
+
 Relief is **caused** by plates converging and diverging at sutures. It is not painted at Step 0.
 
 Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics / orogeny** (writes `elevation`). They read the same standing Pool snapshot; neither sees the other's output this Step.

@@ -44,25 +44,26 @@ class ToolQolTest {
     assertTrue(flows.contains("shortcut") || flows.contains("Shortcuts") || flows.contains("G-007"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goals.contains("**Active Goal:** none"));
     assertTrue(goals.contains("G-007-studio-cartography"));
     String table =
         goals.lines().filter(l -> l.contains("| G-007 |")).findFirst().orElse("");
     assertTrue(table.contains("| done |"), table);
+    // Active Goal may be none (post-close) or a later Goal (e.g. G-008)
+    assertTrue(
+        goals.contains("**Active Goal:** none")
+            || goals.contains("G-008")
+            || goals.contains("Active Goal:** [G-"));
 
     String goalDoc = Files.readString(root.resolve("docs/project/goals/G-007-studio-cartography.md"));
     assertTrue(goalDoc.contains("**Status:** `done`"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("**Active Goal:** none"));
     assertTrue(agents.contains("G-007"));
 
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("none"));
     assertTrue(phase.contains("G-007"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
-    assertTrue(nav.contains("none"));
     assertTrue(nav.contains("G-007"));
 
     assertFalse(tool.contains("JFrame"));

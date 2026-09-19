@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-029 QoL; **G-007 done**; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-030 docs; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -46,7 +46,7 @@ cli →  product  →  engine
 | Values | Immutable `Grid` of `int` cells; `PlateVelocities` per-site `(vx, vy)` |
 | Create | `ProductHost.create(WorldSpec)` / `new ProductSession(spec)` seeds **zero** elevation, a **Voronoi** `plates` grid, and CONSTANT velocities from `seed` (6–15 sites) |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
-| View | `ProductSession.view()` / `WorldSpec.VIEW` (512×512, seed `0`) — map window launch spec |
+| View | `ProductSession.view()` / `WorldSpec.VIEW` — **code 512×512** until F-031; **G-008 target 1920×1080** (F-030) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
 | Systems | `kinematics` (Sub-System `PlateKinematics`) and `tectonics` (Sub-System `Orogeny`); same snapshot; neither sees the other this Step |
@@ -127,6 +127,10 @@ Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over 
 ## Tauri desktop (F-026)
 
 Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On start spawns `MapHostApp`; on quit stops it via PID file. Primary launch: `run-product.cmd`. [ui/desktop/README.md](../../ui/desktop/README.md).
+
+## G-008 boundary tectonics (F-030 locks)
+
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080** torus; initial plates N=12–24 toroidal nearest-site; fission + crumb &lt; 0.05%; collide smaller-loses; Constant-forever velocities superseded. **Not in code yet** — F-031+.
 
 ---
 

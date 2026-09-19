@@ -9,7 +9,7 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** none · Last completed: [G-007 Studio cartography tool](goals/G-007-studio-cartography.md)
+**Active Goal:** [G-008 Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) · Last completed: [G-007 Studio cartography tool](goals/G-007-studio-cartography.md)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
@@ -20,6 +20,7 @@ A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal
 | G-005 | Living map (product session, tool UI, moving plates, placeholder CLI) | done | [goals/G-005-living-map.md](goals/G-005-living-map.md) |
 | G-006 | Local webview front (Tauri + Next + Java host) | done | [goals/G-006-webview-front.md](goals/G-006-webview-front.md) |
 | G-007 | Studio cartography tool (redesign + QoL) | done | [goals/G-007-studio-cartography.md](goals/G-007-studio-cartography.md) |
+| G-008 | Boundary tectonics + cartography studio | in progress | [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tectonics-studio.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 

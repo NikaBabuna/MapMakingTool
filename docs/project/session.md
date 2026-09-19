@@ -8,19 +8,19 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-029 Accepted · G-007 closed
+**Status:** F-030 Accepted · negotiating F-031 next
 
 ---
 
 ## Session goal
 
-Accept **F-029** and close **G-007**.
+Ship **G-008** — boundary tectonics + large torus world + cartography studio (F-030 → F-040).
 
 ---
 
 ## Active Goal
 
-**Active Goal:** none  
+**Active Goal:** [G-008 — Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) — **in progress**  
 **Last completed:** [G-007 — Studio cartography tool](goals/G-007-studio-cartography.md) — **done**
 
 ---
@@ -29,23 +29,19 @@ Accept **F-029** and close **G-007**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-027 | Style guide + studio chrome + map-first shell | done |
-| F-028 | Pan / zoom + cell pick + reset | done |
-| F-029 | Shortcuts, seed QoL, feedback, a11y; close G-007 | done |
+| F-030 | Wiki + decisions (docs only) | done |
+| F-031–F-040 | Per Goal plan | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-029 Accept; G-007 closed)
+- [x] Incremental suite green (F-030 Accept)
 
 ---
 
-## Next Session (suggested)
-
-1. Propose next **Goal** (climate / continents / timeline — not a lone Step).
-
 ## Notes
 
-- Primary launch: `run-product.cmd` · Studio cartography Next tool · MapHost unchanged.
+- VIEW target **1920×1080**; torus; fission; crumb &lt; 0.05%; smaller-loses collide v1.
+- Authority: [wiki/tectonics.md](../product/wiki/tectonics.md). Next: propose **F-031**.

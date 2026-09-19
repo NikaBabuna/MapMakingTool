@@ -17,8 +17,8 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
 | **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
-| **Plates** | Layer (`plates`) of integer plate ids; Step-0 Voronoi nearest-site assignment from seed (6–15 sites); kinematics advects after Step 0. |
-| **Plate velocity** | Constant field (`plate_velocity`) of per-site integer `(vx, vy)` in `{-1,0,1}`, seeded from `WorldSpec.seed`. |
+| **Plate velocity** | **Code today:** Constant field (`plate_velocity`) of per-site `(vx, vy)` in `{-1,0,1}`. **G-008:** Constant-forever **superseded**; registry + edge-driven integrate (F-037). |
+| **Plates** | Layer (`plates`) of integer plate ids. **Code today:** Voronoi 6–15 + advection. **G-008:** toroidal nearest-site N=12–24 at Step 0; then boundary geometry. |
 | **Suture** | Contact between different plate ids; toroidal 4-neighbor orogeny on **standing** plates. |
 | **Voronoi plates** | Each cell’s plate id is the nearest site (Euclidean); ties take the lower site index. Leftover cells after advection use the same rule on moved sites. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
@@ -27,7 +27,11 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-System `Orogeny`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid, velocities). |
-| **WorldSpec.VIEW** | Product window launch spec: 512×512 cells, seed 0 (dump fixture stays `DEFAULT` 8×8). |
+| **WorldSpec.VIEW** | Product window launch spec. **Code:** 512×512, seed 0 until F-031. **G-008 target:** 1920×1080 (F-030). Dump fixture stays `DEFAULT` small. |
+| **Torus** | Finite looping rectangle — both axes wrap. G-008 sphere analogue (not a 3D mesh). |
+| **Plate registry** | Planned G-008 Pool object: per-plate area, velocity, flags (replaces forever-Constant `plate_velocity`). |
+| **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
+| **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.05% area absorbed). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |

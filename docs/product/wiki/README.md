@@ -8,11 +8,12 @@ Per [../process/rules.md](../process/rules.md): do not leave domain content only
 
 ## Pages
 
-_Status: World / grid / layer (F-014). Elevation process (F-021 orogeny; F-020 kinematics). Map display note (F-022)._
+_Status: World (F-030 G-008 locks). Elevation process still describes pre–G-008 code. Boundary tectonics plan (F-030)._
 
 | Page | Purpose |
 |------|---------|
-| [world.md](world.md) | World, grid, layer, Step-0 elevation and plates |
-| [elevation.md](elevation.md) | Plates seed, kinematics advection, orogeny rule |
+| [world.md](world.md) | World, grid, layer; VIEW/torus targets vs code |
+| [elevation.md](elevation.md) | **Running** plates seed, kinematics, orogeny (pre–G-008) |
+| [tectonics.md](tectonics.md) | **G-008** boundary tectonics locks + Pool/Systems plan |
 
 When adding pages, update [../navigation.md](../navigation.md).

@@ -20,5 +20,6 @@ Items here are **not** in progress. Promote into a Goal or Step when ready.
 | Living map (house + motion + tool UI + CLI) | Promoted to [G-005](goals/G-005-living-map.md) |
 | Local webview front (Tauri + Next + Java host) | Promoted to [G-006](goals/G-006-webview-front.md) |
 | Studio cartography tool (redesign + QoL) | Promoted to [G-007](goals/G-007-studio-cartography.md) |
-| Climate / further generation layers | After G-007 |
+| Boundary tectonics + cartography studio | Promoted to [G-008](goals/G-008-boundary-tectonics-studio.md) |
+| Climate / further generation layers | After G-008 |
 | Package naming convention | Decided in F-001 / ADR-007 |

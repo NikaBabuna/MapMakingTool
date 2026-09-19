@@ -7,13 +7,25 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done)._
+_Status: **active** — G-007 studio cartography (done). **G-008 intent planned** (F-030; build F-032 / F-039 / F-040)._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
 ---
 
-## Direction
+## G-008 intent (planned — not shipped in F-030)
+
+| Item | Intent |
+|------|--------|
+| **Studio** | Distinct panels/windows for controls, legend, inspect — cartography desk, not one flat page |
+| **Look** | More **mappy** (chart/atlas cues); less generic dark-tool chrome |
+| **Console** | Traditional terminal appearance (monospace, CRT/terminal chrome) |
+| **Map camera** | Zoom **in** allowed; cannot zoom out past map limits (no empty void beyond the world) |
+| **Loopback pan** | Pan wraps with the **torus** (scroll off an edge → opposite side) |
+
+---
+
+## Direction (G-007 shipped)
 
 **Studio cartography** — the window is a working map desk, not a marketing page.
 
