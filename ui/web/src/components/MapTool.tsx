@@ -62,7 +62,7 @@ export function MapTool() {
   const [consoleOpen, setConsoleOpen] = useState(false);
   const [dockOpen, setDockOpen] = useState(true);
   const [viewport, setViewport] = useState<Viewport>(IDENTITY_VIEWPORT);
-  const [stageMetrics, setStageMetrics] = useState({
+  const stageMetricsRef = useRef({
     stageW: 1,
     stageH: 1,
     displayW: 1920,
@@ -165,28 +165,29 @@ export function MapTool() {
   }, [playing, speed]);
 
   function fitView() {
-    setViewport(
-      resetViewport(
-        stageMetrics.stageW,
-        stageMetrics.stageH,
-        stageMetrics.displayW,
-        stageMetrics.displayH,
-      ),
-    );
+    const m = stageMetricsRef.current;
+    setViewport(resetViewport(m.stageW, m.stageH, m.displayW, m.displayH));
   }
 
-  function onStageMetrics(next: {
-    stageW: number;
-    stageH: number;
-    displayW: number;
-    displayH: number;
-  }) {
-    setStageMetrics(next);
-    if (!fittedOnceRef.current && next.stageW > 1 && next.displayW > 0) {
-      fittedOnceRef.current = true;
-      setViewport(fittedViewport(next.stageW, next.stageH, next.displayW, next.displayH));
-    }
-  }
+  const onStageMetrics = useCallback(
+    (next: { stageW: number; stageH: number; displayW: number; displayH: number }) => {
+      const prev = stageMetricsRef.current;
+      if (
+        prev.stageW === next.stageW &&
+        prev.stageH === next.stageH &&
+        prev.displayW === next.displayW &&
+        prev.displayH === next.displayH
+      ) {
+        return;
+      }
+      stageMetricsRef.current = next;
+      if (!fittedOnceRef.current && next.stageW > 1 && next.displayW > 0) {
+        fittedOnceRef.current = true;
+        setViewport(fittedViewport(next.stageW, next.stageH, next.displayW, next.displayH));
+      }
+    },
+    [],
+  );
 
   async function onAdvance() {
     if (busyRef.current) {

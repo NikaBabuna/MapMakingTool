@@ -45,6 +45,9 @@ export function MapCanvas({
   const viewportRef = useRef(viewport);
   viewportRef.current = viewport;
 
+  const metricsCbRef = useRef(onStageMetrics);
+  metricsCbRef.current = onStageMetrics;
+
   function paint() {
     const source = sourceRef.current;
     const view = viewRef.current;
@@ -78,6 +81,16 @@ export function MapCanvas({
     }
   }
 
+  function reportMetrics() {
+    const { dw, dh } = sizeRef.current;
+    metricsCbRef.current?.({
+      stageW: stageSizeRef.current.w,
+      stageH: stageSizeRef.current.h,
+      displayW: dw,
+      displayH: dh,
+    });
+  }
+
   useEffect(() => {
     if (!buffer || !sourceRef.current) {
       return;
@@ -98,13 +111,8 @@ export function MapCanvas({
     }
     ctx.putImageData(image, 0, 0);
     paint();
-    onStageMetrics?.({
-      stageW: stageSizeRef.current.w,
-      stageH: stageSizeRef.current.h,
-      displayW: width,
-      displayH: height,
-    });
-  }, [buffer, onStageMetrics]);
+    reportMetrics();
+  }, [buffer]);
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
@@ -115,15 +123,14 @@ export function MapCanvas({
       const stageW = stage.clientWidth;
       const stageH = stage.clientHeight;
       stageSizeRef.current = { w: stageW, h: stageH };
-      const { dw, dh } = sizeRef.current;
-      onStageMetrics?.({ stageW, stageH, displayW: dw, displayH: dh });
+      reportMetrics();
       paint();
     };
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(stage);
     return () => ro.disconnect();
-  }, [onStageMetrics]);
+  }, []);
 
   useEffect(() => {
     paint();
