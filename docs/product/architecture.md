@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-047; G-008 done)  
+**Status:** active (G-009 in progress through F-048; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -32,13 +32,13 @@ ui  →  product  →  engine
 cli →  product  →  engine
 ```
 
-`product` depends on `engine`. **`engine` must never depend on `product`.** `ui` and `cli` depend on `product`. **Product has no Swing.** `cli` does not depend on `ui`. `ui` depends on `cli` **only** for the placeholder console (`CommandDispatch`, F-023).
+`product` depends on `engine`. **`engine` must never depend on `product`.** `ui` and `cli` depend on `product`. **Product has no Swing.** `cli` does not depend on `ui`. `ui` depends on `cli` **only** for the shared command language (`CommandDispatch`, F-048).
 
 ---
 
 ## Session (F-019), kinematics (F-020), orogeny (F-021)
 
-`ProductSession` owns one `Engine` created via `ProductHost`. Callers **advance** and **read grids** through the session. Advances are **serialized** (one lock). Not a command parser — no CLI verb names.
+`ProductSession` owns one `Engine` created via `ProductHost`. Callers **advance** and **read grids** through the session. Advances are **serialized** (one lock). Not a command parser — no CLI verb names in product.
 
 | Piece | F-021 |
 |-------|--------|
@@ -69,7 +69,7 @@ Headless paint and session control live in `MapController` + `ElevationRaster`. 
 
 Window opens at **Step 0** on `WorldSpec.VIEW`. One pixel per cell. Layers Elevation / Plates / Overlay, Advance, Play/Pause, speed, seed + New world, inspect, legend, **Console**. While compute is in flight the status text is **Working...** and further Advances are ignored. `newWorld(seed)` is ignored while busy. Next Play is a **client timer** posting `/api/advance`.
 
-Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). Verbs: `status`, `advance [N]`, `dump`, `at X Y`, `layers`, `stats`, `diag list|on|off|clear`. Still unstable pending F-048 — not a product API.
+Console lines go through `com.aethelgard.cli.CommandDispatch` on the **same** `ProductSession` (host `/api/command` or `MapController.runCommand`). **F-048** shared language: noun-path + verb (`session get`, `list pool`, `pool.plates get`, `systems.tectonics get`, `diag…`); deprecated aliases `status` / `advance` / `dump` / `at` / `layers` / `stats` / `diag …`.
 
 Paint lives in `com.aethelgard.ui.ElevationRaster` (integer, truncating division). Packed as `0xRRGGBB` in a **flat** `int[]` (F-047). `MapController` **reuses** a **double buffer** when width×height is unchanged (prior snapshot keeps correct pixels). `MapHost` **caches/reuses** one packed `byte[]` keyed by step + layer + paint generation — refill on invalidate, O(1) allocations under Play soak. Same grids + layer → identical RGB.
 

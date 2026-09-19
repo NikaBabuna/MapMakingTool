@@ -142,7 +142,7 @@ Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runne
 | F-045 | Sphere topology | done | [F-045.md](../blockers/F-045.md) |
 | F-046 | Step path hotspots | done | [F-046.md](../blockers/F-046.md) |
 | F-047 | Raster + host memory | done | [F-047.md](../blockers/F-047.md) |
-| F-048 | Shared command model | not started | |
+| F-048 | Shared command model | done | [F-048.md](../blockers/F-048.md) |
 | F-049 | CLI as full runner | not started | |
 | F-050 | Scrap + rebuild terminal | not started | |
 | F-051 | Runner chrome | not started | |

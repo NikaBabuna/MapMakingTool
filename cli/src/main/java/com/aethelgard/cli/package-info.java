@@ -1,9 +1,9 @@
 /*
  * File: cli/src/main/java/com/aethelgard/cli/package-info.java
- * Purpose: Headless CLI runner
- * Audience: Agents
- * Update when: Package role changes
+ * Purpose: Package docs for the CLI module
+ * Audience: Agents / callers
+ * Update when: CLI role changes
  */
 
-/** Headless Aethelgard CLI — depends on product (placeholder dispatcher). */
+/** Headless Aethelgard CLI — shared noun/verb command language on product (F-048). */
 package com.aethelgard.cli;

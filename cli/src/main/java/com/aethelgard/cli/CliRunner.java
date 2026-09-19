@@ -10,9 +10,9 @@ package com.aethelgard.cli;
 import com.aethelgard.product.ProductSession;
 
 /**
- * Testable CLI core — no interactive stdin. Placeholder command surface (ADR-010). {@code --steps
- * N} is a batch dump. Bare argv is one {@link CommandDispatch} line. Does not parse a verb language
- * into product.
+ * Testable CLI core — no interactive stdin. Shared noun/verb command surface (F-048). {@code
+ * --steps N} is a batch dump. Bare argv is one {@link CommandDispatch} line. Does not parse
+ * commands into product Systems or Pool fields.
  */
 public final class CliRunner {
 

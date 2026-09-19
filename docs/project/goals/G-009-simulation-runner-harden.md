@@ -79,7 +79,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-045 | Sphere topology | done |
 | F-046 | Step path hotspots | done |
 | F-047 | Raster + host memory | done |
-| F-048 | Shared command model | not started |
+| F-048 | Shared command model | done |
 | F-049 | CLI as full runner | not started |
 | F-050 | Scrap + rebuild terminal | not started |
 | F-051 | Runner chrome | not started |
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 7 / 14 |
+| Steps done | 8 / 14 |
 | Claim boxes | 5 / 8 |
-| Last Accept | F-047 |
+| Last Accept | F-048 |

@@ -18,7 +18,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | Item | Intent | Status |
 |------|--------|--------|
 | **Feel** | Unity-like simulation runner: dense control over session env (seed, speed, play, layers, …) | planned F-051+ |
-| **Terminal** | Scrap placeholder CRT skin; traditional terminal on **shared** command dispatcher with CLI | planned F-048–F-050 |
+| **Terminal** | Traditional terminal on **shared** noun/verb dispatcher with CLI | **F-048** language; rebuild chrome F-050 |
 | **Perf** | Visible step timings / memory (panel + commands) | **F-042** hub; panel F-052 |
 | **Look** | UI/UX polish; map-first serious tool, not marketing page | planned F-053 |
 
@@ -42,7 +42,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 - Near-black well (`#070a08`), mono type, green phosphor text (`#8dffaa` / `#7dff9a`).
 - Prompt prefix **`aethelgard>`** on the input line; log echoes the same prompt.
 - ↑ / ↓ recalls prior commands (cap 32). Enter runs; autofocus when opened.
-- Same placeholder verbs via `CommandDispatch` — unstable, not a product API.
+- Same `CommandDispatch` noun/verb language as CLI (F-048); deprecated flat aliases still work.
 - Contrast: Inspect/Legend stay cool slate panels; the console is CRT/terminal.
 
 ---

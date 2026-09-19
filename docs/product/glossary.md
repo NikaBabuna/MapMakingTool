@@ -46,13 +46,14 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
+| **Command language** | Shared noun-path + verb operator grammar in `cli` (F-048): point at `session`/`pool`/`schema`/`systems`/`diag`, act with `list`/`get`/`advance`/…. |
+| **CommandDispatch** | Single execute entry for headless CLI, MapHost `/api/command`, and in-app console (F-048; deprecated flat aliases remain). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): flat `int[]` pixels; ocean + hillshaded land, plate colors, or overlay. Controllers may reuse the buffer (F-047). |
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |
 | **ui/web** | Next.js studio cartography tool (F-025 / G-007). HTTP client to `MapHost`; client-timed Play; map-first shell. |
 | **ui/desktop** | Tauri 2 shell (F-026). Spawns/stops `MapHostApp`; webview → Next. |
-| **CommandDispatch** | CLI verb table in `cli` (`status`, `advance`, `dump`, `at`, `layers`, `stats`, `diag …`). Still unstable pending F-048; F-042 adds hub control. Not a product API. |
 | **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. |
 | **MapSpeed** | Play tick period: Slow 1000 ms, Normal 250 ms, Fast 100 ms. |
 | **PlayScheduler** | Injected repeating ticks for Play. Host: `ExecutorPlayScheduler`. Next Play is client-timed. |

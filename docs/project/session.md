@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-047 Accepted · Active Goal G-009 · next negotiate F-048
+**Status:** F-048 Accepted · Active Goal G-009 · next negotiate F-049
 
 ---
 
@@ -29,18 +29,18 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-046 | Step path hotspots + crumb 0.01% | done |
 | F-047 | Raster + host memory | done |
+| F-048 | Noun/verb command language | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] F-047 Accepted (witness + SYNC)
+- [x] F-048 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-047: flat ElevationRaster; MapController double-buffer reuse; MapHost packed-body cache (O(1) soak).
+- F-048: noun-path + verb grammar; aliases for old placeholders; Engine `systems()`/`fieldSchema()` read ports.

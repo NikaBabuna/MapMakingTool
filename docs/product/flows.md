@@ -29,7 +29,15 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 1 | Advance or set layer → MapController paints into a reused flat buffer; `paint.wall` records. |
 | 2 | `GET /api/raster` packs once into a reused `byte[]`; repeat GETs at same step/layer hit cache. |
 | 3 | Next advance / layer / newWorld bumps paint generation → cache refills (same allocation if size unchanged). |
-| Control | Shared commands; CLI; rebuilt terminal | F-048–F-050 |
+| Control | Shared commands; CLI; rebuilt terminal | **F-048** noun/verb done; F-049–F-050 |
+
+### Flow: Shared commands (F-048)
+
+| Step | Action |
+|------|--------|
+| 1 | Type `help` or `list pool` / `session get` in CLI or console (same dispatcher). |
+| 2 | `session advance N` steps time; `pool.<field> get` reads summaries; `systems` / `schema` expose construction. |
+| 3 | `diag.<id> on\|off` controls collectors; old flat verbs still work as aliases. |
 | Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).

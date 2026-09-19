@@ -19,7 +19,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — G-009 in progress (through F-047); G-008 boundary tectonics + studio done |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — G-009 in progress (through F-048); G-008 boundary tectonics + studio done |
 
 ---
 
@@ -37,7 +37,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |------|---------|
 | `pom.xml` | Parent aggregator `com.aethelgard:aethelgard` |
 | `engine/` | Pool-System Framework (`com.aethelgard:engine`) — clean host |
-| `cli/` | Active — F-023 placeholder dispatcher (`com.aethelgard:cli`) |
+| `cli/` | Active — F-048 noun/verb command language (`com.aethelgard:cli`) |
 | `ui/` | Active — F-023 console; F-022 tool UI (`com.aethelgard:ui`) |
 | `product/` | Active — F-021 orogeny; map chrome in `ui` (`com.aethelgard:product`) |
 

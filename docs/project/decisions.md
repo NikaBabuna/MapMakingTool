@@ -126,21 +126,21 @@ Resolves: [../engine/specs/open-questions.md](../engine/specs/open-questions.md)
 | **engine** | Abstract Pool-System loop |
 | **product** | Aethelgard simulation — field values, Systems, session. **No Swing** |
 | **ui** | View of those values (map window, tool chrome) |
-| **cli** | Operator access — placeholder command layer + headless entry |
+| **cli** | Operator access — shared noun/verb command language + headless entry (F-048) |
 
 `ui` may depend on `cli` **only** to reuse that command layer for an **in-window console**. `cli` must not depend on `ui`.
 
 **Live access (G-005):** one in-process **session** owns the `Engine`. UI, console, and headless CLI call it. Advances are serialized. No socket.
 
-**Commands are placeholders.** The verb table (`status`, `advance`, `dump`, `at`, `layers`, …) is unstable. Keep a thin dispatcher in `cli`. Do **not** put command names into product Systems, Pool fields, or merge types. Replacing the language later must not rewrite tectonics.
+**Commands (amended F-048 / G-009):** Shared **noun-path + verb** language in `cli` (`session`, `pool`, `schema`, `systems`, `diag` + `list`/`get`/`advance`/…). Deprecated flat aliases (`status`, `advance`, …) remain through G-009. Do **not** put command names into product Systems, Pool fields, or merge types.
 
 Skeleton heartbeat `ui` / `cli` as the product experience is retired (G-001 adapters were scaffolding). Engine tests still witness the loop without Aethelgard.
 
-**Amends:** [ADR-007](#adr-007--multi-module-layout-and-java-21) — sibling modules may depend on `product`, not only on `engine`. Engine still never depends on siblings.
+**Amends:** [ADR-007](#adr-007--multi-module-layout-and-java-21) — sibling modules may depend on `product`, not only on `engine`. Engine still never depends on siblings. **F-048** retires “commands are placeholders only” for the noun/verb catalog (ADR-012).
 
 **Why:** The engine is abstract. Product computes the world. UI displays it. CLI (including a console button in the UI) interrogates the same run. Deep CLI integration would freeze a throwaway command set into the simulator.
 
-**Goal:** [G-005 Living map](goals/G-005-living-map.md)
+**Goal:** [G-005 Living map](goals/G-005-living-map.md) · command language: [G-009](goals/G-009-simulation-runner-harden.md) F-048
 
 ---
 

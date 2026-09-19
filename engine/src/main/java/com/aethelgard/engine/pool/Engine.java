@@ -14,6 +14,7 @@ import com.aethelgard.engine.event.EngineEvent;
 import com.aethelgard.engine.event.EventBuffer;
 import com.aethelgard.engine.event.EventClaimer;
 import com.aethelgard.engine.event.EventClaiming;
+import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.merge.ProvenancedWrite;
 import com.aethelgard.engine.merge.StepOutputBuffer;
 import com.aethelgard.engine.merge.TypedMerge;
@@ -136,6 +137,16 @@ public final class Engine {
   /** Settled Pool state after the last completed Step. */
   public PoolSnapshot settled() {
     return pool.snapshot();
+  }
+
+  /** Registered Systems for this run (construction introspection; F-048). */
+  public List<EngineSystem> systems() {
+    return systems;
+  }
+
+  /** Field schema for this run (construction introspection; F-048). */
+  public FieldSchema fieldSchema() {
+    return pool.fieldSchema();
   }
 
   /** Claim / unmatched outcomes from the last completed Step. */

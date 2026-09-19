@@ -7,12 +7,21 @@
 
 package com.aethelgard.product;
 
+import com.aethelgard.engine.merge.FieldMergeType;
+import com.aethelgard.engine.merge.FieldSchema;
+import com.aethelgard.engine.merge.FieldType;
 import com.aethelgard.engine.pool.Engine;
+import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.system.SubSystem;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * One Aethelgard run. Owns the {@link Engine}. {@link #advance(int)} is serialized so UI and CLI
- * cannot interleave Steps. No Swing. Not a command parser.
+ * cannot interleave Steps. No Swing. Not a command parser — command language lives in {@code cli}.
  */
 public final class ProductSession {
 
@@ -128,5 +137,81 @@ public final class ProductSession {
     synchronized (lock) {
       return WorldDump.of(engine, spec);
     }
+  }
+
+  /** Declared Pool field names in schema order (construction; F-048). */
+  public List<String> fieldNames() {
+    synchronized (lock) {
+      return List.copyOf(engine.fieldSchema().asMap().keySet());
+    }
+  }
+
+  /** Field name → merge-type label (construction; F-048). */
+  public Map<String, String> schemaTypes() {
+    synchronized (lock) {
+      FieldSchema schema = engine.fieldSchema();
+      Map<String, String> out = new LinkedHashMap<>();
+      for (var e : schema.asMap().entrySet()) {
+        out.put(e.getKey(), mergeTypeName(e.getValue()));
+      }
+      return Map.copyOf(out);
+    }
+  }
+
+  /** Registered System ids in registration order (construction; F-048). */
+  public List<String> systemIds() {
+    synchronized (lock) {
+      List<String> ids = new ArrayList<>();
+      for (EngineSystem system : engine.systems()) {
+        ids.add(system.id());
+      }
+      return List.copyOf(ids);
+    }
+  }
+
+  /**
+   * Construction detail for one System: id, category path, sub-system ids.
+   *
+   * @throws IllegalArgumentException if id unknown
+   */
+  public String systemDetail(String systemId) {
+    Objects.requireNonNull(systemId, "systemId");
+    synchronized (lock) {
+      for (EngineSystem system : engine.systems()) {
+        if (system.id().equals(systemId)) {
+          StringBuilder sb = new StringBuilder();
+          sb.append("id=")
+              .append(system.id())
+              .append(" category=")
+              .append(system.config().assignedCategory().path())
+              .append('\n');
+          sb.append("subsystems=");
+          List<SubSystem> subs = system.config().subSystems();
+          for (int i = 0; i < subs.size(); i++) {
+            if (i > 0) {
+              sb.append(',');
+            }
+            sb.append(subs.get(i).id());
+          }
+          return sb.toString();
+        }
+      }
+      throw new IllegalArgumentException("unknown system: " + systemId);
+    }
+  }
+
+  /** Settled Pool field value (information; F-048). */
+  public Object field(String name) {
+    Objects.requireNonNull(name, "name");
+    synchronized (lock) {
+      return engine.settled().field(name);
+    }
+  }
+
+  private static String mergeTypeName(FieldMergeType type) {
+    if (type instanceof FieldType ft) {
+      return ft.name();
+    }
+    return type.getClass().getSimpleName();
   }
 }
