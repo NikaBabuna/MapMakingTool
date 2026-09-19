@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** none · Last: [G-006 Local webview front](project/goals/G-006-webview-front.md) (**done**)  
+**Active Goal:** none · Last: [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -56,8 +56,9 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-004-see-the-world.md](project/goals/G-004-see-the-world.md) | done |
 | [goals/G-005-living-map.md](project/goals/G-005-living-map.md) | done |
 | [goals/G-006-webview-front.md](project/goals/G-006-webview-front.md) | done |
+| [goals/G-007-studio-cartography.md](project/goals/G-007-studio-cartography.md) | done |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-006 Steps registered |
+| [features.md](project/features.md) | Active — G-001–G-007 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
 | [decisions.md](project/decisions.md) | Active (11 ADRs) |
@@ -70,7 +71,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; G-006 done; Tauri + Next + MapHost) |
+| [architecture.md](architecture.md) | Active (roll-up; G-007 done; studio cartography + Tauri + Next + MapHost) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -94,11 +95,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-026 Tauri; F-025 `ui/web`; F-024 MapHost; G-006 done |
+| [architecture.md](product/architecture.md) | Active — G-007 studio cartography done; F-026 Tauri; F-025 `ui/web`; F-024 MapHost |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | Desktop/Next tool; MapHost; G-006 done |
+| [flows.md](product/flows.md) | Studio tool; shortcuts; pan/zoom; G-007 done |
 | [glossary.md](product/glossary.md) | Active — MapHost; ui/web; ui/desktop |
-| [style-guide.md](product/style-guide.md) | Deferred |
+| [style-guide.md](product/style-guide.md) | Active — G-007 studio cartography |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-021 orogeny; F-022 display note) |
 
 ---
@@ -135,6 +136,9 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-024.md](blockers/F-024.md) | done — Java session HTTP host (`ui.host`) |
 | [F-025.md](blockers/F-025.md) | done — Next.js tool UI (`ui/web`) |
 | [F-026.md](blockers/F-026.md) | done — Tauri desktop; Swing removed; G-006 closed |
+| [F-027.md](blockers/F-027.md) | done — studio chrome + map-first shell |
+| [F-028.md](blockers/F-028.md) | done — pan / zoom |
+| [F-029.md](blockers/F-029.md) | done — shortcuts + QoL; G-007 closed |
 
 ---
 

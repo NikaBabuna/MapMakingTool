@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-026 Tauri; F-025 Next; F-024 MapHost; **G-006 done**)  
+**Status:** active (F-029 QoL; **G-007 done**; F-026 Tauri; F-025 Next; F-024 MapHost)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -120,9 +120,9 @@ Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `se
 
 Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.VIEW`). CORS `*` for local Next. Writes temp PID file for Tauri quit.
 
-## Next.js tool (F-025)
+## Next.js tool (F-025 / G-007)
 
-Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is an elevated dark tool; map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
+Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is **studio cartography** (map-first; collapsible dock; console drawer) — see [style-guide.md](style-guide.md). Map pixels still come from `ElevationRaster` via the host. Dev: [ui/web/README.md](../../ui/web/README.md).
 
 ## Tauri desktop (F-026)
 

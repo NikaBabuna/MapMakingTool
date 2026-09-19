@@ -8,20 +8,20 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-026 Accepted · G-006 closed
+**Status:** F-029 Accepted · G-007 closed
 
 ---
 
 ## Session goal
 
-Accept **F-026** and close **G-006**.
+Accept **F-029** and close **G-007**.
 
 ---
 
 ## Active Goal
 
 **Active Goal:** none  
-**Last completed:** [G-006 — Local webview front](goals/G-006-webview-front.md) — **done**
+**Last completed:** [G-007 — Studio cartography tool](goals/G-007-studio-cartography.md) — **done**
 
 ---
 
@@ -29,16 +29,16 @@ Accept **F-026** and close **G-006**.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-024 | Java session HTTP host | done |
-| F-025 | Next.js tool UI | done |
-| F-026 | Tauri + remove Swing; close G-006 | done |
+| F-027 | Style guide + studio chrome + map-first shell | done |
+| F-028 | Pan / zoom + cell pick + reset | done |
+| F-029 | Shortcuts, seed QoL, feedback, a11y; close G-007 | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-026 Accept; G-006 closed)
+- [x] Incremental suite green (F-029 Accept; G-007 closed)
 
 ---
 
@@ -48,4 +48,4 @@ Accept **F-026** and close **G-006**.
 
 ## Notes
 
-- Primary launch: `run-product.cmd` · Swing removed · host PID file for Tauri quit.
+- Primary launch: `run-product.cmd` · Studio cartography Next tool · MapHost unchanged.

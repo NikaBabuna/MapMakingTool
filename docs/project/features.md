@@ -97,6 +97,18 @@ Goal doc: [goals/G-006-webview-front.md](goals/G-006-webview-front.md)
 
 ---
 
+## G-007 — Studio cartography tool
+
+Goal doc: [goals/G-007-studio-cartography.md](goals/G-007-studio-cartography.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-027 | Style guide + studio chrome + map-first shell | done | [F-027.md](../blockers/F-027.md) |
+| F-028 | Pan / zoom + cell pick + reset view | done | [F-028.md](../blockers/F-028.md) |
+| F-029 | Shortcuts, seed QoL, feedback, a11y; close G-007 | done | [F-029.md](../blockers/F-029.md) |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` **before** writing code for that Step.  

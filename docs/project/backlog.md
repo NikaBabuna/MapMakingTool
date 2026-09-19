@@ -19,5 +19,6 @@ Items here are **not** in progress. Promote into a Goal or Step when ready.
 | See the world (Voronoi + large map UI) | Promoted to [G-004](goals/G-004-see-the-world.md) |
 | Living map (house + motion + tool UI + CLI) | Promoted to [G-005](goals/G-005-living-map.md) |
 | Local webview front (Tauri + Next + Java host) | Promoted to [G-006](goals/G-006-webview-front.md) |
-| Climate / further generation layers | After G-006 |
+| Studio cartography tool (redesign + QoL) | Promoted to [G-007](goals/G-007-studio-cartography.md) |
+| Climate / further generation layers | After G-007 |
 | Package naming convention | Decided in F-001 / ADR-007 |

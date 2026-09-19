@@ -62,4 +62,4 @@
 ## Agent work model
 
 Goal → Session → Step. Binding procedure: [process/step-procedure.md](process/step-procedure.md).  
-Active Goal: none · Last: [G-006 Local webview front](project/goals/G-006-webview-front.md) done.
+Active Goal: none · Last: [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) done.

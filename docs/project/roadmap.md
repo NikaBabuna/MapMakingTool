@@ -17,7 +17,8 @@ Ordered direction. **Accept** lives on Steps under Goals, not here.
 | 4 | [G-004 See the world](goals/G-004-see-the-world.md) | Voronoi tectonics + large colored map — **done** |
 | 5 | [G-005 Living map](goals/G-005-living-map.md) | Product session, moving plates, tool UI, placeholder CLI — **done** |
 | 6 | [G-006 Local webview front](goals/G-006-webview-front.md) | Tauri + Next + Java HTTP host; Swing removed — **done** |
-| 7 | _(later)_ Climate / further generation layers | After webview front foundation |
-| 8 | _(later)_ Timeline / inspect product flows | After generation core |
+| 7 | [G-007 Studio cartography tool](goals/G-007-studio-cartography.md) | Redesign Next tool + QoL — **done** |
+| 8 | _(later)_ Climate / further generation layers | After studio tool foundation |
+| 9 | _(later)_ Timeline / inspect product flows | After generation core |
 
 Candidates and ideas: [backlog.md](backlog.md)

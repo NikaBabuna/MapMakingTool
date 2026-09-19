@@ -13,6 +13,10 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-029:** shortcuts, seed QoL, busy/offline polish, a11y; **G-007 complete**.
+- **2026-09-19** — **F-028:** pan/zoom + cell pick + reset view (`viewport.ts`).
+- **2026-09-19** — **F-027:** studio cartography style guide + map-first Next shell (collapsible dock, console drawer). F-026 Active-Goal witness amended for G-007.
+- **2026-09-19** — **G-007** Studio cartography tool registered (Next redesign + QoL); Steps F-027–F-029 planned. Active Goal G-007.
 - **2026-09-19** — **F-026:** Tauri desktop under `ui/desktop/`; Swing map UI removed; **G-006 complete**.
 - **2026-09-19** — **F-025:** Next.js tool under `ui/web/` against MapHost (elevated visuals; client-timed Play).
 - **2026-09-19** — **F-024:** `MapHost` localhost HTTP under `ui` (`com.aethelgard.ui.host`); F-023 Active-Goal-none grep amended for G-006.

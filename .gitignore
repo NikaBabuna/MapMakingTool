@@ -38,6 +38,7 @@ ui/web/node_modules/
 ui/web/.next/
 ui/web/out/
 ui/web/.env*.local
+ui/web/tsconfig.tsbuildinfo
 
 # Tauri desktop (ui/desktop)
 ui/desktop/node_modules/

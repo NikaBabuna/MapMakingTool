@@ -1,13 +1,13 @@
 <!--
   File: ui/web/README.md
-  Purpose: Next.js map tool front (G-006 / F-025)
+  Purpose: Next.js map tool front (G-006 / G-007)
   Audience: Humans and agents
   Update when: Front layout or launch changes
 -->
 
 # Aethelgard web front
 
-Next.js tool UI for the living map. Talks to Java [`MapHost`](../src/main/java/com/aethelgard/ui/host/MapHost.java) over localhost HTTP. Lives under `ui/web/` so the repo root stays clean.
+Next.js **studio cartography** tool for the living map. Talks to Java [`MapHost`](../src/main/java/com/aethelgard/ui/host/MapHost.java) over localhost HTTP. Lives under `ui/web/`.
 
 ## Dev loop
 
@@ -30,6 +30,8 @@ Open http://localhost:3000. Host default: `http://127.0.0.1:7420` (`NEXT_PUBLIC_
 
 ## Behavior
 
-Layers, Advance, Play/Pause (client timer → `/api/advance`), speed, seed + New world, inspect, legend, Console. Busy shows Working... and ignores extra Advance / New world.
+Map-first studio: thin top bar, full-bleed map, collapsible dock (Inspect + Legend), Console drawer on demand. Layers, Advance, Play/Pause (client timer → `/api/advance`), speed, seed + Random + New world, pan/zoom, inspect, legend. Busy shows Working… overlay and ignores extra Advance / New world.
 
-Docs: [docs/product/architecture.md](../../docs/product/architecture.md) · [docs/product/flows.md](../../docs/product/flows.md)
+Shortcuts: Space Play; A/. Advance; 1–3 layers; [/] speed; N New world; `/C console; D dock; R reset view.
+
+Docs: [docs/product/style-guide.md](../../docs/product/style-guide.md) · [docs/product/architecture.md](../../docs/product/architecture.md) · [docs/product/flows.md](../../docs/product/flows.md)

@@ -1,27 +1,29 @@
 import type { Metadata } from "next";
-import { Fraunces, Sora } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const ui = IBM_Plex_Sans({
   subsets: ["latin"],
-  variable: "--font-display-loaded",
+  weight: ["400", "500", "600"],
+  variable: "--font-ui-loaded",
 });
 
-const ui = Sora({
+const mono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-ui-loaded",
+  weight: ["400", "500"],
+  variable: "--font-mono-loaded",
 });
 
 export const metadata: Metadata = {
   title: "Aethelgard",
-  description: "Living map tool — Next front over the Java MapHost",
+  description: "Studio cartography tool — Next front over the Java MapHost",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${ui.variable}`}>
-        <main>{children}</main>
+      <body className={`${ui.variable} ${mono.variable}`}>
+        {children}
       </body>
     </html>
   );

@@ -17,5 +17,6 @@ Durable multi-session results. Index: [../goals.md](../goals.md).
 | G-004 See the world | [G-004-see-the-world.md](G-004-see-the-world.md) | done |
 | G-005 Living map | [G-005-living-map.md](G-005-living-map.md) | done |
 | G-006 Local webview front | [G-006-webview-front.md](G-006-webview-front.md) | done |
+| G-007 Studio cartography tool | [G-007-studio-cartography.md](G-007-studio-cartography.md) | done |
 
 Procedure: [../../process/step-procedure.md](../../process/step-procedure.md).
