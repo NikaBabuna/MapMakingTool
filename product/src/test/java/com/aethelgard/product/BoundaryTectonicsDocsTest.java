@@ -43,12 +43,17 @@ class BoundaryTectonicsDocsTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("G-008"));
-    assertTrue(style.contains("planned") || style.contains("Planned"));
+    assertTrue(
+        style.contains("planned")
+            || style.contains("Planned")
+            || style.contains("shipped")
+            || style.contains("F-040")
+            || style.contains("terminal"));
     assertTrue(style.contains("loopback") || style.contains("Loopback"));
 
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
     assertTrue(flows.contains("G-008"));
-    assertTrue(flows.contains("1920") || flows.contains("planned"));
+    assertTrue(flows.contains("1920") || flows.contains("planned") || flows.contains("shipped"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
     assertTrue(goals.contains("G-008"));

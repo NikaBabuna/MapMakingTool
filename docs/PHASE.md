@@ -62,4 +62,4 @@
 ## Agent work model
 
 Goal → Session → Step. Binding procedure: [process/step-procedure.md](process/step-procedure.md).  
-Active Goal: [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) (`in progress`) · Last: [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) done.
+Active Goal: none · Last: [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) done.

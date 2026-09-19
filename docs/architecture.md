@@ -19,15 +19,15 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — G-008 F-039 multi-panel; F-038 orogeny; G-007 studio done |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — G-008 done (boundary tectonics + studio) |
 
 ---
 
 ## Goals
 
-**Active Goal:** [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md)  
-**Last completed:** [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md)  
-**Prior:** [G-006 Local webview front](project/goals/G-006-webview-front.md) — done · [G-005 Living map](project/goals/G-005-living-map.md) — done · [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
+**Active Goal:** none  
+**Last completed:** [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md)  
+**Prior:** [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) — done · [G-006 Local webview front](project/goals/G-006-webview-front.md) — done · [G-005 Living map](project/goals/G-005-living-map.md) — done · [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
 
 ---
 

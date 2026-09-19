@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-038 — boundary orogeny O(contacts) from standing `boundaries`; edge-driven `IntegrateVelocity`; B1 partition; `area_flux` apply/fission; `plate_velocity` STATIC.
+**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** G-008 done through F-040 — boundary orogeny O(contacts); edge-driven integrate; multi-panel studio + traditional terminal.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -143,4 +143,5 @@ Implementation Steps: **F-034–F-038**.
 ## Studio UI
 
 - **F-032 / F-038:** zoom clamp; **X wrap + Y polar clamp** pan; **blank** above/below the map (no vertical loop tiles). Sphere-on-rectangle camera.
-- **F-039 / F-040:** multi-panel mappy studio (**F-039**); traditional console + Goal close (**F-040**).
+- **F-039:** multi-panel mappy studio.
+- **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.

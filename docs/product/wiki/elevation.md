@@ -7,8 +7,7 @@
 
 # Elevation process
 
-> **Code status (through F-038):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity` nudges velocities each generation; geometry apply/fission; `plate_velocity` STATIC. **Orogeny** relief comes from standing classified `boundaries` (O(contacts)).  
-> **G-008:** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md).
+> **Code status (through F-040 / G-008 done):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity`; geometry apply/fission; **Orogeny** from standing classified `boundaries` (O(contacts)). Studio: multi-panel + mappy stage + traditional terminal.
 
 Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 

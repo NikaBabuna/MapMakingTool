@@ -7,21 +7,32 @@
 
 # Style guide
 
-_Status: **active** — G-007 studio cartography (done). G-008 **F-039** multi-panel + mappy stage; traditional console still F-040._
+_Status: **active** — G-007 studio cartography (done). G-008 **done** (F-040 traditional terminal console)._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`).
 
 ---
 
-## G-008 studio (F-039)
+## G-008 studio (shipped)
 
 | Item | Intent | Status |
 |------|--------|--------|
 | **Studio** | Distinct titled **Inspect** + **Legend** panel cards on the right rail | **F-039** |
 | **Look** | Chart/atlas cues: **neatline**, **graticule**/ticks, coords + scale HUD | **F-039** |
-| **Console** | Traditional terminal appearance | planned F-040 |
+| **Console** | Traditional terminal appearance (`aethelgard>` prompt, phosphor-on-black) | **F-040** |
 | **Map camera** | Zoom **in** allowed; cannot zoom out past **fit whole map** | **F-032** |
 | **Loopback pan** | Drag pan: **X wraps**; **Y clamped** at polar edges | **F-038** |
+
+---
+
+## Traditional terminal console (F-040)
+
+- Drawer under the map (not a slate studio-panel card).
+- Near-black well (`#070a08`), mono type, green phosphor text (`#8dffaa` / `#7dff9a`).
+- Prompt prefix **`aethelgard>`** on the input line; log echoes the same prompt.
+- ↑ / ↓ recalls prior commands (cap 32). Enter runs; autofocus when opened.
+- Same placeholder verbs via `CommandDispatch` — unstable, not a product API.
+- Contrast: Inspect/Legend stay cool slate panels; the console is CRT/terminal.
 
 ---
 
@@ -71,7 +82,7 @@ Fonts: `--font-ui` (sans), `--font-mono` (seed, inspect, console).
 | **Map stage** | Full-bleed in the remaining viewport; neatline + graticule + HUD |
 | **Right rail** | Stacked **studio-panel** cards: Inspect, Legend; whole rail toggles via Dock |
 | **Panel collapse** | Each panel body collapses independently |
-| **Console** | On-demand drawer (not permanently in the rail) |
+| **Console** | On-demand **terminal** drawer (phosphor prompt; not a studio-panel card) |
 
 ### Persistence (`localStorage`)
 

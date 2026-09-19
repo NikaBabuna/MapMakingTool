@@ -125,7 +125,7 @@ Goal doc: [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tecton
 | F-037 | Edge-driven velocity integrate | done | [F-037.md](../blockers/F-037.md) |
 | F-038 | Orogeny from standing boundaries | done | [F-038.md](../blockers/F-038.md) |
 | F-039 | Multi-panel studio + mappy style | done | [F-039.md](../blockers/F-039.md) |
-| F-040 | Traditional console; close G-008 | not started | |
+| F-040 | Traditional console; close G-008 | done | [F-040.md](../blockers/F-040.md) |
 
 ---
 

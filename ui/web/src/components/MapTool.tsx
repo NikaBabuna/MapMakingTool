@@ -7,7 +7,7 @@
  * Update when: Tool controls, layout, or QoL shortcuts change
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { MapCanvas, resetViewport } from "@/components/MapCanvas";
 import {
   fetchHealth,
@@ -66,6 +66,9 @@ export function MapTool() {
   const [consoleLine, setConsoleLine] = useState("");
   const [consoleLog, setConsoleLog] = useState<string[]>([]);
   const [consoleOpen, setConsoleOpen] = useState(false);
+  const [consoleHistory, setConsoleHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const consoleInputRef = useRef<HTMLInputElement>(null);
   const [dockOpen, setDockOpen] = useState(true);
   const [inspectOpen, setInspectOpen] = useState(true);
   const [legendOpen, setLegendOpen] = useState(true);
@@ -305,6 +308,12 @@ export function MapTool() {
     }
   }
 
+  useEffect(() => {
+    if (consoleOpen) {
+      consoleInputRef.current?.focus();
+    }
+  }, [consoleOpen]);
+
   async function onConsole() {
     const line = consoleLine.trim();
     if (!line) {
@@ -312,7 +321,16 @@ export function MapTool() {
     }
     try {
       const result = await postCommand(line);
-      setConsoleLog((prev) => [`> ${line}`, result.output || `(exit ${result.exitCode})`, ...prev].slice(0, 40));
+      setConsoleLog((prev) =>
+        [`aethelgard> ${line}`, result.output || `(exit ${result.exitCode})`, ...prev].slice(0, 40),
+      );
+      setConsoleHistory((prev) => {
+        if (prev[0] === line) {
+          return prev;
+        }
+        return [line, ...prev].slice(0, 32);
+      });
+      setHistoryIndex(-1);
       setStatus(result.status);
       busyRef.current = result.status.busy;
       const bytes = await fetchRaster();
@@ -320,6 +338,35 @@ export function MapTool() {
       setConsoleLine("");
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
+    }
+  }
+
+  function onConsoleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      void onConsole();
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (consoleHistory.length === 0) {
+        return;
+      }
+      const next = Math.min(historyIndex + 1, consoleHistory.length - 1);
+      setHistoryIndex(next);
+      setConsoleLine(consoleHistory[next] ?? "");
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex <= 0) {
+        setHistoryIndex(-1);
+        setConsoleLine("");
+        return;
+      }
+      const next = historyIndex - 1;
+      setHistoryIndex(next);
+      setConsoleLine(consoleHistory[next] ?? "");
     }
   }
 
@@ -582,24 +629,40 @@ export function MapTool() {
           </aside>
         ) : null}
 
-        <div className="console-drawer" hidden={!consoleOpen} role="region" aria-label="Console">
-          <h2>Console</h2>
-          <div className="console-row">
+        <div
+          className="console-drawer terminal"
+          hidden={!consoleOpen}
+          role="region"
+          aria-label="Terminal console"
+        >
+          <div className="terminal-titlebar">
+            <span className="terminal-title">Console</span>
+            <span className="terminal-hint">↑↓ history · Enter run</span>
+          </div>
+          <pre className="console-log terminal-log">
+            {consoleLog.join("\n") || "Placeholder verbs: status · advance · dump · at X Y · layers"}
+          </pre>
+          <div className="console-row terminal-input-row">
+            <span className="terminal-prompt" aria-hidden>
+              aethelgard&gt;
+            </span>
             <input
+              ref={consoleInputRef}
+              className="terminal-input"
               value={consoleLine}
-              placeholder="status · advance · dump · at X Y · layers"
-              onChange={(e) => setConsoleLine(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  void onConsole();
-                }
+              placeholder="status"
+              spellCheck={false}
+              autoComplete="off"
+              onChange={(e) => {
+                setConsoleLine(e.target.value);
+                setHistoryIndex(-1);
               }}
+              onKeyDown={onConsoleKeyDown}
             />
-            <button type="button" className="btn" onClick={() => void onConsole()}>
+            <button type="button" className="btn terminal-run" onClick={() => void onConsole()}>
               Run
             </button>
           </div>
-          <pre className="console-log">{consoleLog.join("\n") || "Placeholder verbs only."}</pre>
         </div>
       </div>
 

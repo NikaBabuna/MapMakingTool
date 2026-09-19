@@ -58,10 +58,10 @@ class ToolQolTest {
     assertTrue(goalDoc.contains("**Status:** `done`"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("G-007"));
+    assertTrue(agents.contains("G-007") || agents.contains("G-008") || agents.contains("Active Goal:** none"));
 
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("G-007"));
+    assertTrue(phase.contains("G-007") || phase.contains("G-008"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("G-007"));

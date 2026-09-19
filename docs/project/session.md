@@ -8,20 +8,20 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-039 Accepted · next F-040
+**Status:** F-040 Accepted · G-008 closed · Active Goal none
 
 ---
 
 ## Session goal
 
-Ship **G-008** — boundary tectonics + large cylinder world + cartography studio (F-030 → F-040).
+Closed **G-008** (traditional terminal console + Goal Accept).
 
 ---
 
 ## Active Goal
 
-**Active Goal:** [G-008 — Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) — **in progress**  
-**Last completed:** [G-007 — Studio cartography tool](goals/G-007-studio-cartography.md) — **done**
+**Active Goal:** none  
+**Last completed:** [G-008 — Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) — **done**
 
 ---
 
@@ -29,19 +29,18 @@ Ship **G-008** — boundary tectonics + large cylinder world + cartography studi
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030–F-039 | Foundations through multi-panel studio | done |
-| F-040 | Traditional console; Goal close | not started |
+| F-030–F-040 | G-008 complete | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-039 Accept)
+- [x] Incremental suite green (F-040 Accept)
 
 ---
 
 ## Notes
 
-- F-039 Choice A shipped: Inspect/Legend panel cards, neatline/graticule/HUD.
-- Next: **F-040** traditional console + G-008 close.
+- F-040: terminal console (`aethelgard>`, ↑/↓ history) + G-008 closed.
+- Next chat: **propose next Goal** (protocol — no lone Step).

@@ -7,9 +7,9 @@
 
 # G-008 — Boundary tectonics + cartography studio
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Engine:** do not edit `engine` source for ordinary feature growth (G-002 host ports).  
-**Prior:** [G-007](G-007-studio-cartography.md) delivered studio chrome QoL on a small Voronoi+Constant-velocity living map. This Goal **rebuilds plate physics**, grows the world, and deepens the cartography studio.
+**Prior:** [G-007](G-007-studio-cartography.md) delivered studio chrome QoL on a small Voronoi+Constant-velocity living map. This Goal **rebuilt plate physics**, grew the world, and deepened the cartography studio.
 
 **Approved:** 2026-09-19 (user). Direction: boundary-first tectonics (fission, edge-driven size/motion); **1920×1080** rectangular **torus**; initial plates from a realistic partition; studio panels + mappy style + traditional console; map zoom clamp + loopback pan.
 
@@ -61,9 +61,9 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 - [x] Boundaries + flux + flood + fission/death
 - [x] Edge-driven motion; Constant random velocities gone
 - [x] Orogeny from new boundary model
-- [ ] Studio panels + mappy style + traditional console
+- [x] Studio panels + mappy style + traditional console
 - [x] Zoom clamp + X-loop / Y-polar-clamp pan (F-032–F-038)
-- [ ] Determinism; no `engine` production edits; suite green
+- [x] Determinism; no `engine` production edits; suite green
 
 ---
 
@@ -81,7 +81,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | F-037 | Integrate edge-driven velocities | done |
 | F-038 | Orogeny from standing boundaries | done |
 | F-039 | Multi-panel studio + mappy style | done |
-| F-040 | Traditional console; Goal close | not started |
+| F-040 | Traditional console; Goal close | done |
 
 ---
 
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 10 / 11 |
-| Claim boxes | 6 / 8 |
-| Last Accept | F-039 |
+| Steps done | 11 / 11 |
+| Claim boxes | 8 / 8 |
+| Last Accept | F-040 |

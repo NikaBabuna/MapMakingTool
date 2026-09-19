@@ -484,7 +484,7 @@ input:focus-visible,
   border-top: 1px solid var(--line);
   background: var(--panel);
   padding: 0.65rem 0.85rem 0.85rem;
-  max-height: 40%;
+  max-height: 42%;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
@@ -494,13 +494,31 @@ input:focus-visible,
   display: none;
 }
 
-.console-drawer h2 {
-  margin: 0;
+.console-drawer.terminal {
+  background: #070a08;
+  border-top: 1px solid rgba(80, 160, 100, 0.35);
+  box-shadow: inset 0 1px 0 rgba(120, 220, 150, 0.08);
+  font-family: var(--font-mono);
+}
+
+.terminal-titlebar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.terminal-title {
   font-size: 0.72rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: #6bcf8a;
+}
+
+.terminal-hint {
+  font-size: 0.68rem;
+  color: rgba(120, 180, 140, 0.65);
 }
 
 .console-row {
@@ -509,8 +527,53 @@ input:focus-visible,
   gap: 0.4rem;
 }
 
-.console-row input {
+.console-row.terminal-input-row {
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid rgba(80, 160, 100, 0.35);
+  border-radius: 2px;
+  background: #050705;
+}
+
+.terminal-prompt {
+  color: #7dff9a;
   font-family: var(--font-mono);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.terminal-input,
+.console-row input.terminal-input {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #b8ffc8;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0.15rem 0;
+  outline: none;
+  min-width: 0;
+  width: 100%;
+  caret-color: #7dff9a;
+}
+
+.terminal-input::placeholder {
+  color: rgba(120, 180, 140, 0.45);
+}
+
+.terminal-input:focus-visible {
+  outline: none;
+}
+
+.btn.terminal-run {
+  background: #0e1a12;
+  border-color: rgba(80, 160, 100, 0.45);
+  color: #7dff9a;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
 }
 
 .console-log {
@@ -527,6 +590,15 @@ input:focus-visible,
   font-size: 0.75rem;
   line-height: 1.45;
   white-space: pre-wrap;
+}
+
+.console-log.terminal-log {
+  border-radius: 2px;
+  background: #030503;
+  border: 1px solid rgba(80, 160, 100, 0.28);
+  color: #8dffaa;
+  min-height: 5.5rem;
+  max-height: 12rem;
 }
 
 .confirm-backdrop {

@@ -4,7 +4,7 @@
 
 Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](docs/process/protocol-overview.md).
 
-**Active Goal:** [G-008 Boundary tectonics + cartography studio](docs/project/goals/G-008-boundary-tectonics-studio.md) (`in progress`) · Last completed: [G-007 Studio cartography tool](docs/project/goals/G-007-studio-cartography.md) (`done`)  
+**Active Goal:** none · Last completed: [G-008 Boundary tectonics + cartography studio](docs/project/goals/G-008-boundary-tectonics-studio.md) (`done`)  
 **Current Session:** [docs/project/session.md](docs/project/session.md)
 
 ---
