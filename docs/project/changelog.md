@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-20** — **F-053:** descriptor-driven chrome (panel registry + shared `Panel`, menu-bar row from `lib/menus.ts`, resizable persisted layout in `lib/layout.ts`); separation tokens; brighter elevation ramps; QoL (shortcuts overlay, Advance ×N, copy seed, steps/sec, Terminal Clear).
 - **2026-09-20** — **F-052:** left Perf rail (`/api/status` diag means); always-on Terminal panel; layer HUD top-left + pointer fix; brighter bathymetry + land clamp 64; remove Working… map overlay.
 - **2026-09-19** — **F-051:** runner shell (gray chrome, Play/Pause/`1x`…`Fastest`, World rail, map layer HUD); physical atlas paint; terminal continuous surface.
 - **2026-09-19** — **F-050:** scrap placeholder console chrome; rebuild `Terminal.tsx` on shared noun/verb dispatcher.

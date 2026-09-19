@@ -2,13 +2,16 @@
 
 /*
  * File: ui/web/src/components/MapTool.tsx
- * Purpose: Simulation runner chrome against MapHost (F-052)
+ * Purpose: Simulation runner chrome against MapHost (F-053)
  * Audience: App page
  * Update when: Tool controls, layout, or QoL shortcuts change
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { MapCanvas, resetViewport } from "@/components/MapCanvas";
+import { MenuBar } from "@/components/MenuBar";
+import { Panel } from "@/components/Panel";
+import { ShortcutsOverlay } from "@/components/ShortcutsOverlay";
 import { Terminal, type TerminalHandle } from "@/components/Terminal";
 import {
   fetchHealth,
@@ -27,15 +30,23 @@ import {
   HostStatus,
   DiagSample,
 } from "@/lib/host";
+import { type MenuActionId } from "@/lib/menus";
+import {
+  DEFAULT_LAYOUT,
+  LayoutRegion,
+  LayoutSizes,
+  RAIL_OPEN_KEYS,
+  clampSize,
+  clearLayout,
+  readLayout,
+  writeLayout,
+} from "@/lib/layout";
+import { panelOpenKey, panelsFor, defaultPanelOpen, type PanelDescriptor } from "@/lib/panels";
 import { IDENTITY_VIEWPORT, Viewport, fittedViewport } from "@/lib/viewport";
 import { rgbCss } from "@/lib/raster";
 
 const LAYERS: MapLayerName[] = ["Elevation", "Plates", "Overlay"];
 const SPEEDS: MapSpeedName[] = ["1x", "2x", "4x", "Fastest"];
-const DOCK_KEY = "aethelgard.dockOpen";
-const INSPECT_PANEL_KEY = "aethelgard.panelInspectOpen";
-const LEGEND_PANEL_KEY = "aethelgard.panelLegendOpen";
-const PERF_PANEL_KEY = "aethelgard.panelPerfOpen";
 
 /** Ordered metric rows for the left Perf rail (extensible). */
 const PERF_ROWS: { id: string; label: string; kind: "ns" | "bytes" }[] = [
@@ -61,8 +72,11 @@ function readFlag(key: string, fallback: boolean): boolean {
   return raw !== "0";
 }
 
-function readDockOpen(): boolean {
-  return readFlag(DOCK_KEY, true);
+function writeFlag(key: string, value: boolean): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+  window.localStorage.setItem(key, value ? "1" : "0");
 }
 
 function isTypingTarget(el: EventTarget | null): boolean {
@@ -99,16 +113,28 @@ function formatDiag(sample: DiagSample | undefined, kind: "ns" | "bytes"): strin
   return kind === "bytes" ? formatBytes(sample) : formatNs(sample);
 }
 
+/** Steps per second implied by the mean advance wall time. */
+function formatStepRate(sample: DiagSample | undefined): string {
+  if (!sample || sample.n === 0 || sample.mean == null || sample.mean <= 0) {
+    return "—";
+  }
+  const perSecond = 1_000_000_000 / sample.mean;
+  return perSecond >= 10 ? `${perSecond.toFixed(0)} /s` : `${perSecond.toFixed(1)} /s`;
+}
+
 export function MapTool() {
   const [status, setStatus] = useState<HostStatus | null>(null);
   const [raster, setRaster] = useState<ArrayBuffer | null>(null);
   const [seedText, setSeedText] = useState("0");
+  const [seedCopied, setSeedCopied] = useState(false);
+  const [advanceCount, setAdvanceCount] = useState("10");
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<MapSpeedName>("1x");
+  const [leftRailOpen, setLeftRailOpen] = useState(true);
   const [dockOpen, setDockOpen] = useState(true);
-  const [inspectOpen, setInspectOpen] = useState(true);
-  const [legendOpen, setLegendOpen] = useState(true);
-  const [perfOpen, setPerfOpen] = useState(true);
+  const [panelOpen, setPanelOpen] = useState<Record<string, boolean>>(defaultPanelOpen);
+  const [layout, setLayout] = useState<LayoutSizes>(DEFAULT_LAYOUT);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [viewport, setViewport] = useState<Viewport>(IDENTITY_VIEWPORT);
   const stageMetricsRef = useRef({
     stageW: 1,
@@ -125,39 +151,33 @@ export function MapTool() {
   const busyRef = useRef(false);
 
   useEffect(() => {
-    setDockOpen(readDockOpen());
-    setInspectOpen(readFlag(INSPECT_PANEL_KEY, true));
-    setLegendOpen(readFlag(LEGEND_PANEL_KEY, true));
-    setPerfOpen(readFlag(PERF_PANEL_KEY, true));
+    setLeftRailOpen(readFlag(RAIL_OPEN_KEYS.left, true));
+    setDockOpen(readFlag(RAIL_OPEN_KEYS.right, true));
+    setPanelOpen((prev) => {
+      const next = { ...prev };
+      for (const id of Object.keys(prev)) {
+        next[id] = readFlag(panelOpenKey(id), prev[id]);
+      }
+      return next;
+    });
+    setLayout(readLayout());
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    window.localStorage.setItem(DOCK_KEY, dockOpen ? "1" : "0");
+    writeFlag(RAIL_OPEN_KEYS.left, leftRailOpen);
+  }, [leftRailOpen]);
+
+  useEffect(() => {
+    writeFlag(RAIL_OPEN_KEYS.right, dockOpen);
   }, [dockOpen]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    window.localStorage.setItem(INSPECT_PANEL_KEY, inspectOpen ? "1" : "0");
-  }, [inspectOpen]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    window.localStorage.setItem(LEGEND_PANEL_KEY, legendOpen ? "1" : "0");
-  }, [legendOpen]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    window.localStorage.setItem(PERF_PANEL_KEY, perfOpen ? "1" : "0");
-  }, [perfOpen]);
+  function togglePanel(id: string) {
+    setPanelOpen((prev) => {
+      const next = { ...prev, [id]: !prev[id] };
+      writeFlag(panelOpenKey(id), next[id]);
+      return next;
+    });
+  }
 
   const refresh = useCallback(async () => {
     const next = await fetchStatus();
@@ -262,6 +282,39 @@ export function MapTool() {
     [],
   );
 
+  /** Drag one layout edge; pointer delta is applied to the region size and clamped. */
+  function beginResize(region: LayoutRegion, event: React.PointerEvent<HTMLDivElement>) {
+    event.preventDefault();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startSize = layout[region];
+
+    function onMove(move: PointerEvent) {
+      const delta =
+        region === "leftRail"
+          ? move.clientX - startX
+          : region === "rightRail"
+            ? startX - move.clientX
+            : startY - move.clientY;
+      setLayout((prev) => ({ ...prev, [region]: clampSize(region, startSize + delta) }));
+    }
+    function onUp() {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      setLayout((prev) => {
+        writeLayout(prev);
+        return prev;
+      });
+    }
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  }
+
+  function resetLayout() {
+    clearLayout();
+    setLayout({ ...DEFAULT_LAYOUT });
+  }
+
   async function onAdvance() {
     if (busyRef.current) {
       return;
@@ -270,6 +323,23 @@ export function MapTool() {
       const next = await postAdvance();
       setStatus(next);
       busyRef.current = next.busy;
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  }
+
+  /** Advance N steps through the shared dispatcher (`session advance N`). */
+  async function onAdvanceMany() {
+    if (busyRef.current) {
+      return;
+    }
+    const count = Number.parseInt(advanceCount, 10);
+    if (!Number.isFinite(count) || count < 1) {
+      return;
+    }
+    try {
+      await onTerminalRun(`session advance ${count}`);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -345,6 +415,17 @@ export function MapTool() {
     setSeedText(String(next));
   }
 
+  async function copySeed() {
+    const value = String(status?.seed ?? seedText);
+    try {
+      await navigator.clipboard.writeText(value);
+      setSeedCopied(true);
+      window.setTimeout(() => setSeedCopied(false), 1200);
+    } catch {
+      setError("Clipboard unavailable — seed not copied.");
+    }
+  }
+
   async function onCell(x: number, y: number) {
     try {
       const next = await postInspect(x, y);
@@ -363,6 +444,59 @@ export function MapTool() {
     return result;
   }
 
+  function onMenuAction(action: MenuActionId) {
+    switch (action) {
+      case "world.new":
+        requestNewWorld();
+        return;
+      case "world.randomSeed":
+        randomSeed();
+        return;
+      case "seed.copy":
+        void copySeed();
+        return;
+      case "view.leftRail":
+        setLeftRailOpen((o) => !o);
+        return;
+      case "view.rightRail":
+        setDockOpen((o) => !o);
+        return;
+      case "view.focusTerminal":
+        terminalRef.current?.focus();
+        return;
+      case "view.resetView":
+        fitView();
+        return;
+      case "view.resetLayout":
+        resetLayout();
+        return;
+      case "sim.play":
+        setPlaying(true);
+        return;
+      case "sim.pause":
+        setPlaying(false);
+        return;
+      case "sim.advance":
+        void onAdvance();
+        return;
+      case "sim.speed.1x":
+        void onSpeed("1x");
+        return;
+      case "sim.speed.2x":
+        void onSpeed("2x");
+        return;
+      case "sim.speed.4x":
+        void onSpeed("4x");
+        return;
+      case "sim.speed.Fastest":
+        void onSpeed("Fastest");
+        return;
+      case "help.shortcuts":
+        setShortcutsOpen(true);
+        return;
+    }
+  }
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (confirmNew) {
@@ -371,10 +505,21 @@ export function MapTool() {
         }
         return;
       }
+      if (shortcutsOpen) {
+        if (e.key === "Escape") {
+          setShortcutsOpen(false);
+        }
+        return;
+      }
       if (isTypingTarget(e.target)) {
         return;
       }
       const key = e.key;
+      if (key === "?") {
+        e.preventDefault();
+        setShortcutsOpen(true);
+        return;
+      }
       if (key === " " || key === "Spacebar") {
         e.preventDefault();
         setPlaying((p) => !p);
@@ -420,6 +565,11 @@ export function MapTool() {
         setDockOpen((o) => !o);
         return;
       }
+      if (key === "p" || key === "P") {
+        e.preventDefault();
+        setLeftRailOpen((o) => !o);
+        return;
+      }
       if (key === "r" || key === "R") {
         e.preventDefault();
         fitView();
@@ -433,8 +583,161 @@ export function MapTool() {
   const statusText = status?.statusText ?? (online ? "Connecting…" : "Host offline");
   const diag = status?.diag;
 
+  const shellVars: CSSProperties = {
+    ["--perf-w" as string]: `${layout.leftRail}px`,
+    ["--dock-w" as string]: `${layout.rightRail}px`,
+    ["--terminal-h" as string]: `${layout.terminal}px`,
+  };
+
+  function panelBody(id: string) {
+    if (id === "perf") {
+      return (
+        <>
+          <dl className="perf-grid">
+            {PERF_ROWS.map((row) => (
+              <div key={row.id} data-diag={row.id}>
+                <dt>{row.label}</dt>
+                <dd className="mono">{formatDiag(diag?.[row.id], row.kind)}</dd>
+              </div>
+            ))}
+            <div data-diag="advance.rate">
+              <dt>Steps / sec</dt>
+              <dd className="mono">{formatStepRate(diag?.["advance.wall"])}</dd>
+            </div>
+          </dl>
+          <p className="muted perf-hint">Means from DiagnosticsHub · same session as stats</p>
+        </>
+      );
+    }
+    if (id === "world") {
+      return (
+        <>
+          <dl className="inspect-grid world-grid">
+            <div>
+              <dt>Step</dt>
+              <dd>{status?.step ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Size</dt>
+              <dd>{status ? `${status.width}×${status.height}` : "—"}</dd>
+            </div>
+            <div>
+              <dt>Seed</dt>
+              <dd className="mono">{status?.seed ?? "—"}</dd>
+            </div>
+          </dl>
+          <label className="field seed">
+            <span>Seed</span>
+            <input
+              value={seedText}
+              disabled={busy}
+              onChange={(e) => setSeedText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  requestNewWorld();
+                }
+              }}
+            />
+          </label>
+          <div className="world-actions">
+            <button type="button" className="btn" disabled={busy} onClick={randomSeed} title="Random seed">
+              Random
+            </button>
+            <button type="button" className="btn" onClick={() => void copySeed()} title="Copy seed to clipboard">
+              {seedCopied ? "Copied" : "Copy"}
+            </button>
+            <button type="button" className="btn" disabled={busy} onClick={requestNewWorld}>
+              Reset world
+            </button>
+          </div>
+          <div className="world-actions">
+            <label className="field advance-n">
+              <span>Steps</span>
+              <input
+                value={advanceCount}
+                disabled={busy}
+                inputMode="numeric"
+                onChange={(e) => setAdvanceCount(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    void onAdvanceMany();
+                  }
+                }}
+              />
+            </label>
+            <button type="button" className="btn" disabled={busy} onClick={() => void onAdvanceMany()} title="Advance N steps">
+              Advance ×N
+            </button>
+          </div>
+          <p className={`status-chip${busy ? " is-busy" : ""}`} aria-live="polite">
+            {statusText}
+          </p>
+        </>
+      );
+    }
+    if (id === "inspect") {
+      return status?.inspect ? (
+        <dl className="inspect-grid">
+          <div>
+            <dt>Cell</dt>
+            <dd>
+              {status.inspect.x}, {status.inspect.y}
+            </dd>
+          </div>
+          <div>
+            <dt>Elevation</dt>
+            <dd>{status.inspect.elevation}</dd>
+          </div>
+          <div>
+            <dt>Plate</dt>
+            <dd>{status.inspect.plateId}</dd>
+          </div>
+          <div>
+            <dt>Velocity</dt>
+            <dd>
+              {status.inspect.vx}, {status.inspect.vy}
+            </dd>
+          </div>
+        </dl>
+      ) : (
+        <p className="muted">Click the map to inspect a cell.</p>
+      );
+    }
+    if (id === "legend") {
+      return (
+        <ul className="legend-list">
+          {(status?.legend ?? []).map((row) => (
+            <li key={`${row.rgb}-${row.label}`}>
+              <span className="swatch" style={{ background: rgbCss(row.rgb) }} />
+              {row.label}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return null;
+  }
+
+  function renderPanel(descriptor: PanelDescriptor) {
+    return (
+      <Panel
+        key={descriptor.id}
+        descriptor={descriptor}
+        open={panelOpen[descriptor.id] ?? descriptor.defaultOpen}
+        onToggle={togglePanel}
+      >
+        {panelBody(descriptor.id)}
+      </Panel>
+    );
+  }
+
   return (
-    <div className={`studio${dockOpen ? "" : " dock-closed-root"}`}>
+    <div className="studio" style={shellVars}>
+      <MenuBar
+        onAction={onMenuAction}
+        checked={{ "view.leftRail": leftRailOpen, "view.rightRail": dockOpen }}
+      />
+
       <header className="studio-bar runner-bar">
         <div className="runner-slot runner-identity">
           <h1 className="studio-brand">Aethelgard</h1>
@@ -485,10 +788,19 @@ export function MapTool() {
           </button>
           <button
             type="button"
+            className={`btn${leftRailOpen ? " is-pressed" : ""}`}
+            aria-pressed={leftRailOpen}
+            onClick={() => setLeftRailOpen((o) => !o)}
+            title="Toggle Perf rail (P)"
+          >
+            Perf
+          </button>
+          <button
+            type="button"
             className={`btn${dockOpen ? " is-pressed" : ""}`}
             aria-pressed={dockOpen}
             onClick={() => setDockOpen((o) => !o)}
-            title="Toggle world panel (D)"
+            title="Toggle World rail (D)"
           >
             World
           </button>
@@ -505,36 +817,22 @@ export function MapTool() {
       ) : null}
 
       <div className="studio-body">
-        <div className={`studio-work${dockOpen ? "" : " dock-closed"}`}>
-          <aside className="side-rail perf-rail" aria-label="Performance">
-            <article className="studio-panel" data-panel="perf">
-              <header className="panel-chrome">
-                <h2>Perf</h2>
-                <button
-                  type="button"
-                  className="panel-toggle"
-                  aria-expanded={perfOpen}
-                  onClick={() => setPerfOpen((o) => !o)}
-                  title={perfOpen ? "Collapse Perf" : "Expand Perf"}
-                >
-                  {perfOpen ? "−" : "+"}
-                </button>
-              </header>
-              {perfOpen ? (
-                <div className="panel-body">
-                  <dl className="perf-grid">
-                    {PERF_ROWS.map((row) => (
-                      <div key={row.id} data-diag={row.id}>
-                        <dt>{row.label}</dt>
-                        <dd className="mono">{formatDiag(diag?.[row.id], row.kind)}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <p className="muted perf-hint">Means from DiagnosticsHub · same session as stats</p>
-                </div>
-              ) : null}
-            </article>
-          </aside>
+        <div className="studio-work">
+          {leftRailOpen ? (
+            <>
+              <aside className="side-rail perf-rail" aria-label="Performance">
+                {panelsFor("left").map(renderPanel)}
+              </aside>
+              <div
+                className="rail-splitter"
+                data-splitter="leftRail"
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize Perf rail"
+                onPointerDown={(e) => beginResize("leftRail", e)}
+              />
+            </>
+          ) : null}
 
           <MapCanvas
             buffer={raster}
@@ -548,130 +846,35 @@ export function MapTool() {
           />
 
           {dockOpen ? (
-            <aside className="side-rail world-rail" aria-label="World">
-              <article className="studio-panel" data-panel="world">
-                <header className="panel-chrome">
-                  <h2>World</h2>
-                </header>
-                <div className="panel-body">
-                  <dl className="inspect-grid world-grid">
-                    <div>
-                      <dt>Step</dt>
-                      <dd>{status?.step ?? "—"}</dd>
-                    </div>
-                    <div>
-                      <dt>Size</dt>
-                      <dd>{status ? `${status.width}×${status.height}` : "—"}</dd>
-                    </div>
-                    <div>
-                      <dt>Seed</dt>
-                      <dd className="mono">{status?.seed ?? "—"}</dd>
-                    </div>
-                  </dl>
-                  <label className="field seed">
-                    <span>Seed</span>
-                    <input
-                      value={seedText}
-                      disabled={busy}
-                      onChange={(e) => setSeedText(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          requestNewWorld();
-                        }
-                      }}
-                    />
-                  </label>
-                  <div className="world-actions">
-                    <button type="button" className="btn" disabled={busy} onClick={randomSeed} title="Random seed">
-                      Random
-                    </button>
-                    <button type="button" className="btn" disabled={busy} onClick={requestNewWorld}>
-                      Reset world
-                    </button>
-                  </div>
-                  <p className={`status-chip${busy ? " is-busy" : ""}`} aria-live="polite">
-                    {statusText}
-                  </p>
-                </div>
-              </article>
-
-              <article className="studio-panel" data-panel="inspect">
-                <header className="panel-chrome">
-                  <h2>Inspect</h2>
-                  <button
-                    type="button"
-                    className="panel-toggle"
-                    aria-expanded={inspectOpen}
-                    onClick={() => setInspectOpen((o) => !o)}
-                    title={inspectOpen ? "Collapse Inspect" : "Expand Inspect"}
-                  >
-                    {inspectOpen ? "−" : "+"}
-                  </button>
-                </header>
-                {inspectOpen ? (
-                  <div className="panel-body">
-                    {status?.inspect ? (
-                      <dl className="inspect-grid">
-                        <div>
-                          <dt>Cell</dt>
-                          <dd>
-                            {status.inspect.x}, {status.inspect.y}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt>Elevation</dt>
-                          <dd>{status.inspect.elevation}</dd>
-                        </div>
-                        <div>
-                          <dt>Plate</dt>
-                          <dd>{status.inspect.plateId}</dd>
-                        </div>
-                        <div>
-                          <dt>Velocity</dt>
-                          <dd>
-                            {status.inspect.vx}, {status.inspect.vy}
-                          </dd>
-                        </div>
-                      </dl>
-                    ) : (
-                      <p className="muted">Click the map to inspect a cell.</p>
-                    )}
-                  </div>
-                ) : null}
-              </article>
-
-              <article className="studio-panel" data-panel="legend">
-                <header className="panel-chrome">
-                  <h2>Legend</h2>
-                  <button
-                    type="button"
-                    className="panel-toggle"
-                    aria-expanded={legendOpen}
-                    onClick={() => setLegendOpen((o) => !o)}
-                    title={legendOpen ? "Collapse Legend" : "Expand Legend"}
-                  >
-                    {legendOpen ? "−" : "+"}
-                  </button>
-                </header>
-                {legendOpen ? (
-                  <div className="panel-body">
-                    <ul className="legend-list">
-                      {(status?.legend ?? []).map((row) => (
-                        <li key={`${row.rgb}-${row.label}`}>
-                          <span className="swatch" style={{ background: rgbCss(row.rgb) }} />
-                          {row.label}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-              </article>
-            </aside>
+            <>
+              <div
+                className="rail-splitter"
+                data-splitter="rightRail"
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="Resize World rail"
+                onPointerDown={(e) => beginResize("rightRail", e)}
+              />
+              <aside className="side-rail world-rail" aria-label="World">
+                {panelsFor("right").map(renderPanel)}
+              </aside>
+            </>
           ) : null}
         </div>
 
+        <div
+          className="rail-splitter is-horizontal"
+          data-splitter="terminal"
+          role="separator"
+          aria-orientation="horizontal"
+          aria-label="Resize terminal"
+          onPointerDown={(e) => beginResize("terminal", e)}
+        />
+
         <Terminal ref={terminalRef} onRun={onTerminalRun} />
       </div>
+
+      {shortcutsOpen ? <ShortcutsOverlay onClose={() => setShortcutsOpen(false)} /> : null}
 
       {confirmNew ? (
         <div className="confirm-backdrop" role="presentation">

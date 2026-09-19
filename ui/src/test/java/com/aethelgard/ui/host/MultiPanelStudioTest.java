@@ -25,16 +25,23 @@ class MultiPanelStudioTest {
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.toLowerCase().contains("multi-panel") || style.contains("studio-panel"));
     assertTrue(style.toLowerCase().contains("neatline") || style.toLowerCase().contains("graticule"));
-    assertTrue(style.contains("aethelgard.panelInspectOpen") || style.contains("panelInspect"));
+    // F-053 moved panel identity + persistence into the registry (lib/panels.ts)
+    assertTrue(style.contains("aethelgard.panel.inspect.open") || style.contains("panelInspect"));
     assertTrue(style.contains("Inspect") && style.contains("Legend"));
 
+    String panels = Files.readString(root.resolve("ui/web/src/lib/panels.ts"));
+    assertTrue(panels.contains("id: \"inspect\""));
+    assertTrue(panels.contains("id: \"legend\""));
+    assertTrue(panels.contains("aethelgard.panel."));
+
+    String panel = Files.readString(root.resolve("ui/web/src/components/Panel.tsx"));
+    assertTrue(panel.contains("studio-panel"));
+    assertTrue(panel.contains("data-panel"));
+
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
-    assertTrue(tool.contains("studio-panel"));
-    assertTrue(tool.contains("data-panel=\"inspect\""));
-    assertTrue(tool.contains("data-panel=\"legend\""));
+    assertTrue(tool.contains("panelsFor"));
+    assertTrue(tool.contains("panelOpenKey"));
     assertTrue(tool.contains("side-rail"));
-    assertTrue(tool.contains("aethelgard.panelInspectOpen"));
-    assertTrue(tool.contains("aethelgard.panelLegendOpen"));
     assertTrue(tool.contains("postAdvance"));
     assertTrue(tool.contains("Terminal") || tool.contains("Console"));
     assertFalse(tool.contains("JFrame"));

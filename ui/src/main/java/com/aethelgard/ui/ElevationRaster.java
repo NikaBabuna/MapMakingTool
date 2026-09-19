@@ -27,19 +27,19 @@ public final class ElevationRaster {
    * Shallow ocean swatch (e = −1) — legacy {@code OCEAN_RGB} name kept for tests/legend that want a
    * single sea chip.
    */
-  public static final int OCEAN_RGB = pack(72, 128, 168);
+  public static final int OCEAN_RGB = pack(110, 190, 226);
   /** Bathymetry stops (e = −64, −32, −16, −8, −1). */
   public static final int[] OCEAN_STOP_E = {-64, -32, -16, -8, -1};
 
-  public static final int[] OCEAN_STOP_R = {18, 32, 48, 60, 72};
-  public static final int[] OCEAN_STOP_G = {48, 72, 96, 112, 128};
-  public static final int[] OCEAN_STOP_B = {78, 108, 132, 152, 168};
+  public static final int[] OCEAN_STOP_R = {24, 44, 66, 86, 110};
+  public static final int[] OCEAN_STOP_G = {64, 98, 132, 162, 190};
+  public static final int[] OCEAN_STOP_B = {104, 146, 178, 206, 226};
   /** Landstops for piecewise atlas ramp (e = 0, 12, 24, 40, 64). */
   public static final int[] LAND_STOP_E = {0, 12, 24, 40, 64};
 
-  public static final int[] LAND_STOP_R = {142, 168, 196, 214, 248};
-  public static final int[] LAND_STOP_G = {168, 178, 168, 176, 236};
-  public static final int[] LAND_STOP_B = {118, 128, 118, 128, 210};
+  public static final int[] LAND_STOP_R = {150, 186, 214, 232, 255};
+  public static final int[] LAND_STOP_G = {196, 208, 190, 198, 250};
+  public static final int[] LAND_STOP_B = {120, 132, 124, 140, 236};
   public static final int HILLSHADE_FLAT = 12;
   public static final int HILLSHADE_MIN = 6;
   public static final int HILLSHADE_MAX = 18;

@@ -24,13 +24,17 @@ class StudioChromeTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("Studio cartography"));
-    assertTrue(style.contains("aethelgard.dockOpen"));
+    // F-053 renamed the dock flag to a rail key and moved it into lib/layout.ts
+    assertTrue(style.contains("aethelgard.rail.right.open"));
     assertTrue(style.contains("--accent") || style.contains("gray") || style.contains("--ink"));
+
+    String layoutLib = Files.readString(root.resolve("ui/web/src/lib/layout.ts"));
+    assertTrue(layoutLib.contains("aethelgard.rail.right.open"));
 
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
     assertTrue(tool.contains("studio"));
     assertTrue(tool.contains("studio-bar"));
-    assertTrue(tool.contains("aethelgard.dockOpen"));
+    assertTrue(tool.contains("RAIL_OPEN_KEYS"));
     assertTrue(tool.contains("console-drawer") || tool.contains("terminalOpen") || tool.contains("Terminal"));
     assertTrue(tool.contains("side-rail") || tool.contains("studio-panel") || tool.contains("dockOpen"));
     assertTrue(tool.contains("postAdvance"));

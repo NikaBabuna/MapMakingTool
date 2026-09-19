@@ -52,7 +52,7 @@ class RunnerShellTest {
     String canvas = Files.readString(root.resolve("ui/web/src/components/MapCanvas.tsx"));
     assertTrue(canvas.contains("map-layer-switch") || canvas.contains("onLayer"));
 
-    assertEquals(0x4880a8, ElevationRaster.OCEAN_RGB);
+    assertEquals(0x6ebee2, ElevationRaster.OCEAN_RGB);
     assertEquals(MapSpeed.X1.periodMillis(), 250);
     assertEquals(MapSpeed.FASTEST.label(), "Fastest");
 

@@ -40,9 +40,12 @@ class PerfRailTest {
   void perfRailAndTerminalPanel() throws Exception {
     Path root = findRepoRoot();
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
-    assertTrue(tool.contains("data-panel=\"perf\""));
+    // F-053 moved panel identity + persistence into the registry (lib/panels.ts)
+    String panels = Files.readString(root.resolve("ui/web/src/lib/panels.ts"));
+    assertTrue(panels.contains("id: \"perf\""));
+    assertTrue(panels.contains("aethelgard.panel."));
     assertTrue(tool.contains("PERF_ROWS"));
-    assertTrue(tool.contains("panelPerfOpen"));
+    assertTrue(tool.contains("panelsFor"));
     assertFalse(tool.contains("setTerminalOpen"));
     String terminal = Files.readString(root.resolve("ui/web/src/components/Terminal.tsx"));
     assertTrue(terminal.contains("terminal-panel"));
@@ -120,7 +123,7 @@ class PerfRailTest {
   @DisplayName("FR-6: brighter bathymetry + land clamp 64")
   void brighterDeeperPaint() {
     assertEquals(64, ElevationRaster.CLAMP);
-    assertEquals(0x4880a8, ElevationRaster.OCEAN_RGB);
+    assertEquals(0x6ebee2, ElevationRaster.OCEAN_RGB);
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.oceanRamp(-1));
     assertNotEquals(ElevationRaster.oceanRamp(-1), ElevationRaster.oceanRamp(-64));
     assertEquals(ElevationRaster.landRamp(64), ElevationRaster.rgbOf(64));

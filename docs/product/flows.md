@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** through **F-052** perf rail + runner fixes._
+_Status: **G-007** done. **G-008** done. **G-009** through **F-053** UI infrastructure + QoL._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -22,7 +22,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
 | Perf | Step path + raster/host memory | **F-046** / **F-047** done |
 | Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-050** done |
-| Studio | Runner chrome; perf panels; UX; Goal close | **F-051**–**F-052** done; F-053–F-054 |
+| Studio | Runner chrome; perf panels; UI infrastructure; Goal close | **F-051**–**F-053** done; F-054 |
 
 ### Flow: Raster / host memory (F-047)
 
@@ -72,6 +72,24 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 2 | Advance or paint → hub samples update; rail shows averages (or `—` when empty). |
 | 3 | No Working… map overlay; busy still disables Reset world / ignores Advance. |
 | 4 | Brighter bathymetry + land clamp 64 on Elevation paint. |
+
+### Flow: Chrome infrastructure (F-053)
+
+| Step | Action |
+|------|--------|
+| 1 | Rails render every panel whose descriptor in `lib/panels.ts` matches the dock; each uses shared `Panel` chrome and remembers its collapse state. |
+| 2 | Menu bar row (File · Edit · View · Simulation · Help) comes from `lib/menus.ts`; wired items drive existing actions, stub items are dim and inert. |
+| 3 | Drag the gutter beside a rail or above the terminal to resize; sizes clamp, persist, and restore via **View → Reset layout**. |
+| 4 | Elevation paint is brighter (documented ocean/land stops); legend swatches read from the same ramps. |
+
+### Flow: Runner QoL (F-053)
+
+| Step | Action |
+|------|--------|
+| 1 | Press `?` (or Help → Shortcuts…) → overlay lists every key from `lib/shortcuts.ts`; `Esc` closes. |
+| 2 | World rail: type a step count and **Advance ×N** → `session advance N` on the shared dispatcher. |
+| 3 | **Copy** puts the live seed on the clipboard; Perf rail shows **Steps / sec** from mean `advance.wall`. |
+| 4 | Terminal **Clear** wipes the on-screen transcript only — session and history survive. |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
 

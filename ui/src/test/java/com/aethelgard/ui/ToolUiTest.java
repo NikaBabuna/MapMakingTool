@@ -28,7 +28,7 @@ class ToolUiTest {
   @Test
   @DisplayName("FR-1: negatives are bathymetry; physical land ramp; same grid → same RGB")
   void oceanAndLandRamp() {
-    assertEquals(ElevationRaster.OCEAN_RGB, pack(72, 128, 168));
+    assertEquals(ElevationRaster.OCEAN_RGB, pack(110, 190, 226));
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-1));
     assertNotEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-12));
     assertEquals(ElevationRaster.oceanRamp(-12), ElevationRaster.rgbOf(-12));

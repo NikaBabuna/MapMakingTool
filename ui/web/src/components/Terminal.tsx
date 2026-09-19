@@ -82,13 +82,11 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Termi
       setLine("");
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      setLog((prev) =>
-        [
-          ...prev,
-          { kind: "command", text: `aethelgard> ${trimmed}` },
-          { kind: "error", text: `error: ${message}` },
-        ].slice(-LOG_CAP),
-      );
+      const failure: TerminalEntry[] = [
+        { kind: "command", text: `aethelgard> ${trimmed}` },
+        { kind: "error", text: `error: ${message}` },
+      ];
+      setLog((prev) => [...prev, ...failure].slice(-LOG_CAP));
     }
   }
 
@@ -125,7 +123,17 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Termi
     <div className="terminal-panel terminal" role="region" aria-label="Terminal">
       <div className="terminal-titlebar">
         <span className="terminal-title">Terminal</span>
-        <span className="terminal-hint">↑↓ history · Enter · help · ` focuses</span>
+        <span className="terminal-actions">
+          <span className="terminal-hint">↑↓ history · Enter · help · ` focuses</span>
+          <button
+            type="button"
+            className="btn terminal-clear"
+            onClick={() => setLog([])}
+            title="Clear transcript (view only)"
+          >
+            Clear
+          </button>
+        </span>
       </div>
       <div className="console-log terminal-log" ref={logRef}>
         {log.length === 0 ? (

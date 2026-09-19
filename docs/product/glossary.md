@@ -50,8 +50,12 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **CommandDispatch** | Single execute entry for headless CLI, MapHost `/api/command`, and in-app console (F-048; deprecated flat aliases remain). |
 | **CliRunner** | Headless full runner (F-049): one session per invocation; `--seed` / `--steps` / `-c` over `CommandDispatch`. |
 | **MapSpeed** | Play tick rate labels: `1x` / `2x` / `4x` / `Fastest` (F-051). |
-| **Runner shell** | Layout slots: identity / transport / view / Perf rail / World rail / map HUD / terminal (F-051–F-052). |
-| **Perf rail** | Left sidebar listing DiagnosticsHub mean samples via `/api/status` `diag` (F-052). |
+| **Runner shell** | Layout slots: menu bar / identity / transport / view / Perf rail / World rail / map HUD / terminal (F-051–F-053). |
+| **Perf rail** | Left sidebar listing DiagnosticsHub mean samples via `/api/status` `diag`, plus steps/sec (F-052–F-053). |
+| **Panel registry** | `ui/web/src/lib/panels.ts` — descriptors (`id`, `title`, `dock`, `order`, `defaultOpen`, `collapsible`) that rails map through one `Panel.tsx`. Adding a panel means adding a descriptor (F-053, alpha). |
+| **Menu bar** | Slim top row rendered from `ui/web/src/lib/menus.ts` (File · Edit · View · Simulation · Help). Items without an action are `enabled: false` stubs — visible, dim, inert (F-053). |
+| **Layout keys** | `aethelgard.layout.leftRail` / `.rightRail` / `.terminal` (px sizes) and `aethelgard.rail.<side>.open` / `aethelgard.panel.<id>.open` visibility flags; clamps in `lib/layout.ts` (F-053). |
+| **Shortcuts overlay** | `?` dialog listing every runner key from `lib/shortcuts.ts` — the single source shared with menu labels (F-053). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): flat `int[]` pixels; bathymetry + hillshaded land (clamp 64), plate colors, or overlay. Controllers may reuse the buffer (F-047). |
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy. No Swing. No map Working… overlay (F-052). |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |

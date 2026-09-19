@@ -73,7 +73,7 @@ class MapViewTest {
     assertEquals(ElevationRaster.rgbOf(64), ElevationRaster.rgbOf(99));
     assertEquals(ElevationRaster.oceanRamp(-4), ElevationRaster.rgbOf(-4));
     assertEquals(ElevationRaster.OCEAN_RGB, ElevationRaster.rgbOf(-1));
-    assertEquals(pack(72, 128, 168), ElevationRaster.rgbOf(-1));
+    assertEquals(pack(110, 190, 226), ElevationRaster.rgbOf(-1));
     assertNotEquals(ElevationRaster.rgbOf(0), ElevationRaster.rgbOf(-4));
     assertEquals(ElevationRaster.landRamp(8), ElevationRaster.rgbOf(8));
   }

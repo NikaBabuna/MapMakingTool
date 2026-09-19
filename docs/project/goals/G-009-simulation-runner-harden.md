@@ -62,7 +62,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 - [x] Sphere polar wrap end-to-end (F-045)
 - [x] Diagnostics recorded + queryable (F-042+)
 - [x] Shared command surface + full CLI + rebuilt terminal (F-048–F-050)
-- [ ] Runner chrome + perf panels + UX pass (F-051–F-053) — F-051/F-052 done; F-053 open
+- [x] Runner chrome + perf panels + UI infrastructure (F-051–F-053)
 - [x] Perf/memory improvements witnessed (F-046–F-047)
 - [ ] Determinism; no `engine` production edits; suite green
 
@@ -84,7 +84,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-050 | Scrap + rebuild terminal | done |
 | F-051 | Runner chrome | done |
 | F-052 | Perf rail + runner fixes | done |
-| F-053 | UI/UX pass | not started |
+| F-053 | Runner UI infrastructure + QoL | done |
 | F-054 | Goal close | not started |
 
 ---
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 12 / 14 |
-| Claim boxes | 6 / 8 |
-| Last Accept | F-052 |
+| Steps done | 13 / 14 |
+| Claim boxes | 7 / 8 |
+| Last Accept | F-053 |
