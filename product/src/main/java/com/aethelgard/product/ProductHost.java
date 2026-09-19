@@ -23,40 +23,38 @@ import java.util.Objects;
  * Product entry for constructing an {@link Engine}. Setup is owned here so later Steps can add
  * schema and Systems without callers talking to engine defaults directly.
  *
- * <p>Schema: elevation / plates / plate_registry / boundaries / area_flux / motion_intent (STATIC),
- * plate_velocity (CONSTANT bridge). Kinematics and tectonics Systems claim {@code world/tectonics}
- * after Step 0. Tectonics runs {@link TraceBoundaries}, {@link BoundaryInteraction}, then {@link
- * Orogeny}.
+ * <p>Schema: elevation / plates / plate_registry / boundaries / area_flux / motion_intent /
+ * plate_velocity are STATIC. One tectonics System claims {@code world/tectonics} after Step 0 and
+ * runs TraceBoundaries → BoundaryInteraction → ApplyGeometry → Orogeny.
  */
 public final class ProductHost {
 
-  /** Provenance / claimer id for the kinematics System. */
-  public static final String KINEMATICS_SYSTEM_ID = "kinematics";
-
-  /** Provenance / claimer id for the tectonics System. */
+  /** Provenance / claimer id for the tectonics System (owns the full plate pipeline). */
   public static final String TECTONICS_SYSTEM_ID = "tectonics";
+
+  /**
+   * Legacy id kept for tests/docs that still mention kinematics; advection runs inside {@link
+   * ApplyGeometry}.
+   */
+  public static final String KINEMATICS_SYSTEM_ID = "kinematics";
 
   private ProductHost() {}
 
   /**
-   * Product {@link EngineSetup}: world fields, category tree, generation tick, kinematics +
-   * tectonics Systems.
+   * Product {@link EngineSetup}: world fields, category tree, generation tick, tectonics System.
    */
   public static EngineSetup setup() {
     CategoryTree tree = ProductCategories.tree();
-    EngineSystem kinematics =
-        new EngineSystem(
-            new SystemConfig(
-                KINEMATICS_SYSTEM_ID,
-                tree.get(ProductCategories.TECTONICS),
-                List.of(new PlateKinematics()),
-                null));
     EngineSystem tectonics =
         new EngineSystem(
             new SystemConfig(
                 TECTONICS_SYSTEM_ID,
                 tree.get(ProductCategories.TECTONICS),
-                List.of(new TraceBoundaries(), new BoundaryInteraction(), new Orogeny()),
+                List.of(
+                    new TraceBoundaries(),
+                    new BoundaryInteraction(),
+                    new ApplyGeometry(),
+                    new Orogeny()),
                 null));
     FieldSchema schema =
         FieldSchema.of(
@@ -67,11 +65,11 @@ public final class ProductHost {
                 WorldFields.BOUNDARIES, FieldType.STATIC,
                 WorldFields.AREA_FLUX, FieldType.STATIC,
                 WorldFields.MOTION_INTENT, FieldType.STATIC,
-                WorldFields.PLATE_VELOCITY, FieldType.CONSTANT));
+                WorldFields.PLATE_VELOCITY, FieldType.STATIC));
     return new EngineSetup(
         tree,
         List.of(),
-        List.of(kinematics, tectonics),
+        List.of(tectonics),
         schema,
         null,
         null,
@@ -86,9 +84,9 @@ public final class ProductHost {
   }
 
   /**
-   * Creates a run from {@code spec}: seeds zero elevation, cylindrical nearest-site plates
-   * (N=12–24), plate_registry, boundaries, area_flux, motion_intent, and CONSTANT plate_velocity.
-   * Completes Step 0.
+   * Creates a run from {@code spec}: seeds zero elevation, B1 nearest-site plates (N=12–24),
+   * plate_registry, boundaries, area_flux, motion_intent, and STATIC plate_velocity. Completes Step
+   * 0.
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */

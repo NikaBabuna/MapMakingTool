@@ -77,21 +77,23 @@ class OrogenyTest {
   }
 
   @Test
-  @DisplayName("FR-1/FR-4: engine uses standing orogeny; kinematics unused this Step")
+  @DisplayName("FR-1/FR-4: engine uses standing orogeny; plates follow ProductGeneration")
   void standingOrogenyOnEngine() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
-    Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
-    PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
-    Grid elevation = Grid.zeros(8, 8);
+    ProductGeneration.Snapshot state =
+        new ProductGeneration.Snapshot(
+            (Grid) engine.settled().field(WorldFields.PLATES),
+            (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY),
+            (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY),
+            Grid.zeros(8, 8));
     engine.advance(3);
     for (int g = 1; g <= 3; g++) {
-      elevation = Orogeny.apply(plates, vel, elevation);
-      plates = PlateKinematics.advect(plates, vel, g);
+      state = ProductGeneration.advance(state, g);
     }
-    assertEquals(elevation, engine.settled().field(WorldFields.ELEVATION));
-    assertEquals(plates, engine.settled().field(WorldFields.PLATES));
-    assertEquals(vel, engine.settled().field(WorldFields.PLATE_VELOCITY));
+    assertEquals(state.elevation(), engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(state.plates(), engine.settled().field(WorldFields.PLATES));
+    assertEquals(state.velocities(), engine.settled().field(WorldFields.PLATE_VELOCITY));
   }
 
   @Test

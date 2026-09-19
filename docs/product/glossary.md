@@ -17,14 +17,16 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
 | **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
-| **Plate velocity** | **Code today:** Constant field (`plate_velocity`) of per-site `(vx, vy)` in `{-1,0,1}`. **G-008:** Constant-forever **superseded**; registry + edge-driven integrate (F-037). |
-| **Plates** | Layer (`plates`) of integer plate ids. **Code today:** cylindrical nearest-site N=12–24 at Step 0; then kinematics advection. |
+| **Plate velocity** | **Code today:** STATIC field (`plate_velocity`) of per-site `(vx, vy)` in `{-1,0,1}` (F-036). **G-008:** edge-driven integrate from `motion_intent` (F-037). |
+| **Plates** | Layer (`plates`) of integer plate ids. **Code today:** B1 nearest-site N=12–24 at Step 0; apply flux/fission then advection each generation. |
 | **Suture** | Contact between different plate ids; cylinder 4-neighbor orogeny on **standing** plates. |
-| **Voronoi plates** | Historical name for nearest-site partition; distance is **cylindrical** (wrap X, flat Y). Ties take the lower site index. |
+| **Voronoi plates** | Historical name for nearest-site partition; distance is **B1** latitude-weighted cylindrical (wrap X, cosQ on Y). Ties take the lower site index. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
 | **Orogeny** | Generative rule: standing-plate cylinder contacts; converge +1, diverge −1, transform/interior 0. |
-| **Kinematics System** | Product `EngineSystem` (`kinematics`) that advects `plates` each generation Step. |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-Systems `TraceBoundaries` + `BoundaryInteraction` + `Orogeny`. |
+| **Kinematics System** | Legacy name; advection now runs inside `ApplyGeometry` (F-036). |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → ApplyGeometry → Orogeny. |
+| **ApplyGeometry** | Sub-System: apply `area_flux`, flood sink, fission/crumbs/death, advect, refresh registry + velocities. |
+| **B1 distance** | Equirectangular weight: east–west Δ scaled by `cosQ(y)` (F-036). |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation, plates, velocities, registry, boundaries, area_flux, motion_intent). |
 | **WorldSpec.VIEW** | Product window launch spec: **1920×1080** cells, seed 0 (F-031). Dump fixture stays `DEFAULT` small. |

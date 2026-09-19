@@ -80,21 +80,23 @@ class VoronoiPlatesTest {
   }
 
   @Test
-  @DisplayName("FR-3: orogeny on standing plates; kinematics moves plates")
+  @DisplayName("FR-3: orogeny on standing plates; ProductGeneration moves plates")
   void collisionUpliftOnVoronoiSutures() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
-    PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
-    Grid elevation = Grid.zeros(8, 8);
+    ProductGeneration.Snapshot state =
+        new ProductGeneration.Snapshot(
+            plates,
+            (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY),
+            (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY),
+            Grid.zeros(8, 8));
     engine.advance(3);
-    Grid standing = plates;
     for (int g = 1; g <= 3; g++) {
-      elevation = Orogeny.apply(standing, vel, elevation);
-      standing = PlateKinematics.advect(standing, vel, g);
+      state = ProductGeneration.advance(state, g);
     }
-    assertEquals(elevation, engine.settled().field(WorldFields.ELEVATION));
-    assertEquals(standing, engine.settled().field(WorldFields.PLATES));
+    assertEquals(state.elevation(), engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(state.plates(), engine.settled().field(WorldFields.PLATES));
     assertNotEquals(plates, engine.settled().field(WorldFields.PLATES));
 
     Engine tiny = ProductHost.create(new WorldSpec(1, 1, 0L));
@@ -144,9 +146,9 @@ class VoronoiPlatesTest {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2Cylinder(x, y, xs[0], ys[0], width);
+        long bestD2 = dist2B1(x, y, xs[0], ys[0], width, height);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2Cylinder(x, y, xs[i], ys[i], width);
+          long d2 = dist2B1(x, y, xs[i], ys[i], width, height);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -158,10 +160,13 @@ class VoronoiPlatesTest {
     return new Grid(cells);
   }
 
-  private static long dist2Cylinder(int x, int y, int sx, int sy, int width) {
+  private static long dist2B1(int x, int y, int sx, int sy, int width, int height) {
     long dx = Math.min(Math.abs((long) x - sx), (long) width - Math.abs((long) x - sx));
     long dy = (long) y - (long) sy;
-    return dx * dx + dy * dy;
+    double s = Math.sin(Math.PI * (y + 0.5) / height);
+    int cosQ = Math.max(1, (int) Math.round(1024.0 * s));
+    long dxw = (dx * cosQ) / 1024L;
+    return dxw * dxw + dy * dy;
   }
 
   private static long independentMix(long seed, int siteIndex, int axis) {

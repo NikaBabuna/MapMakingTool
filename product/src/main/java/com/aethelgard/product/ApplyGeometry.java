@@ -1,0 +1,493 @@
+/*
+ * File: product/src/main/java/com/aethelgard/product/ApplyGeometry.java
+ * Purpose: Sub-System — apply area_flux, flood, fission, crumb, death; refresh registry
+ * Audience: Product tectonics EngineSystem
+ * Update when: Geometry apply / lifecycle rules change
+ */
+
+package com.aethelgard.product;
+
+import com.aethelgard.engine.system.SubSystem;
+import com.aethelgard.engine.system.SubSystemIo;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ * Applies standing {@code area_flux} to {@code plates}, floods sink, fissions, absorbs crumbs,
+ * removes dead plates, advects with current velocities, and rewrites dense {@code plate_registry} +
+ * {@code plate_velocity}.
+ */
+public final class ApplyGeometry implements SubSystem {
+
+  /** Unowned / destroyed crust during apply; must not remain after flood. */
+  public static final int SINK = -1;
+
+  private static final int[][] DIRS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+  @Override
+  public String id() {
+    return "apply-geometry";
+  }
+
+  @Override
+  public Set<String> writeRanges() {
+    return Set.of(WorldFields.PLATES, WorldFields.PLATE_REGISTRY, WorldFields.PLATE_VELOCITY);
+  }
+
+  @Override
+  public void execute(SubSystemIo io) {
+    Grid plates = requireGrid(io.readPool(WorldFields.PLATES), WorldFields.PLATES);
+    PlateVelocities velocities = requireVelocities(io.readPool(WorldFields.PLATE_VELOCITY));
+    PlateRegistry registry = PlateRegistry.from(plates, velocities);
+    Boundaries boundaries = requireBoundaries(readField(io, WorldFields.BOUNDARIES));
+    AreaFlux flux = requireFlux(readField(io, WorldFields.AREA_FLUX));
+    int generationIndex = Math.toIntExact(io.poolValue()) - 1;
+    Result result = apply(plates, boundaries, flux, registry, velocities);
+    Grid moved = PlateKinematics.advect(result.plates(), result.velocities(), generationIndex);
+    PlateRegistry after = PlateRegistry.from(moved, result.velocities());
+    io.write(WorldFields.PLATES, moved);
+    io.write(WorldFields.PLATE_REGISTRY, after);
+    io.write(WorldFields.PLATE_VELOCITY, result.velocities());
+  }
+
+  /** Full geometry pass (also used by tests). */
+  public static Result apply(
+      Grid plates,
+      Boundaries boundaries,
+      AreaFlux flux,
+      PlateRegistry registry,
+      PlateVelocities velocities) {
+    Objects.requireNonNull(plates, "plates");
+    Objects.requireNonNull(boundaries, "boundaries");
+    Objects.requireNonNull(flux, "flux");
+    Objects.requireNonNull(registry, "registry");
+    Objects.requireNonNull(velocities, "velocities");
+    int width = plates.width();
+    int height = plates.height();
+    int[][] cells = copyCells(plates);
+    applyCollide(cells, width, height, boundaries, registry);
+    applySeparate(cells, width, height, boundaries);
+    floodSink(cells, width, height);
+    Lifecycle life = fissionAndCrumbs(cells, width, height, velocities);
+    return remapDense(cells, width, height, life.vx(), life.vy(), velocities.seed());
+  }
+
+  public record Result(Grid plates, PlateRegistry registry, PlateVelocities velocities) {}
+
+  private record Lifecycle(int[] vx, int[] vy) {}
+
+  private static void applyCollide(
+      int[][] cells, int width, int height, Boundaries boundaries, PlateRegistry registry) {
+    for (BoundaryContact c : boundaries.contacts()) {
+      if (c.kind() != BoundaryKind.COLLIDE) {
+        continue;
+      }
+      int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+      int x = c.x();
+      int y = c.y();
+      if (lose == c.plateB()) {
+        x = Math.floorMod(c.x() + c.nx(), width);
+        y = c.y() + c.ny();
+      }
+      if (y >= 0 && y < height && cells[y][x] == lose) {
+        cells[y][x] = SINK;
+      }
+    }
+  }
+
+  private static void applySeparate(int[][] cells, int width, int height, Boundaries boundaries) {
+    for (BoundaryContact c : boundaries.contacts()) {
+      if (c.kind() != BoundaryKind.SEPARATE) {
+        continue;
+      }
+      claimSinkNear(cells, width, height, c.x(), c.y(), c.plateA());
+      int bx = Math.floorMod(c.x() + c.nx(), width);
+      int by = c.y() + c.ny();
+      if (by >= 0 && by < height) {
+        claimSinkNear(cells, width, height, bx, by, c.plateB());
+      }
+    }
+  }
+
+  private static void claimSinkNear(
+      int[][] cells, int width, int height, int ox, int oy, int plate) {
+    if (cells[oy][ox] == SINK) {
+      cells[oy][ox] = plate;
+      return;
+    }
+    for (int[] d : DIRS) {
+      int x = Math.floorMod(ox + d[0], width);
+      int y = oy + d[1];
+      if (y < 0 || y >= height) {
+        continue;
+      }
+      if (cells[y][x] == SINK) {
+        cells[y][x] = plate;
+        return;
+      }
+    }
+  }
+
+  private static void floodSink(int[][] cells, int width, int height) {
+    boolean progress = true;
+    while (progress) {
+      progress = false;
+      for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+          if (cells[y][x] != SINK) {
+            continue;
+          }
+          int best = pickFloodOwner(cells, width, height, x, y);
+          if (best >= 0) {
+            cells[y][x] = best;
+            progress = true;
+          }
+        }
+      }
+    }
+    // Any remaining sink: B1-nearest owned cell
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        if (cells[y][x] != SINK) {
+          continue;
+        }
+        cells[y][x] = nearestOwner(cells, width, height, x, y);
+      }
+    }
+  }
+
+  private static int pickFloodOwner(int[][] cells, int width, int height, int x, int y) {
+    int bestId = -1;
+    int bestContact = -1;
+    for (int[] d : DIRS) {
+      int nx = Math.floorMod(x + d[0], width);
+      int ny = y + d[1];
+      if (ny < 0 || ny >= height) {
+        continue;
+      }
+      int id = cells[ny][nx];
+      if (id < 0) {
+        continue;
+      }
+      int contact = countContact(cells, width, height, x, y, id);
+      if (contact > bestContact || (contact == bestContact && (bestId < 0 || id < bestId))) {
+        bestContact = contact;
+        bestId = id;
+      }
+    }
+    return bestId;
+  }
+
+  private static int countContact(int[][] cells, int width, int height, int x, int y, int id) {
+    int n = 0;
+    for (int[] d : DIRS) {
+      int nx = Math.floorMod(x + d[0], width);
+      int ny = y + d[1];
+      if (ny < 0 || ny >= height) {
+        continue;
+      }
+      if (cells[ny][nx] == id) {
+        n++;
+      }
+    }
+    return n;
+  }
+
+  private static int nearestOwner(int[][] cells, int width, int height, int x, int y) {
+    int bestId = 0;
+    long bestD2 = Long.MAX_VALUE;
+    boolean found = false;
+    for (int sy = 0; sy < height; sy++) {
+      for (int sx = 0; sx < width; sx++) {
+        int id = cells[sy][sx];
+        if (id < 0) {
+          continue;
+        }
+        long d2 = Plates.dist2(x, y, sx, sy, width, height);
+        if (!found || d2 < bestD2 || (d2 == bestD2 && id < bestId)) {
+          found = true;
+          bestD2 = d2;
+          bestId = id;
+        }
+      }
+    }
+    if (!found) {
+      throw new IllegalStateException("no living plate to flood sink at (" + x + "," + y + ")");
+    }
+    return bestId;
+  }
+
+  private static Lifecycle fissionAndCrumbs(
+      int[][] cells, int width, int height, PlateVelocities velocities) {
+    int maxId = 0;
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        maxId = Math.max(maxId, cells[y][x]);
+      }
+    }
+    List<Integer> vx = new ArrayList<>();
+    List<Integer> vy = new ArrayList<>();
+    for (int i = 0; i <= maxId; i++) {
+      if (i < velocities.count()) {
+        vx.add(velocities.vx(i));
+        vy.add(velocities.vy(i));
+      } else {
+        vx.add(0);
+        vy.add(0);
+      }
+    }
+    boolean[][] seen = new boolean[height][width];
+    int nextId = maxId + 1;
+    int plateCount = vx.size();
+    for (int plate = 0; plate < plateCount; plate++) {
+      List<List<int[]>> components = new ArrayList<>();
+      for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+          if (seen[y][x] || cells[y][x] != plate) {
+            continue;
+          }
+          List<int[]> component = new ArrayList<>();
+          floodComponent(cells, seen, width, height, x, y, plate, component);
+          components.add(component);
+        }
+      }
+      if (components.size() <= 1) {
+        continue;
+      }
+      for (int c = 1; c < components.size(); c++) {
+        int newId = nextId++;
+        vx.add(vx.get(plate));
+        vy.add(vy.get(plate));
+        for (int[] cell : components.get(c)) {
+          cells[cell[1]][cell[0]] = newId;
+        }
+      }
+    }
+    absorbCrumbs(cells, width, height, vx.size());
+    return new Lifecycle(toArray(vx), toArray(vy));
+  }
+
+  private static void absorbCrumbs(int[][] cells, int width, int height, int plateCount) {
+    long world = (long) width * height;
+    boolean[][] seen = new boolean[height][width];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        if (seen[y][x]) {
+          continue;
+        }
+        int id = cells[y][x];
+        if (id < 0 || id >= plateCount) {
+          seen[y][x] = true;
+          continue;
+        }
+        List<int[]> component = new ArrayList<>();
+        floodComponent(cells, seen, width, height, x, y, id, component);
+        if (component.size() * 2000L >= world) {
+          continue;
+        }
+        int neighbor = longestNeighbor(cells, width, height, component, id);
+        if (neighbor < 0) {
+          continue;
+        }
+        for (int[] cell : component) {
+          cells[cell[1]][cell[0]] = neighbor;
+        }
+      }
+    }
+  }
+
+  private static int longestNeighbor(
+      int[][] cells, int width, int height, List<int[]> component, int self) {
+    int[] contact = new int[256];
+    int maxId = self;
+    for (int[] cell : component) {
+      int x = cell[0];
+      int y = cell[1];
+      for (int[] d : DIRS) {
+        int nx = Math.floorMod(x + d[0], width);
+        int ny = y + d[1];
+        if (ny < 0 || ny >= height) {
+          continue;
+        }
+        int id = cells[ny][nx];
+        if (id < 0 || id == self) {
+          continue;
+        }
+        if (id >= contact.length) {
+          contact = Arrays.copyOf(contact, id + 1);
+        }
+        contact[id]++;
+        maxId = Math.max(maxId, id);
+      }
+    }
+    int best = -1;
+    int bestN = -1;
+    for (int id = 0; id <= maxId; id++) {
+      int n = id < contact.length ? contact[id] : 0;
+      if (n > bestN || (n == bestN && n > 0 && (best < 0 || id < best))) {
+        bestN = n;
+        best = id;
+      }
+    }
+    return bestN > 0 ? best : -1;
+  }
+
+  private static void floodComponent(
+      int[][] cells,
+      boolean[][] seen,
+      int width,
+      int height,
+      int sx,
+      int sy,
+      int id,
+      List<int[]> out) {
+    ArrayList<int[]> stack = new ArrayList<>();
+    stack.add(new int[] {sx, sy});
+    seen[sy][sx] = true;
+    while (!stack.isEmpty()) {
+      int[] cur = stack.remove(stack.size() - 1);
+      out.add(cur);
+      int x = cur[0];
+      int y = cur[1];
+      for (int[] d : DIRS) {
+        int nx = Math.floorMod(x + d[0], width);
+        int ny = y + d[1];
+        if (ny < 0 || ny >= height || seen[ny][nx] || cells[ny][nx] != id) {
+          continue;
+        }
+        seen[ny][nx] = true;
+        stack.add(new int[] {nx, ny});
+      }
+    }
+  }
+
+  private static Result remapDense(
+      int[][] cells, int width, int height, int[] vxIn, int[] vyIn, long seed) {
+    int maxId = -1;
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        maxId = Math.max(maxId, cells[y][x]);
+      }
+    }
+    int[] area = new int[maxId + 1];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        int id = cells[y][x];
+        if (id < 0) {
+          throw new IllegalStateException("sink remained at (" + x + "," + y + ")");
+        }
+        area[id]++;
+      }
+    }
+    int[] oldToNew = new int[maxId + 1];
+    Arrays.fill(oldToNew, -1);
+    List<Integer> vx = new ArrayList<>();
+    List<Integer> vy = new ArrayList<>();
+    List<Integer> areas = new ArrayList<>();
+    for (int old = 0; old <= maxId; old++) {
+      if (area[old] <= 0) {
+        continue;
+      }
+      oldToNew[old] = vx.size();
+      areas.add(area[old]);
+      if (old < vxIn.length) {
+        vx.add(vxIn[old]);
+        vy.add(vyIn[old]);
+      } else {
+        vx.add(0);
+        vy.add(0);
+      }
+    }
+    if (vx.isEmpty()) {
+      throw new IllegalStateException("no living plates after geometry");
+    }
+    int[][] next = new int[height][width];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        next[y][x] = oldToNew[cells[y][x]];
+      }
+    }
+    Grid grid = new Grid(next);
+    PlateVelocities velocities = new PlateVelocities(seed, toArray(vx), toArray(vy));
+    PlateRegistry registry = new PlateRegistry(seed, toArray(areas), toArray(vx), toArray(vy));
+    return new Result(grid, registry, velocities);
+  }
+
+  private static int[][] copyCells(Grid plates) {
+    int[][] cells = new int[plates.height()][plates.width()];
+    for (int y = 0; y < plates.height(); y++) {
+      for (int x = 0; x < plates.width(); x++) {
+        cells[y][x] = plates.get(x, y);
+      }
+    }
+    return cells;
+  }
+
+  private static int[] toArray(List<Integer> list) {
+    int[] out = new int[list.size()];
+    for (int i = 0; i < list.size(); i++) {
+      out[i] = list.get(i);
+    }
+    return out;
+  }
+
+  private static Object readField(SubSystemIo io, String field) {
+    Object staged = io.readStaging(field);
+    return staged != null ? staged : io.readPool(field);
+  }
+
+  private static Grid requireGrid(Object value, String field) {
+    if (value instanceof Grid grid) {
+      return grid;
+    }
+    throw new IllegalStateException(
+        "field '" + field + "' must be Grid, was " + value.getClass().getName());
+  }
+
+  private static PlateRegistry requireRegistry(Object value) {
+    if (value instanceof PlateRegistry registry) {
+      return registry;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.PLATE_REGISTRY
+            + "' must be PlateRegistry, was "
+            + value.getClass().getName());
+  }
+
+  private static PlateVelocities requireVelocities(Object value) {
+    if (value instanceof PlateVelocities velocities) {
+      return velocities;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.PLATE_VELOCITY
+            + "' must be PlateVelocities, was "
+            + value.getClass().getName());
+  }
+
+  private static Boundaries requireBoundaries(Object value) {
+    if (value instanceof Boundaries boundaries) {
+      return boundaries;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.BOUNDARIES
+            + "' must be Boundaries, was "
+            + (value == null ? "null" : value.getClass().getName()));
+  }
+
+  private static AreaFlux requireFlux(Object value) {
+    if (value instanceof AreaFlux flux) {
+      return flux;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.AREA_FLUX
+            + "' must be AreaFlux, was "
+            + (value == null ? "null" : value.getClass().getName()));
+  }
+}

@@ -67,14 +67,16 @@ class WorldDumpTest {
 
     engine.advance(2);
     String risen = WorldDump.of(engine, spec);
-    PlateVelocities vel = PlateVelocities.seed(0L);
-    Grid p0 = plates;
-    Grid e1 = Orogeny.apply(p0, vel, Grid.zeros(4, 2));
-    Grid p1 = PlateKinematics.advect(p0, vel, 1);
-    Grid e2 = Orogeny.apply(p1, vel, e1);
-    Grid p2 = PlateKinematics.advect(p1, vel, 2);
-    assertTrue(risen.contains("elevation:\n" + gridBlock(e2)));
-    assertTrue(risen.contains("plates:\n" + gridBlock(p2)));
+    ProductGeneration.Snapshot state =
+        new ProductGeneration.Snapshot(
+            plates,
+            PlateVelocities.seed(0L),
+            PlateRegistry.from(plates, PlateVelocities.seed(0L)),
+            Grid.zeros(4, 2));
+    state = ProductGeneration.advance(state, 1);
+    state = ProductGeneration.advance(state, 2);
+    assertTrue(risen.contains("elevation:\n" + gridBlock(state.elevation())));
+    assertTrue(risen.contains("plates:\n" + gridBlock(state.plates())));
   }
 
   @Test

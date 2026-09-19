@@ -1,6 +1,6 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/Plates.java
- * Purpose: Step-0 toroidal nearest-site plate partition from WorldSpec.seed
+ * Purpose: Step-0 nearest-site plate partition from WorldSpec.seed
  * Audience: ProductHost / Orogeny / tests
  * Update when: Plate-seed geometry rule changes
  */
@@ -8,17 +8,20 @@
 package com.aethelgard.product;
 
 /**
- * Toroidal-X / clipped-Y nearest-site plate seed from {@code seed}. Wiki: {@code
- * docs/product/wiki/tectonics.md}.
+ * Cylinder nearest-site plate seed from {@code seed} with B1 latitude-weighted distance. Wiki:
+ * {@code docs/product/wiki/tectonics.md}.
  *
  * <p>Site count is {@code 12 + floorMod(seed, 13)} (12–24). Each cell takes the nearest site under
- * cylindrical distance (wrap X, flat Y); ties take the lower site index.
+ * wrap-X distance scaled by {@link #cosQ(int, int)}; ties take the lower site index.
  */
 public final class Plates {
 
   private static final long MIX_GOLDEN = 0x9E3779B97F4A7C15L;
   private static final long MIX_SILVER = 0xBF58476D1CE4E5B9L;
   private static final long MIX_BRONZE = 0x94D049BB133111EBL;
+
+  /** Fixed-point scale for {@link #cosQ(int, int)}. */
+  public static final int COS_SCALE = 1024;
 
   private Plates() {}
 
@@ -51,7 +54,21 @@ public final class Plates {
   }
 
   /**
-   * Assign each cell the nearest site index under cylindrical distance (wrap X, flat Y). {@code
+   * Equirectangular cosine weight at row {@code y}: {@code max(1, round(1024 *
+   * sin(π*(y+0.5)/height)))}.
+   */
+  public static int cosQ(int y, int height) {
+    requirePositive(height, "height");
+    if (y < 0 || y >= height) {
+      throw new IllegalArgumentException("y " + y + " out of 0.." + (height - 1));
+    }
+    double s = Math.sin(Math.PI * (y + 0.5) / height);
+    int q = (int) Math.round(COS_SCALE * s);
+    return Math.max(1, q);
+  }
+
+  /**
+   * Assign each cell the nearest site index under B1 latitude-weighted cylindrical distance. {@code
    * siteX} and {@code siteY} must be the same length \(N \ge 1\). Ties take the lower index.
    */
   public static Grid assign(int width, int height, int[] siteX, int[] siteY) {
@@ -72,9 +89,9 @@ public final class Plates {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         int best = 0;
-        long bestD2 = dist2Cylinder(x, y, siteX[0], siteY[0], width);
+        long bestD2 = dist2(x, y, siteX[0], siteY[0], width, height);
         for (int i = 1; i < n; i++) {
-          long d2 = dist2Cylinder(x, y, siteX[i], siteY[i], width);
+          long d2 = dist2(x, y, siteX[i], siteY[i], width, height);
           if (d2 < bestD2) {
             bestD2 = d2;
             best = i;
@@ -108,8 +125,20 @@ public final class Plates {
         || different(plates, x, y + 1, id);
   }
 
-  /** Cylindrical squared Euclidean distance (wrap X; flat Y). */
+  /**
+   * B1 squared distance: wrap X, flat Y, east–west scaled by {@link #cosQ(int, int)} at the query
+   * row.
+   */
+  public static long dist2(int x, int y, int sx, int sy, int width, int height) {
+    long dx = toroidalDelta(x, sx, width);
+    long dy = (long) y - (long) sy;
+    long dxw = (dx * cosQ(y, height)) / COS_SCALE;
+    return dxw * dxw + dy * dy;
+  }
+
+  /** @deprecated use {@link #dist2(int, int, int, int, int, int)} */
   public static long dist2Cylinder(int x, int y, int sx, int sy, int width) {
+    // Height-agnostic fallback treats cosQ as COS_SCALE (no latitude squash).
     long dx = toroidalDelta(x, sx, width);
     long dy = (long) y - (long) sy;
     return dx * dx + dy * dy;

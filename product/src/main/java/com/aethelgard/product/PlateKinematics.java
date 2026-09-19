@@ -33,10 +33,20 @@ public final class PlateKinematics implements SubSystem {
 
   @Override
   public void execute(SubSystemIo io) {
-    Grid plates = requireGrid(io.readPool(WorldFields.PLATES), WorldFields.PLATES);
-    PlateVelocities velocities = requireVelocities(io.readPool(WorldFields.PLATE_VELOCITY));
+    Grid plates = requireGrid(readPlates(io), WorldFields.PLATES);
+    PlateVelocities velocities = requireVelocities(readVelocities(io));
     int generationIndex = Math.toIntExact(io.poolValue()) - 1;
     io.write(WorldFields.PLATES, advect(plates, velocities, generationIndex));
+  }
+
+  private static Object readPlates(SubSystemIo io) {
+    Object staged = io.readStaging(WorldFields.PLATES);
+    return staged != null ? staged : io.readPool(WorldFields.PLATES);
+  }
+
+  private static Object readVelocities(SubSystemIo io) {
+    Object staged = io.readStaging(WorldFields.PLATE_VELOCITY);
+    return staged != null ? staged : io.readPool(WorldFields.PLATE_VELOCITY);
   }
 
   /**

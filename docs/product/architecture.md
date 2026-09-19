@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 F-035 interaction budgets; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-036 apply+B1; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -42,10 +42,10 @@ cli →  product  →  engine
 
 | Piece | F-021 |
 |-------|--------|
-| Schema | `elevation` / `plates` / `plate_registry` / `boundaries` / `area_flux` / `motion_intent` → STATIC; `plate_velocity` → CONSTANT (bridge) |
+| Schema | all of `elevation` / `plates` / `plate_registry` / `boundaries` / `area_flux` / `motion_intent` / `plate_velocity` → STATIC |
 | Values | Immutable `Grid`; `PlateRegistry`; `Boundaries`; `AreaFlux`; `MotionIntent`; `PlateVelocities` |
-| Create | Seeds zero elevation, cylindrical plates (N=12–24), registry, boundaries, area_flux, motion_intent, CONSTANT velocities |
-| Systems | `kinematics` (`PlateKinematics`); `tectonics` (`TraceBoundaries`, `BoundaryInteraction`, `Orogeny`); same standing snapshot |
+| Create | Seeds zero elevation, B1 plates (N=12–24), registry, boundaries, area_flux, motion_intent, velocities |
+| Systems | One `tectonics` System: TraceBoundaries → BoundaryInteraction → ApplyGeometry (apply+advect) → Orogeny |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (**1920×1080**, seed `0`, F-031) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
@@ -130,7 +130,7 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080** (F-031); studio loopback **horizontal-only** pan (F-032/F-033); Step-0 cylindrical plates N=12–24 + `plate_registry` (F-033); `boundaries` (F-034); `area_flux` + `motion_intent` (F-035). Apply flux / fission / IntegrateVelocity / orogeny-from-boundaries still F-036–F-038.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **ApplyGeometry** (flux+fission+advect). IntegrateVelocity from intent F-037; orogeny-from-boundaries F-038.
 
 ---
 

@@ -31,13 +31,21 @@ class BoundaryInteractionTest {
     assertEquals(MotionIntent.from(boundaries, registry), intent0);
     assertEquals(0, flux0.netCells());
 
+    Grid standingPlates = (Grid) engine.settled().field(WorldFields.PLATES);
+    PlateVelocities standingVel =
+        (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
+    PlateRegistry standingReg =
+        (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
+    Boundaries standingBoundaries = Boundaries.trace(standingPlates, standingVel);
+
     engine.advance(1);
-    Boundaries afterB = (Boundaries) engine.settled().field(WorldFields.BOUNDARIES);
-    PlateRegistry afterR = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
+    // Flux/intent are from the standing snapshot (same Step as TraceBoundaries), not remapped ids.
     assertEquals(
-        AreaFlux.from(afterB, afterR), engine.settled().field(WorldFields.AREA_FLUX));
+        AreaFlux.from(standingBoundaries, standingReg),
+        engine.settled().field(WorldFields.AREA_FLUX));
     assertEquals(
-        MotionIntent.from(afterB, afterR), engine.settled().field(WorldFields.MOTION_INTENT));
+        MotionIntent.from(standingBoundaries, standingReg),
+        engine.settled().field(WorldFields.MOTION_INTENT));
   }
 
   @Test
@@ -79,19 +87,17 @@ class BoundaryInteractionTest {
   }
 
   @Test
-  @DisplayName("FR-5: plates, registry, velocities unchanged by interaction writers")
+  @DisplayName("FR-5: Step 0 plates match seed; interaction budgets present before apply")
   void noGeometryApply() {
     WorldSpec spec = new WorldSpec(6, 4, 3L);
     Engine engine = ProductHost.create(spec);
     Grid plates0 = (Grid) engine.settled().field(WorldFields.PLATES);
-    PlateRegistry reg0 = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
-    PlateVelocities vel0 = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
     assertEquals(Plates.seed(spec.width(), spec.height(), spec.seed()), plates0);
-
-    engine.advance(2);
-    // No ApplyFlux / IntegrateVelocity yet: registry areas and Constant velocities hold
-    assertEquals(reg0, engine.settled().field(WorldFields.PLATE_REGISTRY));
-    assertEquals(vel0, engine.settled().field(WorldFields.PLATE_VELOCITY));
+    assertEquals(
+        AreaFlux.from(
+            (Boundaries) engine.settled().field(WorldFields.BOUNDARIES),
+            (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY)),
+        engine.settled().field(WorldFields.AREA_FLUX));
   }
 
   @Test

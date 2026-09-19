@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-036:** apply `area_flux` (sink/flood/fission/death); B1 latitude-weighted partition; `plate_velocity` STATIC; single tectonics System pipeline.
 - **2026-09-19** — **F-035:** `area_flux` + `motion_intent` (precedence / budgets); Constant velocity still drives motion.
 - **2026-09-19** — **F-034:** classified `boundaries`; cylinder topology (wrap X, polar Y); UI blank N/S.
 - **2026-09-19** — **F-033:** toroidal plate partition N=12–24 + `plate_registry`; studio pan **horizontal only**.

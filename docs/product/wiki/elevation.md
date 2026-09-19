@@ -7,7 +7,7 @@
 
 # Elevation process
 
-> **Code status (through F-035):** Step-0 plates are **cylindrical nearest-site** (N=12–24, wrap X / flat Y). `plate_registry` + classified `boundaries` + `area_flux` + `motion_intent` seeded. Advance still uses Constant `plate_velocity` + advection + standing orogeny until F-036–F-038.  
+> **Code status (through F-036):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; geometry apply/fission each generation. `plate_velocity` is STATIC (advect after apply). Edge-driven integrate from intent still F-037; orogeny-from-boundaries F-038.  
 > **G-008:** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md).
 
 Relief is **caused** by plates converging and diverging at sutures. It is not painted at Step 0.
@@ -22,7 +22,7 @@ A **plates** layer (same width and height as elevation) stores an integer **plat
 
 Plate count and sites are a deterministic function of `WorldSpec.seed`. Each cell belongs to the **nearest site** under **cylindrical** distance (G-008 / F-033–F-034). Authority: [tectonics.md](tectonics.md).
 
-A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **Constant** after seed (bridge until F-037). A **plate_registry** STATIC object mirrors area + initial velocities at Step 0. A **boundaries** STATIC object lists classified contacts. **`area_flux`** / **`motion_intent`** STATIC objects hold per-generation budgets (F-035; not applied until F-036/F-037). `plates` is **Static** (kinematics rewrites ownership after Step 0).
+A **plate_velocity** field stores one integer `(vx, vy)` per site. It is **STATIC** after F-036 (rewritten on fission/death; advected ownership still uses it). A **plate_registry** STATIC object mirrors area + velocities. A **boundaries** STATIC object lists classified contacts. **`area_flux`** / **`motion_intent`** hold budgets (F-035); flux is **applied** in F-036. `plates` is **Static**.
 
 ### Count
 

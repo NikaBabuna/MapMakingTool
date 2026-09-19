@@ -30,15 +30,14 @@ class ElevationProcessTest {
     EngineSetup setup = ProductHost.setup();
     assertTrue(setup.categoryTree().contains(ProductCategories.TECTONICS));
     assertInstanceOf(GenerationTickPolicy.class, setup.eventEmissionPolicy());
-    assertEquals(2, setup.systems().size());
-    assertEquals(ProductHost.KINEMATICS_SYSTEM_ID, setup.systems().get(0).id());
-    assertEquals(ProductHost.TECTONICS_SYSTEM_ID, setup.systems().get(1).id());
+    assertEquals(1, setup.systems().size());
+    assertEquals(ProductHost.TECTONICS_SYSTEM_ID, setup.systems().get(0).id());
     assertEquals(
         ProductCategories.TECTONICS,
         setup.systems().getFirst().config().assignedCategory().path());
     assertTrue(setup.fieldSchema().has(WorldFields.PLATES));
     assertEquals(FieldType.STATIC, setup.fieldSchema().typeOf(WorldFields.PLATES));
-    assertEquals(FieldType.CONSTANT, setup.fieldSchema().typeOf(WorldFields.PLATE_VELOCITY));
+    assertEquals(FieldType.STATIC, setup.fieldSchema().typeOf(WorldFields.PLATE_VELOCITY));
   }
 
   @Test
@@ -82,10 +81,9 @@ class ElevationProcessTest {
 
     engine.advance(1);
     assertEquals(1, engine.stepIndex());
-    assertEquals(2, engine.lastClaimFinish().claimCount());
+    assertEquals(1, engine.lastClaimFinish().claimCount());
     assertEquals(
-        List.of(ProductHost.KINEMATICS_SYSTEM_ID, ProductHost.TECTONICS_SYSTEM_ID),
-        engine.lastClaimFinish().finishedSystemIds());
+        List.of(ProductHost.TECTONICS_SYSTEM_ID), engine.lastClaimFinish().finishedSystemIds());
     assertTrue(engine.lastStepOutput().asMap().containsKey(WorldFields.ELEVATION));
     assertEquals(
         ProductHost.TECTONICS_SYSTEM_ID,
@@ -108,14 +106,16 @@ class ElevationProcessTest {
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
+    PlateRegistry reg = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
     engine.advance(1);
     assertEquals(Orogeny.apply(plates, vel, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
 
-    Grid afterMove = PlateKinematics.advect(plates, vel, 1);
+    ProductGeneration.Snapshot state =
+        new ProductGeneration.Snapshot(plates, vel, reg, Grid.zeros(4, 2));
+    state = ProductGeneration.advance(state, 1);
     engine.advance(1);
-    assertEquals(
-        Orogeny.apply(afterMove, vel, Orogeny.apply(plates, vel, Grid.zeros(4, 2))),
-        engine.settled().field(WorldFields.ELEVATION));
+    state = ProductGeneration.advance(state, 2);
+    assertEquals(state.elevation(), engine.settled().field(WorldFields.ELEVATION));
 
     Engine a = ProductHost.create(new WorldSpec(8, 8, 7L));
     Engine b = ProductHost.create(new WorldSpec(8, 8, 7L));

@@ -44,21 +44,21 @@ A **layer** is one named field on the Pool. Grid layers share world geometry. Pe
 
 Later climate (rainfall, temperature, …) is more layers of the same shape, not a second world object.
 
-### Code today (F-035)
+### Code today (F-036)
 
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
 | `elevation` | every cell `0` | orogeny — [elevation.md](elevation.md) |
-| `plates` | cylindrical nearest-site (N=12–24, wrap X) | kinematics advection |
-| `plate_registry` | STATIC area + initial `(vx,vy)` | unchanged until F-036 |
-| `boundaries` | STATIC classified contacts | refreshed each generation (F-034) |
-| `area_flux` | STATIC Δarea + sinkΔ | refreshed each generation (F-035); apply F-036 |
-| `motion_intent` | STATIC preferred Δv | refreshed each generation (F-035); integrate F-037 |
-| `plate_velocity` | Constant `(vx,vy)` in `{-1,0,1}` (bridge) | unchanged until F-037 |
+| `plates` | B1 nearest-site (N=12–24, wrap X) | apply flux/fission then advection |
+| `plate_registry` | STATIC area + `(vx,vy)` | refreshed after geometry |
+| `boundaries` | STATIC classified contacts | refreshed each generation |
+| `area_flux` | STATIC Δarea + sinkΔ | refreshed; **applied** each generation |
+| `motion_intent` | STATIC preferred Δv | refreshed; integrate F-037 |
+| `plate_velocity` | STATIC `(vx,vy)` in `{-1,0,1}` | rewritten on fission/death |
 
 ### G-008 planned fields
 
-See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Constant-forever `plate_velocity` is **superseded** (F-037).
+See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Edge-driven velocity integrate is F-037.
 
 ---
 

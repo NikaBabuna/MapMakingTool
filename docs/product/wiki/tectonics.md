@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (amended F-034 cylinder). **Code status:** F-035 — Step-0 cylindrical partition (N=12–24) + `plate_registry` + classified `boundaries` + `area_flux` + `motion_intent`. Apply flux / fission / edge-driven integrate still F-036–F-038; advance still uses Constant `plate_velocity` + advection until then.
+**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-036 — B1 latitude-weighted partition; `area_flux` applied each generation (sink/flood/fission/crumb/death); `plate_velocity` STATIC; Constant-bridge retired for schema. Edge-driven integrate from `motion_intent` still F-037; orogeny-from-boundaries F-038.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -19,10 +19,10 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 |------|------|
 | **VIEW** | **1920×1080** cells, seed `0` for the product window (`WorldSpec.VIEW`). |
 | **DEFAULT** | Dump / fast tests may stay a small rectangle (e.g. 8×8); not required to be 1920×1080. |
-| **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). |
+| **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). Earlier G-008 text said **torus**; amended F-034. |
 | **Sphere analogue** | Cylinder map (wrap longitude / polar edges) — not a 3D globe mesh. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). Step-0 plates + `boundaries` + `area_flux` + `motion_intent` live (F-033–F-035). Apply flux / fission / IntegrateVelocity still F-036–F-038; advection+orogeny until then.
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + apply/fission live (F-033–F-036). IntegrateVelocity from intent still F-037; orogeny rewrite F-038.
 
 ---
 
@@ -47,7 +47,17 @@ Same SplitMix / `mix(seed, siteIndex, axis)` family as today’s wiki (see [elev
 
 ### Assignment
 
-For each cell, nearest site under **cylindrical** Euclidean distance (wrap X; flat Y). Squared distance in 64-bit ints. **Ties → lower site index.**
+For each cell, nearest site under **B1** latitude-weighted cylindrical distance (wrap X; flat Y; east–west scaled by `cosQ(y)` at the query row):
+
+\[
+\cos_Q(y)=\max\bigl(1,\mathrm{round}(1024\cdot\sin(\pi\cdot(y+0.5)/H))\bigr)
+\]
+
+\[
+d^2=\bigl(\mathrm{wrap}(x-s_x)\cdot\cos_Q(y)/1024\bigr)^2+(y-s_y)^2
+\]
+
+Squared distance in 64-bit ints. **Ties → lower site index.**
 
 Elevation at Step 0 remains **0** everywhere.
 
@@ -78,7 +88,7 @@ When types are equal (no oceanic/continental yet): **smaller plate by area loses
 | Event | Rule |
 |-------|------|
 | **Death** | Plate **area → 0** → remove from registry |
-| **Fission** | If a plate’s cells become **disconnected** (4-connected on the torus), each component becomes its own plate (new ids; inherit velocity with documented perturbation later) |
+| Fission | If a plate’s cells become **disconnected** (4-connected on the **cylinder** — wrap X; no Y wrap), each component becomes its own plate (new ids; inherit velocity) |
 | **Crumb absorb** | After fission, any component with area **&lt; 0.05%** of `width × height` is absorbed into the neighboring plate that shares the longest contact (deterministic tie: lower neighbor id) |
 
 Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay small.

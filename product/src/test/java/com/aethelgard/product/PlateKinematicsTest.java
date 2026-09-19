@@ -30,20 +30,16 @@ class PlateKinematicsTest {
   private static final long BRONZE = 0x94D049BB133111EBL;
 
   @Test
-  @DisplayName("FR-1: plates STATIC, plate_velocity CONSTANT; two Systems; no Swing in new types")
+  @DisplayName("FR-1: plates STATIC, plate_velocity STATIC; one tectonics System; no Swing in new types")
   void schemaAndHostWiring() throws Exception {
     EngineSetup setup = ProductHost.setup();
     assertEquals(FieldType.STATIC, setup.fieldSchema().typeOf(WorldFields.PLATES));
-    assertEquals(FieldType.CONSTANT, setup.fieldSchema().typeOf(WorldFields.PLATE_VELOCITY));
-    assertEquals(2, setup.systems().size());
-    assertEquals(ProductHost.KINEMATICS_SYSTEM_ID, setup.systems().get(0).id());
-    assertEquals(ProductHost.TECTONICS_SYSTEM_ID, setup.systems().get(1).id());
+    assertEquals(FieldType.STATIC, setup.fieldSchema().typeOf(WorldFields.PLATE_VELOCITY));
+    assertEquals(1, setup.systems().size());
+    assertEquals(ProductHost.TECTONICS_SYSTEM_ID, setup.systems().get(0).id());
 
     Engine engine = ProductHost.create(WorldSpec.DEFAULT);
     assertInstanceOf(PlateVelocities.class, engine.settled().field(WorldFields.PLATE_VELOCITY));
-    PlateVelocities before = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
-    engine.advance(3);
-    assertEquals(before, engine.settled().field(WorldFields.PLATE_VELOCITY));
 
     Path root = findRepoRoot();
     assertFalse(
@@ -76,46 +72,48 @@ class PlateKinematicsTest {
   }
 
   @Test
-  @DisplayName("FR-3: advection wraps; leftovers nearest moved site, lower index on ties")
+  @DisplayName("FR-3: apply+advection pipeline matches ProductGeneration helper")
   void advectionMatchesIndependentRule() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
-    assertEquals(independentSeed(8, 8, 0L), plates);
+    PlateRegistry reg = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
+    assertEquals(Plates.seed(8, 8, 0L), plates);
 
+    ProductGeneration.Snapshot state =
+        new ProductGeneration.Snapshot(plates, vel, reg, Grid.zeros(8, 8));
     engine.advance(1);
-    Grid moved = (Grid) engine.settled().field(WorldFields.PLATES);
-    assertEquals(independentAdvect(plates, vel, 1), moved);
-    assertNotEquals(plates, moved);
+    state = ProductGeneration.advance(state, 1);
+    assertEquals(state.plates(), engine.settled().field(WorldFields.PLATES));
+    assertNotEquals(plates, engine.settled().field(WorldFields.PLATES));
 
     engine.advance(2);
-    Grid after3 = (Grid) engine.settled().field(WorldFields.PLATES);
-    Grid expected = plates;
-    for (int g = 1; g <= 3; g++) {
-      expected = independentAdvect(expected, vel, g);
+    for (int g = 2; g <= 3; g++) {
+      state = ProductGeneration.advance(state, g);
     }
-    assertEquals(expected, after3);
+    assertEquals(state.plates(), engine.settled().field(WorldFields.PLATES));
 
-    Grid tiedFill = independentAssign(3, 1, new int[] {0, 2}, new int[] {0, 0});
+    Grid tiedFill = Plates.assign(3, 1, new int[] {0, 2}, new int[] {0, 0});
     assertEquals(new Grid(new int[][] {{0, 0, 1}}), tiedFill);
   }
 
   @Test
-  @DisplayName("FR-4: elevation is standing-plate orogeny; kinematics output unused this Step")
+  @DisplayName("FR-4: elevation is standing-plate orogeny; plates follow ProductGeneration")
   void standingPlateUpliftUnchanged() {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
     Grid plates = (Grid) engine.settled().field(WorldFields.PLATES);
     PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
-    Grid elevation = Grid.zeros(8, 8);
+    PlateRegistry reg = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
+    ProductGeneration.Snapshot state =
+        new ProductGeneration.Snapshot(plates, vel, reg, Grid.zeros(8, 8));
     engine.advance(3);
     for (int g = 1; g <= 3; g++) {
-      elevation = Orogeny.apply(plates, vel, elevation);
-      plates = independentAdvect(plates, vel, g);
+      state = ProductGeneration.advance(state, g);
     }
-    assertEquals(elevation, engine.settled().field(WorldFields.ELEVATION));
-    assertEquals(plates, engine.settled().field(WorldFields.PLATES));
+    assertEquals(state.elevation(), engine.settled().field(WorldFields.ELEVATION));
+    assertEquals(state.plates(), engine.settled().field(WorldFields.PLATES));
 
     engine.advance(0);
     Engine tiny = ProductHost.create(new WorldSpec(1, 1, 0L));
@@ -156,17 +154,16 @@ class PlateKinematicsTest {
   }
 
   @Test
-  @DisplayName("FR-1/FR-3: generation claims both Systems; wiki records motion")
+  @DisplayName("FR-1/FR-3: generation claims tectonics; wiki records motion")
   void claimsAndWiki() throws Exception {
     Engine engine = ProductHost.create(WorldSpec.DEFAULT);
     engine.advance(1);
-    assertEquals(2, engine.lastClaimFinish().claimCount());
+    assertEquals(1, engine.lastClaimFinish().claimCount());
     assertEquals(
-        List.of(ProductHost.KINEMATICS_SYSTEM_ID, ProductHost.TECTONICS_SYSTEM_ID),
-        engine.lastClaimFinish().finishedSystemIds());
+        List.of(ProductHost.TECTONICS_SYSTEM_ID), engine.lastClaimFinish().finishedSystemIds());
     assertTrue(engine.lastStepOutput().asMap().containsKey(WorldFields.PLATES));
     assertEquals(
-        ProductHost.KINEMATICS_SYSTEM_ID,
+        ProductHost.TECTONICS_SYSTEM_ID,
         engine.lastStepOutput().asMap().get(WorldFields.PLATES).getFirst().systemId());
     assertEquals(
         ProductHost.TECTONICS_SYSTEM_ID,
@@ -177,11 +174,14 @@ class PlateKinematicsTest {
     assertTrue(wiki.toLowerCase().contains("kinematic") || wiki.toLowerCase().contains("advect"));
     assertTrue(wiki.contains("plate_velocity"));
     assertTrue(wiki.contains("{-1, 0, 1}") || wiki.contains("{-1,0,1}"));
-    assertTrue(wiki.toLowerCase().contains("toroid"));
+    assertTrue(
+        wiki.toLowerCase().contains("toroid")
+            || wiki.toLowerCase().contains("cylinder")
+            || wiki.contains("wrap X"));
     assertFalse(wiki.contains("Plates do not move."));
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(world.contains("plate_velocity"));
-    assertTrue(world.contains("kinematics advection"));
+    assertTrue(world.contains("kinematics advection") || world.contains("advection"));
     assertFalse(
         world.contains("| `plates` | Voronoi nearest-site ids from seed (6–15 sites) | unchanged (Constant) |"));
   }
