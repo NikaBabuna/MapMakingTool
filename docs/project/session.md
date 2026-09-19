@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-037 Accepted · next F-038
+**Status:** F-038 Accepted · next F-039
 
 ---
 
@@ -29,20 +29,19 @@ Ship **G-008** — boundary tectonics + large cylinder world + cartography studi
 
 | Step | Work | Status |
 |------|------|--------|
-| F-030–F-037 | Foundations through edge-driven velocities | done |
-| F-038–F-040 | Orogeny → studio → Goal close | not started |
+| F-030–F-038 | Foundations through boundary orogeny | done |
+| F-039–F-040 | Studio → Goal close | not started |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-037 Accept)
+- [x] Incremental suite green (F-038 Accept)
 
 ---
 
 ## Notes
 
-- Edge-driven integrate shipped in F-037.
-- **F-038 rolled back** (`f5f01f0` revert): boundary orogeny was O(cells×contacts) — ~78s/Advance on VIEW; status polls blocked on session lock. Re-negotiate F-038 with O(contacts) relief + non-blocking status before retry.
-- Next: **F-038** (orogeny + optional UI tweaks), redesigned.
+- F-038 redesign: O(contacts) relief, cached status, Y pan clamp, boundary plates paint.
+- Next: **F-039** multi-panel studio + mappy style.

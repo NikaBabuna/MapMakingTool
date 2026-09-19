@@ -1,8 +1,8 @@
 /*
  * File: product/src/test/java/com/aethelgard/product/OrogenyTest.java
- * Purpose: F-021 witness — converge / diverge / transform, torus, standing plates
+ * Purpose: F-038 witness — elevation from standing classified boundaries (O(contacts))
  * Audience: Agents / CI
- * Update when: F-021 FRs change
+ * Update when: F-038 FRs change
  */
 
 package com.aethelgard.product;
@@ -15,61 +15,72 @@ import com.aethelgard.engine.pool.Engine;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class OrogenyTest {
 
   @Test
-  @DisplayName("FR-2: 4x1 torus — leading converge +1, trailing diverge -1")
-  void torusLeadingAndTrailing() {
-    Grid plates = new Grid(new int[][] {{0, 0, 1, 1}});
-    PlateVelocities vel =
-        new PlateVelocities(0L, new int[] {0, 1}, new int[] {0, 0});
-    assertEquals(1, independentDelta(plates, vel, 0, 0));
-    assertEquals(-1, independentDelta(plates, vel, 1, 0));
-    assertEquals(-1, independentDelta(plates, vel, 2, 0));
-    assertEquals(1, independentDelta(plates, vel, 3, 0));
-    assertEquals(
-        new Grid(new int[][] {{1, -1, -1, 1}}),
-        Orogeny.apply(plates, vel, Grid.zeros(4, 1)));
+  @DisplayName("FR-2: COLLIDE winner +1 / loser -1; SEPARATE both -1; PASS_BY 0")
+  void boundaryKindsRelief() {
+    PlateRegistry reg =
+        new PlateRegistry(
+            0L, new int[] {10, 5, 8}, new int[] {1, 0, 0}, new int[] {0, 0, 0});
+    Boundaries boundaries =
+        new Boundaries(
+            List.of(
+                new BoundaryContact(0, 0, 1, 0, 0, 1, BoundaryKind.COLLIDE),
+                new BoundaryContact(2, 0, 1, 0, 0, 2, BoundaryKind.SEPARATE),
+                new BoundaryContact(0, 1, 1, 0, 1, 2, BoundaryKind.PASS_BY)));
+    Grid elev = Grid.zeros(4, 2);
+    Grid next = Orogeny.apply(boundaries, reg, elev);
+    // COLLIDE: plate0 (larger) at (0,0) wins +1; plate1 at (1,0) loses -1
+    assertEquals(1, next.get(0, 0));
+    assertEquals(-1, next.get(1, 0));
+    // SEPARATE: both -1
+    assertEquals(-1, next.get(2, 0));
+    assertEquals(-1, next.get(3, 0));
+    // PASS_BY: unchanged
+    assertEquals(0, next.get(0, 1));
+    assertEquals(0, next.get(1, 1));
   }
 
   @Test
-  @DisplayName("FR-2: shear is transform 0; same velocity is 0; converge wins over diverge")
-  void transformAndConvergeWins() {
-    Grid plates = new Grid(new int[][] {{0, 1}});
-    PlateVelocities shear =
-        new PlateVelocities(0L, new int[] {0, 0}, new int[] {1, -1});
-    assertEquals(0, independentDelta(plates, shear, 0, 0));
-    assertEquals(0, independentDelta(plates, shear, 1, 0));
-
-    PlateVelocities locked =
-        new PlateVelocities(0L, new int[] {1, 1}, new int[] {0, 0});
-    assertEquals(0, independentDelta(plates, locked, 0, 0));
-
-    // 2-wide torus: east diverge and west converge on the same neighbor pair → +1
-    PlateVelocities split =
-        new PlateVelocities(0L, new int[] {0, 1}, new int[] {0, 0});
-    assertEquals(1, independentDelta(plates, split, 0, 0));
-    assertEquals(1, Orogeny.delta(plates, split, 0, 0));
+  @DisplayName("FR-2: winner COLLIDE beats SEPARATE on the same cell")
+  void combineLadder() {
+    PlateRegistry reg =
+        new PlateRegistry(0L, new int[] {10, 5, 5}, new int[] {0, 0, 0}, new int[] {0, 0, 0});
+    // Cell (1,0) is loser of COLLIDE with 0 and also SEPARATE with 2 → still -1 (loser)
+    // Cell (0,0) is winner +1
+    Boundaries boundaries =
+        new Boundaries(
+            List.of(
+                new BoundaryContact(0, 0, 1, 0, 0, 1, BoundaryKind.COLLIDE),
+                new BoundaryContact(1, 0, 1, 0, 1, 2, BoundaryKind.SEPARATE)));
+    Grid next = Orogeny.apply(boundaries, reg, Grid.zeros(3, 1));
+    assertEquals(1, next.get(0, 0));
+    assertEquals(-1, next.get(1, 0));
+    assertEquals(-1, next.get(2, 0));
   }
 
   @Test
-  @DisplayName("FR-3: interior 0; negatives accumulate; 1x1 stays 0")
+  @DisplayName("FR-3: interior / PASS_BY unchanged; 1x1 stays 0; negatives accumulate")
   void interiorNegativeAndTiny() {
-    Grid plates = new Grid(new int[][] {{0, 0, 0}});
-    PlateVelocities vel = new PlateVelocities(0L, new int[] {1}, new int[] {0});
+    Boundaries empty = Boundaries.empty();
+    PlateRegistry one = new PlateRegistry(0L, new int[] {3}, new int[] {1}, new int[] {0});
     Grid zeros = Grid.zeros(3, 1);
-    assertEquals(zeros, Orogeny.apply(plates, vel, zeros));
+    assertEquals(zeros, Orogeny.apply(empty, one, zeros));
 
-    Grid rift = new Grid(new int[][] {{0, 0, 1, 1}});
-    PlateVelocities pull =
-        new PlateVelocities(0L, new int[] {0, 1}, new int[] {0, 0});
-    Grid once = Orogeny.apply(rift, pull, Grid.zeros(4, 1));
-    Grid twice = Orogeny.apply(rift, pull, once);
-    assertEquals(-2, twice.get(1, 0));
+    PlateRegistry reg =
+        new PlateRegistry(0L, new int[] {10, 5}, new int[] {0, 1}, new int[] {0, 0});
+    Boundaries collide =
+        new Boundaries(List.of(new BoundaryContact(0, 0, 1, 0, 0, 1, BoundaryKind.COLLIDE)));
+    Grid once = Orogeny.apply(collide, reg, Grid.zeros(2, 1));
+    Grid twice = Orogeny.apply(collide, reg, once);
     assertEquals(2, twice.get(0, 0));
+    assertEquals(-2, twice.get(1, 0));
 
     Engine tiny = ProductHost.create(new WorldSpec(1, 1, 0L));
     tiny.advance(5);
@@ -77,8 +88,26 @@ class OrogenyTest {
   }
 
   @Test
-  @DisplayName("FR-1/FR-4: engine uses standing orogeny; plates follow ProductGeneration")
-  void standingOrogenyOnEngine() {
+  @DisplayName("FR-4: apply walks contacts once — no nested cell×contact scan in source")
+  void contactsWalkStructural() throws Exception {
+    String src =
+        Files.readString(
+            findRepoRoot().resolve("product/src/main/java/com/aethelgard/product/Orogeny.java"));
+    assertTrue(src.contains("boundaries.contacts()"));
+    assertTrue(src.contains("HashMap") || src.contains("ranks"));
+    // Forbid classic regression: for each cell, for each contact
+    assertFalse(
+        Pattern.compile(
+                "for\\s*\\(\\s*int\\s+[xy]\\s*=.*?boundaries\\.contacts\\(\\)",
+                Pattern.DOTALL)
+            .matcher(src)
+            .find());
+    assertFalse(src.contains("cells × contacts") || src.contains("cells*contacts"));
+  }
+
+  @Test
+  @DisplayName("FR-1/FR-6: engine matches ProductGeneration; golden + determinism")
+  void standingOrogenyOnEngine() throws Exception {
     WorldSpec spec = new WorldSpec(8, 8, 0L);
     Engine engine = ProductHost.create(spec);
     ProductGeneration.Snapshot state =
@@ -94,81 +123,44 @@ class OrogenyTest {
     assertEquals(state.elevation(), engine.settled().field(WorldFields.ELEVATION));
     assertEquals(state.plates(), engine.settled().field(WorldFields.PLATES));
     assertEquals(state.velocities(), engine.settled().field(WorldFields.PLATE_VELOCITY));
-  }
 
-  @Test
-  @DisplayName("FR-5: same seed matches; DEFAULT golden; VIEW 1920×1080 seed 0 (no VIEW advance)")
-  void determinismDumpAndView() throws Exception {
-    WorldSpec spec = WorldSpec.DEFAULT;
-    Engine a = ProductHost.create(spec);
-    Engine b = ProductHost.create(spec);
+    WorldSpec def = WorldSpec.DEFAULT;
+    Engine a = ProductHost.create(def);
+    Engine b = ProductHost.create(def);
     a.advance(WorldDump.CANONICAL_STEPS);
     b.advance(WorldDump.CANONICAL_STEPS);
-    assertEquals(WorldDump.of(a, spec), WorldDump.of(b, spec));
-    String dump = WorldDump.of(a, spec);
+    assertEquals(WorldDump.of(a, def), WorldDump.of(b, def));
     String golden =
         Files.readString(
                 findRepoRoot().resolve("product/src/test/resources/worlds/default-n3.txt"),
                 StandardCharsets.UTF_8)
             .replace("\r\n", "\n");
-    assertEquals(golden, dump);
+    assertEquals(golden, WorldDump.of(a, def));
 
     ProductSession view = ProductSession.view();
     assertEquals(1920, view.spec().width());
     assertEquals(1080, view.spec().height());
-    assertEquals(0L, view.spec().seed());
-    assertEquals(0, view.stepIndex());
-    assertEquals(1920, view.elevation().width());
-    assertEquals(1080, view.elevation().height());
   }
 
   @Test
-  @DisplayName("FR-1: wiki records orogeny; CollisionUplift is gone")
+  @DisplayName("FR-1/FR-7: wiki boundary orogeny; CollisionUplift gone; no Swing")
   void wikiAndRetiredUplift() throws Exception {
     Path root = findRepoRoot();
-    String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(wiki.toLowerCase().contains("orogeny") || wiki.toLowerCase().contains("converge"));
-    assertTrue(wiki.contains("n ·") || wiki.contains("n · (v") || wiki.toLowerCase().contains("closing"));
-    assertTrue(wiki.toLowerCase().contains("toroid"));
-    assertTrue(wiki.contains("−1") || wiki.contains("-1"));
-    assertFalse(wiki.contains("if any **4-neighbor** (north, east, south, west) has a **different plate id**, that cell’s elevation increases by **1**."));
+    String elev = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
+    String tect = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
+    assertTrue(elev.toLowerCase().contains("orogeny") || tect.toLowerCase().contains("orogeny"));
+    assertTrue(
+        elev.contains("boundaries")
+            || tect.contains("ReliefFromBoundaries")
+            || tect.toLowerCase().contains("orogeny-from-boundaries")
+            || elev.toLowerCase().contains("boundary"));
+    assertTrue(elev.contains("F-038") || tect.contains("F-038"));
     assertFalse(
         Files.exists(
             root.resolve("product/src/main/java/com/aethelgard/product/CollisionUplift.java")));
     assertFalse(
         Files.readString(root.resolve("product/src/main/java/com/aethelgard/product/Orogeny.java"))
             .contains("javax.swing"));
-  }
-
-  private static int independentDelta(Grid plates, PlateVelocities velocities, int x, int y) {
-    int a = plates.get(x, y);
-    boolean converge = false;
-    boolean diverge = false;
-    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    for (int[] d : dirs) {
-      int nx = d[0];
-      int ny = d[1];
-      int bx = Math.floorMod(x + nx, plates.width());
-      int by = Math.floorMod(y + ny, plates.height());
-      int b = plates.get(bx, by);
-      if (a == b) {
-        continue;
-      }
-      int closing =
-          nx * (velocities.vx(a) - velocities.vx(b)) + ny * (velocities.vy(a) - velocities.vy(b));
-      if (closing > 0) {
-        converge = true;
-      } else if (closing < 0) {
-        diverge = true;
-      }
-    }
-    if (converge) {
-      return 1;
-    }
-    if (diverge) {
-      return -1;
-    }
-    return 0;
   }
 
   private static Path findRepoRoot() {

@@ -7,8 +7,8 @@
 
 # World
 
-**Code status (through F-037):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + area_flux + motion_intent + IntegrateVelocity — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).
-**G-008 further targets:** orogeny rewrite / studio panels — see [tectonics.md](tectonics.md).
+**Code status (through F-038):** VIEW launch is **1920×1080**; cylindrical plates + registry + boundaries + area_flux + motion_intent + IntegrateVelocity + boundary orogeny — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).
+**G-008 further targets:** studio panels — see [tectonics.md](tectonics.md).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 
@@ -58,7 +58,7 @@ Later climate (rainfall, temperature, …) is more layers of the same shape, not
 
 ### G-008 planned fields
 
-See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Edge-driven velocity integrate shipped in F-037.
+See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Boundary orogeny shipped in F-038.
 
 ---
 

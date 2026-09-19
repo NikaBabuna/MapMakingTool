@@ -245,9 +245,20 @@ class ToolUiTest {
 
     map.setLayer(MapLayer.PLATES);
     List<LegendEntry> plates = map.legend();
-    assertFalse(plates.isEmpty());
-    assertTrue(plates.get(0).label().startsWith("Plate "));
-    assertEquals(ElevationRaster.plateRgb(idOf(plates.get(0).label())), plates.get(0).rgb());
+    assertEquals(2, plates.size());
+    assertEquals("Interior", plates.get(0).label());
+    assertEquals(ElevationRaster.PLATE_INTERIOR_RGB, plates.get(0).rgb());
+    assertEquals("Boundary", plates.get(1).label());
+    assertEquals(ElevationRaster.PLATE_BOUNDARY_RGB, plates.get(1).rgb());
+    assertEquals(
+        ElevationRaster.paint(map.session().elevation(), map.session().plates(), MapLayer.PLATES),
+        map.raster());
+    Grid two = new Grid(new int[][] {{0, 1}});
+    assertTrue(ElevationRaster.isPlateBoundary(two, 0, 0));
+    assertEquals(ElevationRaster.PLATE_BOUNDARY_RGB, ElevationRaster.plateBoundaryCell(two, 0, 0));
+    Grid one = new Grid(new int[][] {{0, 0}});
+    assertFalse(ElevationRaster.isPlateBoundary(one, 0, 0));
+    assertEquals(ElevationRaster.PLATE_INTERIOR_RGB, ElevationRaster.plateBoundaryCell(one, 0, 0));
 
     map.setLayer(MapLayer.OVERLAY);
     List<LegendEntry> overlay = map.legend();
@@ -305,14 +316,10 @@ class ToolUiTest {
   }
 
   @Test
-  @DisplayName("FR-7: plateRgb is deterministic")
+  @DisplayName("FR-7: plateRgb is deterministic (legacy helper)")
   void plateRgbStable() {
     assertEquals(ElevationRaster.plateRgb(3), ElevationRaster.plateRgb(3));
     assertNotEquals(ElevationRaster.plateRgb(0), ElevationRaster.plateRgb(1));
-  }
-
-  private static int idOf(String plateLabel) {
-    return Integer.parseInt(plateLabel.substring("Plate ".length()));
   }
 
   private static int pack(int r, int g, int b) {

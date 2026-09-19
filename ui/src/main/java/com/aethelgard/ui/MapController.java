@@ -16,7 +16,6 @@ import com.aethelgard.product.WorldSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,6 +39,7 @@ public final class MapController {
 
   private WorldSpec spec;
   private ProductSession session;
+  private volatile int cachedStep;
   private Grid elevation;
   private Grid plates;
   private PlateVelocities velocities;
@@ -82,8 +82,12 @@ public final class MapController {
     return session;
   }
 
+  /**
+   * Last captured step index. Does not take the session physics lock — safe during {@link
+   * #busy()} Advance.
+   */
   public int stepIndex() {
-    return session.stepIndex();
+    return cachedStep;
   }
 
   public ElevationRaster raster() {
@@ -110,12 +114,12 @@ public final class MapController {
     return busy.get();
   }
 
-  /** {@link #WORKING_STATUS} while busy; otherwise {@code Step n}. */
+  /** {@link #WORKING_STATUS} while busy; otherwise {@code Step n} from the cached step. */
   public String statusText() {
     if (busy.get()) {
       return WORKING_STATUS;
     }
-    return "Step " + session.stepIndex();
+    return "Step " + cachedStep;
   }
 
   public void onChanged(Runnable listener) {
@@ -269,23 +273,16 @@ public final class MapController {
   }
 
   private List<LegendEntry> plateLegend() {
-    TreeSet<Integer> ids = new TreeSet<>();
-    for (int y = 0; y < plates.height(); y++) {
-      for (int x = 0; x < plates.width(); x++) {
-        ids.add(plates.get(x, y));
-      }
-    }
-    List<LegendEntry> rows = new ArrayList<>();
-    for (int id : ids) {
-      rows.add(new LegendEntry(ElevationRaster.plateRgb(id), "Plate " + id));
-    }
-    return rows;
+    return List.of(
+        new LegendEntry(ElevationRaster.PLATE_INTERIOR_RGB, "Interior"),
+        new LegendEntry(ElevationRaster.PLATE_BOUNDARY_RGB, "Boundary"));
   }
 
   private void capture() {
     elevation = session.elevation();
     plates = session.plates();
     velocities = session.plateVelocities();
+    cachedStep = session.stepIndex();
     raster = ElevationRaster.paint(elevation, plates, layer);
   }
 

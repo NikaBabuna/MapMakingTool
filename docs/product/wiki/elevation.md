@@ -7,12 +7,12 @@
 
 # Elevation process
 
-> **Code status (through F-037):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity` nudges velocities each generation; geometry apply/fission; `plate_velocity` STATIC. Orogeny-from-boundaries still F-038.  
+> **Code status (through F-038):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity` nudges velocities each generation; geometry apply/fission; `plate_velocity` STATIC. **Orogeny** relief comes from standing classified `boundaries` (O(contacts)).  
 > **G-008:** Boundary tectonics **supersedes** Constant-forever velocities and advection-as-size-engine. Target rules: [tectonics.md](tectonics.md).
 
-Relief is **caused** by plates converging and diverging at sutures. It is not painted at Step 0.
+Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 
-Category: `world/tectonics`. The product emission policy ticks this category after Step 0. Two Systems claim the tick: **kinematics** (writes `plates`) and **tectonics** (`TraceBoundaries` + `Orogeny`). They read the same standing Pool snapshot; neither sees the other's output this Step.
+Category: `world/tectonics`. The product emission policy ticks this category after Step 0. The tectonics System runs TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny. Orogeny reads standing elevation + standing-classified boundaries (and standing registry for collide precedence).
 
 ---
 
@@ -104,30 +104,26 @@ Moved site \(i\) after \(G\) generation Steps:
 
 This supersedes “plates do not move” from G-004 / F-017.
 
-### Orogeny (standing plates)
+### Orogeny (standing boundaries — F-038)
 
-1. Read standing `plates`, `plate_velocity`, and `elevation` (not this Step’s kinematics write).
-2. For every cell, look at **toroidal 4-neighbors** (north, east, south, west; wrap with `floorMod`).
-3. A neighbor on a **different** plate is a contact. Let \(A\) be this cell’s plate, \(B\) the neighbor’s plate, and \(\mathbf{n}\) the outward unit normal toward that neighbor (`(1,0)` east, `(-1,0)` west, `(0,1)` south, `(0,-1)` north). Closing is \(\mathbf{n} \cdot (\mathbf{v}_A - \mathbf{v}_B)\):
-   - closing \(> 0\) — **converge**
-   - closing \(< 0\) — **diverge**
-   - closing \(= 0\) — **transform**
-4. The cell’s elevation change that Step is **one** integer:
-   - any converging foreign neighbor → `+1`
-   - else any diverging foreign neighbor → `−1`
-   - else `0` (interior, or only transform contacts)
-5. Write the new elevation grid. **No floor** — elevation may go negative. Interior cells stay at their previous height.
+1. Read standing `elevation`, staged/pool `boundaries`, and standing `plate_registry` (not this Step’s apply/advect write).
+2. Walk each classified contact **once** (O(contacts) — not a per-cell contact scan):
+   - **COLLIDE** — winner-side cell `+1`, loser-side cell `−1` (smaller area loses; tie → lower id)
+   - **SEPARATE** — both contact cells `−1`
+   - **PASS_BY** — `0`
+3. Per-cell combine: any winner COLLIDE → `+1`; else any loser COLLIDE → `−1`; else any SEPARATE → `−1`; else `0`.
+4. Write the new elevation grid. **No floor** — elevation may go negative. Interior / only-PASS_BY cells stay at their previous height.
 
-This supersedes foreign-neighbor `+1` from F-015 / F-017 / F-020.
+This supersedes F-021 velocity-neighbor closing for elevation. Classification still uses `n · (vA − vB)` when tracing boundaries.
 
-A world whose standing assignment is a single plate (for example a 1×1 grid) has no foreign neighbor, so elevation stays 0.
+A world whose standing assignment is a single plate (for example a 1×1 grid) has no contacts, so elevation stays 0.
 
-### Map display (F-022)
+### Map display (F-022 / F-038)
 
-The grid may be negative. The **UI** paints `e < 0` as ocean, hillshades land, and can show plates / overlay. Paint formulas live in [architecture.md](../architecture.md), not in this physics rule. Interior cells are unchanged **in the grid** even when the window shows ocean.
+The grid may be negative. The **UI** paints `e < 0` as ocean, hillshades land, and can show plates / overlay. Plates layer paints **interior + boundary** (no per-id rainbow). Paint formulas live in [architecture.md](../architecture.md), not in this physics rule. Interior cells are unchanged **in the grid** even when the window shows ocean.
 
 ---
 
 ## Engine
 
-`ProductHost` wires the category tree, `GenerationTickPolicy` (no tick on Step 0), the kinematics `EngineSystem`, and the tectonics `EngineSystem` (`Orogeny`). Ordinary world rules do not edit `engine` source.
+`ProductHost` wires the category tree, `GenerationTickPolicy` (no tick on Step 0), and the tectonics `EngineSystem` (`TraceBoundaries` → … → `Orogeny`). Ordinary world rules do not edit `engine` source.

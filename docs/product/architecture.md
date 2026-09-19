@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-008 F-037 integrate; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
+**Status:** active (G-008 F-038 boundary orogeny; G-007 studio done; F-026 Tauri; F-025 Next; F-024 MapHost)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -53,7 +53,9 @@ cli →  product  →  engine
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
 | Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry + boundaries + area_flux + motion_intent; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, then advects ownership (wrap X; Y off-map dropped). Orogeny and `TraceBoundaries` use standing plates/velocities. Elevation may go negative. The seed is not its own Pool field.
+`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, then advects ownership (wrap X; Y off-map dropped). Orogeny stamps relief from standing classified `boundaries` (O(contacts)). Elevation may go negative. The seed is not its own Pool field.
+
+MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the session physics lock (F-038).
 
 ---
 
@@ -130,7 +132,7 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry** (flux+fission+advect). Orogeny-from-boundaries F-038.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry**; **boundary orogeny** (F-038).
 
 ---
 

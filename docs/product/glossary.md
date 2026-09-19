@@ -19,10 +19,10 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
 | **Plate velocity** | STATIC field (`plate_velocity`) of per-plate `(vx, vy)` in `{-1,0,1}`: seeded at Step 0, then edge-driven by `IntegrateVelocity` from `motion_intent` (F-037). |
 | **Plates** | Layer (`plates`) of integer plate ids. **Code today:** B1 nearest-site N=12–24 at Step 0; apply flux/fission then advection each generation. |
-| **Suture** | Contact between different plate ids; cylinder 4-neighbor orogeny on **standing** plates. |
+| **Suture** | Contact between different plate ids; cylinder contacts listed in `boundaries` and used by orogeny. |
 | **Voronoi plates** | Historical name for nearest-site partition; distance is **B1** latitude-weighted cylindrical (wrap X, cosQ on Y). Ties take the lower site index. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
-| **Orogeny** | Generative rule: standing-plate cylinder contacts; converge +1, diverge −1, transform/interior 0. |
+| **Orogeny** | Generative relief: standing classified `boundaries` — COLLIDE winner +1 / loser −1, SEPARATE both −1, PASS_BY 0 (F-038). |
 | **Kinematics System** | Legacy name; advection now runs inside `ApplyGeometry` (F-036). |
 | **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny. |
 | **ApplyGeometry** | Sub-System: apply `area_flux`, flood sink, fission/crumbs/death, advect, refresh registry + velocities. |

@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-037 — edge-driven `IntegrateVelocity` from `motion_intent` each generation; B1 partition; `area_flux` apply/fission; `plate_velocity` STATIC. Orogeny-from-boundaries still F-038.
+**Doc status:** F-030 locks (amended F-034 cylinder from torus; F-036 B1 distance). **Code status:** F-038 — boundary orogeny O(contacts) from standing `boundaries`; edge-driven `IntegrateVelocity`; B1 partition; `area_flux` apply/fission; `plate_velocity` STATIC.
 
 This page is the physics + Pool/System plan for **G-008**. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -22,7 +22,7 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 | **Topology** | **Cylinder** — **X wraps** with `floorMod`; **Y does not wrap** (polar edges / sphere-on-rectangle). Neighbors, site distance, and pan treat left/right as adjacent; top/bottom are portals (hard polar boundary). Earlier G-008 text said **torus**; amended F-034. |
 | **Sphere analogue** | Cylinder map (wrap longitude / polar edges) — not a 3D globe mesh. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-037). Orogeny rewrite F-038.
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission + boundary orogeny live (F-033–F-038).
 
 ---
 
@@ -142,5 +142,5 @@ Implementation Steps: **F-034–F-038**.
 
 ## Studio UI
 
-- **F-032 / F-033 / F-034:** zoom clamp; **horizontal-only** loopback pan; **blank** above/below the map (no vertical loop tiles). Sphere-on-rectangle camera.
+- **F-032 / F-038:** zoom clamp; **X wrap + Y polar clamp** pan; **blank** above/below the map (no vertical loop tiles). Sphere-on-rectangle camera.
 - **F-039 / F-040:** multi-panel mappy studio + traditional console — planned.
