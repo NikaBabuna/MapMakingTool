@@ -13,7 +13,6 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
-- **2026-09-19** — **F-044:** Earth-like fission (min 0.5% + span; largest keeps id); thin scrap absorb; east/south plate stroke; golden refreshed.
 - **2026-09-19** — **F-043:** ridge accretion fill (no global nearest-site/owner); golden dump refreshed.
 - **2026-09-19** — **F-042:** `DiagnosticsHub` (collectors, enable/disable, ring history); CLI `stats` / `diag`; paint.wall from MapController.
 - **2026-09-19** — **F-041 / G-009 open:** docs lock (diverge ridge; sphere polar wrap; ADR-012; shared commands/observability planned). Active Goal G-009. Runtime unchanged.

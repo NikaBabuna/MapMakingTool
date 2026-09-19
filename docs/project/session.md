@@ -8,7 +8,7 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-044 Accepted · Active Goal G-009 · next negotiate F-045
+**Status:** F-043 Accepted · Active Goal G-009 · next negotiate F-044
 
 ---
 
@@ -20,7 +20,8 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 ## Active Goal
 
-**Active Goal:** [G-009 — Simulation runner harden](goals/G-009-simulation-runner-harden.md)
+**Active Goal:** [G-009 — Simulation runner harden](goals/G-009-simulation-runner-harden.md)  
+**Last completed Goal:** [G-008](goals/G-008-boundary-tectonics-studio.md) — **done**
 
 ---
 
@@ -28,17 +29,19 @@ Continue **G-009** one Step at a time (negotiate → approve → Accept).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-041–F-044 | Docs, diagnostics, ridge, fission/borders | done |
+| F-041 | Docs lock | done |
+| F-042 | Diagnostics hub | done |
+| F-043 | Ridge accretion | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-044 Accept)
+- [x] Incremental suite green (F-043 Accept)
 
 ---
 
 ## Notes
 
-- F-044: Earth-like fission + east/south paint. Next: negotiate F-045 (sphere poles).
+- F-043: ridge fill + neighbor flood; no global nearest refill; golden refreshed. Next: negotiate F-044 (slivers / borders).
