@@ -20,18 +20,18 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Docs | Diverge ridge; sphere poles; commands; observability | **F-041** done |
 | Diagnostics | Controllable hub + first collectors + CLI | **F-042** done |
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
-| Perf | Step path + raster/host memory | F-046–F-047 |
+| Perf | Step path + raster/host memory | **F-046** done (phases + crumb 0.01%); F-047 |
 | Control | Shared commands; CLI; rebuilt terminal | F-048–F-050 |
 | Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
 
-### Flow: Diagnostics (F-042)
+### Flow: Diagnostics (F-042 / F-046)
 
 | Step | Action |
 |------|--------|
-| 1 | Advance the session; hub records `advance.wall` / heap samples when enabled. |
-| 2 | `stats` prints collector summaries; `diag list` shows enable + n/capacity. |
+| 1 | Advance the session; hub records `advance.wall` / heap / phase samples when enabled. |
+| 2 | `stats` prints collector summaries; `diag list` shows enable + n/capacity (includes `phase.*`). |
 | 3 | `diag off advance.wall` stops new samples; `diag on` resumes; `diag clear` clears. |
 | 4 | Map paint records `paint.wall` on the same hub. |
 

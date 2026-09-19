@@ -77,7 +77,7 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 | F-043 | Diverge / void-fill fix | done |
 | F-044 | Slivers + border read | done |
 | F-045 | Sphere topology | done |
-| F-046 | Step path hotspots | not started |
+| F-046 | Step path hotspots | done |
 | F-047 | Raster + host memory | not started |
 | F-048 | Shared command model | not started |
 | F-049 | CLI as full runner | not started |
@@ -93,6 +93,6 @@ See **ADR-012** in [../decisions.md](../decisions.md).
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 5 / 14 |
+| Steps done | 6 / 14 |
 | Claim boxes | 4 / 8 |
-| Last Accept | F-045 |
+| Last Accept | F-046 |

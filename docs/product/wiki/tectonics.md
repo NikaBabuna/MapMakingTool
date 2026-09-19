@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-045 sphere polar wrap live; F-044 flood + crumb 0.1% + bold borders. F-041 G-009 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Sphere-on-rectangle F-045; flood fill F-044; session `DiagnosticsHub` F-042.
+**Doc status:** F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-041 G-009 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Sphere-on-rectangle F-045; flood fill F-044; crumb 0.01% F-046; session `DiagnosticsHub` F-042/F-046.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -104,7 +104,7 @@ When types are equal (no oceanic/continental yet): **smaller plate by area loses
 |-------|------|
 | **Death** | Plate **area → 0** → remove from registry |
 | Fission | If a plate’s cells become **disconnected** (4-connected on the **sphere map** — wrap X; polar wrap Y via `SphereTopology`), each component becomes its own plate (new ids; inherit velocity). |
-| **Crumb absorb** | After fission, any component with area **&lt; 0.1%** of `width × height` is absorbed into the neighboring plate that shares the longest contact (deterministic tie: lower neighbor id). (Tuned from F-044’s 0.2%; original G-008 was 0.05%.) |
+| **Crumb absorb** | After fission, any component with area **&lt; 0.01%** of `width × height` is absorbed into the neighboring plate that shares the longest contact (deterministic tie: lower neighbor id). (F-046; was 0.1% after F-045 / 0.2% F-044; original G-008 was 0.05%.) |
 
 Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay small.
 
@@ -161,3 +161,4 @@ Implementation Steps: **F-034–F-038**.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009 (planned):** scrap placeholder console; shared CLI/terminal command surface; runner chrome + perf panels (F-048–F-053).
+- **F-046:** crumb absorb **0.01%**; session phase collectors (`phase.trace` … `phase.orogeny`) on `DiagnosticsHub`.

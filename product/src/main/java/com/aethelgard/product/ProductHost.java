@@ -14,6 +14,7 @@ import com.aethelgard.engine.pool.Engine;
 import com.aethelgard.engine.pool.EngineConfig;
 import com.aethelgard.engine.pool.EngineSetup;
 import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.system.SubSystem;
 import com.aethelgard.engine.system.SystemConfig;
 import java.util.List;
 import java.util.Map;
@@ -47,18 +48,21 @@ public final class ProductHost {
     CategoryTree tree = ProductCategories.tree();
     IntegrateVelocity integrate = new IntegrateVelocity();
     ApplyGeometry applyGeometry = new ApplyGeometry();
+    SubSystem timedIntegrate = new TimingSubSystem(integrate, DiagnosticIds.PHASE_INTEGRATE);
+    SubSystem timedApply = new TimingSubSystem(applyGeometry, DiagnosticIds.PHASE_APPLY);
     EngineSystem tectonics =
         new EngineSystem(
             new SystemConfig(
                 TECTONICS_SYSTEM_ID,
                 tree.get(ProductCategories.TECTONICS),
                 List.of(
-                    new TraceBoundaries(),
-                    new BoundaryInteraction(),
-                    integrate,
-                    applyGeometry,
-                    new Orogeny()),
-                conflict -> List.of(integrate, applyGeometry)));
+                    new TimingSubSystem(new TraceBoundaries(), DiagnosticIds.PHASE_TRACE),
+                    new TimingSubSystem(
+                        new BoundaryInteraction(), DiagnosticIds.PHASE_INTERACTION),
+                    timedIntegrate,
+                    timedApply,
+                    new TimingSubSystem(new Orogeny(), DiagnosticIds.PHASE_OROGENY)),
+                conflict -> List.of(timedIntegrate, timedApply)));
     FieldSchema schema =
         FieldSchema.of(
             Map.of(

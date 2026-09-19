@@ -97,12 +97,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-009 F-044 flood/crumb/half-edge; F-042 DiagnosticsHub; G-008 done |
+| [architecture.md](product/architecture.md) | Active — G-009 F-046 phases/crumb 0.01%; F-045 sphere; F-042 DiagnosticsHub; G-008 done |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-009 F-044 physics; F-042 diagnostics; G-008 done (through F-040) |
-| [glossary.md](product/glossary.md) | Active — DiagnosticsHub; collectors; sphere polar wrap; flood fill; crumb 0.1% |
+| [flows.md](product/flows.md) | G-009 F-046 phases; F-044 physics; F-042 diagnostics; G-008 done (through F-040) |
+| [glossary.md](product/glossary.md) | Active — DiagnosticsHub; phase collectors; sphere polar wrap; flood fill; crumb 0.01% |
 | [style-guide.md](product/style-guide.md) | Active — G-009 runner (F-042 hub); half-edge plates (F-044); G-008 studio shipped |
-| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-045 sphere live) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
+| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -157,6 +157,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-043.md](blockers/F-043.md) | done — ridge accretion diverge fill |
 | [F-044.md](blockers/F-044.md) | done — flood fill + crumb 0.2% + half-edge borders |
 | [F-045.md](blockers/F-045.md) | done — sphere polar wrap + bold/ragged borders |
+| [F-046.md](blockers/F-046.md) | done — phase collectors + crumb 0.01% + step-path hotspot |
 
 ---
 

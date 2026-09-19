@@ -1,8 +1,8 @@
 /*
  * File: product/src/test/java/com/aethelgard/product/GapFillFloodTest.java
- * Purpose: F-044 witness — triple-junction flood fill + crumb 0.2%
+ * Purpose: F-044 witness — triple-junction flood fill + crumb absorb
  * Audience: Agents / CI
- * Update when: F-044 FRs change
+ * Update when: F-044 / crumb bar FRs change
  */
 
 package com.aethelgard.product;
@@ -93,11 +93,11 @@ class GapFillFloodTest {
   }
 
   @Test
-  @DisplayName("FR-3: crumb bar 0.1% absorbs small island that stays under the bar")
-  void crumbBarOneTenthPercent() {
-    // 50×50 = 2500; 0.1% absorbs size < 2.5. Use size-2 island of plate 1.
-    int w = 50;
-    int h = 50;
+  @DisplayName("FR-3: crumb bar 0.01% absorbs small island that stays under the bar")
+  void crumbBarOneHundredthPercent() {
+    // 200×200 = 40_000; 0.01% absorbs size < 4. Use size-2 island of plate 1.
+    int w = 200;
+    int h = 200;
     int[][] cells = new int[h][w];
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
@@ -119,7 +119,7 @@ class GapFillFloodTest {
   }
 
   @Test
-  @DisplayName("FR-6/FR-7: determinism; wiki flood + 0.1%; no Plates.assign in kinematics")
+  @DisplayName("FR-6/FR-7: determinism; wiki flood + 0.01%; no Plates.assign in kinematics")
   void determinismWikiAndNoGlobalAssign() throws Exception {
     ProductSession a = ProductSession.ofDefault();
     ProductSession b = ProductSession.ofDefault();
@@ -130,7 +130,7 @@ class GapFillFloodTest {
 
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(wiki.contains("0.1%"));
+    assertTrue(wiki.contains("0.01%"));
     assertTrue(wiki.toLowerCase().contains("flood"));
     assertTrue(wiki.contains("F-044"));
 

@@ -38,13 +38,14 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Simulation runner** | G-009 product feel: Unity-like control, shared CLI/terminal, visible performance. |
 | **Session diagnostics** | Planned (F-042): per-Step timings, memory, counters — queryable via commands. |
 | **DiagnosticsHub** | Session-owned controllable diagnostics: named collectors, enable/disable, ring history (F-042). Not Pool state. |
-| **DiagnosticCollector** | One named sample stream on the hub (`advance.wall`, `heap.used`, `heap.max`, `paint.wall`, …). |
+| **DiagnosticCollector** | One named sample stream on the hub (`advance.wall`, `heap.used`, `heap.max`, `paint.wall`, `phase.trace`, …). |
+| **Phase collectors** | Per–Sub-System wall timings on advance (`phase.trace` … `phase.orogeny`) via `TimingSubSystem` (F-046). |
 | **Boundaries** | STATIC Pool object (`boundaries`): classified contacts (separate / collide / pass-by). |
 | **Area flux** | STATIC Pool object (`area_flux`): per-plate Δarea + sinkΔ budgets (F-035); applied in F-036. |
 | **Motion intent** | STATIC Pool object (`motion_intent`): per-plate preferred Δv from edges (F-035); applied by `IntegrateVelocity` (F-037). |
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
-| **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.1% area absorbed). |
+| **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): ocean + hillshaded land, plate colors, or overlay. |
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |

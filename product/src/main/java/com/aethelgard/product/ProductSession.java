@@ -66,7 +66,12 @@ public final class ProductSession {
     synchronized (lock) {
       for (int i = 0; i < n; i++) {
         long t0 = System.nanoTime();
-        engine.advance(1);
+        PhaseTiming.withHub(
+            diagnostics,
+            () -> {
+              engine.advance(1);
+              return null;
+            });
         long dt = System.nanoTime() - t0;
         diagnostics.record(DiagnosticIds.ADVANCE_WALL, dt);
         Runtime rt = Runtime.getRuntime();

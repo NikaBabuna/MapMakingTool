@@ -30,6 +30,7 @@ class DiagCommandTest {
     CliResult list = CommandDispatch.execute(session, "diag list");
     assertEquals(0, list.exitCode());
     assertTrue(list.output().contains(DiagnosticIds.HEAP_USED));
+    assertTrue(list.output().contains(DiagnosticIds.PHASE_TRACE));
     assertTrue(list.output().contains("enabled=true"));
 
     CliResult off = CommandDispatch.execute(session, "diag off " + DiagnosticIds.ADVANCE_WALL);

@@ -79,13 +79,6 @@ public final class PlateKinematics implements SubSystem {
     int n = velocities.count();
     int[][] claims = new int[height][width];
     int[][] who = new int[height][width];
-    // whoMin tracks lowest claimant id when contested (F-045 sphere can double-claim poles).
-    int[][] whoMin = new int[height][width];
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        whoMin[y][x] = Integer.MAX_VALUE;
-      }
-    }
     boolean[] crossed = new boolean[n];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -103,9 +96,11 @@ public final class PlateKinematics implements SubSystem {
           crossed[plate] = true;
         }
         claims[ny][nx]++;
-        who[ny][nx] = plate;
-        if (plate < whoMin[ny][nx]) {
-          whoMin[ny][nx] = plate;
+        if (claims[ny][nx] == 1) {
+          who[ny][nx] = plate;
+        } else if (plate < who[ny][nx]) {
+          // Contested: keep lowest claimant so polar double-claims still seed flood.
+          who[ny][nx] = plate;
         }
       }
     }
@@ -114,11 +109,8 @@ public final class PlateKinematics implements SubSystem {
       for (int x = 0; x < width; x++) {
         if (claims[y][x] == 0) {
           next[y][x] = UNRESOLVED;
-        } else if (claims[y][x] == 1) {
-          next[y][x] = who[y][x];
         } else {
-          // Contested: keep lowest claimant so polar double-claims still seed flood.
-          next[y][x] = whoMin[y][x];
+          next[y][x] = who[y][x];
         }
       }
     }

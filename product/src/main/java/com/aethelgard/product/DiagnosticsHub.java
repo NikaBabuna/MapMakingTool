@@ -23,13 +23,18 @@ public final class DiagnosticsHub {
 
   private final Map<String, DiagnosticCollector> collectors = new LinkedHashMap<>();
 
-  /** Hub with built-in advance / heap / paint collectors. */
+  /** Hub with built-in advance / heap / paint / phase collectors. */
   public static DiagnosticsHub withDefaults() {
     DiagnosticsHub hub = new DiagnosticsHub();
     hub.register(new RingDiagnosticCollector(DiagnosticIds.ADVANCE_WALL, DEFAULT_CAPACITY));
     hub.register(new RingDiagnosticCollector(DiagnosticIds.HEAP_USED, DEFAULT_CAPACITY));
     hub.register(new RingDiagnosticCollector(DiagnosticIds.HEAP_MAX, DEFAULT_CAPACITY));
     hub.register(new RingDiagnosticCollector(DiagnosticIds.PAINT_WALL, DEFAULT_CAPACITY));
+    hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_TRACE, DEFAULT_CAPACITY));
+    hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_INTERACTION, DEFAULT_CAPACITY));
+    hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_INTEGRATE, DEFAULT_CAPACITY));
+    hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_APPLY, DEFAULT_CAPACITY));
+    hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_OROGENY, DEFAULT_CAPACITY));
     return hub;
   }
 

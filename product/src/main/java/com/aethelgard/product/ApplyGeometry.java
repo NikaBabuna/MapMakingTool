@@ -25,6 +25,12 @@ public final class ApplyGeometry implements SubSystem {
   /** Unowned / destroyed crust during apply; must not remain after flood. */
   public static final int SINK = -1;
 
+  /**
+   * Crumb absorb if {@code area * CRUMB_DENOMINATOR < width * height} (0.01% of world). Tuned from
+   * F-045's 0.1% so visible microplates survive (F-046).
+   */
+  public static final int CRUMB_DENOMINATOR = 10_000;
+
   private static final int[][] DIRS = SphereTopology.ORTHO;
 
   /** Deterministic edge skip/extra for ragged fronts (F-045 P3). */
@@ -55,7 +61,7 @@ public final class ApplyGeometry implements SubSystem {
     Grid plates = requireGrid(io.readPool(WorldFields.PLATES), WorldFields.PLATES);
     // Prefer IntegrateVelocity staging so fission inherits edge-driven velocities.
     PlateVelocities velocities = requireVelocities(readField(io, WorldFields.PLATE_VELOCITY));
-    PlateRegistry registry = PlateRegistry.from(plates, velocities);
+    PlateRegistry registry = requireRegistry(readField(io, WorldFields.PLATE_REGISTRY));
     Boundaries boundaries = requireBoundaries(readField(io, WorldFields.BOUNDARIES));
     AreaFlux flux = requireFlux(readField(io, WorldFields.AREA_FLUX));
     int generationIndex = Math.toIntExact(io.poolValue()) - 1;
@@ -307,8 +313,8 @@ public final class ApplyGeometry implements SubSystem {
         }
         List<int[]> component = new ArrayList<>();
         floodComponent(cells, seen, width, height, x, y, id, component);
-        // Crumb bar 0.1% of W×H (tuned down from F-044's 0.2%; was 0.05% originally).
-        if (component.size() * 1000L >= world) {
+        // Crumb bar 0.01% of W×H (F-046; was 0.1% after F-045).
+        if (component.size() * (long) CRUMB_DENOMINATOR >= world) {
           continue;
         }
         int neighbor = longestNeighbor(cells, width, height, component, id);

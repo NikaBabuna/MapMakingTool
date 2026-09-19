@@ -140,7 +140,7 @@ Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runne
 | F-043 | Diverge / void-fill fix | done | [F-043.md](../blockers/F-043.md) |
 | F-044 | Slivers + border read | done | [F-044.md](../blockers/F-044.md) |
 | F-045 | Sphere topology | done | [F-045.md](../blockers/F-045.md) |
-| F-046 | Step path hotspots | not started | |
+| F-046 | Step path hotspots | done | [F-046.md](../blockers/F-046.md) |
 | F-047 | Raster + host memory | not started | |
 | F-048 | Shared command model | not started | |
 | F-049 | CLI as full runner | not started | |
