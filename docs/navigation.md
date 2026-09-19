@@ -70,7 +70,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; G-006 webview front in progress; G-005 done) |
+| [architecture.md](architecture.md) | Active (roll-up; F-025 Next front; G-006 in progress) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -94,10 +94,10 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — F-024 MapHost; F-023 console; F-022 tool UI; F-019 `ProductSession`; G-006 in progress |
+| [architecture.md](product/architecture.md) | Active — F-025 `ui/web`; F-024 MapHost; F-023 console; G-006 in progress |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | See the world (F-018); tool UI (F-022); console (F-023); MapHost (F-024); G-005 done |
-| [glossary.md](product/glossary.md) | Active — ProductSession; tool UI; CommandDispatch; MapHost (F-024) |
+| [flows.md](product/flows.md) | See the world; tool UI; console; Next tool (F-025); MapHost (F-024) |
+| [glossary.md](product/glossary.md) | Active — ProductSession; MapHost; ui/web (F-025) |
 | [style-guide.md](product/style-guide.md) | Deferred |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) (F-021 orogeny; F-022 display note) |
 
@@ -133,6 +133,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-022.md](blockers/F-022.md) | done — tool UI |
 | [F-023.md](blockers/F-023.md) | done — placeholder CLI + in-UI console |
 | [F-024.md](blockers/F-024.md) | done — Java session HTTP host (`ui.host`) |
+| [F-025.md](blockers/F-025.md) | done — Next.js tool UI (`ui/web`) |
 
 ---
 
@@ -142,7 +143,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 |------|----------------|
 | [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
 | [../cli/](../cli/) | [README](../cli/README.md) — headless runner |
-| [../ui/](../ui/) | [README](../ui/README.md) — skeleton Step advance / view |
+| [../ui/](../ui/) | [README](../ui/README.md) — skeleton Step advance / view · [web front](../ui/web/README.md) |
 | [../product/](../product/) | [README](../product/README.md) — Maven module |
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
 | [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |

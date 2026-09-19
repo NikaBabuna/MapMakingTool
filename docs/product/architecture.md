@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (F-024 MapHost; F-023 console; F-022 tool UI; F-019 session; G-006 in progress)  
+**Status:** active (F-025 Next `ui/web`; F-024 MapHost; F-023 console; G-006 in progress)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -118,9 +118,13 @@ Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `se
 
 Launch: `com.aethelgard.ui.host.MapHostApp` (default port **7420**, `WorldSpec.VIEW`). CORS `*` for local Next. Swing map remains until F-026.
 
+## Next.js tool (F-025)
+
+Front lives in **`ui/web/`** (Next.js App Router). Talks only to `MapHost` over HTTP (`NEXT_PUBLIC_MAP_HOST`, default `http://127.0.0.1:7420`). Play is a **client timer** posting `/api/advance`. Visual chrome is an elevated dark tool (not a Swing clone); map pixels still come from `ElevationRaster` via the host. Dev: warm host + `npm run dev` — [ui/web/README.md](../../ui/web/README.md).
+
 ---
 
-## Source layout (through F-024)
+## Source layout (through F-025)
 
 ```
 product/
@@ -168,12 +172,19 @@ ui/
     host/
       MapHost.java
       MapHostApp.java
+  web/                          # Next.js tool (F-025)
+    package.json
+    README.md
+    src/app/
+    src/components/
+    src/lib/
   src/test/java/com/aethelgard/ui/
     MapViewTest.java
     ToolUiTest.java
     ConsoleUiTest.java
     host/
       MapHostTest.java
+      WebFrontTest.java
 
 cli/
   src/main/java/com/aethelgard/cli/

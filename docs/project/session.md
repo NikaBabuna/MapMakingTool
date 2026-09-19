@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-19  
-**Status:** F-024 Accepted · propose F-025 next
+**Status:** F-025 Accepted · propose F-026 next
 
 ---
 
 ## Session goal
 
-Accept **F-024** (Java session HTTP host under `ui`).
+Accept **F-025** (Next.js tool UI under `ui/web/`).
 
 ---
 
@@ -29,22 +29,22 @@ Accept **F-024** (Java session HTTP host under `ui`).
 
 | Step | Work | Status |
 |------|------|--------|
-| F-024 | Java session HTTP host (MapController parity) | done |
+| F-024 | Java session HTTP host | done |
+| F-025 | Next.js tool UI (`ui/web/`) | done |
 
 ---
 
 ## Torn-Step check
 
 - [x] No Step marked `in progress`
-- [x] Incremental suite green (F-024 Accept)
+- [x] Incremental suite green (F-025 Accept)
 
 ---
 
 ## Next Session (suggested)
 
-1. Propose **F-025** — Next.js tool UI parity against `MapHost`.
+1. Propose **F-026** — Tauri shell + demote Swing; close G-006.
 
 ## Notes
 
-- Host lives under `ui` (`com.aethelgard.ui.host`). No root `host/` module.
-- Swing map still primary until F-026.
+- Front: `ui/web/` · host: `MapHostApp` :7420 · Play: client timer → `/api/advance`.

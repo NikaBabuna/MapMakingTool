@@ -106,5 +106,6 @@ SYNC checklist detail: [../process/step-procedure.md](../process/step-procedure.
 | [F-022.md](F-022.md) | F-022 | G-005 | done |
 | [F-023.md](F-023.md) | F-023 | G-005 | done |
 | [F-024.md](F-024.md) | F-024 | G-006 | done |
+| [F-025.md](F-025.md) | F-025 | G-006 | done |
 
 Update this table when creating or closing a blocker file.

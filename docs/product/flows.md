@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **See the world** (G-004 / F-018) specified. **G-005 Living map** done (tool UI F-022, console F-023). Explore / Guide / Timeline still await later Goals._
+_Status: **See the world** (G-004 / F-018) specified. **G-005 Living map** done (tool UI F-022, console F-023). **G-006** Next front (F-025) under `ui/web/` against MapHost. Explore / Guide / Timeline still await later Goals._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -42,6 +42,20 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 6 | Type a placeholder line in **Console** (`status`, `advance`, `dump`, `at X Y`, `layers`) and **Run**. Same dispatcher as headless CLI. Map refreshes after `advance`. |
 
 **Edges / failures:** Invalid seed text keeps the previous seed. Console unknown verbs print `error:`. No pan/zoom. Tests never construct `JFrame`.
+
+---
+
+## Flow: Next tool (F-025)
+
+**Goal:** User runs the elevated Next map tool against a warm Java `MapHost`, with hot reload on the front.
+
+| Step | Action |
+|------|--------|
+| 1 | Start `MapHostApp` (port 7420). In `ui/web`, `npm run dev`. Open http://localhost:3000. |
+| 2 | **Aethelgard** tool shows VIEW 512×512. Switch layers, **Advance**, **Play**/Pause (client timer → `/api/advance`), change speed, reseed, inspect, Console. |
+| 3 | While busy, status is **Working...**; Advance and New world do not queue. |
+
+**Edges / failures:** Host offline shows a banner. Default host URL `NEXT_PUBLIC_MAP_HOST` = `http://127.0.0.1:7420`.
 
 ---
 

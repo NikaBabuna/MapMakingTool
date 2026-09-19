@@ -63,7 +63,7 @@ If a stored FR cannot be met without an engine port: **stop**, ADR, do not sneak
 ## Product / adapter claims (tests by Goal end)
 
 - [x] Java HTTP host matches MapController semantics; witnessed without Tauri/browser
-- [ ] Next tool UI parity against that host (layers, play, inspect, console, busy)
+- [x] Next tool UI parity against that host (layers, play, inspect, console, busy)
 - [ ] Tauri launch starts host + webview; documented launch path
 - [ ] Swing is not the primary map entry
 - [ ] Same seed + spec + N Steps → identical fields; no `engine` production edits
@@ -78,7 +78,7 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 | Step | Intent | Status |
 |------|--------|--------|
 | F-024 | Java session HTTP host (MapController parity); no Next/Tauri yet | done |
-| F-025 | Next.js tool UI parity against host | not started |
+| F-025 | Next.js tool UI parity against host | done |
 | F-026 | Tauri shell + launch path; demote Swing; close G-006 | not started |
 
 ---
@@ -87,8 +87,8 @@ Registered in [../features.md](../features.md). Accept is **incremental**. Do no
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 3 |
-| Claim boxes | 0 / 6 |
-| Last Accept | F-024 |
+| Steps done | 2 / 3 |
+| Claim boxes | 2 / 6 |
+| Last Accept | F-025 |
 
 ADR: [ADR-011](../decisions.md)

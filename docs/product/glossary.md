@@ -32,6 +32,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy / `Working...`. No Swing. |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the future Next/Tauri front (G-006). |
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |
+| **ui/web** | Next.js living-map tool (F-025). HTTP client to `MapHost`; client-timed Play. |
 | **CommandDispatch** | Placeholder verb table in `cli` (`status`, `advance`, `dump`, `at`, `layers`). Unstable. Not a product API. |
 | **MapLayer** | Visible layer: Elevation, Plates, Overlay. Switching does not advance the world. |
 | **MapSpeed** | Play tick period: Slow 1000 ms, Normal 250 ms, Fast 100 ms. |

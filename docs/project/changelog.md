@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-025:** Next.js tool under `ui/web/` against MapHost (elevated visuals; client-timed Play).
 - **2026-09-19** — **F-024:** `MapHost` localhost HTTP under `ui` (`com.aethelgard.ui.host`); F-023 Active-Goal-none grep amended for G-006.
 - **2026-09-19** — **G-006** Local webview front registered (Tauri + Next + Java HTTP host); **ADR-011** amends ADR-010 (localhost HTTP). Steps F-024–F-026 planned. Stack note in `project.md`.
 - **2026-09-17** — **F-023:** placeholder CLI dispatcher + in-UI console; **G-005 complete**.

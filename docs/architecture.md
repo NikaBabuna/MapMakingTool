@@ -19,7 +19,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — F-024 MapHost; F-023 console; F-022 tool UI; map view in `ui`; G-006 in progress |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — F-025 Next `ui/web`; F-024 MapHost; G-006 in progress |
 
 ---
 

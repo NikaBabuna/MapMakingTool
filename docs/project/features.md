@@ -92,7 +92,7 @@ Goal doc: [goals/G-006-webview-front.md](goals/G-006-webview-front.md)
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-024 | Java session HTTP host | done | [F-024.md](../blockers/F-024.md) |
-| F-025 | Next.js tool UI parity | not started | _(store FRs at APPROVE)_ |
+| F-025 | Next.js tool UI parity | done | [F-025.md](../blockers/F-025.md) |
 | F-026 | Tauri shell + demote Swing; close G-006 | not started | _(store FRs at APPROVE)_ |
 
 ---

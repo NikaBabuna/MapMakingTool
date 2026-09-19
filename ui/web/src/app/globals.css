@@ -1,0 +1,405 @@
+/*
+ * File: ui/web/src/app/globals.css
+ * Purpose: Elevated dark tool chrome for the living map
+ * Audience: Next front
+ * Update when: Visual language changes
+ */
+
+:root {
+  --ink: #070b10;
+  --ink-lift: #0e151d;
+  --panel: rgba(16, 24, 34, 0.86);
+  --line: rgba(154, 185, 204, 0.18);
+  --text: #e7eef4;
+  --muted: #8fa3b5;
+  --ember: #f0b36a;
+  --sea: #3f8fad;
+  --ok: #6bcf9a;
+  --danger: #e87a6b;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --font-display: var(--font-display-loaded), "Fraunces", "Palatino Linotype", Georgia, serif;
+  --font-ui: var(--font-ui-loaded), "Sora", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--text);
+  font-family: var(--font-ui);
+  background:
+    radial-gradient(1200px 700px at 12% -10%, rgba(63, 143, 173, 0.22), transparent 55%),
+    radial-gradient(900px 600px at 90% 10%, rgba(240, 179, 106, 0.12), transparent 50%),
+    linear-gradient(165deg, #0a1017 0%, #070b10 45%, #0c1219 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  z-index: 0;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.5rem;
+}
+
+.tool-shell {
+  animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tool-brand {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.2rem;
+  color: var(--sea);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.brand {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  background: linear-gradient(120deg, #f7f1e8 20%, var(--ember) 55%, #9fd0e0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.host-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(8, 12, 18, 0.55);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.host-pill.is-on {
+  color: var(--ok);
+}
+
+.host-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 0 0 rgba(232, 122, 107, 0.5);
+}
+
+.host-pill.is-on .host-dot {
+  background: var(--ok);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(107, 207, 154, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(107, 207, 154, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(107, 207, 154, 0);
+  }
+}
+
+.tool-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: flex-end;
+  padding: 0.85rem;
+  margin-bottom: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.field.seed input {
+  width: 7rem;
+}
+
+.field select,
+.field input,
+.console-row input {
+  font: inherit;
+  color: var(--text);
+  background: var(--ink-lift);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 0.9rem;
+}
+
+.btn {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: linear-gradient(180deg, #1a2531, #121a23);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(240, 179, 106, 0.45);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #d9924a, #f0b36a 45%, #f6d7a8);
+  color: #1a1208;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.status-chip {
+  margin-left: auto;
+  min-width: 7rem;
+  text-align: center;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(8, 14, 20, 0.7);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-chip.is-busy {
+  color: var(--ember);
+  border-color: rgba(240, 179, 106, 0.4);
+  animation: busyGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes busyGlow {
+  from {
+    box-shadow: 0 0 0 rgba(240, 179, 106, 0);
+  }
+  to {
+    box-shadow: 0 0 18px rgba(240, 179, 106, 0.28);
+  }
+}
+
+.error-banner {
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(232, 122, 107, 0.4);
+  background: rgba(80, 24, 20, 0.45);
+  color: #ffcfc7;
+}
+
+.tool-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.map-stage {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: #05080c;
+  animation: mapIn 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes mapIn {
+  from {
+    opacity: 0;
+    filter: saturate(0.7) brightness(0.85);
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+.map-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  cursor: crosshair;
+}
+
+.map-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+.map-stage.is-busy .map-canvas {
+  filter: brightness(0.92);
+  transition: filter 200ms ease;
+}
+
+.side-panel {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.side-panel section {
+  padding: 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+}
+
+.side-panel h2 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.inspect-grid {
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.inspect-grid div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(154, 185, 204, 0.12);
+  padding-bottom: 0.35rem;
+}
+
+.inspect-grid dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.inspect-grid dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+}
+
+.swatch {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex: 0 0 auto;
+}
+
+.console-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem;
+  margin-bottom: 0.55rem;
+}
+
+.console-log {
+  margin: 0;
+  min-height: 7rem;
+  max-height: 12rem;
+  overflow: auto;
+  padding: 0.65rem;
+  border-radius: 10px;
+  background: #05080c;
+  border: 1px solid var(--line);
+  color: #c9d7e2;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .tool-body {
+    grid-template-columns: 1fr;
+  }
+
+  .status-chip {
+    margin-left: 0;
+  }
+}

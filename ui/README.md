@@ -28,6 +28,10 @@ mvnw -pl ui exec:java -Dexec.mainClass=com.aethelgard.ui.host.MapHostApp
 
 Routes: `/health`, `/api/status`, `/api/raster`, `/api/advance`, `/api/play`, `/api/pause`, `/api/layer`, `/api/speed`, `/api/new-world`, `/api/inspect`, `/api/command`. See [docs/product/architecture.md](../docs/product/architecture.md).
 
+## Next.js front (F-025)
+
+Tool UI lives in **`ui/web/`** ([`web/`](web/) — not a repo-root app). Warm host + `npm run dev` — see [web/README.md](web/README.md).
+
 ## Interactive (Swing — until F-026)
 
 From the repo root in **cmd** (recommended):

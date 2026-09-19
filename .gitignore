@@ -32,3 +32,9 @@ Desktop.ini
 *.tmp
 *.swp
 *~
+
+# Next.js front (ui/web)
+ui/web/node_modules/
+ui/web/.next/
+ui/web/out/
+ui/web/.env*.local
