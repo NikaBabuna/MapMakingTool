@@ -22,7 +22,7 @@ This page is the physics + Pool/System plan for **G-008**. When a later Step lan
 | **Topology** | **Torus** — both axes wrap with `floorMod`. Neighbors, site distance, pan, and ownership treat opposite edges as adjacent. |
 | **Sphere analogue** | The looping rectangle *is* the finite closed surface for this Goal (not a 3D globe mesh). |
 
-**Runtime note (F-030):** Code may still use 512×512 VIEW until **F-031**. Do not half-migrate.
+**Runtime note:** VIEW is **1920×1080** in code (**F-031**). Boundary tectonics behavior still follows [elevation.md](elevation.md) until F-033–F-038.
 
 ---
 

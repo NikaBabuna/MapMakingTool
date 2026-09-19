@@ -7,8 +7,8 @@
 
 # World
 
-**Code status (through F-029):** VIEW launch is still **512×512** in code; plates follow [elevation.md](elevation.md).  
-**G-008 target (F-030 lock):** VIEW **1920×1080**, **torus** topology, boundary tectonics — see [tectonics.md](tectonics.md). Runtime size change is **F-031**.
+**Code status (through F-031):** VIEW launch is **1920×1080** in code; plates still follow [elevation.md](elevation.md) until later G-008 Steps.  
+**G-008 further targets:** torus camera, boundary tectonics — see [tectonics.md](tectonics.md).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 
@@ -28,7 +28,7 @@ It is not the engine heartbeat counter. It lives in Pool typed fields that `Prod
 | Spec | Role | Code (F-030) | G-008 target |
 |------|------|--------------|--------------|
 | `WorldSpec.DEFAULT` | Dump / fast tests | Small (e.g. 8×8), seed 0 | May stay small |
-| `WorldSpec.VIEW` | Product window | **Still 512×512 until F-031** | **1920×1080**, seed 0 |
+| `WorldSpec.VIEW` | Product window | **1920×1080**, seed 0 (**F-031**) | same |
 
 A `WorldSpec` also records a long **seed**. Under G-008 the seed places **initial plate sites** (toroidal nearest-site; N = 12–24) — [tectonics.md](tectonics.md). It does not paint elevation.
 

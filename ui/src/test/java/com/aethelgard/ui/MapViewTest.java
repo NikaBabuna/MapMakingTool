@@ -51,8 +51,10 @@ class MapViewTest {
     assertEquals(raster, ElevationRaster.of(grid));
 
     MapController view = MapController.view(Runnable::run);
-    assertEquals(512, view.spec().width());
-    assertEquals(512, view.raster().width());
+    assertEquals(1920, view.spec().width());
+    assertEquals(1080, view.spec().height());
+    assertEquals(1920, view.raster().width());
+    assertEquals(1080, view.raster().height());
     assertEquals(ElevationRaster.rgbOf(0), view.raster().rgb(0, 0));
   }
 

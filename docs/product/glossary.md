@@ -27,7 +27,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Tectonics System** | Product `EngineSystem` (`tectonics`) assigned to `world/tectonics`; Sub-System `Orogeny`. |
 | **Generation tick** | `GenerationTickPolicy` emits `world/tectonics` after Step 0 (claimed by kinematics and tectonics). |
 | **WorldDump** | Headless text snapshot of a settled run (header, elevation grid, plates grid, velocities). |
-| **WorldSpec.VIEW** | Product window launch spec. **Code:** 512×512, seed 0 until F-031. **G-008 target:** 1920×1080 (F-030). Dump fixture stays `DEFAULT` small. |
+| **WorldSpec.VIEW** | Product window launch spec: **1920×1080** cells, seed 0 (F-031). Dump fixture stays `DEFAULT` small. |
 | **Torus** | Finite looping rectangle — both axes wrap. G-008 sphere analogue (not a 3D mesh). |
 | **Plate registry** | Planned G-008 Pool object: per-plate area, velocity, flags (replaces forever-Constant `plate_velocity`). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |

@@ -54,10 +54,11 @@ class BoundaryTectonicsDocsTest {
     assertTrue(goals.contains("G-008"));
     assertTrue(goals.contains("boundary-tectonics") || goals.contains("Boundary tectonics"));
 
-    // F-030 must not change WorldSpec.VIEW in code yet
+    // F-031: VIEW is live at 1920×1080
     String spec = Files.readString(root.resolve("product/src/main/java/com/aethelgard/product/WorldSpec.java"));
-    assertFalse(spec.contains("1920"));
-    assertTrue(spec.contains("512"));
+    assertTrue(spec.contains("1920"));
+    assertTrue(spec.contains("1080"));
+    assertFalse(spec.contains("new WorldSpec(512, 512"));
   }
 
   private static Path findRepoRoot() throws Exception {

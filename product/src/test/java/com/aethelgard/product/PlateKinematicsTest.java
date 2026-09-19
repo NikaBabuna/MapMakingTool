@@ -124,7 +124,7 @@ class PlateKinematicsTest {
   }
 
   @Test
-  @DisplayName("FR-5: same seed matches; DEFAULT golden; VIEW 512 seed 0")
+  @DisplayName("FR-5: same seed matches; DEFAULT golden; VIEW 1920×1080 seed 0 (no VIEW advance)")
   void determinismDumpAndView() throws Exception {
     WorldSpec spec = WorldSpec.DEFAULT;
     Engine a = ProductHost.create(spec);
@@ -147,12 +147,12 @@ class PlateKinematicsTest {
     assertTrue(dump.contains("plate_velocity:\n"));
 
     ProductSession view = ProductSession.view();
-    assertEquals(512, view.spec().width());
-    assertEquals(512, view.spec().height());
+    assertEquals(1920, view.spec().width());
+    assertEquals(1080, view.spec().height());
     assertEquals(0L, view.spec().seed());
-    view.advance(1);
-    assertEquals(1, view.stepIndex());
-    assertEquals(512, view.plates().width());
+    assertEquals(0, view.stepIndex());
+    assertEquals(1920, view.plates().width());
+    assertEquals(1080, view.plates().height());
   }
 
   @Test

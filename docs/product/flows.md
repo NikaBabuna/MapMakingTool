@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done (studio QoL). **G-008** in progress — F-030 docs; runtime still 512×512 / old tectonics until later Steps._
+_Status: **G-007** done (studio QoL). **G-008** in progress — VIEW **1920×1080** (F-031); tectonics still pre-boundary until later Steps._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -32,7 +32,7 @@ Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 
 | Step | Action |
 |------|--------|
-| 1 | Launch via `run-product.cmd` (MapHost + Next + Tauri). Studio tool shows `WorldSpec.VIEW` (**512×512 until F-031**; G-008 target **1920×1080**) at **Step 0**. |
+| 1 | Launch via `run-product.cmd` (MapHost + Next + Tauri). Studio tool shows `WorldSpec.VIEW` (**1920×1080**, seed 0) at **Step 0**. |
 | 2 | User clicks **Advance**. Status shows **Working...**; map busy overlay; extra Advances are ignored while busy. |
 | 3 | When the Step settles, the map paints the current layer. Status returns to `Step n`. |
 | 4 | Repeat Advance. Pan/zoom available (F-028); one world cell maps through the viewport. |
@@ -67,7 +67,7 @@ Domain locks: [wiki/tectonics.md](wiki/tectonics.md).
 | Step | Action |
 |------|--------|
 | 1 | Run `run-product.cmd`. Tauri starts Next (`beforeDevCommand`), waits for `:3000`, spawns MapHost, opens the window. |
-| 2 | **Aethelgard** studio shows VIEW (512×512 until F-031). Switch layers, **Advance**, **Play**/Pause, speed, reseed, inspect, Console drawer. |
+| 2 | **Aethelgard** studio shows VIEW **1920×1080**. Switch layers, **Advance**, **Play**/Pause, speed, reseed, inspect, Console drawer. |
 | 3 | While busy, status is **Working...**; Advance and New world do not queue. |
 
 **Edges / failures:** Host offline shows a banner + Retry. Default host URL `NEXT_PUBLIC_MAP_HOST` = `http://127.0.0.1:7420`. If you see “Waiting for your frontend dev server…”, Next failed to start — check `ui/web` deps (`npm install`) and that port 3000 is free.

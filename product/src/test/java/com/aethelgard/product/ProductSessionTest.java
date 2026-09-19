@@ -69,7 +69,7 @@ class ProductSessionTest {
   }
 
   @Test
-  @DisplayName("FR-4: same seed + N Steps as ProductHost; VIEW 512; dump golden path")
+  @DisplayName("FR-4: same seed + N Steps as ProductHost; VIEW 1920×1080; dump golden path")
   void worldRulesUnchanged() {
     WorldSpec spec = WorldSpec.DEFAULT;
     Engine engine = ProductHost.create(spec);
@@ -80,11 +80,11 @@ class ProductSessionTest {
     assertEquals(WorldDump.CANONICAL_STEPS, session.stepIndex());
 
     ProductSession view = ProductSession.view();
-    assertEquals(512, view.spec().width());
-    assertEquals(512, view.spec().height());
+    assertEquals(1920, view.spec().width());
+    assertEquals(1080, view.spec().height());
     assertEquals(0L, view.spec().seed());
-    assertEquals(512, view.elevation().width());
-    assertEquals(512, view.plates().width());
+    assertEquals(1920, view.elevation().width());
+    assertEquals(1080, view.plates().height());
     assertEquals(0, view.stepIndex());
   }
 

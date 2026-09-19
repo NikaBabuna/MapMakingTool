@@ -56,7 +56,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 ## Product claims (tests by Goal end)
 
-- [ ] 1920×1080 torus world; wiki + witnesses
+- [x] 1920×1080 torus world; wiki + witnesses
 - [ ] Initial realistic plate partition
 - [ ] Boundaries + flux + flood + fission/death
 - [ ] Edge-driven motion; Constant random velocities gone
@@ -72,7 +72,7 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 | Step | Intent | Status |
 |------|--------|--------|
 | F-030 | Wiki + decisions (torus, size, partition rule, Pool fields, fission) — **docs only** | done |
-| F-031 | Large rectangular world (1920×1080); host/session tolerate size | not started |
+| F-031 | Large rectangular world (1920×1080); host/session tolerate size | done |
 | F-032 | Toroidal wrap in product; studio loopback pan + zoom clamp | not started |
 | F-033 | Initial plate partition + registry skeleton | not started |
 | F-034 | Boundary trace + classify → `boundaries` | not started |
@@ -89,6 +89,6 @@ Plain English: a large looping world whose plates behave like plates, shown in a
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 1 / 11 |
-| Claim boxes | 0 / 8 |
-| Last Accept | F-030 |
+| Steps done | 2 / 11 |
+| Claim boxes | 1 / 8 |
+| Last Accept | F-031 |

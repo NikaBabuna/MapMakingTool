@@ -20,8 +20,8 @@ public record WorldSpec(int width, int height, long seed) {
   /** Default dump fixture: 8×8, seed {@code 0}. */
   public static final WorldSpec DEFAULT = new WorldSpec(8, 8, 0L);
 
-  /** Product map window: 512×512, seed {@code 0}. */
-  public static final WorldSpec VIEW = new WorldSpec(512, 512, 0L);
+  /** Product map window: 1920×1080, seed {@code 0} (G-008 / F-031). */
+  public static final WorldSpec VIEW = new WorldSpec(1920, 1080, 0L);
 
   public WorldSpec {
     if (width < 1 || height < 1) {

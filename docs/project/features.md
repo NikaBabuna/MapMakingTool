@@ -116,7 +116,7 @@ Goal doc: [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tecton
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-030 | Wiki + decisions (torus, size, partition, Pool fields) | done | [F-030.md](../blockers/F-030.md) |
-| F-031 | Large rectangular world 1920×1080 | not started | |
+| F-031 | Large rectangular world 1920×1080 | done | [F-031.md](../blockers/F-031.md) |
 | F-032 | Toroidal wrap; loopback pan + zoom clamp | not started | |
 | F-033 | Initial plate partition + registry skeleton | not started | |
 | F-034 | Boundary trace + classify | not started | |

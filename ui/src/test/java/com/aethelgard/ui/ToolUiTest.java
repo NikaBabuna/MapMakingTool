@@ -171,8 +171,8 @@ class ToolUiTest {
   @Test
   @DisplayName("FR-5: VIEW launch; newWorld reseeds; ignored while busy; DEFAULT unchanged")
   void newWorldAndView() {
-    assertEquals(512, WorldSpec.VIEW.width());
-    assertEquals(512, WorldSpec.VIEW.height());
+    assertEquals(1920, WorldSpec.VIEW.width());
+    assertEquals(1080, WorldSpec.VIEW.height());
     assertEquals(0L, WorldSpec.VIEW.seed());
     assertEquals(8, WorldSpec.DEFAULT.width());
     assertEquals(8, WorldSpec.DEFAULT.height());
@@ -181,6 +181,8 @@ class ToolUiTest {
     MapController view = MapController.view(Runnable::run);
     assertEquals(WorldSpec.VIEW, view.spec());
     assertEquals(0, view.stepIndex());
+    assertEquals(1920, view.raster().width());
+    assertEquals(1080, view.raster().height());
 
     ArrayDeque<Runnable> queue = new ArrayDeque<>();
     MapController map = new MapController(new WorldSpec(8, 8, 0L), queue::add);
