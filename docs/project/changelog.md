@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-19** — **F-049:** CLI as full headless runner (`--seed`, `--steps` via dispatch, repeatable `-c`); placeholder batch path retired.
 - **2026-09-19** — **F-048:** shared noun/verb command language (`session`/`pool`/`schema`/`systems`/`diag`); Engine read ports for systems/schema; deprecated flat aliases.
 - **2026-09-19** — **F-047:** flat/reuse ElevationRaster paint buffer; MapHost packed-body cache (O(1) soak).
 - **2026-09-19** — **F-046:** phase collectors on DiagnosticsHub; crumb absorb 0.01%; advection drops whoMin WxH grid.

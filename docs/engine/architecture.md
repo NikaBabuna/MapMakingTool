@@ -219,7 +219,7 @@ MapMakingTool/
 | `CommandDispatch` | Placeholder verbs on a `ProductSession` (`status`, `advance`, `dump`, `at`, `layers`) |
 | `CliRunner` | `--steps N` dump **or** one dispatcher line; `ProductSession.ofDefault()` |
 | `Main` | Process entry → `CliRunner` → exit code |
-| `CliOptions` / `CliResult` | Placeholder flags / result (unstable) |
+| `CliOptions` / `CliResult` | Runner flags (`--seed` / `--steps` / `-c`) and result (F-049) |
 
 Artifact `com.aethelgard:cli` depends on `product`. Run headlessly from tests via `CliRunner.run(args)`. Heartbeat `--initial` is retired.
 

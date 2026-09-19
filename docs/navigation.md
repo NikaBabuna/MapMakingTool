@@ -97,11 +97,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-009 F-048 noun/verb commands; F-047 raster cache; G-008 done |
+| [architecture.md](product/architecture.md) | Active — G-009 F-049 CLI runner; F-048 noun/verb; F-047 raster cache; G-008 done |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-009 F-048 commands; F-047 raster; F-042 diagnostics; G-008 done (through F-040) |
-| [glossary.md](product/glossary.md) | Active — command language; DiagnosticsHub; ElevationRaster flat/reuse; crumb 0.01% |
-| [style-guide.md](product/style-guide.md) | Active — G-009 runner (F-042 hub); half-edge plates (F-044); G-008 studio shipped |
+| [flows.md](product/flows.md) | G-009 F-049 CLI runner; F-048 commands; F-047 raster; F-042 diagnostics; G-008 done (through F-040) |
+| [glossary.md](product/glossary.md) | Active — CliRunner; CommandDispatch; DiagnosticsHub; ElevationRaster flat/reuse; crumb 0.01% |
+| [style-guide.md](product/style-guide.md) | Active — G-009 runner (F-049 CLI; F-042 hub); half-edge plates (F-044); G-008 studio shipped |
 | [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
@@ -160,6 +160,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-046.md](blockers/F-046.md) | done — phase collectors + crumb 0.01% + step-path hotspot |
 | [F-047.md](blockers/F-047.md) | done — raster buffer reuse + MapHost packed cache |
 | [F-048.md](blockers/F-048.md) | done — noun/verb command language |
+| [F-049.md](blockers/F-049.md) | done — CLI as full headless runner |
 
 ---
 
@@ -168,7 +169,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Path | README / entry |
 |------|----------------|
 | [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
-| [../cli/](../cli/) | [README](../cli/README.md) — headless runner |
+| [../cli/](../cli/) | [README](../cli/README.md) — F-049 headless runner |
 | [../ui/](../ui/) | [README](../ui/README.md) — MapHost + headless map · [web](../ui/web/README.md) · [desktop](../ui/desktop/README.md) |
 | [../product/](../product/) | [README](../product/README.md) — Maven module |
 | [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |

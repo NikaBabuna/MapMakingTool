@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done (through **F-040** traditional console)._
+_Status: **G-007** done. **G-008** done (through **F-040** traditional console). **G-009** through **F-049** CLI runner._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -21,6 +21,8 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Diagnostics | Controllable hub + first collectors + CLI | **F-042** done |
 | Physics | Diverge fill; slivers/borders; sphere wrap | **F-043–F-045** done |
 | Perf | Step path + raster/host memory | **F-046** / **F-047** done |
+| Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-049** done; F-050 |
+| Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
 
 ### Flow: Raster / host memory (F-047)
 
@@ -29,7 +31,6 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 1 | Advance or set layer → MapController paints into a reused flat buffer; `paint.wall` records. |
 | 2 | `GET /api/raster` packs once into a reused `byte[]`; repeat GETs at same step/layer hit cache. |
 | 3 | Next advance / layer / newWorld bumps paint generation → cache refills (same allocation if size unchanged). |
-| Control | Shared commands; CLI; rebuilt terminal | **F-048** noun/verb done; F-049–F-050 |
 
 ### Flow: Shared commands (F-048)
 
@@ -38,7 +39,14 @@ Before production feature code, extend this file per [../process/quality.md](../
 | 1 | Type `help` or `list pool` / `session get` in CLI or console (same dispatcher). |
 | 2 | `session advance N` steps time; `pool.<field> get` reads summaries; `systems` / `schema` expose construction. |
 | 3 | `diag.<id> on\|off` controls collectors; old flat verbs still work as aliases. |
-| Studio | Runner chrome; perf panels; UX; Goal close | F-051–F-054 |
+
+### Flow: Headless CLI runner (F-049)
+
+| Step | Action |
+|------|--------|
+| 1 | `Main` / `CliRunner` creates one `ProductSession` (`--seed` or default 0; DEFAULT 8×8). |
+| 2 | Optional `--steps N` → `session advance N` then `session get dump` when no `-c`. |
+| 3 | Repeatable `-c` / `--command` lines share that session; first failure exits non-zero. |
 
 Domain locks: [wiki/tectonics.md](wiki/tectonics.md) · [ADR-012](../project/decisions.md).
 

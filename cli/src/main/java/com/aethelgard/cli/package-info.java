@@ -5,5 +5,5 @@
  * Update when: CLI role changes
  */
 
-/** Headless Aethelgard CLI — shared noun/verb command language on product (F-048). */
+/** Headless Aethelgard CLI — full runner on shared noun/verb commands (F-049). */
 package com.aethelgard.cli;

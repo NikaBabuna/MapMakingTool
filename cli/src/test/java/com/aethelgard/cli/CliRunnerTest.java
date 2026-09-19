@@ -1,6 +1,6 @@
 /*
  * File: cli/src/test/java/com/aethelgard/cli/CliRunnerTest.java
- * Purpose: F-007 rewritten + F-019 — headless product session runner
+ * Purpose: F-007 rewritten + F-019 + F-049 — headless product session runner
  * Audience: Agents / CI
  * Update when: CLI FRs change
  */

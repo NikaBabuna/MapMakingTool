@@ -7,16 +7,29 @@
 
 package com.aethelgard.cli;
 
+import java.util.List;
+import java.util.Objects;
+
 /**
- * Placeholder flags for G-005. Unstable — do not treat as a product API.
+ * Headless runner flags (F-049). Geometry defaults to {@code WorldSpec.DEFAULT} width/height;
+ * {@code seed} overrides the recorded RNG seed.
  *
- * @param steps additional generation Steps after create (N ≥ 0)
+ * @param seed session seed (default {@code 0})
+ * @param steps additional generation Steps when {@code stepsSpecified} (N ≥ 0)
+ * @param stepsSpecified whether {@code --steps} appeared (empty argv implies dump at step 0)
+ * @param commands dispatcher lines from {@code -c} / {@code --command} (may be empty)
  */
-public record CliOptions(int steps) {
+public record CliOptions(long seed, int steps, boolean stepsSpecified, List<String> commands) {
 
   public static final int DEFAULT_STEPS = 0;
+  public static final long DEFAULT_SEED = 0L;
+
+  public CliOptions {
+    Objects.requireNonNull(commands, "commands");
+    commands = List.copyOf(commands);
+  }
 
   public static CliOptions defaults() {
-    return new CliOptions(DEFAULT_STEPS);
+    return new CliOptions(DEFAULT_SEED, DEFAULT_STEPS, true, List.of());
   }
 }

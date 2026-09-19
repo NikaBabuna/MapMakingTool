@@ -18,7 +18,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 | Item | Intent | Status |
 |------|--------|--------|
 | **Feel** | Unity-like simulation runner: dense control over session env (seed, speed, play, layers, …) | planned F-051+ |
-| **Terminal** | Traditional terminal on **shared** noun/verb dispatcher with CLI | **F-048** language; rebuild chrome F-050 |
+| **Terminal** | Traditional terminal on **shared** noun/verb dispatcher with CLI | **F-048**–**F-049** language/runner; rebuild chrome F-050 |
 | **Perf** | Visible step timings / memory (panel + commands) | **F-042** hub; panel F-052 |
 | **Look** | UI/UX polish; map-first serious tool, not marketing page | planned F-053 |
 

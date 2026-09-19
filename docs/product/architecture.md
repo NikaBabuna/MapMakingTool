@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 in progress through F-048; G-008 done)  
+**Status:** active (G-009 in progress through F-049; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -103,7 +103,7 @@ Play speeds: Slow 1000 ms, Normal 250 ms (default), Fast 100 ms. Default paused.
 
 Launch from repo root: `run-product.cmd` (Next + Tauri; Tauri spawns `MapHostApp`).
 
-Headless CLI: `cli` creates `ProductSession.ofDefault()`. `--steps N` prints `settledWorld()`. Bare argv is one dispatcher line. Placeholder (ADR-010).
+Headless CLI (F-049): one `ProductSession` per invocation (`WorldSpec.DEFAULT` geometry; `--seed` overrides seed). `--steps N` advances via `session advance N` then dumps via `session get dump`. Repeatable `-c` / `--command` lines share that session through `CommandDispatch`. Bare argv (no flags) is one dispatcher line. No stdin REPL (terminal chrome is F-050).
 
 ---
 
