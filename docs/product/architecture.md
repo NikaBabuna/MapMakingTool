@@ -50,9 +50,8 @@ cli →  product  →  engine
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (**1920×1080**, seed `0`, F-031) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
-| Systems | `kinematics` (Sub-System `PlateKinematics`) and `tectonics` (Sub-System `Orogeny`); same snapshot; neither sees the other this Step |
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
-| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry; canonical golden is DEFAULT + `advance(3)` |
+| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry + boundaries; canonical golden is DEFAULT + `advance(3)` |
 
 `WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, kinematics advects ownership (wrap X; Y off-map dropped). Orogeny and `TraceBoundaries` use standing plates. Elevation may go negative. The seed is not its own Pool field.
 
