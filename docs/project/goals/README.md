@@ -19,6 +19,7 @@ Durable multi-session results. Index: [../goals.md](../goals.md).
 | G-006 Local webview front | [G-006-webview-front.md](G-006-webview-front.md) | done |
 | G-007 Studio cartography tool | [G-007-studio-cartography.md](G-007-studio-cartography.md) | done |
 | G-008 Boundary tectonics + cartography studio | [G-008-boundary-tectonics-studio.md](G-008-boundary-tectonics-studio.md) | done |
-| G-009 Simulation runner harden | [G-009-simulation-runner-harden.md](G-009-simulation-runner-harden.md) | in progress |
+| G-009 Simulation runner harden | [G-009-simulation-runner-harden.md](G-009-simulation-runner-harden.md) | done |
+| G-010 Crust topology | [G-010-crust-topology.md](G-010-crust-topology.md) | in progress |
 
 Procedure: [../../process/step-procedure.md](../../process/step-procedure.md).

@@ -9,7 +9,7 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** none · Last completed: [G-009 Simulation runner harden](goals/G-009-simulation-runner-harden.md)
+**Active Goal:** [G-010 Crust topology](goals/G-010-crust-topology.md) · Last completed: [G-009 Simulation runner harden](goals/G-009-simulation-runner-harden.md)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
@@ -22,6 +22,7 @@ A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal
 | G-007 | Studio cartography tool (redesign + QoL) | done | [goals/G-007-studio-cartography.md](goals/G-007-studio-cartography.md) |
 | G-008 | Boundary tectonics + cartography studio | done | [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tectonics-studio.md) |
 | G-009 | Simulation runner harden | done | [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runner-harden.md) |
+| G-010 | Crust topology | in progress | [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 

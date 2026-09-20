@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-009 **done** through F-054; G-008 done)  
+**Status:** active (G-010 **in progress** — F-055 docs lock; G-009 **done** through F-054; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -131,11 +131,11 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry**; **boundary orogeny** (F-038).
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry**; **boundary orogeny** (F-038). **G-010 planned (F-055 / ADR-013):** occupancy keys + thickness lockers after occupancy; RidgeCreate / Subduct / ContinentalCollide / ThicknessToElevation; elevation derived. Runtime unchanged this Step.
 
 ---
 
-## Source layout (through F-054)
+## Source layout (through F-054; G-010 fields not in source yet)
 
 ```
 product/

@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** none · Last: [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) (**done**) · Prior: [G-008](project/goals/G-008-boundary-tectonics-studio.md) (**done**)  
+**Active Goal:** [G-010 Crust topology](project/goals/G-010-crust-topology.md) (`in progress`) · Last: [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) (**done**) · Prior: [G-008](project/goals/G-008-boundary-tectonics-studio.md) (**done**)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -59,11 +59,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-007-studio-cartography.md](project/goals/G-007-studio-cartography.md) | done |
 | [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
 | [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | done |
+| [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | in progress |
 | [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-009 Steps registered |
+| [features.md](project/features.md) | Active — G-001–G-010 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (12 ADRs) |
+| [decisions.md](project/decisions.md) | Active (13 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -73,7 +74,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; G-009 done; Active Goal none) |
+| [architecture.md](architecture.md) | Active (roll-up; G-010 in progress; G-009 done) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -97,12 +98,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
+| [architecture.md](product/architecture.md) | Active — G-010 planned (F-055); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
-| [glossary.md](product/glossary.md) | Active — DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
-| [style-guide.md](product/style-guide.md) | Active — F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
-| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
+| [flows.md](product/flows.md) | G-010 planned (F-055); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
+| [glossary.md](product/glossary.md) | Active — lockers/occupancy/isostasy planned (F-055); DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
+| [style-guide.md](product/style-guide.md) | Active — F-055 G-010 crust planned; F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
+| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-055 G-010 crust locks; F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -166,6 +167,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-052.md](blockers/F-052.md) | done — Perf rail + runner fixes |
 | [F-053.md](blockers/F-053.md) | done — runner UI infrastructure + QoL |
 | [F-054.md](blockers/F-054.md) | done — Goal close + layer harden + doc hygiene |
+| [F-055.md](blockers/F-055.md) | done — G-010 docs lock |
 
 ---
 

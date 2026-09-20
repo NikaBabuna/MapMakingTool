@@ -152,6 +152,21 @@ Goal doc: [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runne
 
 ---
 
+## G-010 — Crust topology
+
+Goal doc: [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-055 | Docs lock (wiki + ADR + Goal claims) | done | [F-055.md](../blockers/F-055.md) |
+| F-056 | Occupancy keys + lockers + ride + isostasy | not started | |
+| F-057 | Ridge mint (thin oceanic in gaps) | not started | |
+| F-058 | Buoyancy precedence + oceanic subduction | not started | |
+| F-059 | Continental suture + arc thickening + cap | not started | |
+| F-060 | Goal close + dump/wiki/UI hygiene | not started | |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` **before** writing code for that Step.  

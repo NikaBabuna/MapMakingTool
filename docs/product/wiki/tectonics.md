@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-041 G-009 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Sphere-on-rectangle F-045; flood fill F-044; crumb 0.01% F-046; session `DiagnosticsHub` F-042/F-046.
+**Doc status:** F-055 G-010 crust locks (planned). F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-041 G-009 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Sphere-on-rectangle F-045; flood fill F-044; crumb 0.01% F-046; session `DiagnosticsHub` F-042/F-046. **G-010 runtime until F-056:** contact-paint orogeny and area-only collide still live.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -23,7 +23,7 @@ This page is the physics + Pool/System plan for boundary tectonics. When a later
 | **Topology (runtime)** | **F-045 live** — `SphereTopology` shared helper. Cylinder hard-Y **retired**. |
 | **History** | Earlier G-008 text said **torus**; amended F-034 to cylinder; F-041 amends to sphere polar wrap; **F-045** implements it. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission + boundary orogeny live (F-033–F-038). **Sphere polar wrap live (F-045).**
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission + boundary orogeny live (F-033–F-038). **Sphere polar wrap live (F-045).** G-010 crust (lockers, ride, buoyancy) is **not implemented** until F-056+.
 
 ---
 
@@ -80,6 +80,8 @@ Plates are the only tectonic actors. **Number, motion, and size** come from boun
 | **Collide** (converge) | Destroy crust into **sink**; loser shrinks | Dampen closing; slab-style pull on loser | Uplift / trench |
 | **Pass-by** (transform) | ≈ none | Slide; little normal change | Little |
 
+**G-010 (planned):** relief is **not** this orogeny table. Thickness lockers ride occupancy; elevation is isostasy. See [Crust topology (G-010)](#crust-topology-g-010) below. Contact-paint orogeny is **superseded for G-010** (runtime until F-056).
+
 ### Diverge / void-fill (G-009)
 
 **Lock:** Gaps opened by SEPARATE must **not** be filled by a nearest arbitrary **third** plate. New crust grows by **iterative flood** from bordering owned cells.
@@ -97,6 +99,8 @@ This fixes the F-043 miss at **triple junctions**: a gap between left and right 
 ### Collide precedence (v1)
 
 When types are equal (no oceanic/continental yet): **smaller plate by area loses** (subducts / is consumed). Ties: lower plate id loses.
+
+**G-010 (planned; code F-058):** this area-only rule is **superseded**. Ocean vs continent first (oceanic subducts). Ocean–ocean keeps smaller-loses. Continent does not die because its plate is smaller.
 
 ### Number
 
@@ -124,6 +128,58 @@ Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay smal
 
 `plate_velocity` is STATIC; seeded at Step 0 then rewritten by `IntegrateVelocity` + fission remap (F-036/F-037).
 
+### G-010 planned fields (F-056+)
+
+| Field | Shape | Merge intent | Role |
+|-------|-------|--------------|------|
+| occupancy keys | grid int | Static (one writer) | Cell → locker id (`plates` remains plate ownership unless F-056 folds them) |
+| `lockers` | object table | Custom `FieldMergeType` in product if needed; else Static | id → thickness (mint/merge; increment in locker-id space) |
+| `elevation` | grid int | Static | **Derived** isostasy of thickness at current keys — not a second physics |
+
+Exact \(T_{ocean}\) / \(T_{land}\) integers: F-058 / F-059.
+
+---
+
+## Crust topology (G-010)
+
+**Lock (F-055 / ADR-013).** Runtime unchanged until F-056.
+
+Crust is **material**. Occupancy **keys** move with plates. Locker **thickness** moves with those keys. Interiors keep their cargo. Elevation is a **view** of thickness (integer isostasy), not contact-paint \(\pm 1\) on standing coordinates. Contact-paint **Orogeny** is **superseded for G-010** as the elevation author (code F-056).
+
+### Ride
+
+When a cell’s occupancy key remaps, that locker (thickness) appears at the new cell. Land **rides**. The map must not leave a mountain ribbon where the contact used to be.
+
+### Ridge mint (F-057)
+
+New occupancy at SEPARATE / gaps gets thin **oceanic** crust (\(T_{ocean}\)). Gaps **do not** inherit a neighbor’s mountain (flood of plate id stays; flood of thickness does not).
+
+### Buoyancy and subduction (F-058)
+
+Thickness \(\ge T_{land}\) is **continental**; below is **oceanic**. At COLLIDE, **ocean subducts** (lockers consumed). Continental occupancy is **not** deleted because its plate is smaller. Ocean–ocean keeps smaller-loses. Step 0 is **all oceanic** — no painted cratons.
+
+### Suture, arc, cap (F-059)
+
+Ocean–ocean collide may thicken an **arc** on the winner (proto-continents). Continent–continent **suture**: thickness up on both sides; neither locker dies. **No plate-id weld.** Cap / light erosion so suture cannot grow without bound.
+
+### Assembly
+
+One `tectonics` System. Crust Sub-Systems **after** occupancy, same-Step staging:
+
+```text
+world/tectonics/
+  boundaries/
+  interaction/     (amended F-058: crust precedence)
+  motion/
+  geometry/        occupancy keys
+  crust/ridge/     RidgeCreate
+  crust/subduct/   Subduct
+  crust/suture/    ContinentalCollide
+  crust/isostasy/  ThicknessToElevation
+```
+
+Not a second `EngineSystem` this Goal. No `engine` source edits. Custom locker merge type allowed in product.
+
 ---
 
 ## Planned Systems / Sub-Systems
@@ -149,7 +205,8 @@ world/tectonics/
 | Geometry | ApplyFlux, FloodAssign, Connectivity (fission/death/crumbs), RegistryUpdate | `plates`, `plate_registry`, `tectonic_events` |
 | Motion | IntegrateVelocity | `plate_registry` velocities |
 | Lifecycle | FractureDetect / Spawn (optional thin) | registry / plates |
-| Orogeny | ReliefFromBoundaries | `elevation` |
+| Orogeny | ReliefFromBoundaries | `elevation` (**G-010:** superseded as author; isostasy writes elevation) |
+| Crust (G-010) | RidgeCreate, Subduct, ContinentalCollide, ThicknessToElevation | lockers, occupancy, derived `elevation` |
 
 Implementation Steps: **F-034–F-038**.
 
@@ -161,4 +218,5 @@ Implementation Steps: **F-034–F-038**.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009:** shared CLI/terminal (**F-048**–**F-050**); runner chrome + perf rail (**F-051**–**F-052**); UI infrastructure + QoL (**F-053**).
+- **G-010:** crust topology **planned** (F-055 docs; F-056+ code) — lockers, ride, buoyancy, suture.
 - **F-046:** crumb absorb **0.01%**; session phase collectors (`phase.trace` … `phase.orogeny`) on `DiagnosticsHub`.

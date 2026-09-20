@@ -160,32 +160,49 @@ class GoalCloseTest {
     assertTrue(goalDoc.contains("| F-054 |") && goalDoc.contains("| done |"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goals.contains("**Active Goal:** none") || goals.contains("Active Goal:** none"));
+    assertTrue(
+        goals.contains("**Active Goal:** none")
+            || goals.contains("Active Goal:** none")
+            || goals.contains("G-010")
+            || goals.contains("Active Goal:** [G-"));
     assertTrue(goals.contains("G-009") && goals.contains("done"));
     String g009 = goals.lines().filter(l -> l.contains("| G-009 |")).findFirst().orElse("");
     assertTrue(g009.contains("| done |"), g009);
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("Active Goal:** none") || agents.contains("**Active Goal:** none"));
+    assertTrue(
+        agents.contains("Active Goal:** none")
+            || agents.contains("**Active Goal:** none")
+            || agents.contains("G-010"));
     assertTrue(agents.contains("G-009"));
 
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("none") || phase.toLowerCase().contains("no active"));
+    assertTrue(
+        phase.contains("none")
+            || phase.contains("G-010")
+            || phase.toLowerCase().contains("no active"));
     assertTrue(phase.contains("G-009"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
-    assertTrue(nav.contains("none") || nav.toLowerCase().contains("no active"));
+    assertTrue(
+        nav.contains("none") || nav.contains("G-010") || nav.toLowerCase().contains("no active"));
     assertTrue(nav.contains("G-009"));
 
     String readme = Files.readString(root.resolve("README.md"));
     assertTrue(readme.contains("G-009") || readme.toLowerCase().contains("no active"));
 
     String session = Files.readString(root.resolve("docs/project/session.md"));
-    assertTrue(session.contains("none") || session.toLowerCase().contains("no active"));
+    assertTrue(
+        session.contains("none")
+            || session.contains("G-010")
+            || session.toLowerCase().contains("no active"));
     assertTrue(session.contains("G-009"));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
-    assertTrue(protocol.contains("none") || protocol.toLowerCase().contains("no active"));
+    assertTrue(
+        protocol.contains("none")
+            || protocol.contains("G-010")
+            || protocol.toLowerCase().contains("no active"));
     assertTrue(protocol.contains("G-009"));
 
     String arch = Files.readString(root.resolve("docs/architecture.md"));

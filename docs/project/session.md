@@ -8,19 +8,19 @@
 # Current session
 
 **Updated:** 2026-09-20  
-**Status:** F-054 Accepted · Active Goal **none** · last completed G-009
+**Status:** F-055 Accepted · Active Goal **G-010** · last completed G-009
 
 ---
 
 ## Session goal
 
-Accept **F-054** (Goal close + layer harden + doc hygiene) under G-009. Done — G-009 closed.
+Accept **F-055** (docs lock) under G-010. Done — runtime unchanged.
 
 ---
 
 ## Active Goal
 
-**Active Goal:** none  
+**Active Goal:** [G-010 — Crust topology](goals/G-010-crust-topology.md) — **in progress**  
 **Last completed Goal:** [G-009 — Simulation runner harden](goals/G-009-simulation-runner-harden.md) — **done**
 
 ---
@@ -29,18 +29,18 @@ Accept **F-054** (Goal close + layer harden + doc hygiene) under G-009. Done —
 
 | Step | Work | Status |
 |------|------|--------|
-| F-054 | Goal close + layer harden + doc hygiene | done |
+| F-055 | Docs lock (wiki + ADR-013 + Goal) | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-054 marked `in progress` before code
-- [x] F-054 Accepted (witness + SYNC)
+- [x] F-055 marked `in progress` before docs
+- [x] F-055 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-054: layer applyGen + preventDefault digits; MapController paintLock; product/wiki/glossary/arch hygiene; G-009 sealed.
-- Next: propose a Goal (roadmap: climate / further generation layers) — not a lone Step.
+- F-035 is G-008 (done). G-010 began at F-055.
+- Next: F-056 keys + lockers + ride + isostasy (code) — propose job + FRs.

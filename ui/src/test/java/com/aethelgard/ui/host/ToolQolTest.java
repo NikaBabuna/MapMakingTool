@@ -49,11 +49,12 @@ class ToolQolTest {
     String table =
         goals.lines().filter(l -> l.contains("| G-007 |")).findFirst().orElse("");
     assertTrue(table.contains("| done |"), table);
-    // Active Goal may be none (post-close) or a later Goal (e.g. G-008 / G-009)
+    // Active Goal may be none (post-close) or a later Goal (e.g. G-008 / G-009 / G-010)
     assertTrue(
         goals.contains("**Active Goal:** none")
             || goals.contains("G-008")
             || goals.contains("G-009")
+            || goals.contains("G-010")
             || goals.contains("Active Goal:** [G-"));
 
     String goalDoc = Files.readString(root.resolve("docs/project/goals/G-007-studio-cartography.md"));

@@ -8,6 +8,8 @@
 # Elevation process
 
 > **Code status (through F-054 / G-009 done):** Step-0 plates use **B1** latitude-weighted cylindrical nearest-site (N=12–24). Runtime topology is **sphere polar wrap** (F-045). `plate_registry` + `boundaries` + `area_flux` + `motion_intent` live; `IntegrateVelocity`; geometry apply/fission/ridge flood; **Orogeny** from standing classified `boundaries`. Runner: Perf/World rails, always-on terminal, panel registry.
+>
+> **G-010 (F-055 docs lock):** contact-paint orogeny is **superseded for G-010** as the elevation author. Crust will **ride** occupancy; elevation will be **derived** isostasy. Runtime until **F-056**. See [tectonics.md](tectonics.md) § Crust topology.
 
 Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 
@@ -114,6 +116,8 @@ This supersedes “plates do not move” from G-004 / F-017.
 4. Write the new elevation grid. **No floor** — elevation may go negative. Interior / only-PASS_BY cells stay at their previous height.
 
 This supersedes F-021 velocity-neighbor closing for elevation. Classification still uses `n · (vA − vB)` when tracing boundaries.
+
+**G-010:** this standing-coordinate stamp is **superseded** as the relief author (code F-056). Elevation becomes isostasy of locker thickness at current occupancy keys.
 
 A world whose standing assignment is a single plate (for example a 1×1 grid) has no contacts, so elevation stays 0.
 

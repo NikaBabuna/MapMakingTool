@@ -16,13 +16,13 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **WorldSpec** | Step 0 seed: grid width, height, and recorded generation seed. |
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
-| **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. |
+| **Elevation** | First relief layer (`elevation`); Step 0 is all zeros; later Steps are orogeny on standing plates. **G-010 planned:** derived isostasy of locker thickness (F-056). |
 | **Plate velocity** | STATIC field (`plate_velocity`) of per-plate `(vx, vy)` in `{-1,0,1}`: seeded at Step 0, then edge-driven by `IntegrateVelocity` from `motion_intent` (F-037). |
 | **Plates** | Layer (`plates`) of integer plate ids. **Code today:** B1 nearest-site N=12–24 at Step 0; apply flux/fission then advection each generation. |
-| **Suture** | Contact between different plate ids; cylinder contacts listed in `boundaries` and used by orogeny. |
+| **Suture** | G-010: continent–continent collide that thickens both sides and destroys neither locker (planned F-059). Historically also: contact between different plate ids listed in `boundaries`. |
 | **Voronoi plates** | Historical name for nearest-site partition; distance is **B1** latitude-weighted cylindrical (wrap X, cosQ on Y). Ties take the lower site index. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
-| **Orogeny** | Generative relief: standing classified `boundaries` — COLLIDE winner +1 / loser −1, SEPARATE both −1, PASS_BY 0 (F-038). |
+| **Orogeny** | Generative relief: standing classified `boundaries` — COLLIDE winner +1 / loser −1, SEPARATE both −1, PASS_BY 0 (F-038). **G-010:** superseded as elevation author (isostasy); runtime until F-056. |
 | **Kinematics System** | Legacy name; advection now runs inside `ApplyGeometry` (F-036). |
 | **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny. |
 | **ApplyGeometry** | Sub-System: apply `area_flux`, flood sink, fission/crumbs/death, advect, refresh registry + velocities. |
@@ -46,6 +46,12 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
+| **Locker** | **G-010 planned (F-056):** crust payload keyed by id (thickness; mint/merge). Occupancy keys point at lockers. |
+| **Occupancy** | **G-010 planned:** cell → locker id. Motion remaps keys; locker contents ride. Distinct from plate id unless F-056 folds them. |
+| **Isostasy** | **G-010 planned:** integer height derived from locker thickness at current occupancy. Writes `elevation`. |
+| **Oceanic crust** | **G-010 planned:** thickness below \(T_{land}\). Minted at ridges (\(T_{ocean}\)). Subducts at COLLIDE. |
+| **Continental crust** | **G-010 planned:** thickness \(\ge T_{land}\). Does not die by area-only precedence. Sutures instead of subducting. |
+| **Ridge mint** | **G-010 planned (F-057):** new gap occupancy gets thin oceanic lockers; does not inherit neighbor mountains. |
 | **Command language** | Shared noun-path + verb operator grammar in `cli` (F-048): point at `session`/`pool`/`schema`/`systems`/`diag`, act with `list`/`get`/`advance`/…. |
 | **CommandDispatch** | Single execute entry for headless CLI, MapHost `/api/command`, and in-app console (F-048; deprecated flat aliases remain). |
 | **CliRunner** | Headless full runner (F-049): one session per invocation; `--seed` / `--steps` / `-c` over `CommandDispatch`. |

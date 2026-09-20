@@ -56,6 +56,7 @@ class TerminalConsoleTest {
     assertTrue(
         goals.contains("**Active Goal:** none")
             || goals.contains("G-009")
+            || goals.contains("G-010")
             || goals.contains("Active Goal:** [G-"));
     assertTrue(goals.contains("G-008") && goals.contains("done"));
     String table =
@@ -72,12 +73,17 @@ class TerminalConsoleTest {
     assertTrue(
         agents.contains("Active Goal:** none")
             || agents.contains("**Active Goal:** none")
+            || agents.contains("G-010")
             || agents.contains("G-009")
             || agents.contains("G-008"));
     assertTrue(agents.contains("G-008"));
 
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("none") || phase.contains("G-008") || phase.contains("G-009"));
+    assertTrue(
+        phase.contains("none")
+            || phase.contains("G-008")
+            || phase.contains("G-009")
+            || phase.contains("G-010"));
     assertTrue(phase.contains("G-008"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
@@ -88,10 +94,18 @@ class TerminalConsoleTest {
     assertTrue(readme.contains("G-008") || readme.toLowerCase().contains("no active"));
 
     String session = Files.readString(root.resolve("docs/project/session.md"));
-    assertTrue(session.contains("none") || session.contains("G-008") || session.contains("G-009"));
+    assertTrue(
+        session.contains("none")
+            || session.contains("G-008")
+            || session.contains("G-009")
+            || session.contains("G-010"));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
-    assertTrue(protocol.contains("none") || protocol.contains("G-008") || protocol.contains("G-009"));
+    assertTrue(
+        protocol.contains("none")
+            || protocol.contains("G-008")
+            || protocol.contains("G-009")
+            || protocol.contains("G-010"));
 
     String arch = Files.readString(root.resolve("docs/architecture.md"));
     assertTrue(arch.contains("G-008"));

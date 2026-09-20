@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**)._
+_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **planned** (**F-055** docs lock)._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -24,6 +24,19 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Control | Shared commands; CLI full runner; rebuilt terminal | **F-048**–**F-050** done |
 | Studio | Runner chrome; perf panels; UI infrastructure | **F-051**–**F-053** done |
 | Close | Layer harden + doc hygiene; Goal seal | **F-054** done |
+
+## G-010 crust topology (planned)
+
+| Area | Intent | Steps |
+|------|--------|-------|
+| Docs | Keys + lockers; ride; ridge mint; buoyancy; suture; isostasy | **F-055** (this Step) |
+| Ride | Occupancy keys + thickness lockers; elevation from isostasy | F-056 |
+| Ridge | Thin oceanic mint in gaps | F-057 |
+| Buoyancy | Ocean subducts; continent does not die by area | F-058 |
+| Continents | Arc + suture + cap | F-059 |
+| Close | Dump/wiki/UI hygiene; Goal seal | F-060 |
+
+Runtime this Step: G-009 runner + F-038 orogeny. No map behavior change.
 
 ### Flow: Raster / host memory (F-047)
 

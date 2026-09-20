@@ -22,5 +22,6 @@ Items here are **not** in progress. Promote into a Goal or Step when ready.
 | Studio cartography tool (redesign + QoL) | Promoted to [G-007](goals/G-007-studio-cartography.md) |
 | Boundary tectonics + cartography studio | Promoted to [G-008](goals/G-008-boundary-tectonics-studio.md) |
 | Simulation runner harden | Promoted to [G-009](goals/G-009-simulation-runner-harden.md) |
-| Climate / further generation layers | After G-009 |
+| Crust topology | Promoted to [G-010](goals/G-010-crust-topology.md) |
+| Climate / further generation layers | After G-010 |
 | Package naming convention | Decided in F-001 / ADR-007 |

@@ -8,7 +8,7 @@
 # World
 
 **Code status (through F-054 / G-009 done):** VIEW **1920×1080**; sphere-on-rectangle polar wrap (F-045); ridge accretion + flood/crumbs + bold borders; diagnostics hub; shared CLI/terminal; runner shell + panel registry — see [elevation.md](elevation.md) / [tectonics.md](tectonics.md).  
-**G-008:** complete (cylinder amended by F-045).
+**G-010:** F-055 docs lock (planned lockers / occupancy / derived elevation). Runtime still F-038 orogeny. **G-008:** complete (cylinder amended by F-045).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 
@@ -48,13 +48,14 @@ Later climate (rainfall, temperature, …) is more layers of the same shape, not
 
 | Field | Step 0 | Later Steps |
 |-------|--------|-------------|
-| `elevation` | every cell `0` | orogeny — [elevation.md](elevation.md) |
+| `elevation` | every cell `0` | orogeny — [elevation.md](elevation.md) (**G-010:** derived isostasy, planned F-056) |
 | `plates` | B1 nearest-site (N=12–24, wrap X) | apply flux/fission then advection |
 | `plate_registry` | STATIC area + `(vx,vy)` | refreshed after integrate + geometry |
 | `boundaries` | STATIC classified contacts | refreshed each generation |
 | `area_flux` | STATIC Δarea + sinkΔ | refreshed; **applied** each generation |
 | `motion_intent` | STATIC preferred Δv | refreshed; drives IntegrateVelocity |
 | `plate_velocity` | STATIC `(vx,vy)` in `{-1,0,1}` | integrate each generation; fission remap |
+| occupancy / `lockers` | **G-010 planned** | keys + thickness; not in Pool yet (F-056) |
 
 ### G-008 planned fields
 
@@ -66,7 +67,7 @@ See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Boundary o
 
 The first relief layer is **`elevation`**: integer height per cell.
 
-At Step 0 this is **initial condition**, not a finished map. Every cell starts at **0**. Relief is produced by tectonics (today: [elevation.md](elevation.md); G-008: boundary orogeny in F-038).
+At Step 0 this is **initial condition**, not a finished map. Every cell starts at **0**. Relief is produced by tectonics (today: [elevation.md](elevation.md); G-008: boundary orogeny in F-038). **G-010:** Step 0 will be all oceanic thickness \(T_{ocean}\); elevation from isostasy (F-056).
 
 ---
 
