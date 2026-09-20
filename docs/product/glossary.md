@@ -17,11 +17,12 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Grid** | Immutable rectangular layer of `int` cells stored in the Pool. |
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
 | **Elevation** | Relief layer (`elevation`); Step 0 is all zeros (isostasy of \(T_{ocean}\)). Later Steps: derived isostasy of locker thickness at occupancy (F-056). |
-| **Orogeny** | F-038 stamp ladder (COLLIDE winner +1 / loser −1, SEPARATE both −1, PASS_BY 0) now writes **locker thickness**. Superseded as elevation author (F-056). |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny → ThicknessToElevation. |
-| **Locker** | Crust payload keyed by id (thickness). Occupancy keys point at lockers (F-056). |
+| **Orogeny** | F-038 stamp ladder (COLLIDE winner +1 / loser −1, SEPARATE both −1, PASS_BY 0) writes **locker thickness**. F-058: buoyancy polarity; C–C no stamp. Superseded as elevation author (F-056). |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (plates + occupancy + Subduct corrections) → Orogeny → RidgeCreate → ThicknessToElevation. |
+| **Locker** | Crust payload keyed by id (thickness). Occupancy keys point at lockers (F-056). \(T_{ocean}=8\), \(T_{land}=16\). |
 | **Occupancy** | Cell → locker id. Motion remaps keys; locker contents ride. Distinct from plate id. |
 | **Isostasy** | Integer height `thickness − T_ocean` (\(T_{ocean}=8\)) at current occupancy. Sole writer of `elevation` (F-056). |
+| **Buoyancy** | **G-010 live (F-058):** continental iff thickness \(\ge 16\). COLLIDE: ocean subducts; continent does not die by area; O–O smaller-loses; C–C frozen. |
 | **Plate velocity** | STATIC field (`plate_velocity`) of per-plate `(vx, vy)` in `{-1,0,1}`: seeded at Step 0, then edge-driven by `IntegrateVelocity` from `motion_intent` (F-037). |
 | **Plates** | Layer (`plates`) of integer plate ids. **Code today:** B1 nearest-site N=12–24 at Step 0; apply flux/fission then advection each generation. |
 | **Suture** | G-010: continent–continent collide that thickens both sides and destroys neither locker (planned F-059). Historically also: contact between different plate ids listed in `boundaries`. |
@@ -49,9 +50,10 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Plate registry** | STATIC Pool object (`plate_registry`): per-plate area + velocity (F-033+); velocities edge-driven after Step 0 (F-037). |
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
-| **Oceanic crust** | Thickness below \(T_{land}\) (threshold F-058). Step 0 all \(T_{ocean}=8\). Subducts at COLLIDE (F-058). |
-| **Continental crust** | **G-010 planned:** thickness \(\ge T_{land}\). Does not die by area-only precedence. Sutures instead of subducting. |
-| **Ridge mint** | **G-010 live (F-057):** new gap occupancy gets thin oceanic lockers; does not inherit neighbor mountains. |
+| **Oceanic crust** | Thickness below \(T_{land}=16\). Step 0 all \(T_{ocean}=8\). Subducts at COLLIDE (F-058). |
+| **Continental crust** | Thickness \(\ge T_{land}=16\). Does not die by area-only precedence. Sutures in F-059. |
+| **Ridge mint** | **G-010 live (F-057/F-058):** new gap occupancy and SEPARATE contact-locker copies get thin oceanic lockers; do not inherit neighbor mountains. |
+| **Subduct** | **G-010 live (F-058):** consume oceanic collide occupancy (surviving locker); unshare SEPARATE copies. |
 | **Command language** | Shared noun-path + verb operator grammar in `cli` (F-048): point at `session`/`pool`/`schema`/`systems`/`diag`, act with `list`/`get`/`advance`/…. |
 | **CommandDispatch** | Single execute entry for headless CLI, MapHost `/api/command`, and in-app console (F-048; deprecated flat aliases remain). |
 | **CliRunner** | Headless full runner (F-049): one session per invocation; `--seed` / `--steps` / `-c` over `CommandDispatch`. |

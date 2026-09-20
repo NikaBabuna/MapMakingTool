@@ -7,8 +7,8 @@
 
 # World
 
-**Code status (through F-057):** VIEW **1920×1080**; sphere-on-rectangle polar wrap (F-045); occupancy + lockers; ridge mint; elevation isostasy (\(T_{ocean}=8\)).  
-**G-010:** F-057 ridge mint live; buoyancy / suture remaining. Runtime no longer F-038 elevation paint. **G-008:** complete (cylinder amended by F-045).
+**Code status (through F-058):** VIEW **1920×1080**; sphere-on-rectangle polar wrap (F-045); occupancy + lockers; ridge mint; buoyancy COLLIDE; elevation isostasy (\(T_{ocean}=8\), \(T_{land}=16\)).  
+**G-010:** F-058 buoyancy live; suture remaining. Runtime no longer F-038 elevation paint. **G-008:** complete (cylinder amended by F-045).
 
 A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
 

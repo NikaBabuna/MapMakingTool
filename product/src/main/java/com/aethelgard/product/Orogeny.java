@@ -83,7 +83,7 @@ public final class Orogeny implements SubSystem {
     Objects.requireNonNull(lockers, "lockers");
     int width = occupancy.width();
     int height = occupancy.height();
-    Map<Long, Byte> ranks = ranks(boundaries, registry, width, height);
+    Map<Long, Byte> ranks = ranks(boundaries, registry, occupancy, lockers, width, height);
     int[] next = lockers.thicknesses();
     for (Map.Entry<Long, Byte> e : ranks.entrySet()) {
       long k = e.getKey();
@@ -126,6 +126,16 @@ public final class Orogeny implements SubSystem {
 
   private static Map<Long, Byte> ranks(
       Boundaries boundaries, PlateRegistry registry, int width, int height) {
+    return ranks(boundaries, registry, null, null, width, height);
+  }
+
+  private static Map<Long, Byte> ranks(
+      Boundaries boundaries,
+      PlateRegistry registry,
+      Grid occupancy,
+      Lockers lockers,
+      int width,
+      int height) {
     Map<Long, Byte> ranks = new HashMap<>(Math.max(16, boundaries.size() * 2));
     for (BoundaryContact c : boundaries.contacts()) {
       int ax = c.x();
@@ -142,7 +152,15 @@ public final class Orogeny implements SubSystem {
           bump(ranks, key(bx, by), RANK_SEPARATE);
         }
         case COLLIDE -> {
-          int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+          int lose;
+          if (occupancy != null && lockers != null) {
+            lose = CrustPrecedence.collideLoser(c, occupancy, lockers, registry, width, height);
+            if (lose == CrustPrecedence.NONE) {
+              break;
+            }
+          } else {
+            lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+          }
           if (c.plateA() == lose) {
             bump(ranks, key(ax, ay), RANK_LOSE);
             bump(ranks, key(bx, by), RANK_WIN);

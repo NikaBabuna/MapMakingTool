@@ -37,13 +37,21 @@ public final class MotionIntent {
     return new MotionIntent(new int[plateCount], new int[plateCount]);
   }
 
-  /** Intent from standing boundaries + registry (F-035 locks). */
+  /** Intent from standing boundaries + registry (F-035 locks). Area-only slab pull. */
   public static MotionIntent from(Boundaries boundaries, PlateRegistry registry) {
+    return from(boundaries, registry, null, null);
+  }
+
+  /** Intent with F-058 buoyancy slab pull when occupancy + lockers are present. */
+  public static MotionIntent from(
+      Boundaries boundaries, PlateRegistry registry, Grid occupancy, Lockers lockers) {
     Objects.requireNonNull(boundaries, "boundaries");
     Objects.requireNonNull(registry, "registry");
     int n = registry.count();
     int[] ix = new int[n];
     int[] iy = new int[n];
+    int width = occupancy == null ? 0 : occupancy.width();
+    int height = occupancy == null ? 0 : occupancy.height();
     for (BoundaryContact c : boundaries.contacts()) {
       int nx = c.nx();
       int ny = c.ny();
@@ -61,8 +69,15 @@ public final class MotionIntent {
           iy[c.plateA()] -= ny;
           ix[c.plateB()] += nx;
           iy[c.plateB()] += ny;
-          // Slab pull on loser into the boundary
-          int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+          int lose;
+          if (occupancy != null && lockers != null) {
+            lose = CrustPrecedence.collideLoser(c, occupancy, lockers, registry, width, height);
+            if (lose == CrustPrecedence.NONE) {
+              break;
+            }
+          } else {
+            lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+          }
           if (lose == c.plateA()) {
             ix[lose] += nx;
             iy[lose] += ny;

@@ -69,13 +69,24 @@ public final class ApplyGeometry implements SubSystem {
     Boundaries boundaries = requireBoundaries(readField(io, WorldFields.BOUNDARIES));
     AreaFlux flux = requireFlux(readField(io, WorldFields.AREA_FLUX));
     Grid occupancy = requireGrid(io.readPool(WorldFields.OCCUPANCY), WorldFields.OCCUPANCY);
+    Lockers lockers = requireLockers(readField(io, WorldFields.LOCKERS));
     int generationIndex = Math.toIntExact(io.poolValue()) - 1;
-    Result result = apply(plates, boundaries, flux, registry, velocities);
+    boolean[][] skipOcc = new boolean[plates.height()][plates.width()];
+    Result result =
+        apply(plates, boundaries, flux, registry, velocities, occupancy, lockers, skipOcc);
     // Re-trace on remapped plates so ridge pairs match post-fission ids.
     Boundaries ridge = Boundaries.trace(result.plates(), result.velocities());
     PlateKinematics.AdvectResult moved =
         PlateKinematics.advect(
-            result.plates(), occupancy, result.velocities(), generationIndex, ridge);
+            result.plates(),
+            occupancy,
+            result.velocities(),
+            generationIndex,
+            ridge,
+            boundaries,
+            lockers,
+            registry,
+            skipOcc);
     PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
     io.write(WorldFields.PLATES, moved.plates());
     io.write(WorldFields.PLATE_REGISTRY, after);
@@ -83,13 +94,26 @@ public final class ApplyGeometry implements SubSystem {
     io.write(WorldFields.OCCUPANCY, moved.occupancy());
   }
 
-  /** Full geometry pass (also used by tests). */
+  /** Full geometry pass (also used by tests). Area-only collide loser. */
   public static Result apply(
       Grid plates,
       Boundaries boundaries,
       AreaFlux flux,
       PlateRegistry registry,
       PlateVelocities velocities) {
+    return apply(plates, boundaries, flux, registry, velocities, null, null, null);
+  }
+
+  /** Geometry pass with F-058 buoyancy sink and SEPARATE/collide skip-occupancy marks. */
+  public static Result apply(
+      Grid plates,
+      Boundaries boundaries,
+      AreaFlux flux,
+      PlateRegistry registry,
+      PlateVelocities velocities,
+      Grid occupancy,
+      Lockers lockers,
+      boolean[][] skipOccupancyExport) {
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(boundaries, "boundaries");
     Objects.requireNonNull(flux, "flux");
@@ -99,8 +123,9 @@ public final class ApplyGeometry implements SubSystem {
     int height = plates.height();
     int[][] cells = copyCells(plates);
     long seed = velocities.seed();
-    applyCollide(cells, width, height, boundaries, registry, seed);
-    applySeparate(cells, width, height, boundaries, seed);
+    applyCollide(
+        cells, width, height, boundaries, registry, seed, occupancy, lockers, skipOccupancyExport);
+    applySeparate(cells, width, height, boundaries, seed, skipOccupancyExport);
     floodSink(cells, width, height);
     Lifecycle life = fissionAndCrumbs(cells, width, height, velocities);
     return remapDense(cells, width, height, life.vx(), life.vy(), velocities.seed());
@@ -116,7 +141,10 @@ public final class ApplyGeometry implements SubSystem {
       int height,
       Boundaries boundaries,
       PlateRegistry registry,
-      long seed) {
+      long seed,
+      Grid occupancy,
+      Lockers lockers,
+      boolean[][] skipOccupancyExport) {
     for (BoundaryContact c : boundaries.contacts()) {
       if (c.kind() != BoundaryKind.COLLIDE) {
         continue;
@@ -124,7 +152,15 @@ public final class ApplyGeometry implements SubSystem {
       if (raggedSkip(seed, c.x(), c.y())) {
         continue;
       }
-      int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+      int lose;
+      if (occupancy != null && lockers != null) {
+        lose = CrustPrecedence.collideLoser(c, occupancy, lockers, registry, width, height);
+        if (lose == CrustPrecedence.NONE) {
+          continue;
+        }
+      } else {
+        lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+      }
       int x = c.x();
       int y = c.y();
       if (lose == c.plateB()) {
@@ -134,15 +170,21 @@ public final class ApplyGeometry implements SubSystem {
       }
       if (cells[y][x] == lose) {
         cells[y][x] = SINK;
+        markSkip(skipOccupancyExport, x, y);
         if (raggedExtra(seed, x, y)) {
-          nibbleSink(cells, width, height, x, y, lose);
+          nibbleSink(cells, width, height, x, y, lose, skipOccupancyExport);
         }
       }
     }
   }
 
   private static void applySeparate(
-      int[][] cells, int width, int height, Boundaries boundaries, long seed) {
+      int[][] cells,
+      int width,
+      int height,
+      Boundaries boundaries,
+      long seed,
+      boolean[][] skipOccupancyExport) {
     for (BoundaryContact c : boundaries.contacts()) {
       if (c.kind() != BoundaryKind.SEPARATE) {
         continue;
@@ -150,24 +192,31 @@ public final class ApplyGeometry implements SubSystem {
       if (raggedSkip(seed, c.x(), c.y())) {
         continue;
       }
-      claimSinkNear(cells, width, height, c.x(), c.y(), c.plateA());
+      claimSinkNear(cells, width, height, c.x(), c.y(), c.plateA(), skipOccupancyExport);
       int[] b = SphereTopology.neighbor(c.x(), c.y(), c.nx(), c.ny(), width, height);
-      claimSinkNear(cells, width, height, b[0], b[1], c.plateB());
+      claimSinkNear(cells, width, height, b[0], b[1], c.plateB(), skipOccupancyExport);
       if (raggedExtra(seed, c.x(), c.y())) {
-        nibbleClaim(cells, width, height, c.x(), c.y(), c.plateA());
-        nibbleClaim(cells, width, height, b[0], b[1], c.plateB());
+        nibbleClaim(cells, width, height, c.x(), c.y(), c.plateA(), skipOccupancyExport);
+        nibbleClaim(cells, width, height, b[0], b[1], c.plateB(), skipOccupancyExport);
       }
     }
   }
 
   /** Extra orthogonal claim for ragged SEPARATE fronts. */
   private static void nibbleClaim(
-      int[][] cells, int width, int height, int ox, int oy, int plate) {
+      int[][] cells,
+      int width,
+      int height,
+      int ox,
+      int oy,
+      int plate,
+      boolean[][] skipOccupancyExport) {
     for (int[] d : DIRS) {
       int[] n = SphereTopology.neighbor(ox, oy, d[0], d[1], width, height);
       int id = cells[n[1]][n[0]];
       if (id >= 0 && id != plate) {
         cells[n[1]][n[0]] = plate;
+        markSkip(skipOccupancyExport, n[0], n[1]);
         return;
       }
     }
@@ -175,28 +224,49 @@ public final class ApplyGeometry implements SubSystem {
 
   /** Extra orthogonal sink for ragged COLLIDE fronts. */
   private static void nibbleSink(
-      int[][] cells, int width, int height, int ox, int oy, int lose) {
+      int[][] cells,
+      int width,
+      int height,
+      int ox,
+      int oy,
+      int lose,
+      boolean[][] skipOccupancyExport) {
     for (int[] d : DIRS) {
       int[] n = SphereTopology.neighbor(ox, oy, d[0], d[1], width, height);
       if (cells[n[1]][n[0]] == lose) {
         cells[n[1]][n[0]] = SINK;
+        markSkip(skipOccupancyExport, n[0], n[1]);
         return;
       }
     }
   }
 
   private static void claimSinkNear(
-      int[][] cells, int width, int height, int ox, int oy, int plate) {
+      int[][] cells,
+      int width,
+      int height,
+      int ox,
+      int oy,
+      int plate,
+      boolean[][] skipOccupancyExport) {
     if (cells[oy][ox] == SINK) {
       cells[oy][ox] = plate;
+      markSkip(skipOccupancyExport, ox, oy);
       return;
     }
     for (int[] d : DIRS) {
       int[] n = SphereTopology.neighbor(ox, oy, d[0], d[1], width, height);
       if (cells[n[1]][n[0]] == SINK) {
         cells[n[1]][n[0]] = plate;
+        markSkip(skipOccupancyExport, n[0], n[1]);
         return;
       }
+    }
+  }
+
+  private static void markSkip(boolean[][] skipOccupancyExport, int x, int y) {
+    if (skipOccupancyExport != null) {
+      skipOccupancyExport[y][x] = true;
     }
   }
 
@@ -521,6 +591,17 @@ public final class ApplyGeometry implements SubSystem {
         "field '"
             + WorldFields.AREA_FLUX
             + "' must be AreaFlux, was "
+            + (value == null ? "null" : value.getClass().getName()));
+  }
+
+  private static Lockers requireLockers(Object value) {
+    if (value instanceof Lockers lockers) {
+      return lockers;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.LOCKERS
+            + "' must be Lockers, was "
             + (value == null ? "null" : value.getClass().getName()));
   }
 }

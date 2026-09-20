@@ -1,6 +1,6 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/ProductGeneration.java
- * Purpose: One-generation plate pipeline helper (integrate → apply → advect → locker stamp → isostasy)
+ * Purpose: One-generation plate pipeline helper (integrate → apply → advect → subduct → locker stamp → mint → isostasy)
  * Audience: Tests / debugging
  * Update when: Generation Sub-System order changes
  */
@@ -11,8 +11,8 @@ import java.util.Objects;
 
 /**
  * Mirrors the tectonics System order for independent witnesses: boundaries/flux/intent from
- * standing plates, IntegrateVelocity, ApplyGeometry, occupancy remap, locker stamps on standing
- * occupancy, ridge mint in gaps, isostasy of remapped keys.
+ * standing plates, IntegrateVelocity, ApplyGeometry, occupancy remap, Subduct consume/unshare,
+ * locker stamps on standing occupancy, ridge mint in gaps, isostasy of remapped keys.
  */
 public final class ProductGeneration {
 
@@ -57,17 +57,34 @@ public final class ProductGeneration {
     PlateVelocities standingVel = state.velocities();
     PlateRegistry standingReg = PlateRegistry.from(standing, standingVel);
     Boundaries boundaries = Boundaries.trace(standing, standingVel);
-    AreaFlux flux = AreaFlux.from(boundaries, standingReg);
-    MotionIntent intent = MotionIntent.from(boundaries, standingReg);
+    AreaFlux flux = AreaFlux.from(boundaries, standingReg, state.occupancy(), state.lockers());
+    MotionIntent intent = MotionIntent.from(boundaries, standingReg, state.occupancy(), state.lockers());
     PlateVelocities integrated = IntegrateVelocity.integrate(standingVel, intent);
+    boolean[][] skipOcc = new boolean[standing.height()][standing.width()];
     ApplyGeometry.Result geom =
-        ApplyGeometry.apply(standing, boundaries, flux, standingReg, integrated);
+        ApplyGeometry.apply(
+            standing,
+            boundaries,
+            flux,
+            standingReg,
+            integrated,
+            state.occupancy(),
+            state.lockers(),
+            skipOcc);
     Lockers stamped =
         Orogeny.applyToLockers(boundaries, standingReg, state.occupancy(), state.lockers());
     Boundaries ridge = Boundaries.trace(geom.plates(), geom.velocities());
     PlateKinematics.AdvectResult moved =
         PlateKinematics.advect(
-            geom.plates(), state.occupancy(), geom.velocities(), generationIndex, ridge);
+            geom.plates(),
+            state.occupancy(),
+            geom.velocities(),
+            generationIndex,
+            ridge,
+            boundaries,
+            state.lockers(),
+            standingReg,
+            skipOcc);
     RidgeCreate.Result minted = RidgeCreate.apply(moved.occupancy(), stamped);
     PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
     Grid elevation = ThicknessToElevation.apply(minted.occupancy(), minted.lockers());

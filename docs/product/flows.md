@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **in progress** (**F-057** ridge mint live)._
+_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **in progress** (**F-058** buoyancy live)._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -32,11 +32,11 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Docs | Keys + lockers; ride; ridge mint; buoyancy; suture; isostasy | **F-055** done |
 | Ride | Occupancy keys + thickness lockers; elevation from isostasy | **F-056** done |
 | Ridge | Thin oceanic mint in gaps | **F-057** done |
-| Buoyancy | Ocean subducts; continent does not die by area | F-058 |
+| Buoyancy | Ocean subducts; continent does not die by area; SEPARATE does not copy the border locker | **F-058** done |
 | Continents | Arc + suture + cap | F-059 |
 | Close | Dump/wiki/UI hygiene; Goal seal | F-060 |
 
-Runtime: occupancy remaps with plates; locker stamps ride; **gaps mint thin ocean**; elevation is isostasy. Map still paints `elevation`. Simulation menu: Restart UI / Restart engine.
+Runtime: occupancy remaps with plates; locker stamps ride; **gaps and SEPARATE copies mint thin ocean**; COLLIDE buoyancy (\(T_{land}=16\)); elevation is isostasy. Map still paints `elevation`. Simulation menu: Restart UI / Restart engine.
 
 ### Flow: Crust ride (F-056)
 
@@ -53,6 +53,14 @@ Runtime: occupancy remaps with plates; locker stamps ride; **gaps mint thin ocea
 | 1 | Plates diverge. Advection leaves some cells with zero unique claimants. |
 | 2 | Plate-id flood still assigns those cells to bordering plates (F-044). |
 | 3 | `RidgeCreate` mints **new** lockers at \(T_{ocean}=8\) in raster order. Elevation at the rift is 0, not a copied mountain. |
+
+### Flow: Buoyancy + rift unshare (F-058)
+
+| Step | Action |
+|------|--------|
+| 1 | At COLLIDE, thickness \(\ge 16\) is continental. Oceanic contact cells subduct even if that plate is larger. |
+| 2 | Consumed ocean occupancy becomes the surviving side’s locker. Continent–continent does not sink or stamp. |
+| 3 | SEPARATE copies of the standing contact locker are marked unresolved and minted as thin ocean (the stripe hole). |
 
 ### Flow: Restart UI / engine (F-057)
 

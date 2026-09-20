@@ -29,7 +29,7 @@ import java.util.Objects;
  * plate_velocity / occupancy / lockers are STATIC. One tectonics System claims {@code
  * world/tectonics} after Step 0 and runs TraceBoundaries → BoundaryInteraction →
  * IntegrateVelocity → ApplyGeometry → Orogeny (locker stamps) → RidgeCreate →
- * ThicknessToElevation.
+ * ThicknessToElevation. ApplyGeometry remaps occupancy and runs Subduct corrections.
  */
 public final class ProductHost {
 

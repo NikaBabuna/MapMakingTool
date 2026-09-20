@@ -91,6 +91,23 @@ public final class PlateKinematics implements SubSystem {
       PlateVelocities velocities,
       int generationIndex,
       Boundaries boundaries) {
+    return advect(plates, occupancy, velocities, generationIndex, boundaries, null, null, null, null);
+  }
+
+  /**
+   * Advection plus F-058 occupancy corrections: skip export from SEPARATE/collide-claimed cells,
+   * consume oceanic collide lockers, unshare copied SEPARATE contact lockers.
+   */
+  public static AdvectResult advect(
+      Grid plates,
+      Grid occupancy,
+      PlateVelocities velocities,
+      int generationIndex,
+      Boundaries boundaries,
+      Boundaries standingBoundaries,
+      Lockers lockers,
+      PlateRegistry registry,
+      boolean[][] skipOccupancyExport) {
     Objects.requireNonNull(plates, "plates");
     Objects.requireNonNull(occupancy, "occupancy");
     Objects.requireNonNull(velocities, "velocities");
@@ -139,10 +156,13 @@ public final class PlateKinematics implements SubSystem {
         claims[ny][nx]++;
         if (claims[ny][nx] == 1) {
           who[ny][nx] = plate;
-          occDest[ny][nx] = occupancy.get(x, y);
         } else if (plate < who[ny][nx]) {
-          // Contested: keep lowest claimant (same as plates) and that source's locker.
           who[ny][nx] = plate;
+        }
+        if (skipOccupancyExport != null && skipOccupancyExport[y][x]) {
+          continue;
+        }
+        if (plate == who[ny][nx]) {
           occDest[ny][nx] = occupancy.get(x, y);
         }
       }
@@ -158,7 +178,11 @@ public final class PlateKinematics implements SubSystem {
       }
     }
     fillUnresolvedFlood(next, width, height);
-    // Occupancy gaps stay UNRESOLVED — RidgeCreate mints thin ocean (F-057).
+    if (standingBoundaries != null && lockers != null && registry != null) {
+      Subduct.correct(
+          occDest, occupancy, standingBoundaries, lockers, registry, plates, velocities);
+    }
+    // Occupancy gaps stay UNRESOLVED — RidgeCreate mints thin ocean (F-057/F-058).
     int[] ovx = new int[n];
     int[] ovy = new int[n];
     for (int i = 0; i < n; i++) {

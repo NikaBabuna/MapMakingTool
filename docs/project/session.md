@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-20  
-**Status:** F-057 Accepted · Active Goal **G-010** · last completed G-009
+**Status:** F-058 Accepted · Active Goal **G-010** · last completed G-009
 
 ---
 
 ## Session goal
 
-Accept **F-057** (ridge mint + Simulation restart UI/engine) under G-010. Done.
+Accept **F-058** (buoyancy precedence + oceanic subduction + SEPARATE rift mint) under G-010. Done.
 
 ---
 
@@ -29,18 +29,18 @@ Accept **F-057** (ridge mint + Simulation restart UI/engine) under G-010. Done.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-057 | Ridge mint (thin oceanic in gaps) + Simulation restart UI/engine | done |
+| F-058 | Buoyancy precedence + oceanic subduction + SEPARATE mint | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-057 marked `in progress` before code
-- [x] F-057 Accepted (witness + SYNC)
+- [x] F-058 marked `in progress` before code
+- [x] F-058 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-057 ridge mint + restart menu are done.
-- Next: F-058 buoyancy precedence + oceanic subduction — propose job + FRs.
+- F-058 buoyancy + rift unshare are done. \(T_{land}=16\).
+- Next: F-059 continental suture + arc thickening + cap — propose job + FRs.

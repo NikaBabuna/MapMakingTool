@@ -7,7 +7,7 @@
 
 # Elevation process
 
-> **Code status (through F-057):** occupancy keys + thickness lockers live; **ridge mint** of thin ocean in advection gaps; elevation is **isostasy** of locker thickness at current keys (\(T_{ocean}=8\)). Contact stamps write **locker thickness** (F-038 ladder) and ride with occupancy. Buoyancy / suture still later G-010 Steps. Plates: B1 nearest-site; sphere polar wrap (F-045); geometry apply/fission/ridge flood.
+> **Code status (through F-058):** occupancy keys + thickness lockers live; **ridge mint** of thin ocean in advection gaps and SEPARATE copies; **buoyancy** COLLIDE (\(T_{land}=16\)); elevation is **isostasy** of locker thickness at current keys (\(T_{ocean}=8\)). Contact stamps write **locker thickness** (F-038 ladder, buoyancy polarity) and ride with occupancy. Suture still F-059. Plates: B1 nearest-site; sphere polar wrap (F-045); geometry apply/fission/ridge flood.
 
 Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 
@@ -107,7 +107,7 @@ This supersedes “plates do not move” from G-004 / F-017.
 
 1. Read standing `elevation`, staged/pool `boundaries`, and standing `plate_registry` (not this Step’s apply/advect write).
 2. Walk each classified contact **once** (O(contacts) — not a per-cell contact scan):
-   - **COLLIDE** — winner-side cell `+1`, loser-side cell `−1` (smaller area loses; tie → lower id)
+   - **COLLIDE** — winner-side cell `+1`, loser-side cell `−1` (F-058 buoyancy: ocean loses to continent; ocean–ocean smaller area; C–C no stamp)
    - **SEPARATE** — both contact cells `−1`
    - **PASS_BY** — `0`
 3. Per-cell combine: any winner COLLIDE → `+1`; else any loser COLLIDE → `−1`; else any SEPARATE → `−1`; else `0`.
@@ -115,7 +115,7 @@ This supersedes “plates do not move” from G-004 / F-017.
 
 This supersedes F-021 velocity-neighbor closing for elevation. Classification still uses `n · (vA − vB)` when tracing boundaries.
 
-**G-010 / F-057:** the stamp ladder increments **locker thickness** at standing contact occupancy. Occupancy remaps with plates; **gaps mint** new \(T_{ocean}\) lockers. Elevation is isostasy (`thickness − T_{ocean}`, \(T_{ocean}=8\)). Stamps **ride**.
+**G-010 / F-058:** the stamp ladder increments **locker thickness** at standing contact occupancy with buoyancy polarity. Occupancy remaps with plates; **gaps and SEPARATE copies mint** new \(T_{ocean}\) lockers; COLLIDE consume writes the surviving locker. Elevation is isostasy (`thickness − T_{ocean}`, \(T_{ocean}=8\), \(T_{land}=16\)). Stamps **ride**.
 
 A world whose standing assignment is a single plate (for example a 1×1 grid) has no contacts, so elevation stays 0.
 

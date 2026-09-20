@@ -15,8 +15,11 @@ import java.util.Objects;
  */
 public final class Lockers {
 
-  /** Provisional oceanic thickness (F-056). \(T_{land}\) is F-058. */
+  /** Oceanic thickness (F-056). */
   public static final int T_OCEAN = 8;
+
+  /** Continental threshold (F-058). Thickness {@code >= T_LAND} is continental. */
+  public static final int T_LAND = 16;
 
   private final int[] thickness;
 

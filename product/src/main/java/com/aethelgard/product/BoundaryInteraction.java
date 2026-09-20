@@ -32,8 +32,10 @@ public final class BoundaryInteraction implements SubSystem {
   public void execute(SubSystemIo io) {
     Boundaries boundaries = requireBoundaries(readBoundaries(io));
     PlateRegistry registry = requireRegistry(io.readPool(WorldFields.PLATE_REGISTRY));
-    io.write(WorldFields.AREA_FLUX, AreaFlux.from(boundaries, registry));
-    io.write(WorldFields.MOTION_INTENT, MotionIntent.from(boundaries, registry));
+    Grid occupancy = requireGrid(io.readPool(WorldFields.OCCUPANCY), WorldFields.OCCUPANCY);
+    Lockers lockers = requireLockers(io.readPool(WorldFields.LOCKERS));
+    io.write(WorldFields.AREA_FLUX, AreaFlux.from(boundaries, registry, occupancy, lockers));
+    io.write(WorldFields.MOTION_INTENT, MotionIntent.from(boundaries, registry, occupancy, lockers));
   }
 
   private static Object readBoundaries(SubSystemIo io) {
@@ -64,5 +66,24 @@ public final class BoundaryInteraction implements SubSystem {
             + WorldFields.PLATE_REGISTRY
             + "' must be PlateRegistry, was "
             + value.getClass().getName());
+  }
+
+  private static Grid requireGrid(Object value, String field) {
+    if (value instanceof Grid grid) {
+      return grid;
+    }
+    throw new IllegalStateException(
+        "field '" + field + "' must be Grid, was " + (value == null ? "null" : value.getClass().getName()));
+  }
+
+  private static Lockers requireLockers(Object value) {
+    if (value instanceof Lockers lockers) {
+      return lockers;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.LOCKERS
+            + "' must be Lockers, was "
+            + (value == null ? "null" : value.getClass().getName()));
   }
 }

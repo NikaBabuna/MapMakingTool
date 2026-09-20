@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-20** — **F-058:** buoyancy collide (\(T_{land}=16\)); oceanic occupancy consume; SEPARATE contact-locker copies mint thin ocean. Runtime physics (G-010).
 - **2026-09-20** — **F-057:** ridge mint (thin oceanic lockers in advection gaps); Simulation menu Restart UI / Restart engine. Runtime physics + runner chrome (G-010).
 - **2026-09-20** — **F-055 / G-010 open:** docs lock (occupancy keys + lockers; derived elevation; ridge mint; buoyancy/suture; ADR-013). Active Goal G-010. Runtime unchanged.
 - **2026-09-20** — **F-054 / G-009 close:** layer-switch harden (applyGen + digit preventDefault; MapController paintLock); comprehensive product/wiki/glossary SYNC; Active Goal none; last completed G-009.

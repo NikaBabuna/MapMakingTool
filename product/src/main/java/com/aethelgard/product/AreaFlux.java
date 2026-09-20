@@ -57,13 +57,24 @@ public final class AreaFlux {
     return lose == plateA ? plateB : plateA;
   }
 
-  /** Budgets from standing boundaries + registry (F-035 locks). */
+  /**
+   * Budgets from standing boundaries + registry (F-035 locks). All-oceanic / area-only collide
+   * loser. Production uses {@link #from(Boundaries, PlateRegistry, Grid, Lockers)}.
+   */
   public static AreaFlux from(Boundaries boundaries, PlateRegistry registry) {
+    return from(boundaries, registry, null, null);
+  }
+
+  /** Budgets with F-058 buoyancy when occupancy + lockers are present. */
+  public static AreaFlux from(
+      Boundaries boundaries, PlateRegistry registry, Grid occupancy, Lockers lockers) {
     Objects.requireNonNull(boundaries, "boundaries");
     Objects.requireNonNull(registry, "registry");
     int n = registry.count();
     int[] delta = new int[n];
     int sink = 0;
+    int width = occupancy == null ? 0 : occupancy.width();
+    int height = occupancy == null ? 0 : occupancy.height();
     for (BoundaryContact c : boundaries.contacts()) {
       switch (c.kind()) {
         case SEPARATE -> {
@@ -72,7 +83,15 @@ public final class AreaFlux {
           sink -= 2;
         }
         case COLLIDE -> {
-          int lose = loser(c.plateA(), c.plateB(), registry);
+          int lose;
+          if (occupancy != null && lockers != null) {
+            lose = CrustPrecedence.collideLoser(c, occupancy, lockers, registry, width, height);
+            if (lose == CrustPrecedence.NONE) {
+              break;
+            }
+          } else {
+            lose = loser(c.plateA(), c.plateB(), registry);
+          }
           delta[lose] -= 1;
           sink += 1;
         }
