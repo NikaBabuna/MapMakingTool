@@ -19,7 +19,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — G-010 in progress (F-056 occupancy + isostasy); G-009 done (through F-054); G-008 boundary tectonics + studio done |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — G-010 in progress (F-057 ridge mint); G-009 done (through F-054); G-008 boundary tectonics + studio done |
 
 ---
 

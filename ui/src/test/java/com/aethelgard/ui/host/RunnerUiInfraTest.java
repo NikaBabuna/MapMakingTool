@@ -96,6 +96,8 @@ class RunnerUiInfraTest {
             "sim.play",
             "sim.pause",
             "sim.advance",
+            "sim.restartUi",
+            "sim.restartEngine",
             "help.shortcuts")) {
       assertTrue(menus.contains("\"" + action + "\""), "action " + action);
     }
@@ -112,6 +114,8 @@ class RunnerUiInfraTest {
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
     assertTrue(tool.contains("<MenuBar"));
     assertTrue(tool.contains("onMenuAction"));
+    assertTrue(tool.contains("location.reload"));
+    assertTrue(tool.contains("postRestartEngine"));
     assertFalse(tool.contains("JFrame"));
 
     String css = Files.readString(root.resolve("ui/web/src/app/globals.css"));

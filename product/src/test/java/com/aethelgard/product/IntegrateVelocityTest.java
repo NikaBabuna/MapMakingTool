@@ -60,6 +60,7 @@ class IntegrateVelocityTest {
             "integrate-velocity",
             "apply-geometry",
             "orogeny",
+            "ridge-create",
             "isostasy"),
         subs.stream().map(SubSystem::id).toList());
 

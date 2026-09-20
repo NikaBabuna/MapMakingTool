@@ -47,6 +47,7 @@ import java.util.concurrent.ThreadFactory;
  *   <li>{@code POST /api/layer} — body or {@code ?layer=}
  *   <li>{@code POST /api/speed} — body or {@code ?speed=}
  *   <li>{@code POST /api/new-world} — {@code ?seed=}
+ *   <li>{@code POST /api/restart-engine} — same seed, Step 0; works while busy
  *   <li>{@code POST /api/inspect} — {@code ?x=} {@code ?y=}
  *   <li>{@code POST /api/command} — plain-text console line
  * </ul>
@@ -127,6 +128,7 @@ public final class MapHost implements AutoCloseable {
     http.createContext("/api/layer", host::layer);
     http.createContext("/api/speed", host::speed);
     http.createContext("/api/new-world", host::newWorld);
+    http.createContext("/api/restart-engine", host::restartEngine);
     http.createContext("/api/inspect", host::inspect);
     http.createContext("/api/command", host::command);
     http.setExecutor(httpThreads);
@@ -349,6 +351,19 @@ public final class MapHost implements AutoCloseable {
       return;
     }
     controller.newWorld(seed);
+    send(exchange, 200, "application/json; charset=utf-8", statusJson());
+  }
+
+  private void restartEngine(HttpExchange exchange) throws IOException {
+    if (preflight(exchange)) {
+      return;
+    }
+    if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+      send(exchange, 405, "text/plain; charset=utf-8", "method not allowed");
+      return;
+    }
+    drain(exchange);
+    controller.restartEngine();
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 

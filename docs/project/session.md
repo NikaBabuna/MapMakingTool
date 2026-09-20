@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-20  
-**Status:** F-056 Accepted · Active Goal **G-010** · last completed G-009
+**Status:** F-057 Accepted · Active Goal **G-010** · last completed G-009
 
 ---
 
 ## Session goal
 
-Accept **F-056** (occupancy keys + lockers + ride + isostasy) under G-010. Done.
+Accept **F-057** (ridge mint + Simulation restart UI/engine) under G-010. Done.
 
 ---
 
@@ -29,18 +29,18 @@ Accept **F-056** (occupancy keys + lockers + ride + isostasy) under G-010. Done.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-056 | Occupancy keys + lockers + ride + isostasy | done |
+| F-057 | Ridge mint (thin oceanic in gaps) + Simulation restart UI/engine | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-056 marked `in progress` before code
-- [x] F-056 Accepted (witness + SYNC)
+- [x] F-057 marked `in progress` before code
+- [x] F-057 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-055 docs lock + F-056 ride/isostasy are done.
-- Next: F-057 ridge mint (thin oceanic in gaps) — propose job + FRs.
+- F-057 ridge mint + restart menu are done.
+- Next: F-058 buoyancy precedence + oceanic subduction — propose job + FRs.

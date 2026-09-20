@@ -25,6 +25,7 @@ import {
   postInspect,
   postLayer,
   postNewWorld,
+  postRestartEngine,
   postSpeed,
   SPEED_MS,
   HostStatus,
@@ -434,6 +435,30 @@ export function MapTool() {
     }
   }
 
+  async function onRestartEngine() {
+    setPlaying(false);
+    const gen = ++applyGenRef.current;
+    try {
+      const next = await postRestartEngine();
+      if (gen !== applyGenRef.current) {
+        return;
+      }
+      setStatus(next);
+      busyRef.current = next.busy;
+      const bytes = await fetchRaster();
+      if (gen !== applyGenRef.current) {
+        return;
+      }
+      setRaster(bytes);
+      setError(null);
+    } catch (err) {
+      if (gen !== applyGenRef.current) {
+        return;
+      }
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  }
+
   function requestNewWorld() {
     if (busyRef.current) {
       return;
@@ -533,6 +558,12 @@ export function MapTool() {
         return;
       case "sim.speed.Fastest":
         void onSpeed("Fastest");
+        return;
+      case "sim.restartUi":
+        window.location.reload();
+        return;
+      case "sim.restartEngine":
+        void onRestartEngine();
         return;
       case "help.shortcuts":
         setShortcutsOpen(true);

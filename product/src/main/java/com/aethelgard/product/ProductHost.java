@@ -16,6 +16,7 @@ import com.aethelgard.engine.pool.EngineSetup;
 import com.aethelgard.engine.system.EngineSystem;
 import com.aethelgard.engine.system.SubSystem;
 import com.aethelgard.engine.system.SystemConfig;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,7 +28,8 @@ import java.util.Objects;
  * <p>Schema: elevation / plates / plate_registry / boundaries / area_flux / motion_intent /
  * plate_velocity / occupancy / lockers are STATIC. One tectonics System claims {@code
  * world/tectonics} after Step 0 and runs TraceBoundaries → BoundaryInteraction →
- * IntegrateVelocity → ApplyGeometry → Orogeny (locker stamps) → ThicknessToElevation.
+ * IntegrateVelocity → ApplyGeometry → Orogeny (locker stamps) → RidgeCreate →
+ * ThicknessToElevation.
  */
 public final class ProductHost {
 
@@ -51,6 +53,10 @@ public final class ProductHost {
     ApplyGeometry applyGeometry = new ApplyGeometry();
     SubSystem timedIntegrate = new TimingSubSystem(integrate, DiagnosticIds.PHASE_INTEGRATE);
     SubSystem timedApply = new TimingSubSystem(applyGeometry, DiagnosticIds.PHASE_APPLY);
+    SubSystem timedOrogeny = new TimingSubSystem(new Orogeny(), DiagnosticIds.PHASE_OROGENY);
+    RidgeCreate ridgeCreate = new RidgeCreate();
+    SubSystem timedIsostasy =
+        new TimingSubSystem(new ThicknessToElevation(), DiagnosticIds.PHASE_ISOSTASY);
     EngineSystem tectonics =
         new EngineSystem(
             new SystemConfig(
@@ -62,10 +68,20 @@ public final class ProductHost {
                         new BoundaryInteraction(), DiagnosticIds.PHASE_INTERACTION),
                     timedIntegrate,
                     timedApply,
-                    new TimingSubSystem(new Orogeny(), DiagnosticIds.PHASE_OROGENY),
-                    new TimingSubSystem(
-                        new ThicknessToElevation(), DiagnosticIds.PHASE_ISOSTASY)),
-                conflict -> List.of(timedIntegrate, timedApply)));
+                    timedOrogeny,
+                    ridgeCreate,
+                    timedIsostasy),
+                conflict -> {
+                  List<SubSystem> preferred =
+                      List.of(timedIntegrate, timedApply, timedOrogeny, ridgeCreate);
+                  List<SubSystem> ordered = new ArrayList<>();
+                  for (SubSystem sub : preferred) {
+                    if (conflict.contains(sub)) {
+                      ordered.add(sub);
+                    }
+                  }
+                  return ordered;
+                }));
     FieldSchema schema =
         FieldSchema.of(
             Map.of(

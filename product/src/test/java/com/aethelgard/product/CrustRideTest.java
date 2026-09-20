@@ -87,6 +87,7 @@ class CrustRideTest {
             .toList();
     assertEquals("isostasy", ids.get(ids.size() - 1));
     assertTrue(ids.contains("orogeny"));
+    assertTrue(ids.contains("ridge-create"));
 
     Engine engine = ProductHost.create(new WorldSpec(2, 1, 0L));
     engine.advance(1);

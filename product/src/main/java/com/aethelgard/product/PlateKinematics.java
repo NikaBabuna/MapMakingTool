@@ -82,8 +82,8 @@ public final class PlateKinematics implements SubSystem {
 
   /**
    * One generation of advection + flood fill, remapping occupancy keys with the same motion.
-   * Unique destinations keep the source locker id. Gaps/contested cells flood occupancy from
-   * resolved neighbors (ridge mint is F-057).
+   * Unique destinations keep the source locker id. Contested cells keep the lowest-plate source
+   * locker. Gap cells ({@code claims == 0}) stay {@link #UNRESOLVED} for {@link RidgeCreate}.
    */
   public static AdvectResult advect(
       Grid plates,
@@ -158,7 +158,7 @@ public final class PlateKinematics implements SubSystem {
       }
     }
     fillUnresolvedFlood(next, width, height);
-    fillUnresolvedFlood(occDest, width, height);
+    // Occupancy gaps stay UNRESOLVED — RidgeCreate mints thin ocean (F-057).
     int[] ovx = new int[n];
     int[] ovy = new int[n];
     for (int i = 0; i < n; i++) {

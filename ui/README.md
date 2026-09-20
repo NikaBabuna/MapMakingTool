@@ -13,7 +13,7 @@ Maven artifact `com.aethelgard:ui` — headless map logic + localhost `MapHost`.
 
 ## Headless logic
 
-`MapController` — `ProductSession`, layers, Advance / Play, `newWorld`, inspect, legend, `runCommand`, busy status. **No Swing.** Covered by tests.
+`MapController` — `ProductSession`, layers, Advance / Play, `newWorld`, `restartEngine`, inspect, legend, `runCommand`, busy status. **No Swing.** Covered by tests.
 
 `ElevationRaster` — packed RGB for Elevation (ocean + hillshade), Plates, and Overlay (F-022 formulas).
 

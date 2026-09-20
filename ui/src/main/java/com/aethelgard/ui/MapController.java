@@ -219,7 +219,21 @@ public final class MapController {
     }
     pause();
     spec = new WorldSpec(spec.width(), spec.height(), seed);
+    replaceSession();
+  }
+
+  /**
+   * Recreate the session with the current geometry and seed. Works while {@link #busy()}. Pauses
+   * play. In-flight Advance on the old session must not capture over the new world.
+   */
+  public void restartEngine() {
+    pause();
+    replaceSession();
+  }
+
+  private void replaceSession() {
     session = new ProductSession(spec);
+    busy.set(false);
     inspected = null;
     capture();
     fire();
@@ -275,18 +289,27 @@ public final class MapController {
       return;
     }
     fire();
+    final ProductSession target = session;
     executor.execute(
         () -> {
           try {
-            session.advance();
+            if (session != target) {
+              return;
+            }
+            target.advance();
+            if (session != target) {
+              return;
+            }
             capture();
             if (inspected != null) {
               inspect(inspected.x(), inspected.y());
               return;
             }
           } finally {
-            busy.set(false);
-            fire();
+            if (session == target) {
+              busy.set(false);
+              fire();
+            }
           }
         });
   }

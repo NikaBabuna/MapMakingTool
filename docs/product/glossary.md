@@ -51,7 +51,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
 | **Oceanic crust** | Thickness below \(T_{land}\) (threshold F-058). Step 0 all \(T_{ocean}=8\). Subducts at COLLIDE (F-058). |
 | **Continental crust** | **G-010 planned:** thickness \(\ge T_{land}\). Does not die by area-only precedence. Sutures instead of subducting. |
-| **Ridge mint** | **G-010 planned (F-057):** new gap occupancy gets thin oceanic lockers; does not inherit neighbor mountains. |
+| **Ridge mint** | **G-010 live (F-057):** new gap occupancy gets thin oceanic lockers; does not inherit neighbor mountains. |
 | **Command language** | Shared noun-path + verb operator grammar in `cli` (F-048): point at `session`/`pool`/`schema`/`systems`/`diag`, act with `list`/`get`/`advance`/…. |
 | **CommandDispatch** | Single execute entry for headless CLI, MapHost `/api/command`, and in-app console (F-048; deprecated flat aliases remain). |
 | **CliRunner** | Headless full runner (F-049): one session per invocation; `--seed` / `--steps` / `-c` over `CommandDispatch`. |
@@ -63,7 +63,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Layout keys** | `aethelgard.layout.leftRail` / `.rightRail` / `.terminal` (px sizes) and `aethelgard.rail.<side>.open` / `aethelgard.panel.<id>.open` visibility flags; clamps in `lib/layout.ts` (F-053). |
 | **Shortcuts overlay** | `?` dialog listing every runner key from `lib/shortcuts.ts` — the single source shared with menu labels (F-053). |
 | **ElevationRaster** | UI headless RGB image of a map layer (`com.aethelgard.ui`): flat `int[]` pixels; bathymetry + hillshaded land (clamp 64), plate colors, or overlay. Controllers may reuse the buffer (F-047). |
-| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, inspect, legend, `runCommand` (cli dispatcher), busy. No Swing. No map Working… overlay (F-052). |
+| **MapController** | UI headless map logic: `ProductSession`, layers, Advance/Play, newWorld, **restartEngine**, inspect, legend, `runCommand` (cli dispatcher), busy. No Swing. No map Working… overlay (F-052). |
 | **MapHost** | Localhost HTTP facade over `MapController` (`com.aethelgard.ui.host`). Loopback only. Used by the Next/Tauri front. |
 | **MapHostApp** | Entry that starts `MapHost` (default port 7420, `WorldSpec.VIEW`). |
 | **ui/web** | Next.js studio cartography tool (F-025 / G-007). HTTP client to `MapHost`; client-timed Play; map-first shell. |

@@ -122,6 +122,24 @@ class MapHostTest {
   }
 
   @Test
+  @DisplayName("F-057 FR-5: POST /api/restart-engine same seed Step 0")
+  void restartEngineRoute() throws Exception {
+    MapController controller = new MapController(new WorldSpec(8, 8, 4L));
+    controller.advance();
+    controller.advance();
+    try (MapHost host = MapHost.start(controller, 0)) {
+      String before = get(host, "/api/status");
+      assertTrue(before.contains("\"seed\":4"));
+      assertTrue(before.contains("\"step\":2"));
+      post(host, "/api/restart-engine");
+      String after = get(host, "/api/status");
+      assertTrue(after.contains("\"seed\":4"));
+      assertTrue(after.contains("\"step\":0"));
+      assertTrue(after.contains("\"busy\":false"));
+    }
+  }
+
+  @Test
   @DisplayName("FR-4: raster bytes match ElevationRaster for same grids + layer")
   void rasterMatchesController() throws Exception {
     MapController controller = new MapController(new WorldSpec(8, 8, 0L));

@@ -227,6 +227,29 @@ class ToolUiTest {
   }
 
   @Test
+  @DisplayName("F-057 FR-5: restartEngine same seed Step 0 even while busy")
+  void restartEngineWhileBusy() {
+    ArrayDeque<Runnable> queue = new ArrayDeque<>();
+    MapController map = new MapController(new WorldSpec(8, 8, 11L), queue::add);
+    map.advance();
+    assertEquals(1, map.stepIndex());
+
+    map.advanceAsync();
+    assertTrue(map.busy());
+    map.play();
+    map.restartEngine();
+    assertFalse(map.busy());
+    assertFalse(map.playing());
+    assertEquals(11L, map.spec().seed());
+    assertEquals(0, map.stepIndex());
+    assertEquals(8, map.spec().width());
+
+    queue.removeFirst().run();
+    assertEquals(0, map.stepIndex(), "in-flight advance must not clobber restart");
+    assertEquals(11L, map.spec().seed());
+  }
+
+  @Test
   @DisplayName("FR-6: inspect returns cell fields from captured grids")
   void inspectCell() {
     MapController map = new MapController(new WorldSpec(8, 8, 0L));

@@ -13,7 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
-- **2026-09-20** — **F-056:** occupancy keys + thickness lockers; elevation isostasy (\(T_{ocean}=8\)); contact stamps ride. Runtime physics changed (G-010).
+- **2026-09-20** — **F-057:** ridge mint (thin oceanic lockers in advection gaps); Simulation menu Restart UI / Restart engine. Runtime physics + runner chrome (G-010).
 - **2026-09-20** — **F-055 / G-010 open:** docs lock (occupancy keys + lockers; derived elevation; ridge mint; buoyancy/suture; ADR-013). Active Goal G-010. Runtime unchanged.
 - **2026-09-20** — **F-054 / G-009 close:** layer-switch harden (applyGen + digit preventDefault; MapController paintLock); comprehensive product/wiki/glossary SYNC; Active Goal none; last completed G-009.
 - **2026-09-20** — **F-053:** descriptor-driven chrome (panel registry + shared `Panel`, menu-bar row from `lib/menus.ts`, resizable persisted layout in `lib/layout.ts`); separation tokens; brighter elevation ramps; QoL (shortcuts overlay, Advance ×N, copy seed, steps/sec, Terminal Clear).

@@ -30,7 +30,7 @@ Open http://localhost:3000. Host default: `http://127.0.0.1:7420` (`NEXT_PUBLIC_
 
 ## Behavior
 
-Map-first **runner** (F-053): menu-bar row (File · Edit · View · Simulation · Help); top bar identity · transport (Play/Pause/`1x`…`Fastest`) · view; left **Perf** rail (hub means + steps/sec); World rail (step/seed/reset, Advance ×N, copy seed + Inspect/Legend); layer chips **top-left**; always-on Terminal panel with **Clear**. Rails and terminal are drag-resizable (sizes persist; **View → Reset layout**). Brighter elevation ramps. Play is a client timer → `/api/advance`. Busy gates Advance / Reset world (no Working… map overlay).
+Map-first **runner** (F-053): menu-bar row (File · Edit · View · Simulation · Help); top bar identity · transport (Play/Pause/`1x`…`Fastest`) · view; left **Perf** rail (hub means + steps/sec); World rail (step/seed/reset, Advance ×N, copy seed + Inspect/Legend); layer chips **top-left**; always-on Terminal panel with **Clear**. Rails and terminal are drag-resizable (sizes persist; **View → Reset layout**). Brighter elevation ramps. Play is a client timer → `/api/advance`. Busy gates Advance / Reset world (no Working… map overlay). **Simulation → Restart UI** reloads the page; **Restart engine** recreates the Java session at Step 0 (same seed, works while busy).
 
 Chrome is descriptor-driven (alpha): add a rail panel in `src/lib/panels.ts`, a menu item in `src/lib/menus.ts`, a resizable region in `src/lib/layout.ts`, a key row in `src/lib/shortcuts.ts`.
 

@@ -49,6 +49,19 @@ public final class Lockers {
     return thickness[id];
   }
 
+  /** Append {@code n} new lockers at {@link #T_OCEAN}. {@code n == 0} returns this instance. */
+  public Lockers appendOceanic(int n) {
+    if (n < 0) {
+      throw new IllegalArgumentException("n must be >= 0, was " + n);
+    }
+    if (n == 0) {
+      return this;
+    }
+    int[] next = Arrays.copyOf(thickness, thickness.length + n);
+    Arrays.fill(next, thickness.length, next.length, T_OCEAN);
+    return new Lockers(next);
+  }
+
   /** Copy of thicknesses in id order. */
   public int[] thicknesses() {
     return Arrays.copyOf(thickness, thickness.length);

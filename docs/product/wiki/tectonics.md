@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-056 occupancy + lockers + isostasy live. F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-055 G-010 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Occupancy keys remap with plates; locker stamps ride; elevation is isostasy (\(T_{ocean}=8\)). Sphere-on-rectangle F-045; flood fill F-044. **G-010 remaining:** ridge mint F-057; buoyancy F-058; suture/arc F-059.
+**Doc status:** F-057 ridge mint live. F-056 occupancy + lockers + isostasy live. F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-055 G-010 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Occupancy keys remap with plates; gaps mint thin oceanic lockers (\(T_{ocean}=8\)); locker stamps ride; elevation is isostasy. Sphere-on-rectangle F-045; flood fill F-044. **G-010 remaining:** buoyancy F-058; suture/arc F-059.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -23,7 +23,7 @@ This page is the physics + Pool/System plan for boundary tectonics. When a later
 | **Topology (runtime)** | **F-045 live** — `SphereTopology` shared helper. Cylinder hard-Y **retired**. |
 | **History** | Earlier G-008 text said **torus**; amended F-034 to cylinder; F-041 amends to sphere polar wrap; **F-045** implements it. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-038). **Sphere polar wrap live (F-045).** **F-056 live:** occupancy keys + lockers; elevation is isostasy of riding thickness. Ridge mint / buoyancy / suture not implemented until F-057–F-059. Collide precedence is still area-only until F-058.
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-038). **Sphere polar wrap live (F-045).** **F-057 live:** occupancy remaps; advection gaps mint thin oceanic lockers; elevation is isostasy of riding thickness. Buoyancy / suture not implemented until F-058–F-059. Collide precedence is still area-only until F-058.
 
 ---
 
@@ -80,7 +80,7 @@ Plates are the only tectonic actors. **Number, motion, and size** come from boun
 | **Collide** (converge) | Destroy crust into **sink**; loser shrinks | Dampen closing; slab-style pull on loser | Uplift / trench |
 | **Pass-by** (transform) | ≈ none | Slide; little normal change | Little |
 
-**G-010 (F-056 live):** relief is **not** standing-cell elevation paint. Thickness lockers ride occupancy; elevation is isostasy. Contact-paint orogeny is **superseded for G-010**. The F-038 stamp ladder now writes locker thickness. Ridge mint of new lockers is F-057.
+**G-010 (F-057 live):** relief is **not** standing-cell elevation paint. Thickness lockers ride occupancy; new rift occupancy is **minted** thin ocean; elevation is isostasy. Contact-paint orogeny is **superseded for G-010**. The F-038 stamp ladder now writes locker thickness.
 
 ### Diverge / void-fill (G-009)
 
@@ -132,17 +132,17 @@ Intentional rift-fracture birth beyond pinch-fission may wait if Steps stay smal
 
 | Field | Shape | Merge intent | Role |
 |-------|-------|--------------|------|
-| occupancy keys | grid int | Static (one writer: ApplyGeometry) | Cell → locker id (`plates` remains plate ownership) |
-| `lockers` | object table | Static (one writer: Orogeny stamps) | id → thickness |
+| occupancy keys | grid int | Static (ApplyGeometry remap, then RidgeCreate mint) | Cell → locker id (`plates` remains plate ownership) |
+| `lockers` | object table | Static (Orogeny stamps, then RidgeCreate append) | id → thickness |
 | `elevation` | grid int | Static (one writer: ThicknessToElevation) | **Derived** isostasy: `thickness − T_ocean` (\(T_{ocean}=8\)) |
 
-\(T_{land}\) still F-058. Ridge mint of new lockers is F-057 (gaps currently inherit neighbor occupancy).
+\(T_{land}\) still F-058. Ridge mint of new lockers is **F-057 live** (gaps do not inherit neighbor occupancy).
 
 ---
 
 ## Crust topology (G-010)
 
-**Lock (F-055 / ADR-013).** **F-056 live:** occupancy remaps; locker stamps ride; elevation is isostasy.
+**Lock (F-055 / ADR-013).** **F-057 live:** occupancy remaps; gaps mint \(T_{ocean}\) lockers; locker stamps ride; elevation is isostasy.
 
 Crust is **material**. Occupancy **keys** move with plates. Locker **thickness** moves with those keys. Interiors keep their cargo. Elevation is a **view** of thickness (integer isostasy), not contact-paint \(\pm 1\) on standing coordinates. Contact-paint **Orogeny** is **superseded for G-010** as the elevation author (code F-056).
 
@@ -150,9 +150,9 @@ Crust is **material**. Occupancy **keys** move with plates. Locker **thickness**
 
 When a cell’s occupancy key remaps, that locker (thickness) appears at the new cell. Land **rides**. The map must not leave a mountain ribbon where the contact used to be.
 
-### Ridge mint (F-057)
+### Ridge mint (F-057 live)
 
-New occupancy at SEPARATE / gaps gets thin **oceanic** crust (\(T_{ocean}\)). Gaps **do not** inherit a neighbor’s mountain (flood of plate id stays; flood of thickness does not).
+New occupancy at SEPARATE / gaps gets thin **oceanic** crust (\(T_{ocean}\)). Gaps **do not** inherit a neighbor’s mountain (flood of plate id stays; flood of thickness does not). `RidgeCreate` appends locker ids in raster order.
 
 ### Buoyancy and subduction (F-058)
 
@@ -206,7 +206,7 @@ world/tectonics/
 | Motion | IntegrateVelocity | `plate_registry` velocities |
 | Lifecycle | FractureDetect / Spawn (optional thin) | registry / plates |
 | Orogeny | ReliefFromBoundaries → locker thickness (F-056) | `lockers` |
-| Crust (G-010) | ThicknessToElevation live; RidgeCreate / Subduct / ContinentalCollide later | derived `elevation`; mint/subduct/suture F-057–F-059 |
+| Crust (G-010) | ThicknessToElevation + RidgeCreate live; Subduct / ContinentalCollide later | derived `elevation`; mint F-057; subduct/suture F-058–F-059 |
 
 Implementation Steps: **F-034–F-038**.
 
@@ -218,5 +218,5 @@ Implementation Steps: **F-034–F-038**.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009:** shared CLI/terminal (**F-048**–**F-050**); runner chrome + perf rail (**F-051**–**F-052**); UI infrastructure + QoL (**F-053**).
-- **G-010:** occupancy + lockers + isostasy **F-056 live**; ridge mint / buoyancy / suture planned F-057–F-059.
+- **G-010:** occupancy + lockers + isostasy **F-056 live**; ridge mint **F-057 live**; buoyancy / suture planned F-058–F-059.
 - **F-046:** crumb absorb **0.01%**; session phase collectors (`phase.trace` … `phase.orogeny` / `phase.isostasy`) on `DiagnosticsHub`.

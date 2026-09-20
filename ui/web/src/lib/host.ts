@@ -104,6 +104,11 @@ export async function postNewWorld(seed: number, base = hostBase()): Promise<Hos
   return readJson<HostStatus>(res);
 }
 
+export async function postRestartEngine(base = hostBase()): Promise<HostStatus> {
+  const res = await fetch(`${base}/api/restart-engine`, { method: "POST" });
+  return readJson<HostStatus>(res);
+}
+
 export async function postInspect(x: number, y: number, base = hostBase()): Promise<HostStatus> {
   const res = await fetch(`${base}/api/inspect?x=${x}&y=${y}`, { method: "POST" });
   return readJson<HostStatus>(res);

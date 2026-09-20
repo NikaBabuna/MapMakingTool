@@ -104,7 +104,10 @@ class CrustTopologyDocsTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("G-010"));
-    assertTrue(style.contains("planned") || style.contains("Planned"));
+    assertTrue(
+        style.contains("planned")
+            || style.contains("Planned")
+            || style.contains("later"));
 
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
     assertTrue(flows.contains("G-010"));

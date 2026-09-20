@@ -24,6 +24,8 @@ export type MenuActionId =
   | "sim.speed.2x"
   | "sim.speed.4x"
   | "sim.speed.Fastest"
+  | "sim.restartUi"
+  | "sim.restartEngine"
   | "help.shortcuts";
 
 export type MenuItem = {
@@ -90,6 +92,8 @@ export const MENUS: MenuDescriptor[] = [
       { id: "sim.speed.2x", label: "Speed 2x", action: "sim.speed.2x", enabled: true },
       { id: "sim.speed.4x", label: "Speed 4x", action: "sim.speed.4x", enabled: true },
       { id: "sim.speed.Fastest", label: "Speed Fastest", action: "sim.speed.Fastest", enabled: true },
+      { id: "sim.restartUi", label: "Restart UI", action: "sim.restartUi", enabled: true, separatorBefore: true },
+      { id: "sim.restartEngine", label: "Restart engine", action: "sim.restartEngine", enabled: true },
       { id: "sim.record", label: "Record history…", enabled: false, separatorBefore: true },
     ],
   },

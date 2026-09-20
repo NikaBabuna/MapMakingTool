@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Mirrors the tectonics System order for independent witnesses: boundaries/flux/intent from
  * standing plates, IntegrateVelocity, ApplyGeometry, occupancy remap, locker stamps on standing
- * occupancy, isostasy of remapped keys.
+ * occupancy, ridge mint in gaps, isostasy of remapped keys.
  */
 public final class ProductGeneration {
 
@@ -68,9 +68,15 @@ public final class ProductGeneration {
     PlateKinematics.AdvectResult moved =
         PlateKinematics.advect(
             geom.plates(), state.occupancy(), geom.velocities(), generationIndex, ridge);
+    RidgeCreate.Result minted = RidgeCreate.apply(moved.occupancy(), stamped);
     PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
-    Grid elevation = ThicknessToElevation.apply(moved.occupancy(), stamped);
+    Grid elevation = ThicknessToElevation.apply(minted.occupancy(), minted.lockers());
     return new Snapshot(
-        moved.plates(), moved.velocities(), after, moved.occupancy(), stamped, elevation);
+        moved.plates(),
+        moved.velocities(),
+        after,
+        minted.occupancy(),
+        minted.lockers(),
+        elevation);
   }
 }

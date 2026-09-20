@@ -7,7 +7,7 @@
 
 # Style guide
 
-_Status: **active** — G-009 **done** (F-054). G-010 **in progress** (F-056 occupancy + isostasy). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
+_Status: **active** — G-009 **done** (F-054). G-010 **in progress** (F-057 ridge mint). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** (G-007/G-008 multi-panel Inspect/Legend + mappy neatline) remains the map-desk metaphor; F-051+ reframes chrome as a quiet **runner shell**. Terminal language F-048–F-050 (rebuilt `Terminal.tsx`); F-052 makes the terminal an always-on panel; F-053 turns chrome into descriptor-driven infrastructure; F-054 hardens layer switching and closes the Goal.
 
@@ -25,9 +25,9 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 
 ---
 
-## G-010 crust (F-056 live)
+## G-010 crust (F-057 live)
 
-Map still reads `elevation`, now **isostasy** of riding crust. Contact stamps thicken lockers so mountains **move** with plates. No chrome change this Step. Exact HUD/crust layer: F-060 or later. Ridge mint **planned** F-057.
+Map still reads `elevation`, now **isostasy** of riding crust. Contact stamps thicken lockers so mountains **move** with plates. **Ridge mint:** rifts are thin ocean, not copied mountains. Simulation menu: **Restart UI** (reload page) and **Restart engine** (same seed, Step 0). Exact HUD/crust layer: F-060 or later. Buoyancy and suture remain **planned**.
 
 ---
 
@@ -35,7 +35,7 @@ Map still reads `elevation`, now **isostasy** of riding crust. Contact stamps th
 
 | Slot | Content |
 |------|---------|
-| **Menu bar** | Slim top row: File · Edit · View · Simulation · Help |
+| **Menu bar** | Slim top row: File · Edit · View · Simulation · Help. Simulation includes Restart UI and Restart engine (F-057). |
 | **Top · identity** | Brand wordmark + host **dot only** (green/red) |
 | **Top · transport** | Play · Pause · Speed (`1x` / `2x` / `4x` / `Fastest`) |
 | **Top · view** | Reset view · Perf (rail toggle) · World (rail toggle) |

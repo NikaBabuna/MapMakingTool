@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **in progress** (**F-056** occupancy + isostasy live)._
+_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **in progress** (**F-057** ridge mint live)._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -30,13 +30,13 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Area | Intent | Steps |
 |------|--------|-------|
 | Docs | Keys + lockers; ride; ridge mint; buoyancy; suture; isostasy | **F-055** done |
-| Ride | Occupancy keys + thickness lockers; elevation from isostasy | **F-056** (this Step) |
-| Ridge | Thin oceanic mint in gaps | F-057 |
+| Ride | Occupancy keys + thickness lockers; elevation from isostasy | **F-056** done |
+| Ridge | Thin oceanic mint in gaps | **F-057** done |
 | Buoyancy | Ocean subducts; continent does not die by area | F-058 |
 | Continents | Arc + suture + cap | F-059 |
 | Close | Dump/wiki/UI hygiene; Goal seal | F-060 |
 
-Runtime this Step: occupancy remaps with plates; locker stamps ride; elevation is isostasy. Map still paints `elevation`. Gaps still inherit neighbor occupancy until F-057.
+Runtime: occupancy remaps with plates; locker stamps ride; **gaps mint thin ocean**; elevation is isostasy. Map still paints `elevation`. Simulation menu: Restart UI / Restart engine.
 
 ### Flow: Crust ride (F-056)
 
@@ -45,6 +45,21 @@ Runtime this Step: occupancy remaps with plates; locker stamps ride; elevation i
 | 1 | Step 0: occupancy is one locker per cell; all thickness \(T_{ocean}=8\); elevation 0. |
 | 2 | Advance. Contact stamps thicken lockers; occupancy remaps with plate motion; elevation is isostasy of thickness at the new keys. |
 | 3 | Interior crust is at the plate’s new cells, not left on last Step’s contact coordinates. |
+
+### Flow: Ridge mint (F-057)
+
+| Step | Action |
+|------|--------|
+| 1 | Plates diverge. Advection leaves some cells with zero unique claimants. |
+| 2 | Plate-id flood still assigns those cells to bordering plates (F-044). |
+| 3 | `RidgeCreate` mints **new** lockers at \(T_{ocean}=8\) in raster order. Elevation at the rift is 0, not a copied mountain. |
+
+### Flow: Restart UI / engine (F-057)
+
+| Step | Action |
+|------|--------|
+| 1 | **Simulation → Restart UI** reloads the Next page. The Java session keeps its current world. |
+| 2 | **Simulation → Restart engine** recreates `ProductSession` at Step 0 with the **same seed**, even if Advance is busy. Play pauses. |
 
 ### Flow: Raster / host memory (F-047)
 

@@ -62,7 +62,7 @@ See **ADR-013** in [../decisions.md](../decisions.md). Exact \(T_{ocean}\) / \(T
 ## Product claims (tests by Goal end)
 
 - [x] Interior thickness/elevation follows the plate claim map (not contact paint left behind)
-- [ ] Ridge/gap cells are thin oceanic, not inherited high crust
+- [x] Ridge/gap cells are thin oceanic, not inherited high crust
 - [ ] Oceanic crust is consumed at COLLIDE; continental is not deleted by area-only precedence
 - [ ] After enough generations on a collide-friendly seed, some cells stay \(\ge T_{land}\) while riding (arc and/or suture)
 - [ ] `elevation` matches isostasy of lockers at occupancy; determinism; no `engine` edits; suite green
@@ -75,7 +75,7 @@ See **ADR-013** in [../decisions.md](../decisions.md). Exact \(T_{ocean}\) / \(T
 |------|--------|--------|
 | F-055 | Docs lock (wiki + ADR-013 + Goal) — **docs only** | done |
 | F-056 | Occupancy keys + thickness lockers + ride + isostasy elevation | done |
-| F-057 | Ridge mint (thin oceanic in gaps) | not started |
+| F-057 | Ridge mint (thin oceanic in gaps) + Simulation restart | done |
 | F-058 | Buoyancy precedence + oceanic subduction | not started |
 | F-059 | Continental suture + arc thickening + cap | not started |
 | F-060 | Goal close + dump/wiki/UI hygiene | not started |
@@ -86,6 +86,6 @@ See **ADR-013** in [../decisions.md](../decisions.md). Exact \(T_{ocean}\) / \(T
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 2 / 6 |
-| Claim boxes | 1 / 5 |
-| Last Accept | F-056 |
+| Steps done | 3 / 6 |
+| Claim boxes | 2 / 5 |
+| Last Accept | F-057 |
