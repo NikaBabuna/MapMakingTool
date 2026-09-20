@@ -35,6 +35,7 @@ public final class DiagnosticsHub {
     hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_INTEGRATE, DEFAULT_CAPACITY));
     hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_APPLY, DEFAULT_CAPACITY));
     hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_OROGENY, DEFAULT_CAPACITY));
+    hub.register(new RingDiagnosticCollector(DiagnosticIds.PHASE_ISOSTASY, DEFAULT_CAPACITY));
     return hub;
   }
 

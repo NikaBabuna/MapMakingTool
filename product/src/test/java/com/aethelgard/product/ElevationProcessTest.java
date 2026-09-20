@@ -108,7 +108,10 @@ class ElevationProcessTest {
     PlateVelocities vel = (PlateVelocities) engine.settled().field(WorldFields.PLATE_VELOCITY);
     PlateRegistry reg = (PlateRegistry) engine.settled().field(WorldFields.PLATE_REGISTRY);
     engine.advance(1);
-    assertEquals(Orogeny.apply(plates, vel, Grid.zeros(4, 2)), engine.settled().field(WorldFields.ELEVATION));
+    ProductGeneration.Snapshot afterOne =
+        ProductGeneration.advance(
+            new ProductGeneration.Snapshot(plates, vel, reg, Grid.zeros(4, 2)), 1);
+    assertEquals(afterOne.elevation(), engine.settled().field(WorldFields.ELEVATION));
 
     ProductGeneration.Snapshot state =
         new ProductGeneration.Snapshot(plates, vel, reg, Grid.zeros(4, 2));

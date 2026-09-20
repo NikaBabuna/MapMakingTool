@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **planned** (**F-055** docs lock)._
+_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **in progress** (**F-056** occupancy + isostasy live)._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -29,14 +29,22 @@ Before production feature code, extend this file per [../process/quality.md](../
 
 | Area | Intent | Steps |
 |------|--------|-------|
-| Docs | Keys + lockers; ride; ridge mint; buoyancy; suture; isostasy | **F-055** (this Step) |
-| Ride | Occupancy keys + thickness lockers; elevation from isostasy | F-056 |
+| Docs | Keys + lockers; ride; ridge mint; buoyancy; suture; isostasy | **F-055** done |
+| Ride | Occupancy keys + thickness lockers; elevation from isostasy | **F-056** (this Step) |
 | Ridge | Thin oceanic mint in gaps | F-057 |
 | Buoyancy | Ocean subducts; continent does not die by area | F-058 |
 | Continents | Arc + suture + cap | F-059 |
 | Close | Dump/wiki/UI hygiene; Goal seal | F-060 |
 
-Runtime this Step: G-009 runner + F-038 orogeny. No map behavior change.
+Runtime this Step: occupancy remaps with plates; locker stamps ride; elevation is isostasy. Map still paints `elevation`. Gaps still inherit neighbor occupancy until F-057.
+
+### Flow: Crust ride (F-056)
+
+| Step | Action |
+|------|--------|
+| 1 | Step 0: occupancy is one locker per cell; all thickness \(T_{ocean}=8\); elevation 0. |
+| 2 | Advance. Contact stamps thicken lockers; occupancy remaps with plate motion; elevation is isostasy of thickness at the new keys. |
+| 3 | Interior crust is at the plate’s new cells, not left on last Step’s contact coordinates. |
 
 ### Flow: Raster / host memory (F-047)
 

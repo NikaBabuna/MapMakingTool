@@ -25,8 +25,9 @@ import java.util.Objects;
  * schema and Systems without callers talking to engine defaults directly.
  *
  * <p>Schema: elevation / plates / plate_registry / boundaries / area_flux / motion_intent /
- * plate_velocity are STATIC. One tectonics System claims {@code world/tectonics} after Step 0 and
- * runs TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry → Orogeny.
+ * plate_velocity / occupancy / lockers are STATIC. One tectonics System claims {@code
+ * world/tectonics} after Step 0 and runs TraceBoundaries → BoundaryInteraction →
+ * IntegrateVelocity → ApplyGeometry → Orogeny (locker stamps) → ThicknessToElevation.
  */
 public final class ProductHost {
 
@@ -61,7 +62,9 @@ public final class ProductHost {
                         new BoundaryInteraction(), DiagnosticIds.PHASE_INTERACTION),
                     timedIntegrate,
                     timedApply,
-                    new TimingSubSystem(new Orogeny(), DiagnosticIds.PHASE_OROGENY)),
+                    new TimingSubSystem(new Orogeny(), DiagnosticIds.PHASE_OROGENY),
+                    new TimingSubSystem(
+                        new ThicknessToElevation(), DiagnosticIds.PHASE_ISOSTASY)),
                 conflict -> List.of(timedIntegrate, timedApply)));
     FieldSchema schema =
         FieldSchema.of(
@@ -72,7 +75,9 @@ public final class ProductHost {
                 WorldFields.BOUNDARIES, FieldType.STATIC,
                 WorldFields.AREA_FLUX, FieldType.STATIC,
                 WorldFields.MOTION_INTENT, FieldType.STATIC,
-                WorldFields.PLATE_VELOCITY, FieldType.STATIC));
+                WorldFields.PLATE_VELOCITY, FieldType.STATIC,
+                WorldFields.OCCUPANCY, FieldType.STATIC,
+                WorldFields.LOCKERS, FieldType.STATIC));
     return new EngineSetup(
         tree,
         List.of(),
@@ -92,8 +97,8 @@ public final class ProductHost {
 
   /**
    * Creates a run from {@code spec}: seeds zero elevation, B1 nearest-site plates (N=12–24),
-   * plate_registry, boundaries, area_flux, motion_intent, and STATIC plate_velocity. Completes Step
-   * 0.
+   * occupancy keys + oceanic lockers, plate_registry, boundaries, area_flux, motion_intent, and
+   * STATIC plate_velocity. Completes Step 0.
    *
    * @param spec Step 0 world seed (must not be {@code null})
    */
@@ -101,6 +106,8 @@ public final class ProductHost {
     Objects.requireNonNull(spec, "spec");
     Grid elevation = Grid.zeros(spec.width(), spec.height());
     Grid plates = Plates.seed(spec.width(), spec.height(), spec.seed());
+    Grid occupancy = Occupancy.seed(spec.width(), spec.height());
+    Lockers lockers = Lockers.oceanic(Occupancy.count(spec.width(), spec.height()));
     PlateVelocities velocities = PlateVelocities.seed(spec.seed());
     PlateRegistry registry = PlateRegistry.from(plates, velocities);
     Boundaries boundaries = Boundaries.trace(plates, velocities);
@@ -117,7 +124,9 @@ public final class ProductHost {
                 WorldFields.BOUNDARIES, boundaries,
                 WorldFields.AREA_FLUX, areaFlux,
                 WorldFields.MOTION_INTENT, motionIntent,
-                WorldFields.PLATE_VELOCITY, velocities));
+                WorldFields.PLATE_VELOCITY, velocities,
+                WorldFields.OCCUPANCY, occupancy,
+                WorldFields.LOCKERS, lockers));
     return Engine.create(config, setup());
   }
 }

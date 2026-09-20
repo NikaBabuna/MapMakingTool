@@ -7,7 +7,6 @@
 
 package com.aethelgard.product;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -95,7 +94,6 @@ class CrustTopologyDocsTest {
 
     String session = Files.readString(root.resolve("docs/project/session.md"));
     assertTrue(session.contains("G-010"));
-    assertTrue(session.contains("F-055"));
     assertTrue(session.contains("in progress"));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
@@ -117,7 +115,7 @@ class CrustTopologyDocsTest {
     assertTrue(glossary.contains("Occupancy") || glossary.contains("occupancy"));
     assertTrue(glossary.contains("Isostasy") || glossary.contains("isostasy"));
 
-    assertFalse(Files.isRegularFile(root.resolve("docs/blockers/F-056.md")));
+    assertTrue(Files.isRegularFile(root.resolve("docs/blockers/F-056.md")));
 
     String orogeny =
         Files.readString(root.resolve("product/src/main/java/com/aethelgard/product/Orogeny.java"));

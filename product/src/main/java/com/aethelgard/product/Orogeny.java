@@ -1,6 +1,6 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/Orogeny.java
- * Purpose: Tectonics Sub-System — elevation from standing classified boundaries
+ * Purpose: Tectonics Sub-System — locker thickness from standing classified boundaries
  * Audience: Product tectonics EngineSystem
  * Update when: Boundary orogeny relief rule changes
  */
@@ -15,10 +15,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Reads standing {@code elevation}, staged/pool {@code boundaries}, and standing {@code
- * plate_registry}. Writes a new elevation grid. COLLIDE winner {@code +1} / loser {@code -1};
- * SEPARATE both {@code -1}; PASS_BY {@code 0}. Walks contacts once (O(contacts)); no cell×contact
- * nest.
+ * Reads standing occupancy + lockers, staged/pool {@code boundaries}, and standing {@code
+ * plate_registry}. Writes lockers. COLLIDE winner {@code +1} / loser {@code -1}; SEPARATE both
+ * {@code -1}; PASS_BY {@code 0}. Walks contacts once (O(contacts)). Elevation is derived later by
+ * {@link ThicknessToElevation}.
  */
 public final class Orogeny implements SubSystem {
 
@@ -26,7 +26,9 @@ public final class Orogeny implements SubSystem {
   private static final byte RANK_NONE = 0;
 
   private static final byte RANK_SEPARATE = 1;
+
   private static final byte RANK_LOSE = 2;
+
   private static final byte RANK_WIN = 3;
 
   @Override
@@ -36,20 +38,21 @@ public final class Orogeny implements SubSystem {
 
   @Override
   public Set<String> writeRanges() {
-    return Set.of(WorldFields.ELEVATION);
+    return Set.of(WorldFields.LOCKERS);
   }
 
   @Override
   public void execute(SubSystemIo io) {
-    Grid elevation = requireGrid(io.readPool(WorldFields.ELEVATION), WorldFields.ELEVATION);
+    // Standing occupancy: stamps land on lockers at pre-move contact cells, then keys ride.
+    Grid occupancy = requireGrid(io.readPool(WorldFields.OCCUPANCY), WorldFields.OCCUPANCY);
+    Lockers lockers = requireLockers(io.readPool(WorldFields.LOCKERS));
     Boundaries boundaries = requireBoundaries(readField(io, WorldFields.BOUNDARIES));
     PlateRegistry registry = requireRegistry(io.readPool(WorldFields.PLATE_REGISTRY));
-    io.write(WorldFields.ELEVATION, apply(boundaries, registry, elevation));
+    io.write(WorldFields.LOCKERS, applyToLockers(boundaries, registry, occupancy, lockers));
   }
 
   /**
-   * One generation of boundary orogeny. No floor: elevation may go negative. Complexity:
-   * O(contacts) stamps + one elevation copy.
+   * Stamp ladder on a thickness-like grid (F-038 unit tests). No floor: values may go negative.
    */
   public static Grid apply(Boundaries boundaries, PlateRegistry registry, Grid elevation) {
     Objects.requireNonNull(boundaries, "boundaries");
@@ -57,46 +60,39 @@ public final class Orogeny implements SubSystem {
     Objects.requireNonNull(elevation, "elevation");
     int width = elevation.width();
     int height = elevation.height();
-    Map<Long, Byte> ranks = new HashMap<>(Math.max(16, boundaries.size() * 2));
-    for (BoundaryContact c : boundaries.contacts()) {
-      int ax = c.x();
-      int ay = c.y();
-      int[] nb = SphereTopology.neighbor(ax, ay, c.nx(), c.ny(), width, height);
-      int bx = nb[0];
-      int by = nb[1];
-      switch (c.kind()) {
-        case PASS_BY -> {
-          /* no relief */
-        }
-        case SEPARATE -> {
-          bump(ranks, key(ax, ay), RANK_SEPARATE);
-          bump(ranks, key(bx, by), RANK_SEPARATE);
-        }
-        case COLLIDE -> {
-          int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
-          if (c.plateA() == lose) {
-            bump(ranks, key(ax, ay), RANK_LOSE);
-            bump(ranks, key(bx, by), RANK_WIN);
-          } else {
-            bump(ranks, key(ax, ay), RANK_WIN);
-            bump(ranks, key(bx, by), RANK_LOSE);
-          }
-        }
-      }
-    }
+    Map<Long, Byte> ranks = ranks(boundaries, registry, width, height);
     int[][] next = new int[height][width];
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        next[y][x] = elevation.get(x, y);
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        next[row][col] = elevation.get(col, row);
       }
     }
+    applyRanksToGrid(ranks, next);
+    return new Grid(next);
+  }
+
+  /**
+   * Same stamp ladder applied to locker thickness at standing occupancy keys. Complexity:
+   * O(contacts) + one locker copy.
+   */
+  public static Lockers applyToLockers(
+      Boundaries boundaries, PlateRegistry registry, Grid occupancy, Lockers lockers) {
+    Objects.requireNonNull(boundaries, "boundaries");
+    Objects.requireNonNull(registry, "registry");
+    Objects.requireNonNull(occupancy, "occupancy");
+    Objects.requireNonNull(lockers, "lockers");
+    int width = occupancy.width();
+    int height = occupancy.height();
+    Map<Long, Byte> ranks = ranks(boundaries, registry, width, height);
+    int[] next = lockers.thicknesses();
     for (Map.Entry<Long, Byte> e : ranks.entrySet()) {
       long k = e.getKey();
       int x = (int) (k >>> 32);
       int y = (int) k;
-      next[y][x] += deltaFromRank(e.getValue());
+      int id = occupancy.get(x, y);
+      next[id] += deltaFromRank(e.getValue());
     }
-    return new Grid(next);
+    return new Lockers(next);
   }
 
   /**
@@ -128,6 +124,47 @@ public final class Orogeny implements SubSystem {
     };
   }
 
+  private static Map<Long, Byte> ranks(
+      Boundaries boundaries, PlateRegistry registry, int width, int height) {
+    Map<Long, Byte> ranks = new HashMap<>(Math.max(16, boundaries.size() * 2));
+    for (BoundaryContact c : boundaries.contacts()) {
+      int ax = c.x();
+      int ay = c.y();
+      int[] nb = SphereTopology.neighbor(ax, ay, c.nx(), c.ny(), width, height);
+      int bx = nb[0];
+      int by = nb[1];
+      switch (c.kind()) {
+        case PASS_BY -> {
+          /* no relief */
+        }
+        case SEPARATE -> {
+          bump(ranks, key(ax, ay), RANK_SEPARATE);
+          bump(ranks, key(bx, by), RANK_SEPARATE);
+        }
+        case COLLIDE -> {
+          int lose = AreaFlux.loser(c.plateA(), c.plateB(), registry);
+          if (c.plateA() == lose) {
+            bump(ranks, key(ax, ay), RANK_LOSE);
+            bump(ranks, key(bx, by), RANK_WIN);
+          } else {
+            bump(ranks, key(ax, ay), RANK_WIN);
+            bump(ranks, key(bx, by), RANK_LOSE);
+          }
+        }
+      }
+    }
+    return ranks;
+  }
+
+  private static void applyRanksToGrid(Map<Long, Byte> ranks, int[][] next) {
+    for (Map.Entry<Long, Byte> e : ranks.entrySet()) {
+      long k = e.getKey();
+      int x = (int) (k >>> 32);
+      int y = (int) k;
+      next[y][x] += deltaFromRank(e.getValue());
+    }
+  }
+
   private static void bump(Map<Long, Byte> ranks, long key, byte candidate) {
     Byte prior = ranks.get(key);
     if (prior == null || candidate > prior) {
@@ -150,6 +187,17 @@ public final class Orogeny implements SubSystem {
     }
     throw new IllegalStateException(
         "field '" + field + "' must be Grid, was " + value.getClass().getName());
+  }
+
+  private static Lockers requireLockers(Object value) {
+    if (value instanceof Lockers lockers) {
+      return lockers;
+    }
+    throw new IllegalStateException(
+        "field '"
+            + WorldFields.LOCKERS
+            + "' must be Lockers, was "
+            + value.getClass().getName());
   }
 
   private static Boundaries requireBoundaries(Object value) {

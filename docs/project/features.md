@@ -159,7 +159,7 @@ Goal doc: [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md)
 | ID | Name | Status | Blocker |
 |----|------|--------|---------|
 | F-055 | Docs lock (wiki + ADR + Goal claims) | done | [F-055.md](../blockers/F-055.md) |
-| F-056 | Occupancy keys + lockers + ride + isostasy | not started | |
+| F-056 | Occupancy keys + lockers + ride + isostasy | done | [F-056.md](../blockers/F-056.md) |
 | F-057 | Ridge mint (thin oceanic in gaps) | not started | |
 | F-058 | Buoyancy precedence + oceanic subduction | not started | |
 | F-059 | Continental suture + arc thickening + cap | not started | |

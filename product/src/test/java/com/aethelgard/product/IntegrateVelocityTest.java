@@ -59,7 +59,8 @@ class IntegrateVelocityTest {
             "boundary-interaction",
             "integrate-velocity",
             "apply-geometry",
-            "orogeny"),
+            "orogeny",
+            "isostasy"),
         subs.stream().map(SubSystem::id).toList());
 
     // Two blobs of plate 0 separated vertically by plate 1 (no X-wrap join)

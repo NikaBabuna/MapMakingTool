@@ -28,6 +28,7 @@ class StepPathHotspotsTest {
     assertTrue(hub.has(DiagnosticIds.PHASE_INTEGRATE));
     assertTrue(hub.has(DiagnosticIds.PHASE_APPLY));
     assertTrue(hub.has(DiagnosticIds.PHASE_OROGENY));
+    assertTrue(hub.has(DiagnosticIds.PHASE_ISOSTASY));
     assertTrue(hub.has(DiagnosticIds.ADVANCE_WALL));
 
     session.advance(2);
@@ -36,6 +37,7 @@ class StepPathHotspotsTest {
     assertEquals(2, hub.get(DiagnosticIds.PHASE_INTEGRATE).size());
     assertEquals(2, hub.get(DiagnosticIds.PHASE_APPLY).size());
     assertEquals(2, hub.get(DiagnosticIds.PHASE_OROGENY).size());
+    assertEquals(2, hub.get(DiagnosticIds.PHASE_ISOSTASY).size());
     assertTrue(hub.get(DiagnosticIds.PHASE_APPLY).latest() > 0);
 
     String list = hub.listReport();
@@ -115,6 +117,7 @@ class StepPathHotspotsTest {
           DiagnosticIds.PHASE_INTEGRATE,
           DiagnosticIds.PHASE_APPLY,
           DiagnosticIds.PHASE_OROGENY,
+          DiagnosticIds.PHASE_ISOSTASY,
           DiagnosticIds.ADVANCE_WALL,
           DiagnosticIds.HEAP_USED,
           DiagnosticIds.HEAP_MAX

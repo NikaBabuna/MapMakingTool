@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-010 **in progress** — F-055 docs lock; G-009 **done** through F-054; G-008 done)  
+**Status:** active (G-010 **in progress** — F-056 occupancy + isostasy; G-009 **done** through F-054; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -42,24 +42,24 @@ cli →  product  →  engine
 
 | Piece | F-021 |
 |-------|--------|
-| Schema | all of `elevation` / `plates` / `plate_registry` / `boundaries` / `area_flux` / `motion_intent` / `plate_velocity` → STATIC |
+| Schema | all of `elevation` / `plates` / `occupancy` / `lockers` / `plate_registry` / `boundaries` / `area_flux` / `motion_intent` / `plate_velocity` → STATIC |
 | Values | Immutable `Grid`; `PlateRegistry`; `Boundaries`; `AreaFlux`; `MotionIntent`; `PlateVelocities` |
-| Create | Seeds zero elevation, B1 plates (N=12–24), registry, boundaries, area_flux, motion_intent, velocities |
-| Systems | One `tectonics` System: TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (apply+advect) → Orogeny |
+| Create | Seeds zero elevation, occupancy keys, oceanic lockers (\(T_{ocean}=8\)), B1 plates (N=12–24), registry, boundaries, area_flux, motion_intent, velocities |
+| Systems | One `tectonics` System: TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (plates + occupancy) → Orogeny (locker stamps) → ThicknessToElevation |
 | Default | `ProductSession.ofDefault()` → `WorldSpec.DEFAULT` (8×8, seed `0`) |
 | View | `ProductSession.view()` / `WorldSpec.VIEW` (**1920×1080**, seed `0`, F-031) |
 | Category tree | Product-authored `CategoryTree.of("world/tectonics")` (ADR-009) |
 | Emission | `GenerationTickPolicy` — emit `world/tectonics` when `updateCount >= 2` (skip Step 0) |
 | Compute | Engine default (`SkeletonPoolCompute` heartbeat). World is **not** `PoolSnapshot.value`. Kinematics uses heartbeat−1 as generation index \(G\) under that default. |
-| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + velocities + registry + boundaries + area_flux + motion_intent; canonical golden is DEFAULT + `advance(3)` |
+| Dump | `ProductSession.settledWorld()` / `WorldDump.of(engine, spec)` — header + elevation + plates + occupancy + lockers + velocities + registry + boundaries + area_flux + motion_intent; canonical golden is DEFAULT + `advance(3)` |
 
-`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, re-traces boundaries, then advects ownership (wrap X; Y off-map dropped). Unresolved cells after advection use **iterative flood** (F-044). Crossing a pole uses **sphere antipodal re-entry** and flips plate `vx,vy` (F-045). SEPARATE/COLLIDE flux apply uses **deterministic ragged** skips/nibbles along contacts (F-045 P3). Crumb absorb bar is **0.01%** of W×H (F-046). Orogeny stamps relief from standing classified `boundaries` (O(contacts)). Elevation may go negative. The seed is not its own Pool field.
+`WorldSpec.seed` places cylindrical nearest-site plates (`N = 12 + floorMod(seed, 13)`) and per-plate velocities in `{-1,0,1}`. Each cell takes the nearest site (wrap X; flat Y); ties take the lower site index. After Step 0, each generation integrates velocities from `motion_intent`, applies flux/fission, re-traces boundaries, then advects ownership **and occupancy keys**. Unresolved cells after advection use **iterative flood** (F-044). Crossing a pole uses **sphere antipodal re-entry** and flips plate `vx,vy` (F-045). SEPARATE/COLLIDE flux apply uses **deterministic ragged** skips/nibbles along contacts (F-045 P3). Crumb absorb bar is **0.01%** of W×H (F-046). Orogeny stamps **locker thickness** from standing classified `boundaries` (O(contacts)); elevation is isostasy (`thickness − 8`). Elevation may go negative. The seed is not its own Pool field.
 
 MapHost `/api/status` uses **cached** step + `busy` so polls never wait on the session physics lock (F-038).
 
 ### Session diagnostics (F-042)
 
-`ProductSession.diagnostics()` is a `DiagnosticsHub`: named collectors with enable/disable and bounded ring history (default capacity 64). Built-ins: `advance.wall`, `heap.used`, `heap.max`, `paint.wall`, and phase collectors `phase.trace` / `phase.interaction` / `phase.integrate` / `phase.apply` / `phase.orogeny` (F-046 — `TimingSubSystem` wrappers). Never writes Pool fields. CLI: `stats`, `diag list|on|off|clear`. MapController records paint into the same hub. Advection hotspot (F-046): contested claim tracking without a third `whoMin` WxH grid.
+`ProductSession.diagnostics()` is a `DiagnosticsHub`: named collectors with enable/disable and bounded ring history (default capacity 64). Built-ins: `advance.wall`, `heap.used`, `heap.max`, `paint.wall`, and phase collectors `phase.trace` / `phase.interaction` / `phase.integrate` / `phase.apply` / `phase.orogeny` / `phase.isostasy` (F-046 / F-056 — `TimingSubSystem` wrappers). Never writes Pool fields. CLI: `stats`, `diag list|on|off|clear`. MapController records paint into the same hub. Advection hotspot (F-046): contested claim tracking without a third `whoMin` WxH grid.
 
 ---
 
@@ -131,11 +131,11 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry**; **boundary orogeny** (F-038). **G-010 planned (F-055 / ADR-013):** occupancy keys + thickness lockers after occupancy; RidgeCreate / Subduct / ContinentalCollide / ThicknessToElevation; elevation derived. Runtime unchanged this Step.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry** (occupancy remap); locker stamps + **ThicknessToElevation** (F-056). Ridge mint / buoyancy / suture still F-057–F-059.
 
 ---
 
-## Source layout (through F-054; G-010 fields not in source yet)
+## Source layout (through F-056)
 
 ```
 product/
@@ -156,6 +156,9 @@ product/
     SphereTopology.java
     DiagnosticsHub.java
     GenerationTickPolicy.java
+    Occupancy.java
+    Lockers.java
+    ThicknessToElevation.java
     Orogeny.java
     WorldDump.java
   src/test/java/com/aethelgard/product/

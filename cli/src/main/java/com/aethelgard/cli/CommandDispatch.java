@@ -12,6 +12,7 @@ import com.aethelgard.product.Boundaries;
 import com.aethelgard.product.DiagnosticCollector;
 import com.aethelgard.product.DiagnosticsHub;
 import com.aethelgard.product.Grid;
+import com.aethelgard.product.Lockers;
 import com.aethelgard.product.MotionIntent;
 import com.aethelgard.product.PlateRegistry;
 import com.aethelgard.product.PlateVelocities;
@@ -323,6 +324,9 @@ public final class CommandDispatch {
     }
     if (value instanceof MotionIntent intent) {
       return field + " type=MotionIntent plates=" + intent.plateCount();
+    }
+    if (value instanceof Lockers lockers) {
+      return field + " type=Lockers count=" + lockers.count();
     }
     return field + " type=" + value.getClass().getSimpleName();
   }

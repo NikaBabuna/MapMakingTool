@@ -31,5 +31,11 @@ public final class WorldFields {
   /** Per-plate preferred Δv from edges — {@link MotionIntent}; STATIC. */
   public static final String MOTION_INTENT = "motion_intent";
 
+  /** Cell → locker id — {@link Grid}; STATIC (ApplyGeometry remaps keys). */
+  public static final String OCCUPANCY = "occupancy";
+
+  /** Locker id → thickness — {@link Lockers}; STATIC (Orogeny stamps). */
+  public static final String LOCKERS = "lockers";
+
   private WorldFields() {}
 }

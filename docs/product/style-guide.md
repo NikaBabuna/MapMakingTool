@@ -7,7 +7,7 @@
 
 # Style guide
 
-_Status: **active** — G-009 **done** (F-054). G-010 crust topology **planned** (F-055). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
+_Status: **active** — G-009 **done** (F-054). G-010 **in progress** (F-056 occupancy + isostasy). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** (G-007/G-008 multi-panel Inspect/Legend + mappy neatline) remains the map-desk metaphor; F-051+ reframes chrome as a quiet **runner shell**. Terminal language F-048–F-050 (rebuilt `Terminal.tsx`); F-052 makes the terminal an always-on panel; F-053 turns chrome into descriptor-driven infrastructure; F-054 hardens layer switching and closes the Goal.
 
@@ -25,9 +25,9 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 
 ---
 
-## G-010 crust (planned)
+## G-010 crust (F-056 live)
 
-Map still reads `elevation`. After F-056, that grid is **isostasy** of riding crust, not contact-paint orogeny. No chrome change this Step (F-055 docs only). Continents should read as coherent high blobs that **move**, not island-chain scars. Exact HUD/crust layer: F-060 or later.
+Map still reads `elevation`, now **isostasy** of riding crust. Contact stamps thicken lockers so mountains **move** with plates. No chrome change this Step. Exact HUD/crust layer: F-060 or later. Ridge mint **planned** F-057.
 
 ---
 

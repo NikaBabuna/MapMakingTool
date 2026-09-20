@@ -98,12 +98,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-010 planned (F-055); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
+| [architecture.md](product/architecture.md) | Active — G-010 in progress (F-056 occupancy + isostasy); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-010 planned (F-055); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
-| [glossary.md](product/glossary.md) | Active — lockers/occupancy/isostasy planned (F-055); DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
-| [style-guide.md](product/style-guide.md) | Active — F-055 G-010 crust planned; F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
-| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-055 G-010 crust locks; F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
+| [flows.md](product/flows.md) | G-010 in progress (F-056 ride); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
+| [glossary.md](product/glossary.md) | Active — lockers/occupancy/isostasy **live** (F-056); DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
+| [style-guide.md](product/style-guide.md) | Active — F-056 isostasy map; F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
+| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-056 occupancy + isostasy; F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -168,6 +168,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-053.md](blockers/F-053.md) | done — runner UI infrastructure + QoL |
 | [F-054.md](blockers/F-054.md) | done — Goal close + layer harden + doc hygiene |
 | [F-055.md](blockers/F-055.md) | done — G-010 docs lock |
+| [F-056.md](blockers/F-056.md) | done — occupancy + lockers + ride + isostasy |
 
 ---
 

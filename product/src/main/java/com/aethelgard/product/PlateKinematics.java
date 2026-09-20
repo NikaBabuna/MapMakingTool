@@ -59,8 +59,12 @@ public final class PlateKinematics implements SubSystem {
     return staged != null ? staged : io.readPool(WorldFields.BOUNDARIES);
   }
 
-  /** Result of one advection generation (plates + possibly heading-flipped velocities). */
-  public record AdvectResult(Grid plates, PlateVelocities velocities) {}
+  /** Result of one advection generation (plates + heading-flipped velocities + occupancy keys). */
+  public record AdvectResult(Grid plates, PlateVelocities velocities, Grid occupancy) {
+    public AdvectResult(Grid plates, PlateVelocities velocities) {
+      this(plates, velocities, Occupancy.seed(plates.width(), plates.height()));
+    }
+  }
 
   /**
    * One generation of advection + flood fill. {@code generationIndex} ≥ 1 on the first tectonics
@@ -68,17 +72,54 @@ public final class PlateKinematics implements SubSystem {
    */
   public static AdvectResult advect(
       Grid plates, PlateVelocities velocities, int generationIndex, Boundaries boundaries) {
+    return advect(
+        plates,
+        Occupancy.seed(plates.width(), plates.height()),
+        velocities,
+        generationIndex,
+        boundaries);
+  }
+
+  /**
+   * One generation of advection + flood fill, remapping occupancy keys with the same motion.
+   * Unique destinations keep the source locker id. Gaps/contested cells flood occupancy from
+   * resolved neighbors (ridge mint is F-057).
+   */
+  public static AdvectResult advect(
+      Grid plates,
+      Grid occupancy,
+      PlateVelocities velocities,
+      int generationIndex,
+      Boundaries boundaries) {
     Objects.requireNonNull(plates, "plates");
+    Objects.requireNonNull(occupancy, "occupancy");
     Objects.requireNonNull(velocities, "velocities");
     Objects.requireNonNull(boundaries, "boundaries");
     if (generationIndex < 1) {
       throw new IllegalArgumentException("generationIndex must be >= 1, was " + generationIndex);
+    }
+    if (occupancy.width() != plates.width() || occupancy.height() != plates.height()) {
+      throw new IllegalArgumentException(
+          "occupancy "
+              + occupancy.width()
+              + "x"
+              + occupancy.height()
+              + " != plates "
+              + plates.width()
+              + "x"
+              + plates.height());
     }
     int width = plates.width();
     int height = plates.height();
     int n = velocities.count();
     int[][] claims = new int[height][width];
     int[][] who = new int[height][width];
+    int[][] occDest = new int[height][width];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        occDest[y][x] = UNRESOLVED;
+      }
+    }
     boolean[] crossed = new boolean[n];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -98,9 +139,11 @@ public final class PlateKinematics implements SubSystem {
         claims[ny][nx]++;
         if (claims[ny][nx] == 1) {
           who[ny][nx] = plate;
+          occDest[ny][nx] = occupancy.get(x, y);
         } else if (plate < who[ny][nx]) {
-          // Contested: keep lowest claimant so polar double-claims still seed flood.
+          // Contested: keep lowest claimant (same as plates) and that source's locker.
           who[ny][nx] = plate;
+          occDest[ny][nx] = occupancy.get(x, y);
         }
       }
     }
@@ -115,6 +158,7 @@ public final class PlateKinematics implements SubSystem {
       }
     }
     fillUnresolvedFlood(next, width, height);
+    fillUnresolvedFlood(occDest, width, height);
     int[] ovx = new int[n];
     int[] ovy = new int[n];
     for (int i = 0; i < n; i++) {
@@ -126,7 +170,8 @@ public final class PlateKinematics implements SubSystem {
         ovy[i] = velocities.vy(i);
       }
     }
-    return new AdvectResult(new Grid(next), new PlateVelocities(velocities.seed(), ovx, ovy));
+    return new AdvectResult(
+        new Grid(next), new PlateVelocities(velocities.seed(), ovx, ovy), new Grid(occDest));
   }
 
   /**

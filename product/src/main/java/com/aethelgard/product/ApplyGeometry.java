@@ -17,8 +17,8 @@ import java.util.Set;
 
 /**
  * Applies standing {@code area_flux} to {@code plates}, floods sink, fissions, absorbs crumbs,
- * removes dead plates, advects with current velocities, and rewrites dense {@code plate_registry} +
- * {@code plate_velocity}.
+ * removes dead plates, advects plates and occupancy keys with current velocities, and rewrites
+ * dense {@code plate_registry} + {@code plate_velocity}.
  */
 public final class ApplyGeometry implements SubSystem {
 
@@ -53,7 +53,11 @@ public final class ApplyGeometry implements SubSystem {
 
   @Override
   public Set<String> writeRanges() {
-    return Set.of(WorldFields.PLATES, WorldFields.PLATE_REGISTRY, WorldFields.PLATE_VELOCITY);
+    return Set.of(
+        WorldFields.PLATES,
+        WorldFields.PLATE_REGISTRY,
+        WorldFields.PLATE_VELOCITY,
+        WorldFields.OCCUPANCY);
   }
 
   @Override
@@ -64,16 +68,19 @@ public final class ApplyGeometry implements SubSystem {
     PlateRegistry registry = requireRegistry(readField(io, WorldFields.PLATE_REGISTRY));
     Boundaries boundaries = requireBoundaries(readField(io, WorldFields.BOUNDARIES));
     AreaFlux flux = requireFlux(readField(io, WorldFields.AREA_FLUX));
+    Grid occupancy = requireGrid(io.readPool(WorldFields.OCCUPANCY), WorldFields.OCCUPANCY);
     int generationIndex = Math.toIntExact(io.poolValue()) - 1;
     Result result = apply(plates, boundaries, flux, registry, velocities);
     // Re-trace on remapped plates so ridge pairs match post-fission ids.
     Boundaries ridge = Boundaries.trace(result.plates(), result.velocities());
     PlateKinematics.AdvectResult moved =
-        PlateKinematics.advect(result.plates(), result.velocities(), generationIndex, ridge);
+        PlateKinematics.advect(
+            result.plates(), occupancy, result.velocities(), generationIndex, ridge);
     PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
     io.write(WorldFields.PLATES, moved.plates());
     io.write(WorldFields.PLATE_REGISTRY, after);
     io.write(WorldFields.PLATE_VELOCITY, moved.velocities());
+    io.write(WorldFields.OCCUPANCY, moved.occupancy());
   }
 
   /** Full geometry pass (also used by tests). */

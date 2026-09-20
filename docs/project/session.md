@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-20  
-**Status:** F-055 Accepted · Active Goal **G-010** · last completed G-009
+**Status:** F-056 Accepted · Active Goal **G-010** · last completed G-009
 
 ---
 
 ## Session goal
 
-Accept **F-055** (docs lock) under G-010. Done — runtime unchanged.
+Accept **F-056** (occupancy keys + lockers + ride + isostasy) under G-010. Done.
 
 ---
 
@@ -29,18 +29,18 @@ Accept **F-055** (docs lock) under G-010. Done — runtime unchanged.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-055 | Docs lock (wiki + ADR-013 + Goal) | done |
+| F-056 | Occupancy keys + lockers + ride + isostasy | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-055 marked `in progress` before docs
-- [x] F-055 Accepted (witness + SYNC)
+- [x] F-056 marked `in progress` before code
+- [x] F-056 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-035 is G-008 (done). G-010 began at F-055.
-- Next: F-056 keys + lockers + ride + isostasy (code) — propose job + FRs.
+- F-055 docs lock + F-056 ride/isostasy are done.
+- Next: F-057 ridge mint (thin oceanic in gaps) — propose job + FRs.

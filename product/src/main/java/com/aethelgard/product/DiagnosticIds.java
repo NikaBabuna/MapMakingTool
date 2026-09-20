@@ -23,5 +23,7 @@ public final class DiagnosticIds {
   public static final String PHASE_APPLY = "phase.apply";
   public static final String PHASE_OROGENY = "phase.orogeny";
 
+  public static final String PHASE_ISOSTASY = "phase.isostasy";
+
   private DiagnosticIds() {}
 }

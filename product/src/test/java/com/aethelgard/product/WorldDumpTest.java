@@ -33,6 +33,8 @@ class WorldDumpTest {
     assertTrue(a.startsWith("world w=4 h=2 seed=0 steps=2\n"));
     assertTrue(a.contains("elevation:\n"));
     assertTrue(a.contains("plates:\n"));
+    assertTrue(a.contains("occupancy:\n"));
+    assertTrue(a.contains("lockers:\n"));
     assertTrue(a.contains("plate_velocity:\n"));
     assertTrue(a.contains("plate_registry:\n"));
     assertTrue(a.endsWith("\n"));
@@ -54,7 +56,7 @@ class WorldDumpTest {
   }
 
   @Test
-  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches standing orogeny")
+  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches ProductGeneration isostasy")
   void stepZeroAndSutureRule() {
     WorldSpec spec = new WorldSpec(4, 2, 0L);
     Engine engine = ProductHost.create(spec);
