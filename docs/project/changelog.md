@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-22** — **F-063:** every protocol page rewritten as an explanation with tables and copyable skeletons. The documentation-only Java witness added in F-062 is removed. No simulation change.
 - **2026-09-22** — **F-062:** conduct moved to `docs/protocol/` (environment, navigation, blueprints, flows). Session removed. Active Goal line only on the goal index. ADR-014. `docs/process/`, `PHASE.md`, and `doc-contract.md` removed.
 - **2026-09-22** — **G-011 open:** Docs restructuring approved (four shelves; one Step per shelf). Active Goal banners stay on `none` until F-062, because F-061 phrase witnesses require that string. No file moves yet.
 - **2026-09-22** — **F-061 / G-010 close:** elevation witnessed as isostasy; Overlay legend stroke labeled Boundary; Active Goal none; last completed G-010. No new physics.

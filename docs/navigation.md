@@ -59,7 +59,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
 | [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | done |
 | [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | done |
-| [goals/G-011-docs-restructuring.md](project/goals/G-011-docs-restructuring.md) | in progress — F-062 done; F-063 next |
+| [goals/G-011-docs-restructuring.md](project/goals/G-011-docs-restructuring.md) | in progress — F-063 protocol pages rewritten |
 | [features.md](project/features.md) | Active — G-001–G-011 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |

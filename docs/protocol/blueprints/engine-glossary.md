@@ -7,13 +7,26 @@
 
 # Framework glossary
 
-**Kind:** framework words  
-**Document:** `docs/engine/glossary.md`
+This is `docs/engine/glossary.md`. It defines the public words of the framework: the names an implementer must use the same way in every module. One row per word. It is not the protocol dictionary and not the domain glossary. Those three files stay separate so a search for “Step” does not land on a plate.
 
-## Body
+**Write or edit it when.** **Record source** adds a public framework word, or a word’s meaning changes. Private helpers do not get rows.
 
-Public framework words and meanings. One row per word.
+## What each column is for
 
-## Must not
+| Column | Why it is there |
+|--------|-----------------|
+| Word | The public name |
+| Meaning | What it guarantees. Include the boundary: what it does not do, when that boundary is the thing people get wrong |
+| Where | The spec page or the package door, so the glossary is an index and not a second spec |
 
-Duplicate the protocol dictionary or the domain glossary.
+## Skeleton
+
+```markdown
+| Word | Meaning | Where |
+|------|---------|-------|
+| <name> | <guarantee> | [<spec>](specs/<topic>.md) |
+```
+
+## Keep out
+
+Domain words. Protocol words. A history of renames longer than one clause.

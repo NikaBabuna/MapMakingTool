@@ -7,16 +7,34 @@
 
 # Docs index
 
-**Kind:** entrance index  
-**Document:** `docs/README.md`
+This is `docs/README.md`. It is the first documentation page, for a human or an agent who has not chosen a shelf yet. It names the shelves and points at the map. It is not the map. If it lists every file, it has become a second `navigation.md` and both will drift.
 
-## Body
+**Write or edit it when.** A top-level docs folder appears, disappears, or changes job.
 
-1. One sentence: the docs are the permanent prior.
-2. A pointer to `docs/navigation.md`.
-3. A table of shelves: folder, door, job.
-4. A line pointing at the goal index. Not a copy of the Active Goal sentence.
+## What each part is for
 
-## Must not
+| Part | Why it is there |
+|------|-----------------|
+| One sentence | What the docs tree is |
+| Pointer to the map | `docs/navigation.md`, so the reader knows where the full list is |
+| Shelf table | Folder, door, job. One row per shelf, plus folders that have not moved to their shelf yet, with that fact stated |
+| Goal index line | A link. Not a copy of the Active Goal sentence |
 
-List every page. Describe implementation.
+## Skeleton
+
+```markdown
+# Documentation
+
+<One sentence.>
+
+**Map:** [navigation.md](navigation.md).
+**Goal index:** [project/goals.md](project/goals.md) — <Goal id and name>
+
+| Folder | Door | Job |
+|--------|------|-----|
+| [protocol/](protocol/) | [README](protocol/README.md) | Conduct |
+```
+
+## Keep out
+
+Implementation detail. A list of every blueprint. The witness command.

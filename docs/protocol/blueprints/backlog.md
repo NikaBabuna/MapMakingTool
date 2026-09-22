@@ -7,13 +7,30 @@
 
 # Backlog
 
-**Kind:** unpromoted ideas  
-**Document:** `docs/project/backlog.md`
+This is `docs/project/backlog.md`. It is the list of ideas that are not Goals and not Steps. An idea here is not being worked. If an agent treats a backlog row as permission to code, the row has been misread. Promotion is **Open goal**, which requires the human’s approval of a Goal text.
 
-## Body
+**Write or edit it when.** An idea is captured, or **Open goal** promotes one.
 
-A table of ideas that are not Goals. When an idea is promoted, the row says which Goal took it.
+## What each part is for
 
-## Must not
+| Part | Why it is there |
+|------|-----------------|
+| Opening | “Not in progress. Promote into a Goal when ready.” This sentence is the whole status model |
+| Table | The idea, and a note: deferred from where, or promoted to which Goal. A promoted row stays, so the idea can be traced. It does not stay as if it were still waiting |
 
-Mark an idea `in progress`. Promotion is the Open goal flow.
+## Skeleton
+
+```markdown
+# Backlog
+
+Items here are not in progress. Promote one into a Goal when the human approves that Goal.
+
+| Idea | Notes |
+|------|-------|
+| <idea> | Promoted to [G-0xx](goals/G-0xx-<slug>.md) |
+| <idea> | After <condition> |
+```
+
+## Keep out
+
+A status of `in progress`. Requirements. Implementation notes that belong in a paper.

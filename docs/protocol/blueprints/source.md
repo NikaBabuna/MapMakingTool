@@ -1,19 +1,36 @@
 <!--
   File: docs/protocol/blueprints/source.md
-  Purpose: Shape of a source file header
+  Purpose: Shape of the header on a new source file
   Audience: Agents and humans
   Update when: The source-header shape changes
 -->
 
 # Source header
 
-**Kind:** source file header  
-**Documents:** a new source file under a code module.
+This is not a documentation file. It is the comment at the top of a new source file, so a reader who opened the file from a search knows whether it is the one they wanted before they read the body. The body is the program. It is not specified here. The behavior is specified in the implementation paper and the spec.
 
-## Body
+**Write it when.** **Record source** adds a file.
 
-A comment at the top: File, Purpose, Audience, Update when. The rest of the file is the program, and is not a document blueprint.
+## What each line is for
 
-## Must not
+| Line | Why it is there |
+|------|-----------------|
+| File | The path, so a copied fragment can be found |
+| Purpose | One sentence. What this file is responsible for. Not a list of recent edits |
+| Audience | Who is expected to change it |
+| Update when | The event that should cause this file’s purpose sentence to change |
 
-Carry the Active Goal sentence. Replace a door: a new landmark folder still gets a `README.md`.
+## Skeleton
+
+```text
+File: <path>
+Purpose: <one sentence>
+Audience: <who edits it>
+Update when: <the event>
+```
+
+The comment markers are whatever the language uses. The four lines are the protocol.
+
+## Keep out
+
+The Active Goal sentence. A changelog of the file. A door: if the file created a landmark folder, that folder still gets a `README.md` from the readme blueprint. The header does not replace the door.

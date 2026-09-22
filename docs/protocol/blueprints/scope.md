@@ -7,16 +7,54 @@
 
 # Scope
 
-**Kind:** what the product is  
-**Document:** `docs/project/project.md`
+This is `docs/project/project.md`. It is the hard bound on what the project is. Protocol says this document binds. Protocol does not restate the product. If an agent wants to build something this file does not list, the agent does not build it and apologize later. The **Scope** flow edits this file first, with the human.
 
-## Body
+**Write or edit it when.** **Scope** runs.
 
-1. One line.
-2. In-scope table.
-3. Out-of-scope list.
-4. Stack choices as pointers to decision records, not as conduct.
+## What each part is for
 
-## Must not
+| Part | Why it is there |
+|------|-----------------|
+| Name, repository, phase | Identity, so the file is not an anonymous list |
+| One line | The product in a sentence a stranger can repeat |
+| In scope | A table. Area and what that area includes. Work outside the table is not allowed |
+| Out of scope | Explicit refusals. The useful rows are the ones someone will otherwise assume are included |
+| Stack | Choices already made, each pointing at the ADR that accepted it. This section is a record of decisions, not a conduct rule |
+| Expansion | One sentence: changes land here first, and technical ones also get an ADR |
 
-Live in the protocol room. Protocol only says this document binds.
+## Skeleton
+
+```markdown
+# Project scope
+
+**Product name:** <name>
+**Phase:** alpha
+
+## One line
+
+<sentence>
+
+## In scope
+
+| Area | Description |
+|------|-------------|
+| <area> | <what is included> |
+
+## Out of scope (for now)
+
+- <exclusion>
+
+## Stack (intent)
+
+| Choice | Status |
+|--------|--------|
+| <choice> | Accepted — see ADR-0xx |
+
+## Expansion
+
+Scope changes belong here first. Technical changes also get an ADR.
+```
+
+## Keep out
+
+How a system works. Step status. The protocol rules themselves.
