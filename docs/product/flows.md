@@ -33,8 +33,9 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Ride | Occupancy keys + thickness lockers; elevation from isostasy | **F-056** done |
 | Ridge | Thin oceanic mint in gaps | **F-057** done |
 | Buoyancy | Ocean subducts; continent does not die by area; SEPARATE does not copy the border locker | **F-058** done |
-| Continents | Arc + suture + cap | F-059 |
-| Close | Dump/wiki/UI hygiene; Goal seal | F-060 |
+| Margins | Rift trough + collide slope + lip blend | F-059 |
+| Continents | Arc + suture + cap | F-060 |
+| Close | Dump/wiki/UI hygiene; Goal seal | F-061 |
 
 Runtime: occupancy remaps with plates; locker stamps ride; **gaps and SEPARATE copies mint thin ocean**; COLLIDE buoyancy (\(T_{land}=16\)); elevation is isostasy. Map still paints `elevation`. Simulation menu: Restart UI / Restart engine.
 

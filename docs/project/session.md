@@ -7,14 +7,14 @@
 
 # Current session
 
-**Updated:** 2026-09-20  
-**Status:** F-058 Accepted · Active Goal **G-010** · last completed G-009
+**Updated:** 2026-09-22  
+**Status:** F-059 Accepted · Active Goal **G-010** · last completed G-009
 
 ---
 
 ## Session goal
 
-Accept **F-058** (buoyancy precedence + oceanic subduction + SEPARATE rift mint) under G-010. Done.
+Accept **F-059** (margin relief) under G-010. Done.
 
 ---
 
@@ -29,18 +29,17 @@ Accept **F-058** (buoyancy precedence + oceanic subduction + SEPARATE rift mint)
 
 | Step | Work | Status |
 |------|------|--------|
-| F-058 | Buoyancy precedence + oceanic subduction + SEPARATE mint | done |
+| F-059 | Margin relief (rift trough + collide slope + lip blend) | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-058 marked `in progress` before code
-- [x] F-058 Accepted (witness + SYNC)
+- [x] F-059 marked `in progress` before code
+- [x] F-059 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-058 buoyancy + rift unshare are done. \(T_{land}=16\).
-- Next: F-059 continental suture + arc thickening + cap — propose job + FRs.
+- F-059 margin relief is done. Suture + cap remain F-060. Goal close is F-061.

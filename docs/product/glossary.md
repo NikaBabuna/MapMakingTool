@@ -18,14 +18,14 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Layer** | Named Pool field. Grid layers share world geometry; `plate_velocity` is a per-site object. |
 | **Elevation** | Relief layer (`elevation`); Step 0 is all zeros (isostasy of \(T_{ocean}\)). Later Steps: derived isostasy of locker thickness at occupancy (F-056). |
 | **Orogeny** | F-038 stamp ladder (COLLIDE winner +1 / loser −1, SEPARATE both −1, PASS_BY 0) writes **locker thickness**. F-058: buoyancy polarity; C–C no stamp. Superseded as elevation author (F-056). |
-| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (plates + occupancy + Subduct corrections) → Orogeny → RidgeCreate → ThicknessToElevation. |
+| **Tectonics System** | Product `EngineSystem` (`tectonics`): TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (plates + occupancy + Subduct corrections) → Orogeny → RidgeCreate → MarginRelief → ThicknessToElevation. |
 | **Locker** | Crust payload keyed by id (thickness). Occupancy keys point at lockers (F-056). \(T_{ocean}=8\), \(T_{land}=16\). |
 | **Occupancy** | Cell → locker id. Motion remaps keys; locker contents ride. Distinct from plate id. |
 | **Isostasy** | Integer height `thickness − T_ocean` (\(T_{ocean}=8\)) at current occupancy. Sole writer of `elevation` (F-056). |
 | **Buoyancy** | **G-010 live (F-058):** continental iff thickness \(\ge 16\). COLLIDE: ocean subducts; continent does not die by area; O–O smaller-loses; C–C frozen. |
 | **Plate velocity** | STATIC field (`plate_velocity`) of per-plate `(vx, vy)` in `{-1,0,1}`: seeded at Step 0, then edge-driven by `IntegrateVelocity` from `motion_intent` (F-037). |
 | **Plates** | Layer (`plates`) of integer plate ids. **Code today:** B1 nearest-site N=12–24 at Step 0; apply flux/fission then advection each generation. |
-| **Suture** | G-010: continent–continent collide that thickens both sides and destroys neither locker (planned F-059). Historically also: contact between different plate ids listed in `boundaries`. |
+| **Margin relief** | **G-010 live (F-059):** oceanic thickness near a split follows a trough (`4 + d/2`, back to 8 at distance 8). A collision adds `4 - d` inside distance 4, capped below 16. A seed hash blends some lip cells (distance 1..4) toward the farther neighbor. Thickness ≥ 16 is not written. |
 | **Voronoi plates** | Historical name for nearest-site partition; distance is **B1** latitude-weighted cylindrical (wrap X, cosQ on Y). Ties take the lower site index. |
 | **Collision uplift** | Retired (F-021). Replaced by orogeny. |
 | **Kinematics System** | Legacy name; advection now runs inside `ApplyGeometry` (F-036). |
@@ -51,7 +51,8 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Boundary tectonics** | G-008 model: edge classify / flux / flood / fission — [wiki/tectonics.md](wiki/tectonics.md). |
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
 | **Oceanic crust** | Thickness below \(T_{land}=16\). Step 0 all \(T_{ocean}=8\). Subducts at COLLIDE (F-058). |
-| **Continental crust** | Thickness \(\ge T_{land}=16\). Does not die by area-only precedence. Sutures in F-059. |
+| **Suture** | G-010: continent–continent collide that thickens both sides and destroys neither locker (planned F-060). Historically also: contact between different plate ids listed in `boundaries`. |
+| **Continental crust** | Thickness \(\ge T_{land}=16\). Does not die by area-only precedence. Sutures in F-060. |
 | **Ridge mint** | **G-010 live (F-057/F-058):** new gap occupancy and SEPARATE contact-locker copies get thin oceanic lockers; do not inherit neighbor mountains. |
 | **Subduct** | **G-010 live (F-058):** consume oceanic collide occupancy (surviving locker); unshare SEPARATE copies. |
 | **Command language** | Shared noun-path + verb operator grammar in `cli` (F-048): point at `session`/`pool`/`schema`/`systems`/`diag`, act with `list`/`get`/`advance`/…. |

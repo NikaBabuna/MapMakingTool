@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * Per-contact-cell buoyancy. Thickness {@code >= T_land} is continental. Oceanic subducts at
- * COLLIDE; ocean–ocean keeps smaller-loses; continent–continent neither loses (F-059 suture).
+ * COLLIDE; ocean–ocean keeps smaller-loses; continent–continent neither loses (F-060 suture).
  */
 public final class CrustPrecedence {
 

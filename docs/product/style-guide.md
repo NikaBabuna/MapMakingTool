@@ -7,7 +7,7 @@
 
 # Style guide
 
-_Status: **active** — G-009 **done** (F-054). G-010 **in progress** (F-058 buoyancy). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
+_Status: **active** — G-009 **done** (F-054). G-010 **in progress** (F-059 margin relief). Menu bar, panel registry, resizable rails, brighter map, layer-switch harden._
 
 Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/web`). **Studio cartography** (G-007/G-008 multi-panel Inspect/Legend + mappy neatline) remains the map-desk metaphor; F-051+ reframes chrome as a quiet **runner shell**. Terminal language F-048–F-050 (rebuilt `Terminal.tsx`); F-052 makes the terminal an always-on panel; F-053 turns chrome into descriptor-driven infrastructure; F-054 hardens layer switching and closes the Goal.
 
@@ -27,7 +27,7 @@ Tone, visual language, and map-tool chrome for Aethelgard’s Next front (`ui/we
 
 ## G-010 crust (F-058 live)
 
-Map still reads `elevation`, now **isostasy** of riding crust. Contact stamps thicken lockers so mountains **move** with plates. **Ridge mint:** rifts are thin ocean, not copied mountains (including SEPARATE copies). **Buoyancy:** ocean subducts at COLLIDE; continent does not die by area. Simulation menu: **Restart UI** (reload page) and **Restart engine** (same seed, Step 0). Exact HUD/crust layer: F-060 or later. Suture remains **planned** (F-059).
+Map still reads `elevation`, now **isostasy** of riding crust. Contact stamps thicken lockers so mountains **move** with plates. **Ridge mint:** rifts are thin ocean, not copied mountains (including SEPARATE copies). **Buoyancy:** ocean subducts at COLLIDE; continent does not die by area. **Margin relief:** a split is a trough and a collision slopes nearby ocean, with a hashed lip. Simulation menu: **Restart UI** (reload page) and **Restart engine** (same seed, Step 0). Exact HUD/crust layer: F-061 or later. Suture remains **planned** (F-060).
 
 ---
 

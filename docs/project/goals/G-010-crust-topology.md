@@ -77,8 +77,9 @@ See **ADR-013** in [../decisions.md](../decisions.md). \(T_{ocean}=8\), \(T_{lan
 | F-056 | Occupancy keys + thickness lockers + ride + isostasy elevation | done |
 | F-057 | Ridge mint (thin oceanic in gaps) + Simulation restart | done |
 | F-058 | Buoyancy precedence + oceanic subduction + SEPARATE mint | done |
-| F-059 | Continental suture + arc thickening + cap | not started |
-| F-060 | Goal close + dump/wiki/UI hygiene | not started |
+| F-059 | Margin relief (rift trough + collide slope + lip blend) | done |
+| F-060 | Continental suture + arc thickening + cap | not started |
+| F-061 | Goal close + dump/wiki/UI hygiene | not started |
 
 ---
 
@@ -86,6 +87,6 @@ See **ADR-013** in [../decisions.md](../decisions.md). \(T_{ocean}=8\), \(T_{lan
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 4 / 6 |
+| Steps done | 5 / 7 |
 | Claim boxes | 3 / 5 |
-| Last Accept | F-058 |
+| Last Accept | F-059 |

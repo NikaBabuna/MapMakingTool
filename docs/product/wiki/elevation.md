@@ -7,11 +7,11 @@
 
 # Elevation process
 
-> **Code status (through F-058):** occupancy keys + thickness lockers live; **ridge mint** of thin ocean in advection gaps and SEPARATE copies; **buoyancy** COLLIDE (\(T_{land}=16\)); elevation is **isostasy** of locker thickness at current keys (\(T_{ocean}=8\)). Contact stamps write **locker thickness** (F-038 ladder, buoyancy polarity) and ride with occupancy. Suture still F-059. Plates: B1 nearest-site; sphere polar wrap (F-045); geometry apply/fission/ridge flood.
+> **Code status (through F-059):** occupancy keys + thickness lockers live; **ridge mint** of thin ocean in advection gaps and SEPARATE copies; **margin relief** (rift trough, collide slope, lip blend); **buoyancy** COLLIDE (\(T_{land}=16\)); elevation is **isostasy** of locker thickness at current keys (\(T_{ocean}=8\)). Contact stamps write **locker thickness** (F-038 ladder, buoyancy polarity) and ride with occupancy. Suture still F-060. Plates: B1 nearest-site; sphere polar wrap (F-045); geometry apply/fission/ridge flood.
 
 Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 
-Category: `world/tectonics`. The product emission policy ticks this category after Step 0. The tectonics System runs TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (plates **and** occupancy) → Orogeny (locker stamps) → RidgeCreate → ThicknessToElevation. Contact-paint orogeny is **superseded for G-010** as the elevation author (F-056).
+Category: `world/tectonics`. The product emission policy ticks this category after Step 0. The tectonics System runs TraceBoundaries → BoundaryInteraction → IntegrateVelocity → ApplyGeometry (plates **and** occupancy) → Orogeny (locker stamps) → RidgeCreate → MarginRelief → ThicknessToElevation. Contact-paint orogeny is **superseded for G-010** as the elevation author (F-056).
 
 ---
 
@@ -115,7 +115,7 @@ This supersedes “plates do not move” from G-004 / F-017.
 
 This supersedes F-021 velocity-neighbor closing for elevation. Classification still uses `n · (vA − vB)` when tracing boundaries.
 
-**G-010 / F-058:** the stamp ladder increments **locker thickness** at standing contact occupancy with buoyancy polarity. Occupancy remaps with plates; **gaps and SEPARATE copies mint** new \(T_{ocean}\) lockers; COLLIDE consume writes the surviving locker. Elevation is isostasy (`thickness − T_{ocean}`, \(T_{ocean}=8\), \(T_{land}=16\)). Stamps **ride**.
+**G-010 / F-059:** the stamp ladder increments **locker thickness** at standing contact occupancy with buoyancy polarity. Occupancy remaps with plates; **gaps and SEPARATE copies mint** new \(T_{ocean}\) lockers; COLLIDE consume writes the surviving locker. **Margin relief** then sets the rift trough, collide slope, and lip blend on oceanic lockers. Elevation is isostasy (`thickness − T_{ocean}`, \(T_{ocean}=8\), \(T_{land}=16\)). Stamps **ride**.
 
 A world whose standing assignment is a single plate (for example a 1×1 grid) has no contacts, so elevation stays 0.
 

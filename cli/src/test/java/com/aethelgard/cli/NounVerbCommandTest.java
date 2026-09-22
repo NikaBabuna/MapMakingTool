@@ -55,7 +55,7 @@ class NounVerbCommandTest {
 
     CliResult cell = CommandDispatch.execute(session, "pool.elevation get 0 0");
     assertTrue(cell.ok());
-    assertEquals("elevation[0,0]=0", cell.output());
+    assertEquals("elevation[0,0]=-4", cell.output());
 
     CliResult schema = CommandDispatch.execute(session, "schema get");
     assertTrue(schema.ok());

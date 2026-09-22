@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-22** — **F-059:** margin relief after ridge mint (rift trough, collide slope, lip blend). Suture moved to F-060; Goal close to F-061. Runtime physics (G-010).
 - **2026-09-20** — **F-058:** buoyancy collide (\(T_{land}=16\)); oceanic occupancy consume; SEPARATE contact-locker copies mint thin ocean. Runtime physics (G-010).
 - **2026-09-20** — **F-057:** ridge mint (thin oceanic lockers in advection gaps); Simulation menu Restart UI / Restart engine. Runtime physics + runner chrome (G-010).
 - **2026-09-20** — **F-055 / G-010 open:** docs lock (occupancy keys + lockers; derived elevation; ridge mint; buoyancy/suture; ADR-013). Active Goal G-010. Runtime unchanged.

@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-058 buoyancy + SEPARATE unshare live. F-057 ridge mint live. F-056 occupancy + lockers + isostasy live. F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-055 G-010 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Occupancy keys remap with plates; gaps and SEPARATE copies mint thin oceanic lockers (\(T_{ocean}=8\)); COLLIDE uses buoyancy (\(T_{land}=16\)); locker stamps ride; elevation is isostasy. Sphere-on-rectangle F-045; flood fill F-044. **G-010 remaining:** suture/arc F-059.
+**Doc status:** F-059 margin relief live. F-058 buoyancy + SEPARATE unshare live. F-057 ridge mint live. F-056 occupancy + lockers + isostasy live. F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-055 G-010 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Occupancy keys remap with plates; gaps and SEPARATE copies mint thin oceanic lockers (\(T_{ocean}=8\)); margin relief then shapes oceanic thickness near splits and collisions; COLLIDE uses buoyancy (\(T_{land}=16\)); locker stamps ride; elevation is isostasy. Sphere-on-rectangle F-045; flood fill F-044. **G-010 remaining:** suture/arc F-060.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -23,7 +23,7 @@ This page is the physics + Pool/System plan for boundary tectonics. When a later
 | **Topology (runtime)** | **F-045 live** — `SphereTopology` shared helper. Cylinder hard-Y **retired**. |
 | **History** | Earlier G-008 text said **torus**; amended F-034 to cylinder; F-041 amends to sphere polar wrap; **F-045** implements it. |
 
-**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-038). **Sphere polar wrap live (F-045).** **F-058 live:** occupancy remaps; advection gaps and SEPARATE contact-locker copies mint thin oceanic lockers; COLLIDE buoyancy (\(T_{land}=16\)); elevation is isostasy of riding thickness. Suture / arc not implemented until F-059.
+**Runtime note:** VIEW is **1920×1080** (F-031). B1 plates + boundaries + flux/intent + integrate + apply/fission live (F-033–F-038). **Sphere polar wrap live (F-045).** **F-059 live:** margin relief after mint (rift trough, collide slope, lip blend). **F-058 live:** occupancy remaps; advection gaps and SEPARATE contact-locker copies mint thin oceanic lockers; COLLIDE buoyancy (\(T_{land}=16\)); elevation is isostasy of riding thickness. Suture / arc not implemented until F-060.
 
 ---
 
@@ -98,7 +98,7 @@ This fixes the F-043 miss at **triple junctions**: a gap between left and right 
 
 ### Collide precedence (F-058 live)
 
-**Ocean vs continent first** (per contact **cell**, standing locker thickness). Thickness \(\ge T_{land}=16\) is continental; below is oceanic. Oceanic cell subducts even if its plate is larger. Ocean–ocean keeps smaller plate by area (ties: lower plate id). Continent–continent: neither sinks, 0 flux, 0 stamps (suture is F-059).
+**Ocean vs continent first** (per contact **cell**, standing locker thickness). Thickness \(\ge T_{land}=16\) is continental; below is oceanic. Oceanic cell subducts even if its plate is larger. Ocean–ocean keeps smaller plate by area (ties: lower plate id). Continent–continent: neither sinks, 0 flux, 0 stamps (suture is F-060).
 
 ### Number
 
@@ -154,9 +154,13 @@ New occupancy at SEPARATE / gaps gets thin **oceanic** crust (\(T_{ocean}\)). Ga
 
 ### Buoyancy and subduction (F-058 live)
 
-Thickness \(\ge T_{land}=16\) is **continental**; below is **oceanic**. At COLLIDE, **ocean subducts** (loser occupancy becomes the surviving side’s locker). Continental occupancy is **not** deleted because its plate is smaller. Ocean–ocean keeps smaller-loses. Continent–continent is frozen this Goal until F-059. Step 0 is **all oceanic** — no painted cratons.
+Thickness \(\ge T_{land}=16\) is **continental**; below is **oceanic**. At COLLIDE, **ocean subducts** (loser occupancy becomes the surviving side’s locker). Continental occupancy is **not** deleted because its plate is smaller. Ocean–ocean keeps smaller-loses. Continent–continent is frozen this Goal until F-060. Step 0 is **all oceanic** — no painted cratons.
 
-### Suture, arc, cap (F-059)
+### Margin relief (F-059 live)
+
+After ridge mint, before isostasy. Post-move contacts. Oceanic lockers within distance 8 of a split are set to `4 + d/2` (4 on the contact, 8 at distance 8). Distance 1..4: a seed hash blends half of those lockers toward the farther neighbor. A collision adds `4 - d` for distance under 4, and the result stays below 16. Thickness \(\ge 16\) is not written. Pass-by writes nothing.
+
+### Suture, arc, cap (F-060)
 
 Ocean–ocean collide may thicken an **arc** on the winner (proto-continents). Continent–continent **suture**: thickness up on both sides; neither locker dies. **No plate-id weld.** Cap / light erosion so suture cannot grow without bound.
 
@@ -204,7 +208,7 @@ world/tectonics/
 | Motion | IntegrateVelocity | `plate_registry` velocities |
 | Lifecycle | FractureDetect / Spawn (optional thin) | registry / plates |
 | Orogeny | ReliefFromBoundaries → locker thickness (F-056) | `lockers` |
-| Crust (G-010) | ThicknessToElevation + RidgeCreate + Subduct live; ContinentalCollide later | derived `elevation`; mint F-057/F-058; subduct F-058; suture F-059 |
+| Crust (G-010) | ThicknessToElevation + RidgeCreate + MarginRelief + Subduct live; ContinentalCollide later | derived `elevation`; mint F-057/F-058; margin F-059; subduct F-058; suture F-060 |
 
 Implementation Steps: **F-034–F-038**.
 
@@ -216,5 +220,5 @@ Implementation Steps: **F-034–F-038**.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009:** shared CLI/terminal (**F-048**–**F-050**); runner chrome + perf rail (**F-051**–**F-052**); UI infrastructure + QoL (**F-053**).
-- **G-010:** occupancy + lockers + isostasy **F-056 live**; ridge mint **F-057 live**; buoyancy + SEPARATE unshare **F-058 live**; suture planned F-059.
+- **G-010:** occupancy + lockers + isostasy **F-056 live**; ridge mint **F-057 live**; buoyancy + SEPARATE unshare **F-058 live**; margin relief **F-059 live**; suture planned F-060.
 - **F-046:** crumb absorb **0.01%**; session phase collectors (`phase.trace` … `phase.orogeny` / `phase.isostasy`) on `DiagnosticsHub`.
