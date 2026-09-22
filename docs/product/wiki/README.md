@@ -2,7 +2,7 @@
 
 Domain and worldbuilding content — simulation semantics, geography rules, content that is not engine mechanics.
 
-Per [../process/rules.md](../process/rules.md): do not leave domain content only in chat or code.
+Per [../../protocol/environment/conduct.md](../../protocol/environment/conduct.md): do not leave domain content only in chat or code.
 
 ---
 

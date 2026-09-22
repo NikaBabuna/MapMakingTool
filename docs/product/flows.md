@@ -9,7 +9,7 @@
 
 _Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **done** (through **F-061**)._
 
-Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
+Before production feature code, extend this file per [../protocol/flows/steps.md](../protocol/flows/steps.md).
 
 ---
 

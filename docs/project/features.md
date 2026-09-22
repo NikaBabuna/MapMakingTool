@@ -11,7 +11,7 @@ Each **Step** is one AI job under a **Goal**. Approved FRs + test mapping: `docs
 
 **Incremental:** Accept requires this Step’s tests **and** all earlier Accepted Steps’ tests to stay green.
 
-Procedure: [../process/step-procedure.md](../process/step-procedure.md)
+Procedure: [../protocol/flows/steps.md](../protocol/flows/steps.md)
 
 **Status values:** `not started` | `in progress` | `done` | `rolled back`
 
@@ -165,6 +165,19 @@ Goal doc: [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md)
 | F-059 | Margin relief (rift trough + collide slope + lip blend) | done | [F-059.md](../blockers/F-059.md) |
 | F-060 | Continental suture + arc thickening + cap | done | [F-060.md](../blockers/F-060.md) |
 | F-061 | Goal close + dump/wiki/UI hygiene | done | [F-061.md](../blockers/F-061.md) |
+
+---
+
+## G-011 — Docs restructuring
+
+Goal doc: [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md)
+
+| ID | Name | Status | Blocker |
+|----|------|--------|---------|
+| F-062 | Protocol shelf | done | [F-062.md](../blockers/F-062.md) |
+| F-063 | Product concept shelf | not started | — |
+| F-064 | Architecture paper | not started | — |
+| F-065 | Paperwork shelf | not started | — |
 
 ---
 

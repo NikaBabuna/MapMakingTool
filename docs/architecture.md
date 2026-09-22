@@ -7,7 +7,7 @@
 
 # Architecture
 
-**Phase:** alpha — structure may change.
+**Phase:** alpha — [protocol/environment/phase.md](protocol/environment/phase.md). Structure may change.
 
 Roll-up of structural documentation. Another agent must not need to guess where things live.
 
@@ -25,7 +25,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 ## Goals
 
-**Active Goal:** none  
+**Goal index:** [project/goals.md](project/goals.md) — G-011 Docs restructuring  
 **Last completed:** [G-010 Crust topology](project/goals/G-010-crust-topology.md)  
 **Prior:** [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) — done · [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) — done · [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) — done · [G-006 Local webview front](project/goals/G-006-webview-front.md) — done · [G-005 Living map](project/goals/G-005-living-map.md) — done · [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
 

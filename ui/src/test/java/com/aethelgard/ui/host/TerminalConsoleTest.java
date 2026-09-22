@@ -70,42 +70,21 @@ class TerminalConsoleTest {
     assertTrue(goalDoc.contains("- [x] Determinism; no `engine` production edits; suite green"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(
-        agents.contains("Active Goal:** none")
-            || agents.contains("**Active Goal:** none")
-            || agents.contains("G-010")
-            || agents.contains("G-009")
-            || agents.contains("G-008"));
-    assertTrue(agents.contains("G-008"));
+    assertTrue(agents.contains("G-011") || agents.contains("docs/protocol/README.md"));
 
-    String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(
-        phase.contains("none")
-            || phase.contains("G-008")
-            || phase.contains("G-009")
-            || phase.contains("G-010"));
-    assertTrue(phase.contains("G-008"));
+    String phase = Files.readString(root.resolve("docs/protocol/environment/phase.md"));
+    assertTrue(phase.contains("alpha"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
-    assertTrue(nav.contains("none") || nav.toLowerCase().contains("active goal"));
     assertTrue(nav.contains("G-008"));
 
     String readme = Files.readString(root.resolve("README.md"));
-    assertTrue(readme.contains("G-008") || readme.toLowerCase().contains("no active"));
+    assertTrue(readme.contains("G-011") || readme.contains("docs/protocol/README.md"));
 
-    String session = Files.readString(root.resolve("docs/project/session.md"));
-    assertTrue(
-        session.contains("none")
-            || session.contains("G-008")
-            || session.contains("G-009")
-            || session.contains("G-010"));
+    assertFalse(Files.exists(root.resolve("docs/project/session.md")));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
-    assertTrue(
-        protocol.contains("none")
-            || protocol.contains("G-008")
-            || protocol.contains("G-009")
-            || protocol.contains("G-010"));
+    assertTrue(protocol.contains("G-011") || protocol.contains("docs/protocol/README.md"));
 
     String arch = Files.readString(root.resolve("docs/architecture.md"));
     assertTrue(arch.contains("G-008"));

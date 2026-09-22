@@ -13,6 +13,8 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-22** — **F-062:** conduct moved to `docs/protocol/` (environment, navigation, blueprints, flows). Session removed. Active Goal line only on the goal index. ADR-014. `docs/process/`, `PHASE.md`, and `doc-contract.md` removed.
+- **2026-09-22** — **G-011 open:** Docs restructuring approved (four shelves; one Step per shelf). Active Goal banners stay on `none` until F-062, because F-061 phrase witnesses require that string. No file moves yet.
 - **2026-09-22** — **F-061 / G-010 close:** elevation witnessed as isostasy; Overlay legend stroke labeled Boundary; Active Goal none; last completed G-010. No new physics.
 - **2026-09-22** — **F-060:** continental arc (+8, at least 16) and suture (+4 each side), thickness cap 32, after margin relief. Golden `default-n3.txt` refreshed. Runtime physics (G-010).
 - **2026-09-22** — **F-059:** margin relief after ridge mint (rift trough, collide slope, lip blend). Suture moved to F-060; Goal close to F-061. Runtime physics (G-010).

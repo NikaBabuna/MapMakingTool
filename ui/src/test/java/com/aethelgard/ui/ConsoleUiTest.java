@@ -95,12 +95,11 @@ class ConsoleUiTest {
             .findFirst()
             .orElse("");
     assertTrue(table.contains("| done |"), table);
-    // Entry points may name a later last Goal; do not require "G-005" forever (F-016).
+    // Entry points may name a later Goal. The Active Goal line lives on the goal index.
     String agents = Files.readString(root.resolve("AGENTS.md"));
     String goalsActive = goals.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
-    String agentsActive = agents.lines().filter(l -> l.contains("Active Goal")).findFirst().orElse("");
     assertFalse(goalsActive.isBlank());
-    assertFalse(agentsActive.isBlank());
+    assertTrue(agents.contains("goals.md"));
   }
 
   private static Path findRepoRoot() {

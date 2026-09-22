@@ -4,7 +4,7 @@ Per-**Step** quality bars and **canonical store for approved functional requirem
 
 Naming: `F-0xx.md` matching [../project/features.md](../project/features.md).
 
-**Process:** [../process/step-procedure.md](../process/step-procedure.md) · [../process/quality.md](../process/quality.md)
+**Process:** [../protocol/flows/steps.md](../protocol/flows/steps.md) · [../protocol/environment/conduct.md](../protocol/environment/conduct.md)
 
 ---
 
@@ -57,12 +57,12 @@ This Step’s Accept requires the full suite: prior Accepted Steps + tests above
 
 ## SYNC (before Accept)
 
-- [ ] Doc-contract ties for touched artifacts
-- [ ] Entry points match `goals.md` (session, navigation, AGENTS, protocol rule, PHASE, README, architecture)
+- [ ] Ties for touched artifacts (the flow **Sync**)
+- [ ] Doors point at `goals.md` (navigation, AGENTS, editor rule, README). Active Goal line only on the goal index
 - [ ] Navigation Status cells for touched docs not stale
-- [ ] Glossary terms for new public types/ports (or N/A: …)
-- [ ] Specs / architecture code-status banners match this Step (or N/A: …)
-- [ ] Goal close entry-point reconcile (or N/A: Goal not closed)
+- [ ] Glossary terms for new public words (or N/A: …)
+- [ ] Specs / architecture papers match this Step (or N/A: …)
+- [ ] Goal close (or N/A: Goal not closed)
 
 ## Witness
 
@@ -74,7 +74,7 @@ This Step’s Accept requires the full suite: prior Accepted Steps + tests above
 **Status `fr-approved`:** FRs stored, code not started (or not yet marked in progress).  
 After MARK → `in progress`. After Accept → `done`.
 
-SYNC checklist detail: [../process/step-procedure.md](../process/step-procedure.md) · [../doc-contract.md](../doc-contract.md).
+SYNC checklist detail: [../protocol/flows/steps.md](../protocol/flows/steps.md) · **Sync**.
 
 ---
 
@@ -126,5 +126,6 @@ SYNC checklist detail: [../process/step-procedure.md](../process/step-procedure.
 | [F-059.md](F-059.md) | F-059 | G-010 | done |
 | [F-060.md](F-060.md) | F-060 | G-010 | done |
 | [F-061.md](F-061.md) | F-061 | G-010 | done |
+| [F-062.md](F-062.md) | F-062 | G-011 | done |
 
 Update this table when creating or closing a blocker file.

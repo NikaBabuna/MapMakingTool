@@ -7,9 +7,9 @@
 
 # Navigation
 
-**Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** none · Last completed: [G-010 Crust topology](project/goals/G-010-crust-topology.md) (`done`) · Prior: [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) (`done`) · [G-008](project/goals/G-008-boundary-tectonics-studio.md) (`done`)  
-**Session:** [project/session.md](project/session.md)  
+**Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))  
+**Goal index:** [project/goals.md](project/goals.md) — G-011 Docs restructuring  
+**Protocol:** [protocol/README.md](protocol/README.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
 Folder indexes are **README.md** in each landmark directory. Prefer those links when entering a folder.
@@ -23,22 +23,21 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Agents | [../AGENTS.md](../AGENTS.md) |
 | Humans | [../README.md](../README.md) |
 | Docs tree | [README.md](README.md) |
-| Process | [process/README.md](process/README.md) |
-| How AI works a Step | [process/step-procedure.md](process/step-procedure.md) |
+| Protocol | [protocol/README.md](protocol/README.md) |
+| Flows | [protocol/flows/README.md](protocol/flows/README.md) |
 
 ---
 
-## Process (`docs/process/`)
+## Protocol (`docs/protocol/`)
 
-**Folder:** [process/README.md](process/README.md)
+**Folder:** [protocol/README.md](protocol/README.md)
 
-| Doc | Status |
-|-----|--------|
-| [global-prompt.md](process/global-prompt.md) | Active |
-| [rules.md](process/rules.md) | Active |
-| [step-procedure.md](process/step-procedure.md) | Active — binding |
-| [quality.md](process/quality.md) | Active |
-| [protocol-overview.md](process/protocol-overview.md) | Active |
+| Room | Status |
+|------|--------|
+| [environment/](protocol/environment/README.md) | Active — territory, dispatch, dictionary |
+| [navigation/](protocol/navigation/README.md) | Active — pointers and bounds |
+| [blueprints/](protocol/blueprints/README.md) | Active — one shape per document kind |
+| [flows/](protocol/flows/README.md) | Active — bookkeeping algorithms |
 
 ---
 
@@ -60,11 +59,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
 | [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | done |
 | [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | done |
-| [session.md](project/session.md) | Active (temporary) |
-| [features.md](project/features.md) | Active — G-001–G-010 Steps registered |
+| [goals/G-011-docs-restructuring.md](project/goals/G-011-docs-restructuring.md) | in progress — F-062 done; F-063 next |
+| [features.md](project/features.md) | Active — G-001–G-011 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (13 ADRs) |
+| [decisions.md](project/decisions.md) | Active (14 ADRs) |
 | [changelog.md](project/changelog.md) | Active |
 
 ---
@@ -73,9 +72,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; G-010 done; no Active Goal) |
-| [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
+| [architecture.md](architecture.md) | Active (roll-up; goal index points at G-011) |
 
 ---
 

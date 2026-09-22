@@ -21,5 +21,6 @@ Durable multi-session results. Index: [../goals.md](../goals.md).
 | G-008 Boundary tectonics + cartography studio | [G-008-boundary-tectonics-studio.md](G-008-boundary-tectonics-studio.md) | done |
 | G-009 Simulation runner harden | [G-009-simulation-runner-harden.md](G-009-simulation-runner-harden.md) | done |
 | G-010 Crust topology | [G-010-crust-topology.md](G-010-crust-topology.md) | done |
+| G-011 Docs restructuring | [G-011-docs-restructuring.md](G-011-docs-restructuring.md) | in progress |
 
-Procedure: [../../process/step-procedure.md](../../process/step-procedure.md).
+Procedure: [../../protocol/flows/goals.md](../../protocol/flows/goals.md).

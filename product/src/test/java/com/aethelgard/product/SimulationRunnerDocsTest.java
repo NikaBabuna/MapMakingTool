@@ -58,7 +58,7 @@ class SimulationRunnerDocsTest {
             || goals.contains("| done |"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("G-009"));
+    assertTrue(agents.contains("G-011") || agents.contains("docs/protocol/README.md"));
   }
 
   private static Path findRepoRoot() throws Exception {

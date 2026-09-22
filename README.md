@@ -5,7 +5,7 @@
 Procedural fantasy world generator — simulate tectonics, climate, and terrain so maps stay physically consistent, with a scrubbable history of how the world formed.
 
 **Status:** alpha  
-**Current Goal:** none · Last completed: [G-010 Crust topology](docs/project/goals/G-010-crust-topology.md) · Prior: [G-009 Simulation runner harden](docs/project/goals/G-009-simulation-runner-harden.md) · [G-008](docs/project/goals/G-008-boundary-tectonics-studio.md)  
+**Goal index:** [docs/project/goals.md](docs/project/goals.md) — G-011 Docs restructuring · Last completed: [G-010 Crust topology](docs/project/goals/G-010-crust-topology.md)  
 **CI:** GitHub Actions on `main` — JDK 21 + `./mvnw test` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
 
 ---
@@ -15,14 +15,14 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | | |
 |-|-|
 | [Docs tree](docs/README.md) | Documentation folders |
-| [Goals index](docs/project/goals.md) | Active Goal **none** · last [G-010](docs/project/goals/G-010-crust-topology.md) |
-| [How AI works](docs/process/step-procedure.md) | Goal / Session / Step |
+| [Goals index](docs/project/goals.md) | G-011 Docs restructuring · last [G-010](docs/project/goals/G-010-crust-topology.md) |
+| [Protocol](docs/protocol/README.md) | Conduct: environment, navigation, blueprints, flows |
 | [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
 | [Engine module](engine/README.md) | Code module index |
 | [Engine specs](docs/engine/specs/overview.md) | Pool-System Framework |
 | [Navigation](docs/navigation.md) | Full documentation map |
-| [Phase](docs/PHASE.md) | Current phase and change rules |
+| [Phase](docs/protocol/environment/phase.md) | Current phase and change rules |
 
 ## For agents
 
-See [AGENTS.md](AGENTS.md). Start with [docs/project/session.md](docs/project/session.md).
+See [AGENTS.md](AGENTS.md). Conduct: [docs/protocol/README.md](docs/protocol/README.md). Goal index: [docs/project/goals.md](docs/project/goals.md).

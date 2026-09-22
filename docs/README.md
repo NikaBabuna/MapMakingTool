@@ -7,14 +7,16 @@
 
 # Documentation
 
-Permanent prior for Aethelgard / MapMakingTool. **Map:** [navigation.md](navigation.md).
+Permanent prior. **Map:** [navigation.md](navigation.md). **Conduct:** [protocol/README.md](protocol/README.md).
+
+**Goal index:** [project/goals.md](project/goals.md) — G-011 Docs restructuring
 
 | Folder | README | Role |
 |--------|--------|------|
-| [process/](process/) | [README](process/README.md) | How agents work (Goal / Session / Step) |
-| [project/](project/) | [README](project/README.md) | Scope, Goals, Steps, ADRs |
-| [engine/](engine/) | [README](engine/README.md) | Pool-System Framework docs |
-| [product/](product/) | [README](product/README.md) | Aethelgard product docs |
-| [blockers/](blockers/) | [README](blockers/README.md) | Per-Step FRs + witnesses |
+| [protocol/](protocol/) | [README](protocol/README.md) | Conduct. Product-independent. Four rooms |
+| [project/](project/) | [README](project/README.md) | Scope, Goals, Steps, decisions. Moves to paperwork in a later Step |
+| [engine/](engine/) | [README](engine/README.md) | Framework docs. Moves to the architecture shelf in a later Step |
+| [product/](product/) | [README](product/README.md) | Product docs. Concept stays; implementation moves in a later Step |
+| [blockers/](blockers/) | [README](blockers/README.md) | Per-Step requirements. Moves to paperwork in a later Step |
 
-Cross-cutting at this level: [PHASE.md](PHASE.md), [architecture.md](architecture.md), [doc-contract.md](doc-contract.md), [navigation.md](navigation.md).
+Phase: [protocol/environment/phase.md](protocol/environment/phase.md).

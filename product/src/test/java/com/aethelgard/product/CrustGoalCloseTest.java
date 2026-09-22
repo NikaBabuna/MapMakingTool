@@ -46,18 +46,28 @@ class CrustGoalCloseTest {
     assertTrue(goalDoc.contains("| F-061 |") && goalDoc.contains("| done |"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
-    assertTrue(goals.contains("**Active Goal:** none"));
+    assertTrue(goals.contains("G-010"));
     String g010 = goals.lines().filter(l -> l.contains("| G-010 |")).findFirst().orElse("");
     assertTrue(g010.contains("| done |"), g010);
-    assertTrue(goals.contains("G-010"));
+    assertTrue(goals.contains("G-011"));
+    assertTrue(goals.contains("**Active Goal:**"));
 
-    assertActiveNone(Files.readString(root.resolve("AGENTS.md")));
-    assertActiveNone(Files.readString(root.resolve("docs/PHASE.md")));
-    assertActiveNone(Files.readString(root.resolve("docs/navigation.md")));
-    assertActiveNone(Files.readString(root.resolve("README.md")));
-    assertActiveNone(Files.readString(root.resolve("docs/project/session.md")));
-    assertActiveNone(Files.readString(root.resolve(".cursor/rules/protocol.mdc")));
-    assertActiveNone(Files.readString(root.resolve("docs/architecture.md")));
+    String agents = Files.readString(root.resolve("AGENTS.md"));
+    assertTrue(agents.contains("G-011"));
+    assertTrue(agents.contains("docs/protocol/README.md"));
+    String phase = Files.readString(root.resolve("docs/protocol/environment/phase.md"));
+    assertTrue(phase.contains("alpha"));
+    String nav = Files.readString(root.resolve("docs/navigation.md"));
+    assertTrue(nav.contains("G-010"));
+    assertTrue(nav.contains("G-011"));
+    String readme = Files.readString(root.resolve("README.md"));
+    assertTrue(readme.contains("G-010"));
+    assertTrue(readme.contains("G-011"));
+    String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
+    assertTrue(protocol.contains("G-011"));
+    String arch = Files.readString(root.resolve("docs/architecture.md"));
+    assertTrue(arch.contains("G-010"));
+    assertTrue(arch.contains("G-011"));
 
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
     assertFalse(flows.contains("crust topology (planned)"));
@@ -101,16 +111,6 @@ class CrustGoalCloseTest {
             "seed=" + spec.seed() + " x=" + x + " y=" + y);
       }
     }
-  }
-
-  private static void assertActiveNone(String text) {
-    assertTrue(
-        text.contains("**Active Goal:** none")
-            || text.contains("Active Goal:** none")
-            || text.contains("Active Goal: none")
-            || text.contains("**Current Goal:** none"),
-        text.lines().filter(l -> l.contains("Goal")).findFirst().orElse(text.substring(0, Math.min(180, text.length()))));
-    assertTrue(text.contains("G-010"));
   }
 
   private static Path findRepoRoot() throws Exception {

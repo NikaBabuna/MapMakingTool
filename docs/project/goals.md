@@ -9,7 +9,7 @@
 
 A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
 
-**Active Goal:** none · Last completed: [G-010 Crust topology](goals/G-010-crust-topology.md)
+**Active Goal:** [G-011 Docs restructuring](goals/G-011-docs-restructuring.md) · Last completed: [G-010 Crust topology](goals/G-010-crust-topology.md)
 
 | ID | Name | Status | Doc |
 |----|------|--------|-----|
@@ -23,7 +23,8 @@ A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal
 | G-008 | Boundary tectonics + cartography studio | done | [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tectonics-studio.md) |
 | G-009 | Simulation runner harden | done | [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runner-harden.md) |
 | G-010 | Crust topology | done | [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md) |
+| G-011 | Docs restructuring | in progress | [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 
-Procedure: [../process/step-procedure.md](../process/step-procedure.md)
+Procedure: [../protocol/flows/README.md](../protocol/flows/README.md)

@@ -65,10 +65,12 @@ class ToolQolTest {
         agents.contains("G-007")
             || agents.contains("G-008")
             || agents.contains("G-009")
-            || agents.contains("Active Goal:** none"));
+            || agents.contains("G-011")
+            || agents.contains("docs/protocol/README.md"));
 
-    String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("G-007") || phase.contains("G-008") || phase.contains("G-009"));
+    String phase = Files.readString(root.resolve("docs/protocol/environment/phase.md"));
+    assertTrue(phase.contains("alpha"));
+    assertTrue(goals.contains("G-007") || goals.contains("G-008") || goals.contains("G-009"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("G-007"));

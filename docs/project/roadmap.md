@@ -21,7 +21,8 @@ Ordered direction. **Accept** lives on Steps under Goals, not here.
 | 8 | [G-008 Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) | Plate do-over + 1920×1080 torus + studio — **done** |
 | 9 | [G-009 Simulation runner harden](goals/G-009-simulation-runner-harden.md) | Physics truth + diagnostics + runner UI/CLI — **done** |
 | 10 | [G-010 Crust topology](goals/G-010-crust-topology.md) | Occupancy keys + thickness lockers; land rides; continents can form — **done** |
-| 11 | _(later)_ Climate / further generation layers | After crust topology |
-| 12 | _(later)_ Timeline / inspect product flows | After generation core |
+| 11 | [G-011 Docs restructuring](goals/G-011-docs-restructuring.md) | Four doc shelves: protocol, product concept, architecture paper, paperwork — **in progress** |
+| 12 | _(later)_ Climate / further generation layers | After the doc shelves |
+| 13 | _(later)_ Timeline / inspect product flows | After generation core |
 
 Candidates and ideas: [backlog.md](backlog.md)

@@ -11,4 +11,4 @@
 |------|---------|
 | [protocol.mdc](protocol.mdc) | Aethelgard read-order and Step discipline (always applied) |
 
-Canonical process: [../../docs/process/README.md](../../docs/process/README.md) · [../../AGENTS.md](../../AGENTS.md).
+Canonical conduct: [../../docs/protocol/README.md](../../docs/protocol/README.md) · [../../AGENTS.md](../../AGENTS.md).

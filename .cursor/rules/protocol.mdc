@@ -1,33 +1,15 @@
 ---
-description: Repository protocol — Goal/Session/Step; read docs before work
+description: Repository protocol — read docs/protocol before work
 globs:
 alwaysApply: true
 ---
 
 # Aethelgard protocol
 
-Before non-trivial work, read in order:
+Read [docs/protocol/README.md](docs/protocol/README.md), then the room the turn needs.
 
-1. `docs/PHASE.md`
-2. `docs/process/global-prompt.md`
-3. `docs/process/rules.md`
-4. `docs/process/step-procedure.md`
-5. `docs/process/quality.md`
-6. `docs/project/session.md` (reconcile — torn Step ⇒ rollback)
-7. `docs/project/goals.md` + active Goal
-8. `docs/project/project.md`
-9. `docs/navigation.md`
+**Goal index:** [docs/project/goals.md](docs/project/goals.md) — G-011 Docs restructuring
 
-## Rules
+Docs win over chat. Store approved requirements before implementation. A torn Step rolls back. Do not copy the Active Goal line; it lives only on the goal index.
 
-- Docs win over chat
-- Scope: `docs/project/project.md` only unless expanded in docs first
-- No code before user approval of job + FRs; store FRs in `docs/blockers/F-0xx.md` before MARK/code
-- Mark Step `in progress` before code; torn progress ⇒ rollback
-- Witness: full incremental suite (this Step + all prior Steps) — markdown is not Accept
-- Sync docs at end of Step per `docs/doc-contract.md` + SYNC checklist in `docs/process/step-procedure.md` (entry points, banners, glossary — not FR greps alone); commit after final check when green
-- Do not Accept if Active Goal entry points disagree with `docs/project/goals.md`
-- Explain in clear English what changed and what it means
-
-Active Goal: none · Last: [G-010](docs/project/goals/G-010-crust-topology.md) (`done`) · Prior: [G-009](docs/project/goals/G-009-simulation-runner-harden.md) (`done`) · [G-008](docs/project/goals/G-008-boundary-tectonics-studio.md) (`done`) 
-Full checklist: `AGENTS.md`
+Last completed Goal: [G-010](docs/project/goals/G-010-crust-topology.md).

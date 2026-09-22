@@ -7,6 +7,7 @@
 
 package com.aethelgard.product;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -63,7 +64,8 @@ class CrustTopologyDocsTest {
     assertTrue(goals.contains("Crust topology") || goals.contains("crust-topology"));
     String g010 = goals.lines().filter(l -> l.contains("| G-010 |")).findFirst().orElse("");
     assertTrue(g010.contains("| done |"), g010);
-    assertTrue(goals.contains("**Active Goal:** none"));
+    assertTrue(goals.contains("**Active Goal:**"));
+    assertTrue(goals.contains("G-011"));
 
     String goalsReadme = Files.readString(root.resolve("docs/project/goals/README.md"));
     String g009row =
@@ -80,24 +82,24 @@ class CrustTopologyDocsTest {
     assertTrue(backlog.contains("G-010"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
-    assertTrue(agents.contains("G-010"));
-    assertTrue(agents.contains("none"));
+    assertTrue(agents.contains("G-011"));
+    assertTrue(agents.contains("docs/protocol/README.md"));
 
-    String phase = Files.readString(root.resolve("docs/PHASE.md"));
-    assertTrue(phase.contains("G-010"));
+    String phase = Files.readString(root.resolve("docs/protocol/environment/phase.md"));
+    assertTrue(phase.contains("alpha"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("G-010"));
+    assertTrue(nav.contains("G-011"));
 
     String readme = Files.readString(root.resolve("README.md"));
     assertTrue(readme.contains("G-010"));
+    assertTrue(readme.contains("G-011"));
 
-    String session = Files.readString(root.resolve("docs/project/session.md"));
-    assertTrue(session.contains("G-010"));
-    assertTrue(session.contains("done"));
+    assertFalse(Files.exists(root.resolve("docs/project/session.md")));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
-    assertTrue(protocol.contains("G-010"));
+    assertTrue(protocol.contains("G-011"));
 
     String arch = Files.readString(root.resolve("docs/architecture.md"));
     assertTrue(arch.contains("G-010"));
