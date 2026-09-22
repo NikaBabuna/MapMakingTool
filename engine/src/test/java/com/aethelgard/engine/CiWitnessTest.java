@@ -73,7 +73,7 @@ class CiWitnessTest {
   @Test
   @DisplayName("FR-5: docs record that CI runs the Maven witness")
   void docsRecordCiWitness() throws IOException {
-    Path arch = repoRoot.resolve("docs/engine/architecture.md");
+    Path arch = repoRoot.resolve("docs/architecture/program.md");
     assertTrue(Files.isRegularFile(arch), "engine architecture must exist");
     String text = Files.readString(arch);
     assertTrue(

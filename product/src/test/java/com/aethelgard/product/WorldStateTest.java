@@ -99,7 +99,7 @@ class WorldStateTest {
   @Test
   @DisplayName("FR-6: product architecture records elevation Grid wiring")
   void architectureRecordsWorldFields() throws Exception {
-    String text = Files.readString(findRepoRoot().resolve("docs/product/architecture.md"));
+    String text = Files.readString(findRepoRoot().resolve("docs/architecture/world/README.md"));
     assertTrue(text.contains("elevation"));
     assertTrue(text.contains("Grid"));
     assertTrue(text.contains("ProductHost"));

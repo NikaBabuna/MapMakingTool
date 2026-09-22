@@ -99,7 +99,7 @@ class NounVerbCommandTest {
   @DisplayName("FR-5: docs noun/verb; Engine exposes read ports only")
   void docsAndEnginePorts() throws Exception {
     Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
     assertTrue(arch.contains("F-048") || arch.toLowerCase().contains("noun"));
     String adr = Files.readString(root.resolve("docs/paperwork/decisions/ADR-010-product-adapters.md"));
     assertTrue(adr.contains("noun") || adr.contains("F-048"));

@@ -25,4 +25,4 @@ These are the words the protocol uses. Product words (what a world contains) and
 | Torn | A Step marked `in progress`, or a Step record with requirements and no Accept, while the tree does not match an Accept | A chat dies after MARK and before the suite is green | A Step that is merely not started |
 | Door file | A pointer at the repository root or in the editor config. It sends the agent here | `AGENTS.md`, `.cursor/rules/protocol.mdc` | A copy of the protocol. If the rule’s text is only in the door file, it will drift |
 
-Product words live in `docs/product/glossary.md`. Framework words live in `docs/engine/glossary.md`.
+Product words live in `docs/product/glossary.md`. Framework words live in `docs/architecture/host/glossary.md`.

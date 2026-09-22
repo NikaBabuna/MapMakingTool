@@ -17,4 +17,4 @@ Event buffer, categories, stub claiming (F-003).
 | `EventClaimer` | Stub ancestry claimer |
 | `EventClaiming` / `ClaimResult` | Dispatch + observation |
 
-Full Systems: F-004. Docs: [docs/engine/architecture.md](../../../../../../../../docs/engine/architecture.md).
+Docs: [docs/architecture/host/events.md](../../../../../../../../docs/architecture/host/events.md).

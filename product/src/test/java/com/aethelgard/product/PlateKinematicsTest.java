@@ -177,7 +177,7 @@ class PlateKinematicsTest {
     assertTrue(world.toLowerCase().contains("sphere"));
     assertFalse(
         world.contains("| `plates` | Voronoi nearest-site ids from seed (6–15 sites) | unchanged (Constant) |"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/README.md"));
     assertTrue(arch.contains("plate_velocity"));
     assertTrue(arch.contains("{-1,0,1}"));
   }

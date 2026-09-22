@@ -135,7 +135,7 @@ class StepPathHotspotsTest {
     String wiki = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(wiki.contains("0.01%"));
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/session.md"));
     assertTrue(arch.contains("phase.trace") || arch.contains("phase collectors"));
 
     // No unexpected engine source edits this Step: Engine.java still serial System loop.

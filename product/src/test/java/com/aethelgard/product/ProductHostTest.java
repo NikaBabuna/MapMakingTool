@@ -81,8 +81,8 @@ class ProductHostTest {
     Path readme = root.resolve("product/README.md");
     assertTrue(Files.isRegularFile(readme), "product/README.md must exist");
 
-    Path arch = root.resolve("docs/product/architecture.md");
-    assertTrue(Files.isRegularFile(arch), "docs/product/architecture.md must exist");
+    Path arch = root.resolve("docs/architecture/program.md");
+    assertTrue(Files.isRegularFile(arch), "docs/architecture/program.md must exist");
     String text = Files.readString(arch);
     assertTrue(text.contains("com.aethelgard:product"), "must record Maven coordinates");
     assertTrue(text.contains("com.aethelgard.product"), "must record package root");

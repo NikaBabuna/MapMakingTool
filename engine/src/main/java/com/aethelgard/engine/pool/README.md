@@ -22,4 +22,4 @@ Step loop and Pool (F-002+). Pluggable compute (F-010) and emission (F-012).
 | `ScriptedEventEmissionPolicy` | Default: emit scripted config paths |
 | `PoolSnapshot` | Settled read-out (`value`, `updateCount`, `fields`) |
 
-See [package-info.java](package-info.java) and [docs/engine/architecture.md](../../../../../../../../docs/engine/architecture.md).
+See [package-info.java](package-info.java) and [docs/architecture/host/pool.md](../../../../../../../../docs/architecture/host/pool.md).

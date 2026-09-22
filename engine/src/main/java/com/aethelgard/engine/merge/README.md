@@ -10,4 +10,4 @@
 Typed merge for System → Pool writes: `FieldMergeType` (pluggable), default `FieldType`s,
 `FieldSchema`, provenance (`Object` values), Step output buffer, and `TypedMerge`.
 
-**Docs:** [docs/engine/specs/merge-types.md](../../../../../../../../docs/engine/specs/merge-types.md)
+**Docs:** [docs/architecture/host/merge.md](../../../../../../../../docs/architecture/host/merge.md)

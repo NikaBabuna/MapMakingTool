@@ -154,7 +154,7 @@ class PoolComputeTest {
   @DisplayName("FR-6: architecture docs mention PoolCompute")
   void architectureDocumentsExtensionPoint() throws Exception {
     String arch =
-        Files.readString(findRepoRoot().resolve("docs/engine/architecture.md"));
+        Files.readString(findRepoRoot().resolve("docs/architecture/host/pool.md"));
     assertTrue(arch.contains("PoolCompute"), "architecture.md must record PoolCompute");
   }
 

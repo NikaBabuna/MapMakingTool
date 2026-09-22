@@ -9,4 +9,4 @@
 
 User Input register, Input View staging, and User View (settled-Pool frames). No UI toolkits.
 
-**Docs:** [docs/engine/specs/user-layer.md](../../../../../../../../docs/engine/specs/user-layer.md)
+**Docs:** [docs/architecture/host/user.md](../../../../../../../../docs/architecture/host/user.md)

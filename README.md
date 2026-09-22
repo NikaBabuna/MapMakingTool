@@ -19,7 +19,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | [Protocol](docs/protocol/README.md) | Conduct: environment, navigation, blueprints, flows |
 | [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
 | [Engine module](engine/README.md) | Code module index |
-| [Engine specs](docs/engine/specs/overview.md) | Pool-System Framework |
+| [Architecture](docs/architecture/README.md) | Implementation paper |
 | [Navigation](docs/navigation.md) | Full documentation map |
 | [Phase](docs/protocol/environment/phase.md) | Current phase and change rules |
 

@@ -65,7 +65,7 @@ class CrustGoalCloseTest {
     assertTrue(readme.contains("G-011"));
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
     assertTrue(protocol.contains("G-011"));
-    String arch = Files.readString(root.resolve("docs/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(arch.contains("G-010"));
     assertTrue(arch.contains("G-011"));
 
@@ -89,7 +89,7 @@ class CrustGoalCloseTest {
     String blockers = Files.readString(root.resolve("docs/paperwork/steps.md"));
     assertTrue(blockers.contains("F-060.md") && blockers.contains("F-061.md"));
 
-    String engineArch = Files.readString(root.resolve("docs/engine/architecture.md"));
+    String engineArch = Files.readString(root.resolve("docs/architecture/program.md"));
     assertFalse(engineArch.contains("Placeholder verbs"));
 
     String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-061.md"));

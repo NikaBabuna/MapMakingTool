@@ -193,10 +193,10 @@ class EventEmissionPolicyTest {
   @DisplayName("FR-6: docs record emission port and G-002 host readiness")
   void docsRecordHostPortsAndGoalDone() throws Exception {
     Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/engine/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/host/README.md"));
     String goal =
         Files.readString(root.resolve("docs/paperwork/goals/G-002-engine-host-readiness.md"));
-    String events = Files.readString(root.resolve("docs/engine/specs/events.md"));
+    String events = Files.readString(root.resolve("docs/architecture/host/events.md"));
     assertTrue(arch.contains("EventEmissionPolicy"));
     assertTrue(arch.contains("PoolCompute"));
     assertTrue(arch.contains("FieldMergeType"));

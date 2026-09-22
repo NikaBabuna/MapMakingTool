@@ -27,9 +27,9 @@ class SimulationRunnerDocsTest {
     assertTrue(tectonics.contains("retired") || tectonics.contains("Retired"));
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(world.toLowerCase().contains("sphere"));
-    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(productArch.contains("F-045"));
-    assertTrue(productArch.contains("F-044"));
+    String productArch = Files.readString(root.resolve("docs/architecture/world/motion.md"));
+    assertTrue(productArch.contains("SphereTopology"));
+    assertTrue(productArch.contains("flood"));
 
     String decisions = Files.readString(root.resolve("docs/paperwork/decisions/ADR-012-simulation-runner.md"));
     assertTrue(decisions.contains("ADR-012"));

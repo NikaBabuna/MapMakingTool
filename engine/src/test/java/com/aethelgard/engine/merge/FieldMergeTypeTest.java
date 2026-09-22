@@ -139,8 +139,8 @@ class FieldMergeTypeTest {
   @DisplayName("FR-8: docs record FieldMergeType and Object carrier")
   void docsRecordExtensionPoints() throws Exception {
     Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/engine/architecture.md"));
-    String merge = Files.readString(root.resolve("docs/engine/specs/merge-types.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/host/merge.md"));
+    String merge = Files.readString(root.resolve("docs/architecture/host/merge.md"));
     assertTrue(arch.contains("FieldMergeType"));
     assertTrue(merge.contains("FieldMergeType"));
     assertTrue(merge.contains("Object") || merge.contains("custom"));

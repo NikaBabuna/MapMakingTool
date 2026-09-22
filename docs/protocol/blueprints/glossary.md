@@ -7,7 +7,7 @@
 
 # Domain glossary
 
-This is `docs/product/glossary.md`. It defines the words a person uses for the world: what a plate is, what elevation means in this product, what a layer in the studio is called. It does not define protocol words. Those are in `docs/protocol/environment/dictionary.md`. It does not define framework type names. Those are in `docs/engine/glossary.md`. Three glossaries exist because mixing them produced pages where “Step” and “plate” were explained in the same breath and neither was clear.
+This is `docs/product/glossary.md`. It defines the words a person uses for the world: what a plate is, what elevation means in this product, what a layer in the studio is called. It does not define protocol words. Those are in `docs/protocol/environment/dictionary.md`. It does not define framework type names. Those are in `docs/architecture/host/glossary.md`. Three glossaries exist because mixing them produced pages where “Step” and “plate” were explained in the same breath and neither was clear.
 
 **Write or edit it when.** A domain word is introduced or its meaning changes. One row. Do not append a Step id as the meaning.
 

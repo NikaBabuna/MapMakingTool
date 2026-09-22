@@ -154,7 +154,7 @@ class MapViewTest {
     String runUi = Files.readString(root.resolve("run-ui.cmd"));
     assertTrue(runUi.toLowerCase().contains("run-product") || runUi.contains("desktop"));
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/README.md"));
     assertTrue(arch.contains("ElevationRaster"));
     assertTrue(arch.contains("com.aethelgard.ui"));
     assertTrue(arch.contains("MapHost") || arch.contains("ui/web"));

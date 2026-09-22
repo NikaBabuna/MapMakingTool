@@ -13,7 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
-- **2026-09-22** — **F-066:** progress records moved to `docs/paperwork/`. A record with its own id is one file. A list you read as a sequence stays one file. ADR-016.
+- **2026-09-22** — **F-065:** implementation papers gathered into `docs/architecture/` as one paper by abstraction level (program, host, world, studio). `docs/engine/` and the old architecture files are removed. ADR-017.
 - **2026-09-22** — **F-064:** product pages rewritten as a conceptual explanation. User journeys move from `docs/product/flows.md` to `docs/product/journeys.md`. ADR-015. How the application operates stays in the existing architecture papers.
 - **2026-09-22** — **F-063:** every protocol page rewritten as an explanation with tables and copyable skeletons. The documentation-only Java witness added in F-062 is removed. No simulation change.
 - **2026-09-22** — **F-062:** conduct moved to `docs/protocol/` (environment, navigation, blueprints, flows). Session removed. Active Goal line only on the goal index. ADR-014. `docs/process/`, `PHASE.md`, and `doc-contract.md` removed.

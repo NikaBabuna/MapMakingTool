@@ -62,8 +62,8 @@ class SphereTopologyTest {
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(wiki.toLowerCase().contains("sphere"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-045"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/plates.md"));
+    assertTrue(arch.contains("SphereTopology"));
   }
 
   private static Path findRepoRoot() throws Exception {

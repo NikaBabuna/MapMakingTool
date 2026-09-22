@@ -151,8 +151,8 @@ class OrogenyTest {
     assertTrue(elev.toLowerCase().contains("height"));
     assertTrue(tect.contains("boundaries") || elev.toLowerCase().contains("crust"));
     assertTrue(tect.contains("retired"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-038"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/crust/orogeny.md"));
+    assertTrue(arch.contains("Orogeny"));
     assertFalse(
         Files.exists(
             root.resolve("product/src/main/java/com/aethelgard/product/CollisionUplift.java")));

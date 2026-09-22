@@ -26,7 +26,7 @@ A reader should reach a page in a few steps. The cap is what keeps the tree from
 | `docs/<page>.md` | Yes | `docs/navigation.md` |
 | `docs/<folder>/<page>.md` | Yes | `docs/protocol/README.md` |
 | `docs/<folder>/<folder>/<page>.md` | Yes. This is three levels under `docs/` | `docs/protocol/flows/steps.md` |
-| `docs/architecture/<area>/<chapter>/<page>.md` | Yes. The architecture shelf alone may use a fourth level, so a paper can have chapters | `docs/architecture/product/crust/subduct.md`, once that shelf exists |
+| `docs/architecture/<area>/<chapter>/<page>.md` | Yes. The architecture shelf alone may use a fourth level, so a paper can have chapters | `docs/architecture/world/crust/subduct.md` |
 | A fourth level anywhere else | No | `docs/protocol/flows/steps/store.md` is too deep. Put the extra detail in the page, or split a sibling page at the same depth |
 
 ## Landmark folders

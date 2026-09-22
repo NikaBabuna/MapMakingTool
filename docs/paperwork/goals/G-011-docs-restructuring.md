@@ -36,7 +36,7 @@ This is where today’s files go. Page rewrites are Step negotiations.
 |-------|------------|
 | Protocol | `docs/process/`, `PHASE.md`, `doc-contract.md` |
 | Product | `concept.md`, product glossary, wiki, style guide. Scope (`project.md`) lives here as what this product is; protocol only says that scope is binding |
-| Architecture | Root architecture roll-up, `docs/engine/` (specs and engine glossary), `product/architecture.md` |
+| Architecture | `docs/architecture/` — program, host, world, studio. ADR-017 |
 | Paperwork | Goals, session, Step registry, blockers, changelog, decisions, roadmap, backlog |
 
 Roadmap and backlog sit with paperwork (project management). Decisions stay the history; architecture states what is true now.
@@ -80,7 +80,7 @@ Roadmap and backlog sit with paperwork (project management). Decisions stay the 
 | F-062 | Protocol shelf: four rooms, blueprints, flows, session retired | done |
 | F-063 | Rewrite every protocol page to full explanations and real blueprints | done |
 | F-064 | Conceptual product shelf | done |
-| F-065 | Create `docs/architecture/`. Move engine and product implementation docs into the paper | not started |
+| F-065 | Architecture paper by abstraction level | done |
 | F-066 | Paperwork shelf: one file per record, lists stay one file | done |
 
 Protocol goes first so later Steps move files into homes the rules already name.
@@ -91,6 +91,6 @@ Protocol goes first so later Steps move files into homes the rules already name.
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 4 / 5 |
+| Steps done | 5 / 5 |
 | Claim boxes | 0 / 3 |
-| Last Accept | F-066 |
+| Last Accept | F-065 |

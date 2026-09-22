@@ -193,7 +193,7 @@ class MapHostTest {
     b.advance();
     assertEquals(a.session().settledWorld(), b.session().settledWorld());
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
     assertTrue(arch.contains("MapHost"));
     String glossary = Files.readString(root.resolve("docs/product/glossary.md"));
     assertFalse(glossary.contains("MapHost"));

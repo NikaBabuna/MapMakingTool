@@ -86,8 +86,8 @@ class TerminalConsoleTest {
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
     assertTrue(protocol.contains("G-011") || protocol.contains("docs/protocol/README.md"));
 
-    String arch = Files.readString(root.resolve("docs/architecture.md"));
-    assertTrue(arch.contains("G-008"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/boundaries.md"));
+    assertTrue(arch.contains("BoundaryInteraction"));
   }
 
   private static Path findRepoRoot() throws Exception {

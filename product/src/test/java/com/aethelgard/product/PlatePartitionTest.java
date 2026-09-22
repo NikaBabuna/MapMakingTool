@@ -91,9 +91,9 @@ class PlatePartitionTest {
     Path root = findRepoRoot();
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(tectonics.contains("12"));
-    String archPartition = Files.readString(root.resolve("docs/product/architecture.md"));
+    String archPartition = Files.readString(root.resolve("docs/architecture/world/README.md"));
     assertTrue(archPartition.contains("plate_registry"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/README.md"));
     assertTrue(arch.contains("plate_registry") || arch.contains("12"));
     String dump = WorldDump.of(ProductHost.create(WorldSpec.DEFAULT), WorldSpec.DEFAULT);
     assertTrue(dump.contains("plate_registry:\n"));

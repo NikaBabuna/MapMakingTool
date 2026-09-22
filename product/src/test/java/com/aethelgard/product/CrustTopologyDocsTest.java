@@ -39,8 +39,8 @@ class CrustTopologyDocsTest {
     assertTrue(world.contains("1920"));
     assertTrue(world.toLowerCase().contains("sphere"));
 
-    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(productArch.contains("F-056"));
+    String productArch = Files.readString(root.resolve("docs/architecture/world/README.md"));
+    assertTrue(productArch.contains("Lockers"));
     assertTrue(productArch.contains("occupancy") || productArch.contains("lockers"));
     assertTrue(productArch.contains("RidgeCreate"));
     assertTrue(productArch.contains("Subduct"));
@@ -98,7 +98,7 @@ class CrustTopologyDocsTest {
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
     assertTrue(protocol.contains("G-011"));
 
-    String arch = Files.readString(root.resolve("docs/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(arch.contains("G-010"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));

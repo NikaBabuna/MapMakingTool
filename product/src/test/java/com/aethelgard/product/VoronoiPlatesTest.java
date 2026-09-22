@@ -72,7 +72,7 @@ class VoronoiPlatesTest {
     assertTrue(plates.contains("0x94D049BB133111EB"));
     assertTrue(plates.contains("floorMod"));
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/plates.md"));
     assertTrue(arch.contains("plates"));
     assertTrue(arch.toLowerCase().contains("toroid") || arch.toLowerCase().contains("cylinder") || arch.contains("12"));
     assertTrue(arch.toLowerCase().contains("lower site index"));

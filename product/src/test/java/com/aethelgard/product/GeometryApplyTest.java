@@ -91,7 +91,7 @@ class GeometryApplyTest {
     Path root = findRepoRoot();
     String tectonics = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(tectonics.toLowerCase().contains("cylinder"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/motion.md"));
     assertTrue(arch.contains("nearest"));
   }
 

@@ -33,6 +33,6 @@ Read them in this order the first time. After that, open only the room the turn 
 
 ## What this folder will not tell you
 
-The language, the modules, and the meaning of a plate or a climate model live on the other shelves. Progress records live in `docs/paperwork/`. Scope is still `docs/project/project.md`. The architecture papers are still at `docs/architecture.md`, `docs/engine/`, and `docs/product/architecture.md` until a later Step gathers them. The blueprints name the paths, so you can find the files today.
+The language, the modules, and the meaning of a plate or a climate model live on the other shelves. Progress records live in `docs/paperwork/`. Scope is still `docs/project/project.md`. The implementation paper is `docs/architecture/`. The blueprints name the paths, so you can find the files today.
 
 Session files are not part of this protocol. A chat does not get its own document. The active Goal and the Step marked `in progress` are the whole of “what we are doing now.”

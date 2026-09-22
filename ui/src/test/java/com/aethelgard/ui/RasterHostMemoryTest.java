@@ -101,7 +101,7 @@ class RasterHostMemoryTest {
   @DisplayName("FR-5: docs mention raster cache/reuse; no engine production edits")
   void docsAndNoEngineEdits() throws Exception {
     Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
     assertTrue(arch.contains("F-047") || arch.toLowerCase().contains("packed") && arch.contains("cache"));
     assertTrue(arch.toLowerCase().contains("reuse") || arch.contains("flat"));
 

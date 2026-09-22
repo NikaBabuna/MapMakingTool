@@ -7,22 +7,20 @@
 
 # Framework spec
 
-These are the topic files in `docs/engine/specs/`, other than that folder’s door. Today:
+These are the host mechanism pages under `docs/architecture/host/`, other than that folder’s door. Today:
 
 | File | The topic it owns |
 |------|-------------------|
-| `overview.md` | The core idea of the framework |
-| `architecture-diagram.md` | The picture of how the parts connect |
-| `step-lifecycle.md` | The order of one framework step |
-| `systems.md` | Systems, sub-systems, and how conflicts resolve |
+| `pool.md` | The pool update and the host ports |
 | `events.md` | Events, categories, and emission |
-| `merge-types.md` | How writes to a field combine |
+| `systems.md` | Systems, sub-systems, and how conflicts resolve |
+| `merge.md` | How writes to a field combine |
 | `determinism.md` | What is guaranteed to repeat |
-| `user-layer.md` | What the user sees and sends |
-| `pool-engine.md` | The pool as the engine object, and the host ports |
+| `user.md` | What the user layer samples and what it may read |
+| `diagnostics.md` | The engine diagnostics port |
 | `open-questions.md` | Gaps that are still undecided. Not a dumping ground for finished work |
 
-One topic per file is the point. A change to merge behavior edits `merge-types.md` and does not also rewrite `events.md` “while you are there.”
+One topic per file is the point. A change to merge behavior edits `merge.md` and does not also rewrite `events.md` while you are there. World procedures live under `docs/architecture/world/`. They are not these pages.
 
 **Write or edit it when.** Framework behavior in that topic changes, or an open question is decided (move the answer into the topic file, and remove or close the question).
 

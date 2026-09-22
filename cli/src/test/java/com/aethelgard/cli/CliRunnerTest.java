@@ -88,7 +88,7 @@ class CliRunnerTest {
     assertTrue(Files.isRegularFile(root.resolve("cli/README.md")));
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("cli"));
-    String arch = Files.readString(root.resolve("docs/engine/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/program.md"));
     assertTrue(arch.toLowerCase().contains("cli"));
   }
 

@@ -16,7 +16,7 @@ The repository is a set of shelves. The folder a file sits in is the job of that
 | Entrance | The map. Not a fifth shelf | Which folders exist, and the door into each | [../../README.md](../../README.md) and [../../navigation.md](../../navigation.md) |
 | Protocol | How to behave. Product-independent | Rules, flows, and document shapes | `docs/protocol/` |
 | Product | What this product is, for a person | Concept, domain words, wiki, visual language. Not module paths and not Step logs | `docs/product/` for concept, glossary, style, wiki. Scope is still `docs/project/project.md`. A later Step gathers these |
-| Architecture | What is actually built | Modules, dependencies, and how a system behaves, in plain English | `docs/architecture.md`, `docs/engine/`, `docs/product/architecture.md`. A later Step gathers these |
+| Architecture | What is actually built | A paper by abstraction level: program, host, world, studio. A page states its mechanism and points at the finer page | `docs/architecture/` |
 | Paperwork | Who did what, and when | Goals, Steps, requirements, decisions, changelog, roadmap, backlog | `docs/paperwork/` |
 
 The agent door is [../../../AGENTS.md](../../../AGENTS.md) at the repository root. The editor door is `.cursor/rules/protocol.mdc`. Both are pointers into this folder. They are not copies of the rules. If a rule is only written on a door, it will drift. The rule lives here.

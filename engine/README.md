@@ -9,7 +9,7 @@
 
 Maven artifact `com.aethelgard:engine` — Pool-System Framework (Java 21). Clean host after G-002.
 
-**Docs:** [docs/engine/README.md](../docs/engine/README.md) · [architecture](../docs/engine/architecture.md)
+**Docs:** [docs/architecture/host/README.md](../docs/architecture/host/README.md) · [program](../docs/architecture/program.md)
 
 | Package | Role |
 |---------|------|

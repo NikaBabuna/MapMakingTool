@@ -7,7 +7,7 @@
 
 # Framework glossary
 
-This is `docs/engine/glossary.md`. It defines the public words of the framework: the names an implementer must use the same way in every module. One row per word. It is not the protocol dictionary and not the domain glossary. Those three files stay separate so a search for “Step” does not land on a plate.
+This is `docs/architecture/host/glossary.md`. It defines the public words of the framework: the names an implementer must use the same way in every module. One row per word. It is not the protocol dictionary and not the domain glossary. Those three files stay separate so a search for “Step” does not land on a plate.
 
 **Write or edit it when.** **Record source** adds a public framework word, or a word’s meaning changes. Private helpers do not get rows.
 
@@ -24,7 +24,7 @@ This is `docs/engine/glossary.md`. It defines the public words of the framework:
 ```markdown
 | Word | Meaning | Where |
 |------|---------|-------|
-| <name> | <guarantee> | [<spec>](specs/<topic>.md) |
+| <name> | <guarantee> | [<page>](pool.md) |
 ```
 
 ## Keep out

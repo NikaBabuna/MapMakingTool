@@ -119,7 +119,7 @@ class BoundaryInteractionTest {
     Path root = findRepoRoot();
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(world.toLowerCase().contains("cylinder"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/boundaries.md"));
     assertTrue(arch.contains("area_flux"));
   }
 

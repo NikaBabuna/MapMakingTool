@@ -95,8 +95,8 @@ class CliFullRunnerTest {
   @DisplayName("FR-5: docs retire CLI placeholder; no F-050/F-051 Accept claims; no engine edits")
   void docsAndNoEngineEdit() throws Exception {
     Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-049"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
+    assertTrue(arch.contains("CommandDispatch"));
     assertFalse(arch.toLowerCase().contains("placeholder (adr-010)"));
 
     String readme = Files.readString(root.resolve("cli/README.md"));

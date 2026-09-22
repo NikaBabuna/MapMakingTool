@@ -266,8 +266,8 @@ class RunnerUiInfraTest {
     String layout = Files.readString(root.resolve("ui/web/src/lib/layout.ts"));
     assertTrue(layout.contains("aethelgard.layout."));
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-053"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
+    assertTrue(arch.contains("panels.ts"));
     assertTrue(arch.contains("panels.ts") || arch.contains("panel registry"));
 
     String glossary = Files.readString(root.resolve("docs/product/glossary.md"));

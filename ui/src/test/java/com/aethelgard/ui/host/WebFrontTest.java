@@ -59,7 +59,7 @@ class WebFrontTest {
     assertTrue(uiReadme.contains("ui/web"));
     String flows = Files.readString(root.resolve("docs/product/journeys.md"));
     assertTrue(flows.contains("Aethelgard"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
     assertTrue(arch.contains("ui/web") || arch.contains("Next.js"));
   }
 

@@ -184,7 +184,7 @@ class GoalCloseTest {
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
     assertTrue(protocol.contains("G-011") || protocol.contains("docs/protocol/README.md"));
 
-    String arch = Files.readString(root.resolve("docs/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(arch.contains("G-009"));
 
     String flows = Files.readString(root.resolve("docs/product/journeys.md"));
@@ -204,11 +204,11 @@ class GoalCloseTest {
     assertFalse(glossary.contains("Planned (F-042)"));
     assertFalse(glossary.contains("Slow/Normal/Fast") || glossary.contains("| Slow |"));
 
-    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String productArch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
     assertTrue(productArch.contains("panels.ts") || productArch.contains("lib/panels"));
     assertFalse(productArch.contains("SwingPlayScheduler.java"));
 
-    String engineArch = Files.readString(root.resolve("docs/engine/architecture.md"));
+    String engineArch = Files.readString(root.resolve("docs/architecture/program.md"));
     assertFalse(engineArch.toLowerCase().contains("placeholder console"));
 
     // No engine production edits this Step (and Goal claim)

@@ -125,8 +125,8 @@ class ScaffoldWitnessTest {
   @Test
   @DisplayName("FR-8: engine architecture doc records layout contract")
   void architectureDocRecordsLayout() throws IOException {
-    Path arch = repoRoot.resolve("docs/engine/architecture.md");
-    assertTrue(Files.isRegularFile(arch), "docs/engine/architecture.md must exist");
+    Path arch = repoRoot.resolve("docs/architecture/program.md");
+    assertTrue(Files.isRegularFile(arch), "docs/architecture/program.md must exist");
     String text = Files.readString(arch);
     assertTrue(text.contains("com.aethelgard.engine"), "must record package root");
     assertTrue(text.contains("Java 21") || text.contains("release 21"), "must record Java 21");

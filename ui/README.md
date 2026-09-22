@@ -40,4 +40,4 @@ Primary launch from repo root:
 run-product.cmd
 ```
 
-Docs: [docs/product/architecture.md](../docs/product/architecture.md)
+Docs: [docs/architecture/studio/README.md](../docs/architecture/studio/README.md)

@@ -36,10 +36,10 @@ class BoundaryTectonicsDocsTest {
     String elevation = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
     assertTrue(elevation.contains("tectonics.md"));
 
-    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String productArch = Files.readString(root.resolve("docs/architecture/world/README.md"));
     assertTrue(productArch.contains("plate_registry"));
     assertTrue(productArch.contains("world/tectonics"));
-    assertTrue(productArch.contains("F-031"));
+    assertTrue(productArch.contains("1920"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("terminal") || style.contains("Terminal"));

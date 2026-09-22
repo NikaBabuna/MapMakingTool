@@ -80,8 +80,8 @@ class RunnerShellTest {
     Path root = findRepoRoot();
     String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-051.md"));
     assertTrue(blocker.contains("FR-1"));
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-051") || arch.contains("F-052"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
+    assertTrue(arch.contains("MapSpeed"));
     String tool = Files.readString(root.resolve("ui/web/src/components/MapTool.tsx"));
     assertFalse(tool.contains("JFrame"));
   }

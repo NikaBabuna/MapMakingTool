@@ -145,7 +145,7 @@ class ElevationProcessTest {
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("wiki/elevation.md"));
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/world/README.md"));
     assertTrue(arch.contains("world/tectonics"));
     assertTrue(arch.contains("GenerationTickPolicy") || arch.toLowerCase().contains("emission"));
     assertTrue(arch.contains("plates"));

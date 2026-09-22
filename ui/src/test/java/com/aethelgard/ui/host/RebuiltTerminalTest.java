@@ -81,8 +81,8 @@ class RebuiltTerminalTest {
     assertFalse(blocker.contains("F-051 Accepted"));
     assertFalse(blocker.contains("F-052 Accepted"));
 
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
-    assertTrue(arch.contains("F-050"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/host.md"));
+    assertTrue(arch.contains("Terminal.tsx"));
 
     String terminal = Files.readString(root.resolve("ui/web/src/components/Terminal.tsx"));
     assertFalse(terminal.contains("JFrame"));

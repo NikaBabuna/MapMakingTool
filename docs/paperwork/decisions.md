@@ -27,5 +27,6 @@ One file per decision. The next number is one higher than the last row.
 | ADR-014 | Protocol shelves; session retired | accepted | [ADR-014-protocol-shelves.md](decisions/ADR-014-protocol-shelves.md) |
 | ADR-015 | Product pages are conceptual | accepted | [ADR-015-conceptual-product.md](decisions/ADR-015-conceptual-product.md) |
 | ADR-016 | Paperwork shelf | accepted | [ADR-016-paperwork-shelf.md](decisions/ADR-016-paperwork-shelf.md) |
+| ADR-017 | Architecture paper by abstraction | accepted | [ADR-017-architecture-paper.md](decisions/ADR-017-architecture-paper.md) |
 
 How to write one: [../protocol/blueprints/adr.md](../protocol/blueprints/adr.md).

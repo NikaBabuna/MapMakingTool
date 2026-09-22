@@ -11,4 +11,4 @@
 |----------|---------|
 | [ci.yml](ci.yml) | F-009 — Temurin JDK 21 + `./mvnw -B test` on `push` / `pull_request` to `main` |
 
-Same Accept bar as local `mvnw test`. Details: [../../docs/engine/architecture.md](../../docs/engine/architecture.md).
+Same Accept bar as local `mvnw test`. Details: [../../docs/architecture/program.md](../../docs/architecture/program.md).

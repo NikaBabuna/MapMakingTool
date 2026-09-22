@@ -10,7 +10,7 @@
 **Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))  
 **Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-011 Docs restructuring  
 **Protocol:** [protocol/README.md](protocol/README.md)  
-**Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
+**Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [architecture/](architecture/README.md)
 
 Folder indexes are **README.md** in each landmark directory. Prefer those links when entering a folder.
 
@@ -69,8 +69,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-008-boundary-tectonics-studio.md](paperwork/goals/G-008-boundary-tectonics-studio.md) | done |
 | [goals/G-009-simulation-runner-harden.md](paperwork/goals/G-009-simulation-runner-harden.md) | done |
 | [goals/G-010-crust-topology.md](paperwork/goals/G-010-crust-topology.md) | done |
-| [goals/G-011-docs-restructuring.md](paperwork/goals/G-011-docs-restructuring.md) | in progress — F-066 paperwork shelf done |
-| [steps.md](paperwork/steps.md) | Active — step registry. F-066 done. F-065 not started |
+| [goals/G-011-docs-restructuring.md](paperwork/goals/G-011-docs-restructuring.md) | in progress — F-065 architecture paper done |
+| [steps.md](paperwork/steps.md) | Active — step registry. F-065 done |
 | [steps/](paperwork/steps/README.md) | Active — one file per Step |
 | [decisions.md](paperwork/decisions.md) | Active — index through ADR-016. Next number is one higher than the last row |
 | [decisions/](paperwork/decisions/README.md) | Active — one file per decision |
@@ -80,24 +80,16 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 ---
 
-## Cross-cutting
+## Architecture (`docs/architecture/`)
 
-| Doc | Status |
-|-----|--------|
-| [architecture.md](architecture.md) | Active (roll-up; goal index points at G-011) |
+**Folder:** [architecture/README.md](architecture/README.md)
 
----
-
-## Engine docs (`docs/engine/`)
-
-**Folder:** [engine/README.md](engine/README.md) · Specs: [engine/specs/README.md](engine/specs/README.md)
-
-| Doc | Status |
-|-----|--------|
-| [glossary.md](engine/glossary.md) | Active |
-| [architecture.md](engine/architecture.md) | Active — F-012 host ports; G-002 done; F-023 console; F-024 MapHost in `ui`; F-019 `cli` → `product` |
-| [specs/](engine/specs/) | Active — through G-002 (host-ready) |
-| [specs/open-questions.md](engine/specs/open-questions.md) | Partial — #1 and #4 still open; #2a decided (ADR-009) |
+| Level | Status |
+|-------|--------|
+| [program.md](architecture/program.md) | Active — modules and the dependency direction |
+| [host/](architecture/host/README.md) | Active — one engine step. Open questions #1 and #4 remain |
+| [world/](architecture/world/README.md) | Active — one generation |
+| [studio/](architecture/studio/README.md) | Active — session, raster, HTTP host |
 
 ---
 
@@ -107,7 +99,6 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-010 done (through F-061); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
 | [concept.md](product/concept.md) | Active — conceptual; no program names |
 | [journeys.md](product/journeys.md) | Active — what a person does. Explore, Guide, and Timeline are not built |
 | [glossary.md](product/glossary.md) | Active — domain words |

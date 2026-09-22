@@ -101,7 +101,7 @@ class WorldDumpTest {
   @DisplayName("FR-5: dump recorded; G-003 stays done")
   void docsRecordDumpAndGoalDone() throws Exception {
     Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    String arch = Files.readString(root.resolve("docs/architecture/studio/session.md"));
     assertTrue(arch.contains("WorldDump"));
     String readme = Files.readString(root.resolve("product/README.md"));
     assertTrue(readme.contains("WorldDump"));

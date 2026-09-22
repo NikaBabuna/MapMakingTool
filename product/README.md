@@ -25,4 +25,4 @@ From the repo root in **cmd**:
 run-product.cmd
 ```
 
-**Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [wiki/world](../docs/product/wiki/world.md) · [wiki/elevation](../docs/product/wiki/elevation.md)
+**Docs:** [docs/architecture/world/README.md](../docs/architecture/world/README.md) · [wiki/world](../docs/product/wiki/world.md) · [wiki/elevation](../docs/product/wiki/elevation.md)

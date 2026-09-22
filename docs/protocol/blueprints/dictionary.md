@@ -9,7 +9,7 @@
 
 This is `docs/protocol/environment/dictionary.md`. It fixes the words the other protocol pages use, so “Step” does not mean a chat in one page and a file in another. If a word is doing load-bearing work in a flow and it is not in this table, the flow is using a private language. Add the word here, or stop using it.
 
-**Write or edit it when.** A protocol word is added, renamed, or its meaning changed. Not when a domain word is added. That word goes in `docs/product/glossary.md`. Not when a framework word is added. That word goes in `docs/engine/glossary.md`.
+**Write or edit it when.** A protocol word is added, renamed, or its meaning changed. Not when a domain word is added. That word goes in `docs/product/glossary.md`. Not when a framework word is added. That word goes in `docs/architecture/host/glossary.md`.
 
 ## What each column is for
 
