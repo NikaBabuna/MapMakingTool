@@ -7,7 +7,7 @@
 
 # G-010 — Crust topology
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Engine:** do not edit `engine` source for ordinary feature growth (G-002 host ports). Custom `FieldMergeType` for lockers is allowed in **product**.  
 **Prior:** [G-009](G-009-simulation-runner-harden.md) shipped a simulation runner; elevation is still contact-paint orogeny on standing coordinates. Plates move; land does not ride. Collide precedence is area-only (no oceanic/continental crust).
 
@@ -65,7 +65,7 @@ See **ADR-013** in [../decisions.md](../decisions.md). \(T_{ocean}=8\), \(T_{lan
 - [x] Ridge/gap cells are thin oceanic, not inherited high crust
 - [x] Oceanic crust is consumed at COLLIDE; continental is not deleted by area-only precedence
 - [x] After enough generations on a collide-friendly seed, some cells stay \(\ge T_{land}\) while riding (arc and/or suture)
-- [ ] `elevation` matches isostasy of lockers at occupancy; determinism; no `engine` edits; suite green
+- [x] `elevation` matches isostasy of lockers at occupancy; determinism; no `engine` edits; suite green
 
 ---
 
@@ -79,7 +79,7 @@ See **ADR-013** in [../decisions.md](../decisions.md). \(T_{ocean}=8\), \(T_{lan
 | F-058 | Buoyancy precedence + oceanic subduction + SEPARATE mint | done |
 | F-059 | Margin relief (rift trough + collide slope + lip blend) | done |
 | F-060 | Continental suture + arc thickening + cap | done |
-| F-061 | Goal close + dump/wiki/UI hygiene | not started |
+| F-061 | Goal close + dump/wiki/UI hygiene | done |
 
 ---
 
@@ -87,6 +87,6 @@ See **ADR-013** in [../decisions.md](../decisions.md). \(T_{ocean}=8\), \(T_{lan
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 6 / 7 |
-| Claim boxes | 4 / 5 |
-| Last Accept | F-060 |
+| Steps done | 7 / 7 |
+| Claim boxes | 5 / 5 |
+| Last Accept | F-061 |

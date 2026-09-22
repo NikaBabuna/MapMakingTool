@@ -164,7 +164,7 @@ Goal doc: [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md)
 | F-058 | Buoyancy precedence + oceanic subduction + SEPARATE mint | done | [F-058.md](../blockers/F-058.md) |
 | F-059 | Margin relief (rift trough + collide slope + lip blend) | done | [F-059.md](../blockers/F-059.md) |
 | F-060 | Continental suture + arc thickening + cap | done | [F-060.md](../blockers/F-060.md) |
-| F-061 | Goal close + dump/wiki/UI hygiene | not started | |
+| F-061 | Goal close + dump/wiki/UI hygiene | done | [F-061.md](../blockers/F-061.md) |
 
 ---
 

@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-22** — **F-061 / G-010 close:** elevation witnessed as isostasy; Overlay legend stroke labeled Boundary; Active Goal none; last completed G-010. No new physics.
 - **2026-09-22** — **F-060:** continental arc (+8, at least 16) and suture (+4 each side), thickness cap 32, after margin relief. Golden `default-n3.txt` refreshed. Runtime physics (G-010).
 - **2026-09-22** — **F-059:** margin relief after ridge mint (rift trough, collide slope, lip blend). Suture moved to F-060; Goal close to F-061. Runtime physics (G-010).
 - **2026-09-20** — **F-058:** buoyancy collide (\(T_{land}=16\)); oceanic occupancy consume; SEPARATE contact-locker copies mint thin ocean. Runtime physics (G-010).

@@ -14,6 +14,6 @@ _Status: World (F-030 G-008 locks). Elevation isostasy of riding lockers (F-056)
 |------|---------|
 | [world.md](world.md) | World, grid, layer; VIEW/torus targets vs code |
 | [elevation.md](elevation.md) | Plates seed, kinematics, locker stamps + isostasy (F-056) |
-| [tectonics.md](tectonics.md) | **G-008** boundary tectonics + **G-010** crust topology locks |
+| [tectonics.md](tectonics.md) | **G-008** boundary tectonics + **G-010** crust topology (**done**) |
 
 When adding pages, update [../navigation.md](../navigation.md).

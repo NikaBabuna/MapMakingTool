@@ -4,7 +4,7 @@
 
 Repository protocol for AI agents. Theory: [docs/process/protocol-overview.md](docs/process/protocol-overview.md).
 
-**Active Goal:** [G-010 Crust topology](docs/project/goals/G-010-crust-topology.md) (`in progress`) · Last completed: [G-009 Simulation runner harden](docs/project/goals/G-009-simulation-runner-harden.md) (`done`) · Prior: [G-008](docs/project/goals/G-008-boundary-tectonics-studio.md) (`done`) 
+**Active Goal:** none · Last completed: [G-010 Crust topology](docs/project/goals/G-010-crust-topology.md) (`done`) · Prior: [G-009 Simulation runner harden](docs/project/goals/G-009-simulation-runner-harden.md) (`done`) · [G-008](docs/project/goals/G-008-boundary-tectonics-studio.md) (`done`) 
 **Current Session:** [docs/project/session.md](docs/project/session.md)
 
 ---

@@ -52,7 +52,7 @@ Aethelgard domain terms. Engine terms: [../engine/glossary.md](../engine/glossar
 | **Fission** | When a plate’s cells become disconnected, each component becomes its own plate (crumbs &lt; 0.01% area absorbed). |
 | **Oceanic crust** | Thickness below \(T_{land}=16\). Step 0 all \(T_{ocean}=8\). Subducts at COLLIDE (F-058). |
 | **Arc** | **G-010 live (F-060):** ocean–ocean collide adds 8 once to the winner’s locker. If that is still below 16, the locker is set to 16. One write per locker per step. |
-| **Suture** | **G-010 live (F-060):** continent–continent collide adds 4 once to each side. Neither locker is consumed. Plate ids do not merge. Historically also: contact between different plate ids listed in `boundaries`. |
+| **Suture** | **G-010 done (F-060):** continent–continent collide adds 4 once to each side. Neither locker is consumed. Plate ids do not merge. The Overlay legend calls the darkened plate-boundary stroke **Boundary** (F-061), not Suture. |
 | **Thickness cap** | **G-010 live (F-060):** `ContinentalCollide` does not write above 32. A locker already at 32 stays 32. |
 | **Continental crust** | Thickness \(\ge T_{land}=16\). Does not die by area-only precedence. Sutures at C–C (F-060). |
 | **Ridge mint** | **G-010 live (F-057/F-058):** new gap occupancy and SEPARATE contact-locker copies get thin oceanic lockers; do not inherit neighbor mountains. |

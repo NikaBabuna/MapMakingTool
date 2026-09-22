@@ -7,7 +7,7 @@
 
 # Elevation process
 
-> **Code status (through F-060):** occupancy keys + thickness lockers live; **ridge mint** of thin ocean in advection gaps and SEPARATE copies; **margin relief** (rift trough, collide slope, lip blend); **arc + suture + cap** (ocean–ocean winner +8 and at least 16; continent–continent +4 each side; cap 32); **buoyancy** COLLIDE (\(T_{land}=16\)); elevation is **isostasy** of locker thickness at current keys (\(T_{ocean}=8\)). Contact stamps write **locker thickness** (F-038 ladder, buoyancy polarity) and ride with occupancy. Plates: B1 nearest-site; sphere polar wrap (F-045); geometry apply/fission/ridge flood.
+> **Code status (through F-061, G-010 done):** occupancy keys + thickness lockers live; **ridge mint** of thin ocean in advection gaps and SEPARATE copies; **margin relief** (rift trough, collide slope, lip blend); **arc + suture + cap** (ocean–ocean winner +8 and at least 16; continent–continent +4 each side; cap 32); **buoyancy** COLLIDE (\(T_{land}=16\)); elevation is **isostasy** of locker thickness at current keys (\(T_{ocean}=8\)). Contact stamps write **locker thickness** (F-038 ladder, buoyancy polarity) and ride with occupancy. Plates: B1 nearest-site; sphere polar wrap (F-045); geometry apply/fission/ridge flood.
 
 Relief is **caused** by plate boundary work (collide / separate). It is not painted at Step 0.
 

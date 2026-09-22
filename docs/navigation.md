@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([PHASE.md](PHASE.md))  
-**Active Goal:** [G-010 Crust topology](project/goals/G-010-crust-topology.md) (`in progress`) · Last: [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) (**done**) · Prior: [G-008](project/goals/G-008-boundary-tectonics-studio.md) (**done**)  
+**Active Goal:** none · Last completed: [G-010 Crust topology](project/goals/G-010-crust-topology.md) (`done`) · Prior: [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) (`done`) · [G-008](project/goals/G-008-boundary-tectonics-studio.md) (`done`)  
 **Session:** [project/session.md](project/session.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -59,7 +59,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-007-studio-cartography.md](project/goals/G-007-studio-cartography.md) | done |
 | [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
 | [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | done |
-| [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | in progress |
+| [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | done |
 | [session.md](project/session.md) | Active (temporary) |
 | [features.md](project/features.md) | Active — G-001–G-010 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
@@ -74,7 +74,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [PHASE.md](PHASE.md) | Active |
-| [architecture.md](architecture.md) | Active (roll-up; G-010 in progress; G-009 done) |
+| [architecture.md](architecture.md) | Active (roll-up; G-010 done; no Active Goal) |
 | [doc-contract.md](doc-contract.md) | Active — SYNC checklist / Goal-close / host-port ties |
 
 ---
@@ -98,12 +98,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-010 in progress (F-060 arc, suture, cap); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
+| [architecture.md](product/architecture.md) | Active — G-010 done (through F-061); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-010 in progress (F-060 arc, suture, cap); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
-| [glossary.md](product/glossary.md) | Active — arc/suture/cap **live** (F-060); margin relief **live** (F-059); buoyancy **live** (F-058); ridge mint **live** (F-057); lockers/occupancy/isostasy **live** (F-056); DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
-| [style-guide.md](product/style-guide.md) | Active — F-060 arc + suture; F-059 margin relief; F-058 buoyancy (runtime); F-057 ridge mint + restart menu; F-056 isostasy map; F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
-| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-060 arc + suture; F-059 margin relief; F-058 buoyancy; F-057 ridge mint; F-056 occupancy + isostasy; F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
+| [flows.md](product/flows.md) | G-010 done (through F-061); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
+| [glossary.md](product/glossary.md) | Active — G-010 done; arc/suture/cap live (F-060); Overlay stroke labeled Boundary (F-061) |
+| [style-guide.md](product/style-guide.md) | Active — G-010 done (F-061); Overlay legend Boundary; three layers; F-054 layer shortcuts |
+| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (G-010 done; F-060 arc + suture; F-056 occupancy + isostasy) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -173,6 +173,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-058.md](blockers/F-058.md) | done — buoyancy + oceanic subduction + SEPARATE mint |
 | [F-059.md](blockers/F-059.md) | done — margin relief |
 | [F-060.md](blockers/F-060.md) | done — continental suture + arc + cap |
+| [F-061.md](blockers/F-061.md) | done — G-010 close + dump/wiki/UI hygiene |
 
 ---
 

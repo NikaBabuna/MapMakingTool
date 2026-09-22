@@ -7,7 +7,7 @@
 
 # Boundary tectonics (G-008)
 
-**Doc status:** F-060 arc + suture + cap live. F-059 margin relief live. F-058 buoyancy + SEPARATE unshare live. F-057 ridge mint live. F-056 occupancy + lockers + isostasy live. F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-055 G-010 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Occupancy keys remap with plates; gaps and SEPARATE copies mint thin oceanic lockers (\(T_{ocean}=8\)); margin relief then shapes oceanic thickness near splits and collisions; **ContinentalCollide** then arcs and sutures; COLLIDE uses buoyancy (\(T_{land}=16\)); locker stamps ride; elevation is isostasy. Sphere-on-rectangle F-045; flood fill F-044. **G-010 remaining:** Goal close F-061.
+**Doc status:** G-010 **done** (F-061). F-060 arc + suture + cap live. F-059 margin relief live. F-058 buoyancy + SEPARATE unshare live. F-057 ridge mint live. F-056 occupancy + lockers + isostasy live. F-046 crumb 0.01% + phase collectors; F-045 sphere polar wrap; F-044 flood + bold borders. F-055 G-010 locks. Prior: F-030 / F-034 cylinder / F-036 B1. **Code status:** Occupancy keys remap with plates; gaps and SEPARATE copies mint thin oceanic lockers (\(T_{ocean}=8\)); margin relief then shapes oceanic thickness near splits and collisions; **ContinentalCollide** then arcs and sutures; COLLIDE uses buoyancy (\(T_{land}=16\)); locker stamps ride; elevation is isostasy. Sphere-on-rectangle F-045; flood fill F-044.
 
 This page is the physics + Pool/System plan for boundary tectonics. When a later Step lands, update the **Code status** banner and retire conflicting lines in elevation.md.
 
@@ -220,5 +220,5 @@ Implementation Steps: **F-034–F-038**.
 - **F-039:** multi-panel mappy studio.
 - **F-040:** traditional terminal console (`aethelgard>`); **G-008 closed**.
 - **G-009:** shared CLI/terminal (**F-048**–**F-050**); runner chrome + perf rail (**F-051**–**F-052**); UI infrastructure + QoL (**F-053**).
-- **G-010:** occupancy + lockers + isostasy **F-056 live**; ridge mint **F-057 live**; buoyancy + SEPARATE unshare **F-058 live**; margin relief **F-059 live**; arc + suture + cap **F-060 live**. Goal close is F-061.
+- **G-010 done:** occupancy + lockers + isostasy **F-056**; ridge mint **F-057**; buoyancy + SEPARATE unshare **F-058**; margin relief **F-059**; arc + suture + cap **F-060**; Goal close **F-061**.
 - **F-046:** crumb absorb **0.01%**; session phase collectors (`phase.trace` … `phase.orogeny` / `phase.isostasy`) on `DiagnosticsHub`.

@@ -216,7 +216,7 @@ MapMakingTool/
 
 | Type | Role |
 |------|------|
-| `CommandDispatch` | Placeholder verbs on a `ProductSession` (`status`, `advance`, `dump`, `at`, `layers`) |
+| `CommandDispatch` | Noun-path + verb on a `ProductSession` (F-048); deprecated aliases `status`, `advance`, `dump`, `at`, `layers` |
 | `CliRunner` | `--steps N` dump **or** one dispatcher line; `ProductSession.ofDefault()` |
 | `Main` | Process entry → `CliRunner` → exit code |
 | `CliOptions` / `CliResult` | Runner flags (`--seed` / `--steps` / `-c`) and result (F-049) |

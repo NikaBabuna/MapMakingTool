@@ -7,7 +7,7 @@
 
 # Product architecture
 
-**Status:** active (G-010 **in progress** — F-060 arc, suture, cap; G-009 **done** through F-054; G-008 done)  
+**Status:** active (G-010 **done** through F-061; G-009 **done** through F-054; G-008 done)  
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
@@ -132,11 +132,11 @@ Shell lives in **`ui/desktop/`**. Dev webview → `http://localhost:3000`. On st
 
 ## G-008 boundary tectonics (F-033 partition live)
 
-Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry** (occupancy remap + Subduct corrections); locker stamps + **RidgeCreate** + **MarginRelief** + **ContinentalCollide** + **ThicknessToElevation** (F-060). Goal close remains F-061.
+Domain + Pool/System plan: [wiki/tectonics.md](wiki/tectonics.md). VIEW **1920×1080**; B1 partition; boundaries; flux/intent; **IntegrateVelocity**; **ApplyGeometry** (occupancy remap + Subduct corrections); locker stamps + **RidgeCreate** + **MarginRelief** + **ContinentalCollide** + **ThicknessToElevation** (F-060). **G-010 done** (F-061). Overlay legend labels the darkened stroke Boundary. Dump format unchanged.
 
 ---
 
-## Source layout (through F-060)
+## Source layout (through F-061)
 
 ```
 product/

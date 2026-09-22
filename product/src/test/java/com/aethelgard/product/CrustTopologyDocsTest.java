@@ -55,15 +55,15 @@ class CrustTopologyDocsTest {
     assertTrue(decisions.contains("locker") || decisions.contains("Occupancy"));
 
     String goalDoc = Files.readString(root.resolve("docs/project/goals/G-010-crust-topology.md"));
-    assertTrue(goalDoc.contains("**Status:** `in progress`"));
-    assertTrue(goalDoc.contains("| F-055 |") && goalDoc.contains("| F-060 |"));
+    assertTrue(goalDoc.contains("**Status:** `done`"));
+    assertTrue(goalDoc.contains("| F-055 |") && goalDoc.contains("| F-061 |"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
     assertTrue(goals.contains("G-010"));
     assertTrue(goals.contains("Crust topology") || goals.contains("crust-topology"));
     String g010 = goals.lines().filter(l -> l.contains("| G-010 |")).findFirst().orElse("");
-    assertTrue(g010.contains("| in progress |"), g010);
-    assertTrue(goals.contains("**Active Goal:** [G-010") || goals.contains("Active Goal:** [G-010"));
+    assertTrue(g010.contains("| done |"), g010);
+    assertTrue(goals.contains("**Active Goal:** none"));
 
     String goalsReadme = Files.readString(root.resolve("docs/project/goals/README.md"));
     String g009row =
@@ -81,7 +81,7 @@ class CrustTopologyDocsTest {
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
     assertTrue(agents.contains("G-010"));
-    assertTrue(agents.contains("in progress"));
+    assertTrue(agents.contains("none"));
 
     String phase = Files.readString(root.resolve("docs/PHASE.md"));
     assertTrue(phase.contains("G-010"));
@@ -94,7 +94,7 @@ class CrustTopologyDocsTest {
 
     String session = Files.readString(root.resolve("docs/project/session.md"));
     assertTrue(session.contains("G-010"));
-    assertTrue(session.contains("in progress"));
+    assertTrue(session.contains("done"));
 
     String protocol = Files.readString(root.resolve(".cursor/rules/protocol.mdc"));
     assertTrue(protocol.contains("G-010"));
@@ -104,10 +104,7 @@ class CrustTopologyDocsTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(style.contains("G-010"));
-    assertTrue(
-        style.contains("planned")
-            || style.contains("Planned")
-            || style.contains("later"));
+    assertTrue(style.contains("done") || style.contains("Boundary"));
 
     String flows = Files.readString(root.resolve("docs/product/flows.md"));
     assertTrue(flows.contains("G-010"));

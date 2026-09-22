@@ -302,7 +302,7 @@ class ToolUiTest {
 
     map.setLayer(MapLayer.OVERLAY);
     List<LegendEntry> overlay = map.legend();
-    assertEquals("Suture", overlay.get(overlay.size() - 1).label());
+    assertEquals("Boundary", overlay.get(overlay.size() - 1).label());
 
     Path root = findRepoRoot();
     assertFalse(Files.exists(root.resolve("ui/src/main/java/com/aethelgard/ui/MapFrame.java")));

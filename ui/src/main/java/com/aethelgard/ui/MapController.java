@@ -263,7 +263,7 @@ public final class MapController {
       case PLATES -> plateLegend();
       case OVERLAY -> {
         List<LegendEntry> rows = new ArrayList<>(elevationLegend());
-        rows.add(new LegendEntry(ElevationRaster.darken(ElevationRaster.landRamp(16)), "Suture"));
+        rows.add(new LegendEntry(ElevationRaster.darken(ElevationRaster.landRamp(16)), "Boundary"));
         yield rows;
       }
     };

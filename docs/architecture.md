@@ -19,15 +19,15 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 |-------|-----|--------|
 | **Engine** | [engine/architecture.md](engine/architecture.md) | Active — G-002 host ports done |
 | **Engine specs** | [engine/specs/](engine/specs/) | Active — through F-012 / G-002; category authorship ADR-009 |
-| **Product** | [product/architecture.md](product/architecture.md) | Active — G-010 in progress (F-060 arc, suture, cap); G-009 done (through F-054); G-008 boundary tectonics + studio done |
+| **Product** | [product/architecture.md](product/architecture.md) | Active — G-010 done (through F-061); G-009 done (through F-054); G-008 boundary tectonics + studio done |
 
 ---
 
 ## Goals
 
-**Active Goal:** [G-010 Crust topology](project/goals/G-010-crust-topology.md)  
-**Last completed:** [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md)  
-**Prior:** [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) — done · [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) — done · [G-006 Local webview front](project/goals/G-006-webview-front.md) — done · [G-005 Living map](project/goals/G-005-living-map.md) — done · [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
+**Active Goal:** none  
+**Last completed:** [G-010 Crust topology](project/goals/G-010-crust-topology.md)  
+**Prior:** [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) — done · [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) — done · [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) — done · [G-006 Local webview front](project/goals/G-006-webview-front.md) — done · [G-005 Living map](project/goals/G-005-living-map.md) — done · [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
 
 ---
 

@@ -7,7 +7,7 @@
 
 # Product flows
 
-_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **in progress** (**F-058** buoyancy live)._
+_Status: **G-007** done. **G-008** done. **G-009** **done** (through **F-054**). **G-010** **done** (through **F-061**)._
 
 Before production feature code, extend this file per [../process/quality.md](../process/quality.md).
 
@@ -25,7 +25,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Studio | Runner chrome; perf panels; UI infrastructure | **F-051**–**F-053** done |
 | Close | Layer harden + doc hygiene; Goal seal | **F-054** done |
 
-## G-010 crust topology (planned)
+## G-010 crust topology (shipped)
 
 | Area | Intent | Steps |
 |------|--------|-------|
@@ -35,7 +35,7 @@ Before production feature code, extend this file per [../process/quality.md](../
 | Buoyancy | Ocean subducts; continent does not die by area; SEPARATE does not copy the border locker | **F-058** done |
 | Margins | Rift trough + collide slope + lip blend | **F-059** done |
 | Continents | Arc + suture + cap | **F-060** done |
-| Close | Dump/wiki/UI hygiene; Goal seal | F-061 |
+| Close | Dump/wiki/UI hygiene; Goal seal | **F-061** done |
 
 Runtime: occupancy remaps with plates; locker stamps ride; **gaps and SEPARATE copies mint thin ocean**; COLLIDE buoyancy (\(T_{land}=16\)); margin relief shapes oceanic edges; **arc and suture** thicken crust up to 32; elevation is isostasy. Map still paints `elevation`. Simulation menu: Restart UI / Restart engine.
 

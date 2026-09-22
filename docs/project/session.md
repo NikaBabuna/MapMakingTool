@@ -8,20 +8,21 @@
 # Current session
 
 **Updated:** 2026-09-22  
-**Status:** F-060 Accepted · Active Goal **G-010** · last completed Step F-060
+**Status:** F-061 Accepted · Active Goal **none** · last completed Goal **G-010**
 
 ---
 
 ## Session goal
 
-Accept **F-060** (continental suture + arc thickening + cap) under G-010. Done.
+Accept **F-061** (Goal close + dump/wiki/UI hygiene) under G-010. Done.
 
 ---
 
 ## Active Goal
 
-**Active Goal:** [G-010 — Crust topology](goals/G-010-crust-topology.md) — **in progress**  
-**Last completed Goal:** [G-009 — Simulation runner harden](goals/G-009-simulation-runner-harden.md) — **done**
+**Active Goal:** none  
+**Last completed Goal:** [G-010 — Crust topology](goals/G-010-crust-topology.md) — **done**  
+**Prior completed Goal:** [G-009 — Simulation runner harden](goals/G-009-simulation-runner-harden.md) — **done**
 
 ---
 
@@ -29,17 +30,17 @@ Accept **F-060** (continental suture + arc thickening + cap) under G-010. Done.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-060 | Continental suture + arc thickening + cap | done |
+| F-061 | Goal close + dump/wiki/UI hygiene | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-060 marked `in progress` before code
-- [x] F-060 Accepted (witness + SYNC)
+- [x] F-061 marked `in progress` before code
+- [x] F-061 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-060 arc, suture, and cap are done. Goal close is F-061.
+- G-010 is closed. Climate stays on the backlog until a new Goal is promoted.
