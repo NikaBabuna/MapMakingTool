@@ -41,10 +41,10 @@ class TorusCameraTest {
     assertTrue(tool.contains("Reset view"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.toLowerCase().contains("loopback") || style.toLowerCase().contains("fit"));
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.toLowerCase().contains("loopback") || flows.contains("F-032"));
-    String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
+    assertTrue(style.toLowerCase().contains("fit") || style.toLowerCase().contains("pans"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("East") || flows.contains("pan"));
+    String tectonics = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(tectonics.toLowerCase().contains("torus"));
   }
 

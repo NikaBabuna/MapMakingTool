@@ -23,10 +23,8 @@ class StudioChromeTest {
     Path root = findRepoRoot();
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("Studio cartography"));
-    // F-053 renamed the dock flag to a rail key and moved it into lib/layout.ts
-    assertTrue(style.contains("aethelgard.rail.right.open"));
-    assertTrue(style.contains("--accent") || style.contains("gray") || style.contains("--ink"));
+    assertTrue(style.toLowerCase().contains("map"));
+    assertTrue(style.contains("gray") || style.contains("quiet"));
 
     String layoutLib = Files.readString(root.resolve("ui/web/src/lib/layout.ts"));
     assertTrue(layoutLib.contains("aethelgard.rail.right.open"));
@@ -52,8 +50,8 @@ class StudioChromeTest {
     String layout = Files.readString(root.resolve("ui/web/src/app/layout.tsx"));
     assertTrue(layout.contains("IBM_Plex_Sans") || layout.contains("IBM Plex"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("studio") || flows.contains("G-007") || flows.contains("dock"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("map") || flows.contains("Play"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("style-guide.md"));

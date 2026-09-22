@@ -23,11 +23,8 @@ class MultiPanelStudioTest {
     Path root = findRepoRoot();
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.toLowerCase().contains("multi-panel") || style.contains("studio-panel"));
-    assertTrue(style.toLowerCase().contains("neatline") || style.toLowerCase().contains("graticule"));
-    // F-053 moved panel identity + persistence into the registry (lib/panels.ts)
-    assertTrue(style.contains("aethelgard.panel.inspect.open") || style.contains("panelInspect"));
     assertTrue(style.contains("Inspect") && style.contains("Legend"));
+    assertTrue(style.toLowerCase().contains("map"));
 
     String panels = Files.readString(root.resolve("ui/web/src/lib/panels.ts"));
     assertTrue(panels.contains("id: \"inspect\""));
@@ -57,8 +54,8 @@ class MultiPanelStudioTest {
     assertTrue(css.contains("map-graticule") || css.contains("map-ticks"));
     assertTrue(css.contains("map-hud"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("F-039") || flows.toLowerCase().contains("multi-panel"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("Inspect"));
 
     String nav = Files.readString(root.resolve("docs/navigation.md"));
     assertTrue(nav.contains("F-039") || nav.contains("style-guide"));

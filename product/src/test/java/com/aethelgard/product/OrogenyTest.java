@@ -148,13 +148,11 @@ class OrogenyTest {
     Path root = findRepoRoot();
     String elev = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
     String tect = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(elev.toLowerCase().contains("orogeny") || tect.toLowerCase().contains("orogeny"));
-    assertTrue(
-        elev.contains("boundaries")
-            || tect.contains("ReliefFromBoundaries")
-            || tect.toLowerCase().contains("orogeny-from-boundaries")
-            || elev.toLowerCase().contains("boundary"));
-    assertTrue(elev.contains("F-038") || tect.contains("F-038"));
+    assertTrue(elev.toLowerCase().contains("height"));
+    assertTrue(tect.contains("boundaries") || elev.toLowerCase().contains("crust"));
+    assertTrue(tect.contains("retired"));
+    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(arch.contains("F-038"));
     assertFalse(
         Files.exists(
             root.resolve("product/src/main/java/com/aethelgard/product/CollisionUplift.java")));

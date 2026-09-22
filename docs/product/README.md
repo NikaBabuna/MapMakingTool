@@ -1,12 +1,18 @@
-# Product documentation
+<!--
+  File: docs/product/README.md
+  Purpose: Door to the conceptual product
+  Audience: Humans and agents
+  Update when: A child of this folder is added or removed
+-->
 
-Aethelgard — procedural fantasy world generation.
+# Product
 
-| Doc | Purpose |
-|-----|---------|
-| [architecture.md](architecture.md) | Module layout, ProductSession, WorldDump |
-| [concept.md](concept.md) | Vision, problem, approach |
-| [flows.md](flows.md) | User journeys |
-| [glossary.md](glossary.md) | Domain terminology |
-| [style-guide.md](style-guide.md) | Player-facing feel |
-| [wiki/](wiki/) | Domain and worldbuilding content — [wiki/README.md](wiki/README.md) |
+What this product is, for a person. These pages do not describe the program. How the application is built and how it operates belongs on the architecture shelf. The reason for that split is [ADR-015](../project/decisions.md).
+
+| Page | Read it when |
+|------|----------------|
+| [concept.md](concept.md) | You need what Aethelgard is for, and what it refuses |
+| [journeys.md](journeys.md) | You need what a person does, and what they see |
+| [glossary.md](glossary.md) | You need the meaning of a world word |
+| [style-guide.md](style-guide.md) | You need how the screen looks, or the word on a control |
+| [wiki/](wiki/README.md) | You need a rule of the world |

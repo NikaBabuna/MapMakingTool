@@ -79,7 +79,7 @@ Roadmap and backlog sit with paperwork (project management). Decisions stay the 
 |------|--------|--------|
 | F-062 | Protocol shelf: four rooms, blueprints, flows, session retired | done |
 | F-063 | Rewrite every protocol page to full explanations and real blueprints | done |
-| F-064 | Create the conceptual `docs/product/`. Move concept, glossary, wiki, style | not started |
+| F-064 | Conceptual product shelf | done |
 | F-065 | Create `docs/architecture/`. Move engine and product implementation docs into the paper | not started |
 | F-066 | Create `docs/paperwork/`. Move goals, Steps, blockers, changelog, decisions, roadmap, backlog | not started |
 
@@ -91,6 +91,6 @@ Protocol goes first so later Steps move files into homes the rules already name.
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 2 / 5 |
+| Steps done | 3 / 5 |
 | Claim boxes | 0 / 3 |
-| Last Accept | F-063 |
+| Last Accept | F-064 |

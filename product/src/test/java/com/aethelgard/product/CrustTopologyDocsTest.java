@@ -24,31 +24,28 @@ class CrustTopologyDocsTest {
 
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(tectonics.contains("ride") || tectonics.contains("rides"));
-    assertTrue(tectonics.contains("derived") || tectonics.contains("isostasy"));
-    assertTrue(tectonics.contains("superseded for G-010") || tectonics.contains("superseded"));
-    assertTrue(tectonics.contains("F-056") || tectonics.contains("until F-056"));
-    assertTrue(tectonics.contains("Ridge mint") || tectonics.contains("ridge mint"));
+    assertTrue(tectonics.contains("retired"));
     assertTrue(tectonics.contains("oceanic"));
     assertTrue(tectonics.contains("subduct"));
     assertTrue(tectonics.contains("suture") || tectonics.contains("Suture"));
     assertTrue(tectonics.contains("all oceanic") || tectonics.contains("All oceanic"));
-    assertTrue(tectonics.contains("No plate-id weld") || tectonics.contains("no weld") || tectonics.contains("No weld"));
-    assertTrue(tectonics.contains("occupancy") || tectonics.contains("Occupancy"));
-    assertTrue(tectonics.contains("lockers") || tectonics.contains("`lockers`"));
-    assertTrue(tectonics.contains("RidgeCreate"));
-    assertTrue(tectonics.contains("Subduct"));
-    assertTrue(tectonics.contains("ThicknessToElevation"));
-    assertTrue(tectonics.contains("world/tectonics"));
-    assertTrue(tectonics.contains("crust/ridge") || tectonics.contains("crust/isostasy"));
+    assertTrue(tectonics.toLowerCase().contains("weld"));
 
     String elevation = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(elevation.contains("G-010"));
-    assertTrue(elevation.contains("superseded") || elevation.contains("isostasy"));
-    assertTrue(elevation.contains("F-056"));
+    assertTrue(elevation.contains("isostasy"));
+    assertTrue(elevation.contains("crust"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
-    assertTrue(world.contains("G-010"));
-    assertTrue(world.contains("lockers") || world.contains("occupancy"));
+    assertTrue(world.contains("1920"));
+    assertTrue(world.toLowerCase().contains("sphere"));
+
+    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(productArch.contains("F-056"));
+    assertTrue(productArch.contains("occupancy") || productArch.contains("lockers"));
+    assertTrue(productArch.contains("RidgeCreate"));
+    assertTrue(productArch.contains("Subduct"));
+    assertTrue(productArch.contains("ThicknessToElevation"));
+    assertTrue(productArch.contains("world/tectonics"));
 
     String decisions = Files.readString(root.resolve("docs/project/decisions.md"));
     assertTrue(decisions.contains("ADR-013"));
@@ -105,17 +102,16 @@ class CrustTopologyDocsTest {
     assertTrue(arch.contains("G-010"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("G-010"));
-    assertTrue(style.contains("done") || style.contains("Boundary"));
+    assertTrue(style.contains("Boundary"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("G-010"));
-    assertTrue(flows.contains("F-055"));
+    String journeys = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(journeys.contains("Play"));
+    assertTrue(journeys.contains("Not built"));
 
     String glossary = Files.readString(root.resolve("docs/product/glossary.md"));
-    assertTrue(glossary.contains("Locker") || glossary.contains("locker"));
-    assertTrue(glossary.contains("Occupancy") || glossary.contains("occupancy"));
-    assertTrue(glossary.contains("Isostasy") || glossary.contains("isostasy"));
+    assertTrue(glossary.contains("Crust"));
+    assertTrue(glossary.contains("Ocean"));
+    assertTrue(glossary.contains("Elevation"));
 
     assertTrue(Files.isRegularFile(root.resolve("docs/blockers/F-056.md")));
 

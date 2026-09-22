@@ -28,12 +28,9 @@ class CylinderMapTest {
     assertTrue(canvas.contains("drawImage(source, i * dw, 0)"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(
-        style.toLowerCase().contains("blank")
-            || style.toLowerCase().contains("polar")
-            || style.toLowerCase().contains("cylinder")
-            || style.toLowerCase().contains("sphere")
-            || style.contains("G-009"));
+    assertTrue(style.toLowerCase().contains("top") || style.toLowerCase().contains("bottom"));
+    String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
+    assertTrue(world.toLowerCase().contains("sphere"));
   }
 
   private static Path findRepoRoot() throws Exception {

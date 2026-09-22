@@ -131,8 +131,10 @@ class GapFillFloodTest {
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(wiki.contains("0.01%"));
-    assertTrue(wiki.toLowerCase().contains("flood"));
-    assertTrue(wiki.contains("F-044"));
+    assertTrue(wiki.toLowerCase().contains("filled"));
+    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(arch.contains("flood"));
+    assertTrue(arch.contains("F-044"));
 
     String src =
         Files.readString(root.resolve("product/src/main/java/com/aethelgard/product/PlateKinematics.java"));

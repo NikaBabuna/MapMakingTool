@@ -128,5 +128,6 @@ SYNC checklist detail: [../protocol/flows/steps.md](../protocol/flows/steps.md) 
 | [F-061.md](F-061.md) | F-061 | G-010 | done |
 | [F-062.md](F-062.md) | F-062 | G-011 | done |
 | [F-063.md](F-063.md) | F-063 | G-011 | done |
+| [F-064.md](F-064.md) | F-064 | G-011 | done |
 
 Update this table when creating or closing a blocker file.

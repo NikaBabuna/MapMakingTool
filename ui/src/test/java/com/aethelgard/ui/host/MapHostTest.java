@@ -196,7 +196,8 @@ class MapHostTest {
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("MapHost"));
     String glossary = Files.readString(root.resolve("docs/product/glossary.md"));
-    assertTrue(glossary.contains("MapHost"));
+    assertFalse(glossary.contains("MapHost"));
+    assertTrue(glossary.contains("Seed"));
     String uiReadme = Files.readString(root.resolve("ui/README.md"));
     assertTrue(uiReadme.contains("MapHost"));
   }

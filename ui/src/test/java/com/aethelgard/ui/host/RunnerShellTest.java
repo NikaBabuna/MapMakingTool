@@ -25,7 +25,7 @@ class RunnerShellTest {
   void styleGuideShell() throws Exception {
     Path root = findRepoRoot();
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("F-051") || style.toLowerCase().contains("runner shell"));
+    assertTrue(style.contains("Play") && style.contains("Pause"));
     assertTrue(style.contains("1x") && style.contains("Fastest"));
     assertTrue(style.contains("Transport") || style.contains("runner") || style.contains("World rail"));
     assertTrue(style.contains("--ink") || style.toLowerCase().contains("gray"));

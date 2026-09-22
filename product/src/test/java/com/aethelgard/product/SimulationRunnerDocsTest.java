@@ -24,13 +24,12 @@ class SimulationRunnerDocsTest {
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(tectonics.contains("ridge") || tectonics.contains("Ridge"));
     assertTrue(tectonics.contains("third") || tectonics.contains("nearest"));
-    assertTrue(tectonics.contains("superseded") || tectonics.contains("Superseded") || tectonics.contains("retired") || tectonics.contains("Retired"));
-    assertTrue(
-        tectonics.contains("Sphere-on-rectangle")
-            || tectonics.contains("sphere-on-rectangle")
-            || tectonics.contains("antipodal"));
-    assertTrue(tectonics.contains("F-045") || tectonics.contains("until F-045"));
-    assertTrue(tectonics.contains("F-043") || tectonics.contains("until F-043") || tectonics.contains("F-044"));
+    assertTrue(tectonics.contains("retired") || tectonics.contains("Retired"));
+    String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
+    assertTrue(world.toLowerCase().contains("sphere"));
+    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(productArch.contains("F-045"));
+    assertTrue(productArch.contains("F-044"));
 
     String decisions = Files.readString(root.resolve("docs/project/decisions.md"));
     assertTrue(decisions.contains("ADR-012"));
@@ -38,16 +37,12 @@ class SimulationRunnerDocsTest {
     assertTrue(decisions.contains("ridge") || decisions.contains("contacting"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("G-009"));
-    assertTrue(
-        style.contains("planned")
-            || style.contains("Planned")
-            || style.contains("F-054")
-            || style.contains("done"));
+    assertTrue(style.contains("Play"));
+    assertTrue(style.contains("Fastest"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("G-009"));
-    assertTrue(flows.contains("F-041") || flows.contains("shipped") || flows.contains("F-054"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("Play"));
+    assertTrue(flows.contains("Pause"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
     assertTrue(goals.contains("G-009"));

@@ -36,4 +36,4 @@ Chrome is descriptor-driven (alpha): add a rail panel in `src/lib/panels.ts`, a 
 
 Shortcuts: Space Play/Pause; A/. Advance; 1–3 layers; [/] speed; N Reset world; `/C focus terminal; D World rail; P Perf rail; R reset view; ? shortcut list.
 
-Docs: [docs/product/style-guide.md](../../docs/product/style-guide.md) · [docs/product/architecture.md](../../docs/product/architecture.md) · [docs/product/flows.md](../../docs/product/flows.md)
+Docs: [docs/product/style-guide.md](../../docs/product/style-guide.md) · [docs/product/architecture.md](../../docs/product/architecture.md) · [docs/product/journeys.md](../../docs/product/journeys.md)

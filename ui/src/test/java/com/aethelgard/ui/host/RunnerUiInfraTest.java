@@ -261,21 +261,21 @@ class RunnerUiInfraTest {
     assertTrue(features.contains("F-053"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("Panel registry") || style.contains("panel registry"));
     assertTrue(style.contains("Menu bar") || style.contains("menu bar"));
-    assertTrue(style.contains("aethelgard.layout."));
-    assertTrue(style.contains("Shortcuts"));
+    assertTrue(style.contains("?"));
+    String layout = Files.readString(root.resolve("ui/web/src/lib/layout.ts"));
+    assertTrue(layout.contains("aethelgard.layout."));
 
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("F-053"));
     assertTrue(arch.contains("panels.ts") || arch.contains("panel registry"));
 
     String glossary = Files.readString(root.resolve("docs/product/glossary.md"));
-    assertTrue(glossary.contains("Panel registry"));
-    assertTrue(glossary.contains("Menu bar"));
+    assertTrue(glossary.contains("Plate"));
+    assertTrue(glossary.contains("Overlay"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("F-053"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("Play"));
 
     String changelog = Files.readString(root.resolve("docs/project/changelog.md"));
     assertTrue(changelog.contains("F-053"));

@@ -1,77 +1,24 @@
 <!--
   File: docs/product/wiki/world.md
-  Purpose: Domain definition of World, grid, layer, and Step-0 elevation
-  Audience: Agents and humans
-  Update when: World geometry or layer semantics change
+  Purpose: The map itself — cells, edges, and the seed
+  Audience: Humans and agents
+  Update when: The world's geometry changes
 -->
 
-# World
+# The map
 
-**Code status (through F-061):** VIEW **1920×1080**; sphere-on-rectangle polar wrap (F-045); occupancy + lockers; ridge mint; buoyancy COLLIDE; arc + suture + cap; elevation isostasy (\(T_{ocean}=8\), \(T_{land}=16\)).  
-**G-010 done** (F-061). F-060 arc, suture, and cap live; F-059 margin relief live; F-058 buoyancy live. Runtime no longer F-038 elevation paint. **G-008:** complete (cylinder amended by F-045).
+This page owns the shape of the world: the cells, how the edges join, and what a seed is. It does not own how plates move or how high the land stands. Those are the tectonics page and the elevation page.
 
-A **World** is a rectangular **grid** of cells plus named **layers** of data on that grid.
+A world is a rectangular grid of cells. Every layer of the world covers that same grid. The window shows 1920×1080 cells. The height on that grid is elevation. The elevation page owns what the number means.
 
-It is not the engine heartbeat counter. It lives in Pool typed fields that `ProductHost` declares.
+## Edges
 
----
+East joins west. A thing that leaves the eastern edge comes back on the west, still heading east.
 
-## Grid
+North and south join as a sphere laid on the rectangle. A thing that crosses the north edge re-enters from the north, halfway around the world, and its direction of travel turns about. The same is true of the south.
 
-- **Width** — cell count east–west (`x` in `0 .. width-1`).
-- **Height** — cell count north–south (`y` in `0 .. height-1`; `y` is row index, increasing downward in storage).
-- Both must be at least 1.
-- Geometry is shared: every layer has the same width and height.
+An older rule joined north directly to south, like a torus. That rule is retired. A later rule stopped motion at the poles, like a cylinder. That rule is retired for the world itself. The view of the map still does not scroll past the top or the bottom of the rectangle. The world does.
 
-### Specs
+## The seed
 
-| Spec | Role | Code | Notes |
-|------|------|------|-------|
-| `WorldSpec.DEFAULT` | Dump / fast tests | Small (e.g. 8×8), seed 0 | May stay small |
-| `WorldSpec.VIEW` | Product window | **1920×1080**, seed 0 (**F-031**) | same |
-
-A `WorldSpec` also records a long **seed**. The seed places **initial plate sites** (B1 cylindrical nearest-site at Step 0; N = 12–24) — [tectonics.md](tectonics.md). It does not paint elevation.
-
-### Topology (G-009 live)
-
-**Sphere-on-rectangle (F-045):** wrap X; crossing north/south re-enters from the same pole at antipodal longitude with heading flip. Step-0 B1 partition stays cylindrical. Cylinder hard-Y is **retired** for runtime advection/neighbors/camera.
-
----
-
-## Layer
-
-A **layer** is one named field on the Pool. Grid layers share world geometry. Per-plate actor data lives in a **registry** object under G-008 (not a forever-Constant velocity field).
-
-Later climate (rainfall, temperature, …) is more layers of the same shape, not a second world object.
-
-### Code today (F-036)
-
-| Field | Step 0 | Later Steps |
-|-------|--------|-------------|
-| `elevation` | every cell `0` | isostasy of locker thickness at occupancy (F-056); \(T_{ocean}=8\) |
-| `plates` | B1 nearest-site (N=12–24, wrap X) | apply flux/fission then advection |
-| occupancy | one locker id per cell (`y*W+x`) | remapped with plate motion (F-056) |
-| `lockers` | all thickness \(T_{ocean}\) | F-038 stamp ladder on thickness; ride with keys |
-| `plate_registry` | STATIC area + `(vx,vy)` | refreshed after integrate + geometry |
-| `boundaries` | STATIC classified contacts | refreshed each generation |
-| `area_flux` | STATIC Δarea + sinkΔ | refreshed; **applied** each generation |
-| `motion_intent` | STATIC preferred Δv | refreshed; drives IntegrateVelocity |
-| `plate_velocity` | STATIC `(vx,vy)` in `{-1,0,1}` | integrate each generation; fission remap |
-
-### G-008 planned fields
-
-See [tectonics.md](tectonics.md) — `tectonic_events` still planned. Boundary orogeny shipped in F-038.
-
----
-
-## Elevation (Step 0)
-
-The first relief layer is **`elevation`**: integer height per cell.
-
-At Step 0 this is **initial condition**, not a finished map. Every cell starts at **0**. Crust is all oceanic thickness \(T_{ocean}=8\); elevation is isostasy of that thickness (F-056). Contact stamps thicken lockers after Step 0.
-
----
-
-## Engine
-
-`ProductHost` wires layers into `EngineSetup`’s field schema and seeds grids through `EngineConfig.initialFields`. `WorldDump` formats a settled snapshot for tests and later observers. Ordinary world rules do not edit `engine` source.
+A seed is a whole number. It chooses where the plates begin and how they first drift. The same seed grows the same world. It does not paint the height. At the start the crust is all ocean, and the height is the ocean baseline. How many plates, and what the crust does after that, belong to the tectonics page.

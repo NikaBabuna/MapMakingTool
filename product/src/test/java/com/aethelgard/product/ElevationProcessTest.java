@@ -133,13 +133,12 @@ class ElevationProcessTest {
   void wikiAndArchitectureRecordProcess() throws Exception {
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(wiki.toLowerCase().contains("voronoi") || wiki.toLowerCase().contains("plate"));
-    assertTrue(wiki.contains("world/tectonics") || wiki.toLowerCase().contains("tectonic"));
-    assertTrue(wiki.toLowerCase().contains("orogeny") || wiki.toLowerCase().contains("converge"));
-    assertTrue(wiki.contains("4-neighbor") || wiki.toLowerCase().contains("neighbor"));
+    assertTrue(wiki.toLowerCase().contains("height"));
+    assertTrue(wiki.toLowerCase().contains("tectonic"));
+    assertTrue(wiki.toLowerCase().contains("crust"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
-    assertTrue(world.contains("elevation.md") || world.toLowerCase().contains("plates"));
+    assertTrue(world.toLowerCase().contains("elevation"));
 
     String index = Files.readString(root.resolve("docs/product/wiki/README.md"));
     assertTrue(index.contains("elevation.md"));

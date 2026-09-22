@@ -57,10 +57,10 @@ class LargeWorldTest {
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(world.contains("1920"));
     String glossary = Files.readString(root.resolve("docs/product/glossary.md"));
-    assertTrue(glossary.contains("1920"));
+    assertTrue(glossary.contains("Seed"));
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(tectonics.contains("1920"));
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
+    assertTrue(tectonics.contains("12"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
     assertTrue(flows.contains("1920"));
   }
 

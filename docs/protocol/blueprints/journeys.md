@@ -7,7 +7,7 @@
 
 # User journeys
 
-This is `docs/product/flows.md`. The filename says “flows” because that is what the file was named when user journeys were first written. It is not a protocol flow. Protocol flows live in `docs/protocol/flows/` and they edit the repository. This document describes what a person does with the product: open it, look at a map, advance the world, read a number.
+This is `docs/product/journeys.md`. It is not a protocol flow. Protocol flows live in `docs/protocol/flows/` and they edit the repository. This document describes what a person does with the product: open it, look at a map, advance the world, read a number.
 
 If you are about to add a bookkeeping step here, you are in the wrong file.
 
@@ -26,7 +26,7 @@ If you are about to add a bookkeeping step here, you are in the wrong file.
 ```markdown
 # Journeys
 
-What a person does. Protocol bookkeeping is in `docs/protocol/flows/`.
+What a person does. Protocol bookkeeping is in `docs/protocol/flows/`. The product page is `docs/product/journeys.md`.
 
 ## <Journey name>
 

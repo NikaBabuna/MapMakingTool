@@ -134,7 +134,6 @@ class StepPathHotspotsTest {
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertTrue(wiki.contains("0.01%"));
-    assertTrue(wiki.contains("phase.trace") || wiki.toLowerCase().contains("phase collector"));
 
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("phase.trace") || arch.contains("phase collectors"));

@@ -83,7 +83,7 @@ class RidgeAccretionTest {
     String wiki =
         Files.readString(findRepoRoot().resolve("docs/product/wiki/tectonics.md"));
     assertTrue(wiki.toLowerCase().contains("ridge"));
-    assertTrue(wiki.contains("F-043") || wiki.contains("live"));
+    assertTrue(wiki.contains("retired"));
   }
 
   private static Path findRepoRoot() throws Exception {

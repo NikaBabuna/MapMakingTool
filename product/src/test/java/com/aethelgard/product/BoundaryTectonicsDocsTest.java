@@ -23,37 +23,31 @@ class BoundaryTectonicsDocsTest {
     Path root = findRepoRoot();
 
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(tectonics.contains("1920×1080") || tectonics.contains("1920x1080"));
-    assertTrue(tectonics.contains("Torus") || tectonics.contains("torus"));
-    assertTrue(tectonics.contains("12 +") || tectonics.contains("12–24") || tectonics.contains("12-24"));
-    assertTrue(tectonics.contains("Fission") || tectonics.contains("fission"));
+    assertTrue(tectonics.contains("12–24") || tectonics.contains("12-24"));
+    assertTrue(tectonics.contains("fission"));
     assertTrue(tectonics.contains("0.01%"));
-    assertTrue(tectonics.contains("plate_registry"));
     assertTrue(tectonics.contains("boundaries"));
-    assertTrue(tectonics.contains("world/tectonics"));
-    assertTrue(tectonics.contains("superseded") || tectonics.contains("retired") || tectonics.contains("Constant-forever"));
-    assertTrue(tectonics.contains("not implemented") || tectonics.contains("Code status"));
+    assertTrue(tectonics.contains("retired"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(world.contains("1920×1080") || world.contains("1920x1080"));
-    assertTrue(world.contains("F-031"));
+    assertTrue(world.contains("torus"));
 
     String elevation = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(elevation.contains("tectonics.md") || elevation.contains("G-008"));
+    assertTrue(elevation.contains("tectonics.md"));
+
+    String productArch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(productArch.contains("plate_registry"));
+    assertTrue(productArch.contains("world/tectonics"));
+    assertTrue(productArch.contains("F-031"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("G-008"));
-    assertTrue(
-        style.contains("planned")
-            || style.contains("Planned")
-            || style.contains("shipped")
-            || style.contains("F-040")
-            || style.contains("terminal"));
-    assertTrue(style.contains("loopback") || style.contains("Loopback"));
+    assertTrue(style.contains("terminal") || style.contains("Terminal"));
+    assertTrue(style.contains("pans"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("G-008"));
-    assertTrue(flows.contains("1920") || flows.contains("planned") || flows.contains("shipped"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("1920"));
+    assertTrue(flows.contains("Play"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
     assertTrue(goals.contains("G-008"));

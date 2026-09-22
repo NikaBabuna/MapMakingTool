@@ -60,9 +60,10 @@ class SphereTopologyTest {
     assertEquals(a.settledWorld(), b.settledWorld());
 
     Path root = findRepoRoot();
-    String wiki = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(wiki.contains("F-045"));
-    assertTrue(wiki.toLowerCase().contains("sphere") || wiki.contains("antipod"));
+    String wiki = Files.readString(root.resolve("docs/product/wiki/world.md"));
+    assertTrue(wiki.toLowerCase().contains("sphere"));
+    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(arch.contains("F-045"));
   }
 
   private static Path findRepoRoot() throws Exception {

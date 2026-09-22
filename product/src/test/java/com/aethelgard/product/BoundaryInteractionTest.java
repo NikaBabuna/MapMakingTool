@@ -117,9 +117,10 @@ class BoundaryInteractionTest {
     assertTrue(dump.contains("motion_intent:\n"));
 
     Path root = findRepoRoot();
-    String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(tectonics.contains("area_flux") || tectonics.contains("F-035"));
-    assertTrue(tectonics.toLowerCase().contains("cylinder"));
+    String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
+    assertTrue(world.toLowerCase().contains("cylinder"));
+    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(arch.contains("area_flux"));
   }
 
   private static Path findRepoRoot() {

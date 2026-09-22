@@ -1,67 +1,32 @@
 <!--
   File: docs/product/concept.md
-  Purpose: Product vision — what Aethelgard is and why
+  Purpose: What Aethelgard is for, for a person
   Audience: Humans and agents
-  Update when: Product direction changes
+  Update when: The product's purpose changes
 -->
 
 # Aethelgard
 
-**Tagline:** A world that remembers how it was made.
+A world that remembers how it was made.
 
----
+Hand-designing a fantasy map is a pleasure until the map stops holding together. A river runs uphill. A desert sits on the wet side of a range. Fixing that means stopping the work to become a geography teacher. Leaving it means a map that fails a second look.
 
-## Problem
+A noise picture can look like terrain and still have no reason for any of it. A paint program can put a mountain wherever you like and will not keep the climate honest. Aethelgard does neither of those as its way of making a world. It grows the world by the processes that make geography, so a desert is there because the mountains are there.
 
-Hand-designing a fantasy map is enjoyable until consistency breaks down. Mountains placed for silhouette, deserts for story, rivers for aesthetics — then the river flows uphill, the desert sits on the wet side of the range, or the climate fails a second glance. Fixing it means becoming a geography teacher mid-project. Ignoring it means a map that quietly does not hold together.
+## The world
 
-**Noise generators** produce good-looking terrain with no causal reason — mountains exist because a function said so. **Hand-painted tools** offer total freedom and zero help staying consistent. Neither simulates a world; both produce a picture of one.
+Nothing on the map is placed by hand. Plates move. Where they meet, crust is born, destroyed, or thickened. Height follows the crust. Wind, rain, temperature, and biomes are the rest of that chain. They are part of the promise, and they are not in the world yet.
 
----
+## The history
 
-## Approach
+The map is a timeline, not a finished picture. A person should be able to move from the first drift of the plates to the present, rewind a coastline, and point at a range and hear what had to happen before it could stand there. That scrubbable history is part of the promise, and it is not something a person can do yet.
 
-Build worlds by **simulating the processes that make geography**, not by painting the result.
+## The person
 
-```
-Tectonic plates → elevation → wind → rainfall → temperature → biomes
-```
+The person is making a world that has to survive close inspection: a campaign, a novel, a map of their own. They enjoy the designing. They do not want the physics to be the fight.
 
-Nothing on the map is placed. Everything is **caused**.
+Two ways of working are both part of the promise. In one, they roll worlds until one feels right and take it as it is, or as a foundation. In the other, they nudge the thing they care about, a range or a dry coast, and the rest of the world stays consistent with that nudge. Neither way is available yet. What a person can do today is open a world, watch it move, and look at a place.
 
-A desert does not need to be checked against neighboring mountains — it exists as their consequence. The map cannot drift out of physical sense because it was never drawn freehand. It was worked out.
+## What it is not
 
----
-
-## Use modes
-
-| Mode | Description |
-|------|-------------|
-| **Explore** | Generate seeds until a world feels right; use as-is or as foundation |
-| **Guide** | Nudge what matters (range placement, coastline dryness); simulation fills the rest consistently |
-
-Both modes are first-class. See [flows.md](flows.md) for journeys (to be detailed).
-
----
-
-## Signature feature: world history
-
-The map is not a finished image — it is a **timeline**.
-
-- Scrub from first plate drift to present day
-- Rewind coastlines before ice ages; fast-forward rising ranges
-- Select any point and see **why** it looks that way and what had to happen first
-
-Every feature answers "why is this here" with a real causal chain.
-
----
-
-## Audience
-
-Tabletop campaigns, novels, personal worldbuilding — anywhere the map must survive close inspection. For people who enjoy designing fantasy worlds and do not want physics to be the fight.
-
----
-
-## Engine
-
-Implemented on the [Pool-System Framework](../engine/specs/overview.md) — step-based simulation with deterministic merge and cross-step consequence chains suited to geological time. After **G-002**, the engine is a clean host: Aethelgard Systems and world rules plug in via `PoolCompute`, `FieldMergeType`, and `EventEmissionPolicy` without editing `engine`. **G-003** is the first product world (elevation slice) on that host.
+Aethelgard is not a noise generator with a map painted on top. It is not a freehand terrain editor. It is not a picture that only has to look right once.

@@ -23,9 +23,8 @@ class RebuiltTerminalTest {
     Path root = findRepoRoot();
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("F-050") || style.toLowerCase().contains("rebuilt"));
+    assertTrue(style.toLowerCase().contains("terminal"));
     assertTrue(style.contains("aethelgard>"));
-    assertTrue(style.contains("session get") || style.contains("Noun/verb") || style.contains("help"));
     assertFalse(style.toLowerCase().contains("placeholder verbs"));
 
     String terminal = Files.readString(root.resolve("ui/web/src/components/Terminal.tsx"));

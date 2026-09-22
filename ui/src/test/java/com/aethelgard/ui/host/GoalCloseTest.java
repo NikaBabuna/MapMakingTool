@@ -60,10 +60,8 @@ class GoalCloseTest {
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertTrue(
-        style.contains("layer shortcuts")
-            || style.contains("Layer shortcuts")
-            || style.contains("typing targets")
-            || style.contains("Typing targets"));
+        style.contains("layer keys")
+            || style.contains("1, 2, and 3"));
   }
 
   @Test
@@ -189,14 +187,15 @@ class GoalCloseTest {
     String arch = Files.readString(root.resolve("docs/architecture.md"));
     assertTrue(arch.contains("G-009"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
     assertFalse(flows.contains("G-009 simulation runner (planned)"));
     assertFalse(flows.contains("aethelgard.dockOpen"));
     assertFalse(flows.contains("panelInspectOpen"));
+    assertTrue(flows.contains("Play"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertFalse(world.contains("through F-040 / G-008"));
-    assertTrue(world.contains("sphere") || world.contains("Sphere") || world.contains("F-045"));
+    assertTrue(world.contains("sphere") || world.contains("Sphere"));
 
     String elev = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
     assertFalse(elev.contains("through F-040 / G-008"));

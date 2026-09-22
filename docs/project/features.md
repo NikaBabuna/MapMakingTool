@@ -176,7 +176,7 @@ Goal doc: [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md)
 |----|------|--------|---------|
 | F-062 | Protocol shelf | done | [F-062.md](../blockers/F-062.md) |
 | F-063 | Rewrite protocol pages in full | done | [F-063.md](../blockers/F-063.md) |
-| F-064 | Product concept shelf | not started | — |
+| F-064 | Product concept shelf | done | [F-064.md](../blockers/F-064.md) |
 | F-065 | Architecture paper | not started | — |
 | F-066 | Paperwork shelf | not started | — |
 

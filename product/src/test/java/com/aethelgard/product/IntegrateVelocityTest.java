@@ -146,7 +146,9 @@ class IntegrateVelocityTest {
 
     Path root = findRepoRoot();
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
-    assertTrue(tectonics.contains("F-037") || tectonics.toLowerCase().contains("integrate"));
+    assertTrue(tectonics.toLowerCase().contains("fission"));
+    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(arch.contains("IntegrateVelocity"));
     String enginePom = Files.readString(root.resolve("engine/pom.xml"));
     assertTrue(!enginePom.contains("<artifactId>product</artifactId>"));
   }

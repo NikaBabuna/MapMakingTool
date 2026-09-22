@@ -41,8 +41,8 @@ class ToolQolTest {
     assertTrue(style.contains("Space"));
     assertTrue(style.contains("New world") || style.contains("Reset world"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("shortcut") || flows.contains("Shortcuts") || flows.contains("G-007"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("Play"));
 
     String goals = Files.readString(root.resolve("docs/project/goals.md"));
     assertTrue(goals.contains("G-007-studio-cartography"));

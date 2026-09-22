@@ -48,9 +48,9 @@ class ViewportFrontTest {
     assertEquals(10, Math.floorMod(-5, 15));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
-    assertTrue(style.contains("Wheel zoom") || style.contains("pan") || style.contains("loopback"));
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
-    assertTrue(flows.contains("Pan") || flows.contains("pan") || flows.contains("zoom") || flows.contains("F-032"));
+    assertTrue(style.contains("pans") || style.contains("zooms"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
+    assertTrue(flows.contains("pan") || flows.contains("zoom"));
   }
 
   private static Path findRepoRoot() throws Exception {

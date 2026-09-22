@@ -62,11 +62,10 @@ class BoundaryTraceTest {
     assertTrue(WorldDump.of(a, spec).contains("boundaries:\n"));
 
     Path root = findRepoRoot();
-    String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
+    String tectonics = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertTrue(
         tectonics.toLowerCase().contains("cylinder")
-            || tectonics.toLowerCase().contains("polar")
-            || tectonics.contains("wrap X"));
+            || tectonics.toLowerCase().contains("sphere"));
     assertFalse(tectonics.contains("Code status:** not implemented"));
   }
 

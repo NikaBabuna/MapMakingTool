@@ -171,19 +171,15 @@ class PlateKinematicsTest {
 
     Path root = findRepoRoot();
     String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(wiki.toLowerCase().contains("kinematic") || wiki.toLowerCase().contains("advect"));
-    assertTrue(wiki.contains("plate_velocity"));
-    assertTrue(wiki.contains("{-1, 0, 1}") || wiki.contains("{-1,0,1}"));
-    assertTrue(
-        wiki.toLowerCase().contains("toroid")
-            || wiki.toLowerCase().contains("cylinder")
-            || wiki.contains("wrap X"));
+    assertTrue(wiki.toLowerCase().contains("crust"));
     assertFalse(wiki.contains("Plates do not move."));
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
-    assertTrue(world.contains("plate_velocity"));
-    assertTrue(world.contains("kinematics advection") || world.contains("advection"));
+    assertTrue(world.toLowerCase().contains("sphere"));
     assertFalse(
         world.contains("| `plates` | Voronoi nearest-site ids from seed (6–15 sites) | unchanged (Constant) |"));
+    String arch = Files.readString(root.resolve("docs/product/architecture.md"));
+    assertTrue(arch.contains("plate_velocity"));
+    assertTrue(arch.contains("{-1,0,1}"));
   }
 
   private static PlateVelocities independentVelocities(long seed) {

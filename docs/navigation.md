@@ -59,7 +59,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
 | [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | done |
 | [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | done |
-| [goals/G-011-docs-restructuring.md](project/goals/G-011-docs-restructuring.md) | in progress — F-063 protocol pages rewritten |
+| [goals/G-011-docs-restructuring.md](project/goals/G-011-docs-restructuring.md) | in progress — F-064 conceptual product shelf done |
 | [features.md](project/features.md) | Active — G-001–G-011 Steps registered |
 | [roadmap.md](project/roadmap.md) | Active |
 | [backlog.md](project/backlog.md) | Active |
@@ -96,11 +96,11 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Doc | Status |
 |-----|--------|
 | [architecture.md](product/architecture.md) | Active — G-010 done (through F-061); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
-| [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-010 done (through F-061); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
-| [glossary.md](product/glossary.md) | Active — G-010 done; arc/suture/cap live (F-060); Overlay stroke labeled Boundary (F-061) |
-| [style-guide.md](product/style-guide.md) | Active — G-010 done (F-061); Overlay legend Boundary; three layers; F-054 layer shortcuts |
-| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (G-010 done; F-060 arc + suture; F-056 occupancy + isostasy) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
+| [concept.md](product/concept.md) | Active — conceptual; no program names |
+| [journeys.md](product/journeys.md) | Active — what a person does. Explore, Guide, and Timeline are not built |
+| [glossary.md](product/glossary.md) | Active — domain words |
+| [style-guide.md](product/style-guide.md) | Active — screen and control labels |
+| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [tectonics.md](product/wiki/tectonics.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 

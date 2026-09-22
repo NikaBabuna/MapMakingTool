@@ -69,10 +69,10 @@ class CrustGoalCloseTest {
     assertTrue(arch.contains("G-010"));
     assertTrue(arch.contains("G-011"));
 
-    String flows = Files.readString(root.resolve("docs/product/flows.md"));
+    String flows = Files.readString(root.resolve("docs/product/journeys.md"));
     assertFalse(flows.contains("crust topology (planned)"));
     assertFalse(flows.contains("**F-058** buoyancy live"));
-    assertTrue(flows.contains("G-010") && (flows.contains("done") || flows.contains("shipped")));
+    assertTrue(flows.contains("Play"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
     assertFalse(style.contains("HUD/crust layer"));
@@ -80,11 +80,11 @@ class CrustGoalCloseTest {
 
     String tectonics = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
     assertFalse(tectonics.contains("G-010 remaining"));
-    assertTrue(tectonics.contains("G-010") && tectonics.contains("done"));
+    assertTrue(tectonics.contains("subduct"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
     assertFalse(world.contains("Goal close remains"));
-    assertTrue(world.contains("G-010") && world.contains("done"));
+    assertTrue(world.contains("sphere"));
 
     String blockers = Files.readString(root.resolve("docs/blockers/README.md"));
     assertTrue(blockers.contains("F-060.md") && blockers.contains("F-061.md"));

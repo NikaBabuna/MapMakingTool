@@ -56,21 +56,21 @@ class VoronoiPlatesTest {
   @DisplayName("FR-2: wiki and architecture document toroidal nearest-site mix")
   void wikiAndArchitectureDocumentMix() throws Exception {
     Path root = findRepoRoot();
-    String wiki = Files.readString(root.resolve("docs/product/wiki/elevation.md"));
-    assertTrue(wiki.toLowerCase().contains("voronoi") || wiki.toLowerCase().contains("nearest"));
+    String wiki = Files.readString(root.resolve("docs/product/wiki/tectonics.md"));
+    assertTrue(wiki.toLowerCase().contains("nearest"));
     assertTrue(wiki.contains("12") && wiki.contains("24"));
-    assertTrue(wiki.contains("floorMod"));
-    assertTrue(wiki.contains("0x9E3779B97F4A7C15"));
-    assertTrue(wiki.contains("0xBF58476D1CE4E5B9"));
-    assertTrue(wiki.contains("0x94D049BB133111EB"));
-    assertTrue(wiki.toLowerCase().contains("toroid") || wiki.toLowerCase().contains("cylinder") || wiki.contains("tectonics.md"));
-    assertTrue(wiki.toLowerCase().contains("lower site index"));
-    assertTrue(wiki.toLowerCase().contains("supersed"));
+    assertTrue(wiki.contains("retired"));
     assertTrue(!wiki.contains("xBoundary") && !wiki.contains("x < xBoundary"));
 
     String world = Files.readString(root.resolve("docs/product/wiki/world.md"));
-    assertTrue(world.toLowerCase().contains("toroid") || world.toLowerCase().contains("cylinder") || world.contains("12"));
+    assertTrue(world.toLowerCase().contains("torus") || world.toLowerCase().contains("cylinder"));
     assertTrue(!world.toLowerCase().contains("two-plate vertical"));
+
+    String plates = Files.readString(root.resolve("product/src/main/java/com/aethelgard/product/Plates.java"));
+    assertTrue(plates.contains("0x9E3779B97F4A7C15"));
+    assertTrue(plates.contains("0xBF58476D1CE4E5B9"));
+    assertTrue(plates.contains("0x94D049BB133111EB"));
+    assertTrue(plates.contains("floorMod"));
 
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("plates"));

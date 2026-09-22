@@ -1,19 +1,16 @@
-# Product wiki
+<!--
+  File: docs/product/wiki/README.md
+  Purpose: Door to the world rules
+  Audience: Humans and agents
+  Update when: A wiki page is added or removed
+-->
 
-Domain and worldbuilding content — simulation semantics, geography rules, content that is not engine mechanics.
+# The world
 
-Per [../../protocol/environment/conduct.md](../../protocol/environment/conduct.md): do not leave domain content only in chat or code.
+What is true of the world, for a person. How the application is built, and how it operates, is not in this folder.
 
----
-
-## Pages
-
-_Status: World (F-030 G-008 locks). Elevation isostasy of riding lockers (F-056). Boundary tectonics (F-030 / F-055 / F-056)._
-
-| Page | Purpose |
-|------|---------|
-| [world.md](world.md) | World, grid, layer; VIEW/torus targets vs code |
-| [elevation.md](elevation.md) | Plates seed, kinematics, locker stamps + isostasy (F-056) |
-| [tectonics.md](tectonics.md) | **G-008** boundary tectonics + **G-010** crust topology (**done**) |
-
-When adding pages, update [../navigation.md](../navigation.md).
+| Page | Read it when |
+|------|----------------|
+| [world.md](world.md) | You need the shape of the map, how its edges join, or what a seed is |
+| [tectonics.md](tectonics.md) | You need plates, rifts, collisions, ocean, and continent |
+| [elevation.md](elevation.md) | You need what height means |
