@@ -5,7 +5,7 @@
 Procedural fantasy world generator — simulate tectonics, climate, and terrain so maps stay physically consistent, with a scrubbable history of how the world formed.
 
 **Status:** alpha  
-**Goal index:** [docs/project/goals.md](docs/project/goals.md) — G-011 Docs restructuring · Last completed: [G-010 Crust topology](docs/project/goals/G-010-crust-topology.md)  
+**Goal index:** [docs/paperwork/goals.md](docs/paperwork/goals.md) — G-011 Docs restructuring · Last completed: [G-010 Crust topology](docs/paperwork/goals/G-010-crust-topology.md)  
 **CI:** GitHub Actions on `main` — JDK 21 + `./mvnw test` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
 
 ---
@@ -15,7 +15,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | | |
 |-|-|
 | [Docs tree](docs/README.md) | Documentation folders |
-| [Goals index](docs/project/goals.md) | G-011 Docs restructuring · last [G-010](docs/project/goals/G-010-crust-topology.md) |
+| [Goals index](docs/paperwork/goals.md) | G-011 Docs restructuring · last [G-010](docs/paperwork/goals/G-010-crust-topology.md) |
 | [Protocol](docs/protocol/README.md) | Conduct: environment, navigation, blueprints, flows |
 | [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
 | [Engine module](engine/README.md) | Code module index |
@@ -25,4 +25,4 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 
 ## For agents
 
-See [AGENTS.md](AGENTS.md). Conduct: [docs/protocol/README.md](docs/protocol/README.md). Goal index: [docs/project/goals.md](docs/project/goals.md).
+See [AGENTS.md](AGENTS.md). Conduct: [docs/protocol/README.md](docs/protocol/README.md). Goal index: [docs/paperwork/goals.md](docs/paperwork/goals.md).

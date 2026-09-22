@@ -7,7 +7,7 @@
 
 # Product
 
-What this product is, for a person. These pages do not describe the program. How the application is built and how it operates belongs on the architecture shelf. The reason for that split is [ADR-015](../project/decisions.md).
+What this product is, for a person. These pages do not describe the program. How the application is built and how it operates belongs on the architecture shelf. The reason for that split is [ADR-015](../paperwork/decisions/ADR-015-conceptual-product.md).
 
 | Page | Read it when |
 |------|----------------|

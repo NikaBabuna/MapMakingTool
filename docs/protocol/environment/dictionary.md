@@ -11,12 +11,12 @@ These are the words the protocol uses. Product words (what a world contains) and
 
 | Word | Meaning | Example | Do not confuse it with |
 |------|---------|---------|------------------------|
-| Goal | A result that lasts across chats. It owns a list of Steps and a list of claims | G-011, the file `docs/project/goals/G-011-docs-restructuring.md`, and its row on the goal index | A Step. A Goal is not one coding job |
-| Step | One negotiated job under a Goal: agree it, store requirements, do it, witness it, record it | F-062, the row on the step registry, and `docs/blockers/F-062.md` | A Goal, or a chat. A Step is the unit of Accept |
+| Goal | A result that lasts across chats. It owns a list of Steps and a list of claims | G-011, the file `docs/paperwork/goals/G-011-docs-restructuring.md`, and its row on the goal index | A Step. A Goal is not one coding job |
+| Step | One negotiated job under a Goal: agree it, store requirements, do it, witness it, record it | F-062, the row on the step registry, and `docs/paperwork/steps/F-062.md` | A Goal, or a chat. A Step is the unit of Accept |
 | Shelf | A top folder under `docs/` with one job | `docs/protocol/` is the conduct shelf | A room inside the protocol shelf. Environment is a room, not a shelf |
 | Entrance | The two files that map the docs and are not themselves a shelf | `docs/README.md` and `docs/navigation.md` | A door. The entrance points at doors |
 | Door | The `README.md` of a folder. It says what the folder is and links its children | `docs/protocol/flows/README.md` | The entrance. A door does not list the whole repository |
-| Blueprint | The shape of one kind of document: sections, what each section is for, and a skeleton | `docs/protocol/blueprints/step.md` tells you how to write `docs/blockers/F-063.md` | A flow. A blueprint does not say when to write the file |
+| Blueprint | The shape of one kind of document: sections, what each section is for, and a skeleton | `docs/protocol/blueprints/step.md` tells you how to write `docs/paperwork/steps/F-063.md` | A flow. A blueprint does not say when to write the file |
 | Flow | A numbered sequence of edits. When a situation is true, these files change, in this order | **Store step** in `docs/protocol/flows/steps.md` | A blueprint, and also `docs/product/journeys.md`, which is what a person does, not a protocol flow |
 | Dispatch | The table that picks a flow from a situation. The only legal write map | `docs/protocol/environment/dispatch.md` | A flow. Dispatch does not itself edit files |
 | Requirement | A measurable statement, stored in the Step record before implementation, that a later check can fail | “`docs/project/session.md` is gone” | A wish such as “make the docs cleaner” |

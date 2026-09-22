@@ -11,7 +11,7 @@
 **Roll-up:** [../architecture.md](../architecture.md)  
 **Engine host:** [../engine/architecture.md](../engine/architecture.md)  
 **Domain:** [wiki/world.md](wiki/world.md) · [wiki/elevation.md](wiki/elevation.md)  
-**ADR:** [ADR-010](../project/decisions.md) · [ADR-011](../project/decisions.md) · [ADR-012](../project/decisions.md)
+**ADR:** [ADR-010](../paperwork/decisions/ADR-010-product-adapters.md) · [ADR-011](../paperwork/decisions/ADR-011-local-webview.md) · [ADR-012](../paperwork/decisions/ADR-012-simulation-runner.md)
 
 ---
 

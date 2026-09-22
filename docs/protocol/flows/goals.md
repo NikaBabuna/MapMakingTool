@@ -17,13 +17,12 @@ A Goal is the durable result. These algorithms write the paperwork of that resul
 
 **Steps.**
 
-1. Write `docs/project/goals/G-0xx-<slug>.md` from the goal blueprint. Status `in progress`. The planned Steps are listed. Their status is `not started`.
-2. On `docs/project/goals.md`, set the Active Goal line to this Goal, and add the table row with status `in progress`.
-3. Add the same row to `docs/project/goals/README.md`.
-4. On `docs/project/features.md`, add a section for the Goal. Each planned Step is a row with status `not started` and no blocker link. Do not create `F-0xx.md` files yet. A Step record exists only after that Step is approved.
-5. Add a row to `docs/project/roadmap.md`.
-6. If the idea had a row on `docs/project/backlog.md`, change that row so it says the idea was promoted to this Goal.
-7. Append a Structure line to `docs/project/changelog.md`: the date, the Goal id, and that it was opened. No behavior claim.
+1. Write `docs/paperwork/goals/G-0xx-<slug>.md` from the goal blueprint. Status `in progress`. The planned Steps are listed. Their status is `not started`.
+2. On `docs/paperwork/goals.md`, set the Active Goal line to this Goal, and add the table row with status `in progress`. The goals folder door points at this index. Do not copy a status table onto that door.
+3. On `docs/paperwork/steps.md`, add a section for the Goal. Each planned Step is a row with status `not started` and no record link. Do not create `F-0xx.md` files yet. A Step record exists only after that Step is approved.
+4. Add a row to `docs/paperwork/roadmap.md`.
+5. If the idea had a row on `docs/paperwork/backlog.md`, change that row so it says the idea was promoted to this Goal.
+6. Append a Structure line to `docs/paperwork/changelog.md`: the date, the Goal id, and that it was opened. No behavior claim.
 
 **Done.** A later chat can open the goal index, see this Goal active, and see every planned Step as `not started`.
 
@@ -38,7 +37,7 @@ A Goal is the durable result. These algorithms write the paperwork of that resul
 **Steps.**
 
 1. Edit the Goal file. Keep the id. If a claim is added or removed, the claim list and the Step table must still agree.
-2. If the name or the status changed, fix the row on `docs/project/goals.md` and on `docs/project/goals/README.md`.
+2. If the name or the status changed, fix the row on `docs/paperwork/goals.md`. Do not copy that status onto the goals folder door.
 3. Leave Step records alone unless the human also approved a change to a stored requirement. That second change is **Amend step**, not this algorithm.
 
 **Done.** The Goal file and the index describe the same Goal.
@@ -54,10 +53,9 @@ A Goal is the durable result. These algorithms write the paperwork of that resul
 **Steps.**
 
 1. Set the Goal file’s status to `done`. Fill the progress table. Every claim box is checked only if the witness for it is named.
-2. On `docs/project/goals.md`, set that row to `done`. Change the Active Goal line. If no next Goal has been approved, the line says there is none, and it still lives only on this file.
-3. Set the row on `docs/project/goals/README.md` to `done`.
-4. Mark the roadmap row done.
-5. Append a changelog line: the Goal id, the date, and that it closed. Do not claim a behavior the witnesses do not cover.
+2. On `docs/paperwork/goals.md`, set that row to `done`. Change the Active Goal line. If no next Goal has been approved, the line says there is none, and it still lives only on this file. Do not copy that status onto the goals folder door.
+3. Mark the roadmap row done.
+4. Append a changelog line: the Goal id, the date, and that it closed. Do not claim a behavior the witnesses do not cover.
 
 **Done.** The index shows the Goal `done`, and the Active Goal line does not still name it.
 

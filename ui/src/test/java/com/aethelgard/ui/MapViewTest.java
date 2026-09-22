@@ -160,7 +160,7 @@ class MapViewTest {
     assertTrue(arch.contains("MapHost") || arch.contains("ui/web"));
 
     String goal =
-        Files.readString(root.resolve("docs/project/goals/G-001-engine-skeleton.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-001-engine-skeleton.md"));
     assertTrue(goal.contains("[x] Basic UI can advance/view Steps"));
     assertTrue(goal.contains("**Status:** `done`") || goal.contains("**Status:** done"));
   }

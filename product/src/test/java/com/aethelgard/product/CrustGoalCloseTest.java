@@ -39,13 +39,13 @@ class CrustGoalCloseTest {
   void goalClosed() throws Exception {
     Path root = findRepoRoot();
 
-    String goalDoc = Files.readString(root.resolve("docs/project/goals/G-010-crust-topology.md"));
+    String goalDoc = Files.readString(root.resolve("docs/paperwork/goals/G-010-crust-topology.md"));
     assertTrue(goalDoc.contains("**Status:** `done`"));
     assertFalse(goalDoc.contains("- [ ]"));
     assertTrue(goalDoc.contains("- [x] `elevation` matches isostasy"));
     assertTrue(goalDoc.contains("| F-061 |") && goalDoc.contains("| done |"));
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-010"));
     String g010 = goals.lines().filter(l -> l.contains("| G-010 |")).findFirst().orElse("");
     assertTrue(g010.contains("| done |"), g010);
@@ -86,13 +86,13 @@ class CrustGoalCloseTest {
     assertFalse(world.contains("Goal close remains"));
     assertTrue(world.contains("sphere"));
 
-    String blockers = Files.readString(root.resolve("docs/blockers/README.md"));
+    String blockers = Files.readString(root.resolve("docs/paperwork/steps.md"));
     assertTrue(blockers.contains("F-060.md") && blockers.contains("F-061.md"));
 
     String engineArch = Files.readString(root.resolve("docs/engine/architecture.md"));
     assertFalse(engineArch.contains("Placeholder verbs"));
 
-    String blocker = Files.readString(root.resolve("docs/blockers/F-061.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-061.md"));
     assertTrue(blocker.contains("no `engine/`") || blocker.contains("Zero `engine/`"));
     assertTrue(Files.isDirectory(root.resolve("engine/src/main/java")));
   }

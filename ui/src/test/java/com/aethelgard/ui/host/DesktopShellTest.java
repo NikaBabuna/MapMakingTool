@@ -79,7 +79,7 @@ class DesktopShellTest {
   @DisplayName("FR-5: G-006 remains done; entry points may name a later Active Goal")
   void goalClosed() throws Exception {
     Path root = findRepoRoot();
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-006"));
     assertTrue(goals.contains("G-006-webview-front.md"));
     String table =
@@ -92,7 +92,7 @@ class DesktopShellTest {
             || goals.contains("Active Goal:** [G-"));
 
     String g006 =
-        Files.readString(root.resolve("docs/project/goals/G-006-webview-front.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-006-webview-front.md"));
     assertTrue(g006.contains("**Status:** `done`") || g006.contains("**Status:** done"));
 
     // Entry points may advance past naming G-006; goals index + Goal file remain authoritative.

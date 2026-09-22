@@ -31,7 +31,7 @@ class SimulationRunnerDocsTest {
     assertTrue(productArch.contains("F-045"));
     assertTrue(productArch.contains("F-044"));
 
-    String decisions = Files.readString(root.resolve("docs/project/decisions.md"));
+    String decisions = Files.readString(root.resolve("docs/paperwork/decisions/ADR-012-simulation-runner.md"));
     assertTrue(decisions.contains("ADR-012"));
     assertTrue(decisions.contains("G-009"));
     assertTrue(decisions.contains("ridge") || decisions.contains("contacting"));
@@ -44,7 +44,7 @@ class SimulationRunnerDocsTest {
     assertTrue(flows.contains("Play"));
     assertTrue(flows.contains("Pause"));
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-009"));
     assertTrue(goals.contains("Simulation runner") || goals.contains("simulation-runner"));
     assertTrue(

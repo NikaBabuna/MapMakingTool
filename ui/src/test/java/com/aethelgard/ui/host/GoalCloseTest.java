@@ -145,7 +145,7 @@ class GoalCloseTest {
     Path root = findRepoRoot();
 
     String goalDoc =
-        Files.readString(root.resolve("docs/project/goals/G-009-simulation-runner-harden.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-009-simulation-runner-harden.md"));
     assertTrue(goalDoc.contains("**Status:** `done`"));
     assertTrue(goalDoc.contains("- [x] Diverge:"));
     assertTrue(goalDoc.contains("- [x] Slivers"));
@@ -157,7 +157,7 @@ class GoalCloseTest {
     assertTrue(goalDoc.contains("- [x] Determinism; no `engine` production edits; suite green"));
     assertTrue(goalDoc.contains("| F-054 |") && goalDoc.contains("| done |"));
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(
         goals.contains("**Active Goal:** none")
             || goals.contains("Active Goal:** none")
@@ -214,7 +214,7 @@ class GoalCloseTest {
     // No engine production edits this Step (and Goal claim)
     Path engineMain = root.resolve("engine/src/main/java");
     assertTrue(Files.isDirectory(engineMain));
-    String blocker = Files.readString(root.resolve("docs/blockers/F-054.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-054.md"));
     assertTrue(blocker.contains("no `engine/`") || blocker.contains("Zero `engine/`"));
     assertTrue(blocker.contains("FR-5") || blocker.contains("Determinism"));
   }

@@ -7,7 +7,7 @@
 
 # Backlog
 
-This is `docs/project/backlog.md`. It is the list of ideas that are not Goals and not Steps. An idea here is not being worked. If an agent treats a backlog row as permission to code, the row has been misread. Promotion is **Open goal**, which requires the human’s approval of a Goal text.
+This is `docs/paperwork/backlog.md`. It is the list of ideas that are not Goals and not Steps. An idea here is not being worked. If an agent treats a backlog row as permission to code, the row has been misread. Promotion is **Open goal**, which requires the human’s approval of a Goal text.
 
 **Write or edit it when.** An idea is captured, or **Open goal** promotes one.
 

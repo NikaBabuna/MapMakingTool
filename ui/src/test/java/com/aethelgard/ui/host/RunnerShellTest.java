@@ -78,7 +78,7 @@ class RunnerShellTest {
   @DisplayName("FR-6: docs mention F-051; shell preserved under F-052; no JFrame")
   void docsAndScope() throws Exception {
     Path root = findRepoRoot();
-    String blocker = Files.readString(root.resolve("docs/blockers/F-051.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-051.md"));
     assertTrue(blocker.contains("FR-1"));
     String arch = Files.readString(root.resolve("docs/product/architecture.md"));
     assertTrue(arch.contains("F-051") || arch.contains("F-052"));

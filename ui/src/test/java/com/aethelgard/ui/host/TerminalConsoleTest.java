@@ -52,7 +52,7 @@ class TerminalConsoleTest {
   void goalClosed() throws Exception {
     Path root = findRepoRoot();
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(
         goals.contains("**Active Goal:** none")
             || goals.contains("G-009")
@@ -64,7 +64,7 @@ class TerminalConsoleTest {
     assertTrue(table.contains("| done |"), table);
 
     String goalDoc =
-        Files.readString(root.resolve("docs/project/goals/G-008-boundary-tectonics-studio.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-008-boundary-tectonics-studio.md"));
     assertTrue(goalDoc.contains("**Status:** `done`"));
     assertTrue(goalDoc.contains("- [x] Studio panels + mappy style + traditional console"));
     assertTrue(goalDoc.contains("- [x] Determinism; no `engine` production edits; suite green"));

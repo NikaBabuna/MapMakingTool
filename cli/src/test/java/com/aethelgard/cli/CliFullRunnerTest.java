@@ -104,7 +104,7 @@ class CliFullRunnerTest {
     assertTrue(readme.contains("-c"));
     assertFalse(readme.toLowerCase().contains("placeholder dispatcher"));
 
-    String blocker = Files.readString(root.resolve("docs/blockers/F-049.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-049.md"));
     assertFalse(blocker.contains("F-050 Accepted"));
     assertFalse(blocker.contains("F-051 Accepted"));
 

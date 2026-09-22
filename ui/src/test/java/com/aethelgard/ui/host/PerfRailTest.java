@@ -135,10 +135,10 @@ class PerfRailTest {
   @DisplayName("FR-7: docs F-052; collector mean; no JFrame")
   void docsAndMean() throws Exception {
     Path root = findRepoRoot();
-    String blocker = Files.readString(root.resolve("docs/blockers/F-052.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-052.md"));
     assertTrue(blocker.contains("FR-1"));
     assertTrue(blocker.contains("Perf"));
-    String features = Files.readString(root.resolve("docs/project/features.md"));
+    String features = Files.readString(root.resolve("docs/paperwork/steps.md"));
     assertTrue(features.contains("F-052"));
 
     DiagnosticsHub hub = DiagnosticsHub.withDefaults();

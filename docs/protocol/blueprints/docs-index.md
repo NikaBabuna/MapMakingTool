@@ -28,7 +28,7 @@ This is `docs/README.md`. It is the first documentation page, for a human or an 
 <One sentence.>
 
 **Map:** [navigation.md](navigation.md).
-**Goal index:** [project/goals.md](project/goals.md) — <Goal id and name>
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — <Goal id and name>
 
 | Folder | Door | Job |
 |--------|------|-----|

@@ -17,7 +17,7 @@ This is `AGENTS.md` at the repository root. Tools look for that name. It stays t
 |------|-----------------|
 | Phase pointer | So the agent knows structural freedom without opening the whole phase page first. The link is `docs/protocol/environment/phase.md` |
 | Protocol pointer | `docs/protocol/README.md`. One sentence: read that door, then the room the turn needs |
-| Goal index pointer | `docs/project/goals.md`, with the current Goal’s id, so a cold start knows which Goal file to open |
+| Goal index pointer | `docs/paperwork/goals.md`, with the current Goal’s id, so a cold start knows which Goal file to open |
 | Three standing sentences | Docs win over chat. Requirements are stored before implementation. A torn Step rolls back. These three are repeated because an agent that reads only this file must still hear them. They are not the rest of the protocol |
 | Last completed Goal | A link, so the previous result is findable. Not a banner that claims it is current |
 
@@ -30,11 +30,11 @@ This is `AGENTS.md` at the repository root. Tools look for that name. It stays t
 
 Conduct: [docs/protocol/README.md](docs/protocol/README.md). Read that door, then the room the turn needs.
 
-**Goal index:** [docs/project/goals.md](docs/project/goals.md) — G-0xx <name>
+**Goal index:** [docs/paperwork/goals.md](docs/paperwork/goals.md) — G-0xx <name>
 
 Docs win over chat. Store approved requirements before implementation. A torn Step rolls back.
 
-Last completed Goal: [G-0xx](docs/project/goals/G-0xx-<slug>.md).
+Last completed Goal: [G-0xx](docs/paperwork/goals/G-0xx-<slug>.md).
 ```
 
 ## Keep out

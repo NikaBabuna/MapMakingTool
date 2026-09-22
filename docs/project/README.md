@@ -1,17 +1,14 @@
-# Project documentation
+<!--
+  File: docs/project/README.md
+  Purpose: Door to scope
+  Audience: Agents and humans
+  Update when: A child of this folder is added or removed
+-->
 
-Scope, Goals, Sessions, Steps, and decisions.
+# Project
 
-| Doc | Purpose |
-|-----|---------|
-| [project.md](project.md) | Scope — in/out |
-| [goals.md](goals.md) | Goal index |
-| [goals/](goals/) | Per-Goal plans — [goals/README.md](goals/README.md) |
-| [features.md](features.md) | Step registry (`F-0xx`) |
-| [roadmap.md](roadmap.md) | Ordered Goals |
-| [backlog.md](backlog.md) | Candidates not yet promoted |
-| [decisions.md](decisions.md) | ADR log |
-| [changelog.md](changelog.md) | Structure, phase, scope history |
+What this product includes. Progress records live on the [paperwork](../paperwork/README.md) shelf.
 
-**Phase:** [../protocol/environment/phase.md](../protocol/environment/phase.md)  
-**Procedure:** [../protocol/flows/README.md](../protocol/flows/README.md)
+| Page | Read it when |
+|------|----------------|
+| [project.md](project.md) | You need what is in scope and what is excluded |

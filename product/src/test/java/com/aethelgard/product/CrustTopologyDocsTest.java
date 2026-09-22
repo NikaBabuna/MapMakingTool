@@ -47,16 +47,16 @@ class CrustTopologyDocsTest {
     assertTrue(productArch.contains("ThicknessToElevation"));
     assertTrue(productArch.contains("world/tectonics"));
 
-    String decisions = Files.readString(root.resolve("docs/project/decisions.md"));
+    String decisions = Files.readString(root.resolve("docs/paperwork/decisions/ADR-013-crust-topology.md"));
     assertTrue(decisions.contains("ADR-013"));
     assertTrue(decisions.contains("G-010"));
     assertTrue(decisions.contains("locker") || decisions.contains("Occupancy"));
 
-    String goalDoc = Files.readString(root.resolve("docs/project/goals/G-010-crust-topology.md"));
+    String goalDoc = Files.readString(root.resolve("docs/paperwork/goals/G-010-crust-topology.md"));
     assertTrue(goalDoc.contains("**Status:** `done`"));
     assertTrue(goalDoc.contains("| F-055 |") && goalDoc.contains("| F-061 |"));
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-010"));
     assertTrue(goals.contains("Crust topology") || goals.contains("crust-topology"));
     String g010 = goals.lines().filter(l -> l.contains("| G-010 |")).findFirst().orElse("");
@@ -64,18 +64,18 @@ class CrustTopologyDocsTest {
     assertTrue(goals.contains("**Active Goal:**"));
     assertTrue(goals.contains("G-011"));
 
-    String goalsReadme = Files.readString(root.resolve("docs/project/goals/README.md"));
+    String goalsReadme = Files.readString(root.resolve("docs/paperwork/goals.md"));
     String g009row =
         goalsReadme.lines().filter(l -> l.contains("G-009")).findFirst().orElse("");
     assertTrue(g009row.contains("| done |"), g009row);
 
-    String features = Files.readString(root.resolve("docs/project/features.md"));
+    String features = Files.readString(root.resolve("docs/paperwork/steps.md"));
     assertTrue(features.contains("F-055") && features.contains("F-060"));
 
-    String roadmap = Files.readString(root.resolve("docs/project/roadmap.md"));
+    String roadmap = Files.readString(root.resolve("docs/paperwork/roadmap.md"));
     assertTrue(roadmap.contains("G-010"));
 
-    String backlog = Files.readString(root.resolve("docs/project/backlog.md"));
+    String backlog = Files.readString(root.resolve("docs/paperwork/backlog.md"));
     assertTrue(backlog.contains("G-010"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));
@@ -113,7 +113,7 @@ class CrustTopologyDocsTest {
     assertTrue(glossary.contains("Ocean"));
     assertTrue(glossary.contains("Elevation"));
 
-    assertTrue(Files.isRegularFile(root.resolve("docs/blockers/F-056.md")));
+    assertTrue(Files.isRegularFile(root.resolve("docs/paperwork/steps/F-056.md")));
 
     String orogeny =
         Files.readString(root.resolve("product/src/main/java/com/aethelgard/product/Orogeny.java"));

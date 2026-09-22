@@ -195,7 +195,7 @@ class EventEmissionPolicyTest {
     Path root = findRepoRoot();
     String arch = Files.readString(root.resolve("docs/engine/architecture.md"));
     String goal =
-        Files.readString(root.resolve("docs/project/goals/G-002-engine-host-readiness.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-002-engine-host-readiness.md"));
     String events = Files.readString(root.resolve("docs/engine/specs/events.md"));
     assertTrue(arch.contains("EventEmissionPolicy"));
     assertTrue(arch.contains("PoolCompute"));

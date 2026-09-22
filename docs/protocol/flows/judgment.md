@@ -29,8 +29,8 @@ Reminders, so a status word is not used as a claim. The full table is in [../env
 
 **Steps.**
 
-1. Read the Active Goal line on `docs/project/goals.md`. Open that Goal if there is one.
-2. Read `docs/project/features.md` for any row `in progress`.
+1. Read the Active Goal line on `docs/paperwork/goals.md`. Open that Goal if there is one.
+2. Read `docs/paperwork/steps.md` for any row `in progress`.
 3. If a Step record exists whose status is not `done` and not `rolled back`, read it.
 4. If nothing is `in progress` and every existing Step record is `done` or `rolled back`, stop. Propose the next Goal if none is active, or the next Step if a Goal is active and its next row is `not started`. Write nothing.
 5. If a Step is `in progress`, or a Step record holds requirements and was never Accepted, the Step is torn. Run **Rollback**. Do not continue it.
@@ -58,7 +58,7 @@ Reminders, so a status word is not used as a claim. The full table is in [../env
 **Steps.**
 
 1. Return the tree to that Accept. Discard the uncommitted work of the torn Step. Do not keep “the good parts” unless the human asks to make them a new Step, which starts again at PROPOSE.
-2. Clear `in progress` on `docs/project/features.md` and on the Goal’s Step table.
+2. Clear `in progress` on `docs/paperwork/steps.md` and on the Goal’s Step table.
 3. If the human still wants that Step’s requirements, set the Step record to `rolled back` and leave the file. If they do not, delete the Step record and remove its registry link. Do not leave a file that looks current.
 4. Do not commit the failed attempt. A commit of a red tree is a false Accept.
 5. Tell the human what was discarded, in the reply shape: what changed, what it means, what was not witnessed, what remains.

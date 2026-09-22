@@ -31,4 +31,4 @@ Gaps between current spec and complete framework.
 
 G-002 added host ports (`PoolCompute`, `FieldMergeType`, `EventEmissionPolicy`) and did **not** resolve #1 or #4.
 
-Resolve remaining items via ADR in [../../project/decisions.md](../../project/decisions.md).
+Resolve remaining items via ADR in [../../paperwork/decisions.md](../../paperwork/decisions.md).

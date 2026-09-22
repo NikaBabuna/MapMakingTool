@@ -44,7 +44,7 @@ class ToolQolTest {
     String flows = Files.readString(root.resolve("docs/product/journeys.md"));
     assertTrue(flows.contains("Play"));
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-007-studio-cartography"));
     String table =
         goals.lines().filter(l -> l.contains("| G-007 |")).findFirst().orElse("");
@@ -57,7 +57,7 @@ class ToolQolTest {
             || goals.contains("G-010")
             || goals.contains("Active Goal:** [G-"));
 
-    String goalDoc = Files.readString(root.resolve("docs/project/goals/G-007-studio-cartography.md"));
+    String goalDoc = Files.readString(root.resolve("docs/paperwork/goals/G-007-studio-cartography.md"));
     assertTrue(goalDoc.contains("**Status:** `done`"));
 
     String agents = Files.readString(root.resolve("AGENTS.md"));

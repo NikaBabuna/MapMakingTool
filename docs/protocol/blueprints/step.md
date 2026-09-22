@@ -7,9 +7,9 @@
 
 # Step record
 
-This is `docs/blockers/F-0xx.md`. It is the contract for one Step. The human-approved requirements live here, and only here. The checks that witness them are mapped here. A later chat reads this file, not the chat that approved it.
+This is `docs/paperwork/steps/F-0xx.md`. It is the contract for one Step. The human-approved requirements live here, and only here. The checks that witness them are mapped here. A later chat reads this file, not the chat that approved it.
 
-A living example is `docs/blockers/F-063.md`. The blockers door, `docs/blockers/README.md`, indexes every record. That index is a door plus a registry table, not a second contract.
+A living example is `docs/paperwork/steps/F-063.md`. The registry is `docs/paperwork/steps.md`. The folder door points at that registry and at this blueprint. It is not a second copy of the registry.
 
 **Write it when.** **Store step** runs, which is immediately after the human approves the job and the requirements, and before any implementation.
 
@@ -35,7 +35,7 @@ Copy this at STORE. Replace the placeholders. Do not delete a section because th
 
 ```markdown
 <!--
-  File: docs/blockers/F-0xx.md
+  File: docs/paperwork/steps/F-0xx.md
   Purpose: Approved requirements and check mapping for Step F-0xx
   Audience: Agents and humans
   Update when: Requirements change with approval, or checks are added

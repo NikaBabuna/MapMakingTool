@@ -7,7 +7,7 @@
 
 # Goal
 
-This is one file, `docs/project/goals/G-0xx-<slug>.md`. It is the durable result: what will be true when the Goal is done, what is refused, which decisions are already made, and which Steps will get there. A living example is `docs/project/goals/G-011-docs-restructuring.md`.
+This is one file, `docs/paperwork/goals/G-0xx-<slug>.md`. It is the durable result: what will be true when the Goal is done, what is refused, which decisions are already made, and which Steps will get there. A living example is `docs/paperwork/goals/G-011-docs-restructuring.md`.
 
 It is not a Step record. Requirements that a check must enforce live in `F-0xx.md`. The Goal states the claims. The Steps prove them.
 

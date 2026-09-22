@@ -7,9 +7,9 @@
 
 # Step registry
 
-This is `docs/project/features.md`. It is the index of every Step, grouped by Goal, so a reader can see status without opening every `F-0xx.md`. The requirements are not here. If they are pasted here, they will diverge from the Step record, and the record is the one that wins.
+This is `docs/paperwork/steps.md`. It is the index of every Step, grouped by Goal, so a reader can see status without opening every `F-0xx.md`. The requirements are not here. If they are pasted here, they will diverge from the Step record, and the record is the one that wins.
 
-**Write or edit it when.** A Goal is opened (add a section of `not started` rows), a Step is stored (add the blocker link and mark `in progress`), or a Step is accepted or rolled back (change the status).
+**Write or edit it when.** A Goal is opened (add a section of `not started` rows), a Step is stored (add the record link and mark `in progress`), or a Step is accepted or rolled back (change the status).
 
 ## What each part is for
 
@@ -27,10 +27,10 @@ This is `docs/project/features.md`. It is the index of every Step, grouped by Go
 
 Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 
-| ID | Name | Status | Blocker |
+| ID | Name | Status | Record |
 |----|------|--------|---------|
 | F-0xx | <short name> | not started | — |
-| F-0yy | <short name> | in progress | [F-0yy.md](../blockers/F-0yy.md) |
+| F-0yy | <short name> | in progress | [F-0yy.md](steps/F-0yy.md) |
 ```
 
 ## Keep out

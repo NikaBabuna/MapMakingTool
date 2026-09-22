@@ -18,9 +18,9 @@ A pointer is a link that names the next document and says why you would open it.
 | How do I write this kind of file? | The flow step names the kind. Then [../blueprints/README.md](../blueprints/README.md) names the blueprint | You have the skeleton for that one kind |
 | What is in this folder? | That folder’s `README.md` | You have a child to open, or you know the folder is the wrong place |
 | Where does a document live? | [../../navigation.md](../../navigation.md) | You have a path. You do not read every row |
-| Which Goal is active? | [../../project/goals.md](../../project/goals.md), the Active Goal line only | You have the link. You do not re-read every finished Goal |
+| Which Goal is active? | [../../paperwork/goals.md](../../paperwork/goals.md), the Active Goal line only | You have the link. You do not re-read every finished Goal |
 | What Steps does that Goal contain, and which are done? | The active Goal’s Step table | You know the next `not started` row, or that one is `in progress` |
-| Is a Step already underway? | The step registry, [../../project/features.md](../../project/features.md) | You see `in progress`, or you see that nothing is |
-| What must that Step make true? | `docs/blockers/F-0xx.md` for that id, only if the row links one | You have the requirement table. You do not open neighboring `F-` files |
+| Is a Step already underway? | The step registry, [../../paperwork/steps.md](../../paperwork/steps.md) | You see `in progress`, or you see that nothing is |
+| What must that Step make true? | `docs/paperwork/steps/F-0xx.md` for that id, only if the row links one | You have the requirement table. You do not open neighboring `F-` files |
 
 A page that is not reachable by following one of these pointers is not a required read for the turn. It may still be the right page if the human named it.

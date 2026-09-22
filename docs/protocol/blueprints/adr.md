@@ -1,13 +1,13 @@
 <!--
   File: docs/protocol/blueprints/adr.md
-  Purpose: Shape of one ADR section inside the decision log
+  Purpose: Shape of one decision record
   Audience: Agents and humans
-  Update when: The decision-section shape changes
+  Update when: The decision-record shape changes
 -->
 
-# Decision section
+# Decision record
 
-This is one `## ADR-0xx` section inside `docs/project/decisions.md`. It is not its own file. ADR-001 through ADR-014 exist today. The next one is ADR-015 when **Decide** next runs.
+This is one file, `docs/paperwork/decisions/ADR-0xx-<slug>.md`. It is not a section inside the index. The index is `docs/paperwork/decisions.md`. It lists every ADR in number order, and the next number is one higher than the last row.
 
 An ADR answers a future reader who asks “why is it this way, and what did we reject?” It does not answer “what does the code do right now?” That answer goes in the paper, with a pointer back to this id.
 
@@ -17,7 +17,7 @@ An ADR answers a future reader who asks “why is it this way, and what did we r
 
 | Part | Why it is there |
 |------|-----------------|
-| Title | `## ADR-0xx — <short title>` so the log can be scanned |
+| Title | `# ADR-0xx — <short title>` so the index can be scanned |
 | Date and status | `accepted` unless a later ADR supersedes it. Do not delete. Mark the relationship |
 | The decision | Sentences a reader can apply. Tables when several choices were locked together |
 | Why | The failure or the pressure that made the other option worse. Without why, the next agent will relitigate |
@@ -27,7 +27,7 @@ An ADR answers a future reader who asks “why is it this way, and what did we r
 ## Skeleton
 
 ```markdown
-## ADR-0xx — <title>
+# ADR-0xx — <title>
 
 **Date:** YYYY-MM-DD
 **Status:** accepted
@@ -38,9 +38,9 @@ An ADR answers a future reader who asks “why is it this way, and what did we r
 
 **Supersedes:** <ADR-0yy, or a sentence>. Omit if nothing older moved.
 
-**Goal:** [G-0xx <name>](goals/G-0xx-<slug>.md)
+**Goal:** [G-0xx <name>](../goals/G-0xx-<slug>.md)
 ```
 
 ## Keep out
 
-Its own file. The implementation procedure. A requirement list.
+A second copy of the decision inside the index. The implementation procedure. A requirement list.

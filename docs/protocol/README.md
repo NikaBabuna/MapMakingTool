@@ -11,7 +11,7 @@ This folder is the conduct of the repository. It does not describe the product, 
 
 An agent may not invent its own sequence. Situations and the flow that handles each one are listed in [environment/dispatch.md](environment/dispatch.md). If a situation is not in that table, the agent stops and asks.
 
-**Goal index:** [../project/goals.md](../project/goals.md)
+**Goal index:** [../paperwork/goals.md](../paperwork/goals.md)
 
 ## The four rooms
 
@@ -33,6 +33,6 @@ Read them in this order the first time. After that, open only the room the turn 
 
 ## What this folder will not tell you
 
-The language, the modules, and the meaning of a plate or a climate model live on the other shelves. Those shelves are still at their old paths (`docs/project/`, `docs/engine/`, `docs/product/`, `docs/blockers/`) until later Steps move them. The blueprints name those paths, so you can find the files today.
+The language, the modules, and the meaning of a plate or a climate model live on the other shelves. Progress records live in `docs/paperwork/`. Scope is still `docs/project/project.md`. The architecture papers are still at `docs/architecture.md`, `docs/engine/`, and `docs/product/architecture.md` until a later Step gathers them. The blueprints name the paths, so you can find the files today.
 
 Session files are not part of this protocol. A chat does not get its own document. The active Goal and the Step marked `in progress` are the whole of “what we are doing now.”

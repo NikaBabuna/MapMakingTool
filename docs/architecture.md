@@ -25,9 +25,9 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 
 ## Goals
 
-**Goal index:** [project/goals.md](project/goals.md) — G-011 Docs restructuring  
-**Last completed:** [G-010 Crust topology](project/goals/G-010-crust-topology.md)  
-**Prior:** [G-009 Simulation runner harden](project/goals/G-009-simulation-runner-harden.md) — done · [G-008 Boundary tectonics + cartography studio](project/goals/G-008-boundary-tectonics-studio.md) — done · [G-007 Studio cartography tool](project/goals/G-007-studio-cartography.md) — done · [G-006 Local webview front](project/goals/G-006-webview-front.md) — done · [G-005 Living map](project/goals/G-005-living-map.md) — done · [G-004 See the world](project/goals/G-004-see-the-world.md) — done · [G-003 First product world](project/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](project/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](project/goals/G-001-engine-skeleton.md) — done
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-011 Docs restructuring  
+**Last completed:** [G-010 Crust topology](paperwork/goals/G-010-crust-topology.md)  
+**Prior:** [G-009 Simulation runner harden](paperwork/goals/G-009-simulation-runner-harden.md) — done · [G-008 Boundary tectonics + cartography studio](paperwork/goals/G-008-boundary-tectonics-studio.md) — done · [G-007 Studio cartography tool](paperwork/goals/G-007-studio-cartography.md) — done · [G-006 Local webview front](paperwork/goals/G-006-webview-front.md) — done · [G-005 Living map](paperwork/goals/G-005-living-map.md) — done · [G-004 See the world](paperwork/goals/G-004-see-the-world.md) — done · [G-003 First product world](paperwork/goals/G-003-first-product-world.md) — done · [G-002 Engine host readiness](paperwork/goals/G-002-engine-host-readiness.md) — done · [G-001 Engine skeleton](paperwork/goals/G-001-engine-skeleton.md) — done
 
 ---
 
@@ -41,7 +41,7 @@ Roll-up of structural documentation. Another agent must not need to guess where 
 | `ui/` | Active — F-050 Terminal + F-023 console path (`com.aethelgard:ui`) |
 | `product/` | Active — F-021 orogeny; map chrome in `ui` (`com.aethelgard:product`) |
 
-**One-way rule:** `ui` → `product` → `engine`; `cli` → `product` → `engine`; `ui` may depend on `cli` only for the console (ADR-010 / F-023). Engine never depends on siblings. Details: [engine/architecture.md](engine/architecture.md) · [project/decisions.md](project/decisions.md).
+**One-way rule:** `ui` → `product` → `engine`; `cli` → `product` → `engine`; `ui` may depend on `cli` only for the console (ADR-010 / F-023). Engine never depends on siblings. Details: [engine/architecture.md](engine/architecture.md) · [paperwork/decisions.md](paperwork/decisions.md).
 
 **Package root:** `com.aethelgard.engine` (+ `.pool`, `.event`, `.diag`, `.system`, `.merge`, `.user`) · `com.aethelgard.product` (F-013) · **Java:** 21
 

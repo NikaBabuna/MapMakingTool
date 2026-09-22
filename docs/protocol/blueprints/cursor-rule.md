@@ -17,7 +17,7 @@ This is `.cursor/rules/protocol.mdc`. The editor loads it on every turn, before 
 |------|-----------------|
 | Front matter | `description`, `globs`, `alwaysApply: true`, so the editor actually loads the file |
 | Protocol pointer | `docs/protocol/README.md` |
-| Goal index pointer | `docs/project/goals.md` and the current Goal id |
+| Goal index pointer | `docs/paperwork/goals.md` and the current Goal id |
 | The three standing sentences | Same three as the agent door, for the same reason |
 | Last completed Goal | A link, not a second Active Goal line |
 
@@ -34,11 +34,11 @@ alwaysApply: true
 
 Read [docs/protocol/README.md](docs/protocol/README.md), then the room the turn needs.
 
-**Goal index:** [docs/project/goals.md](docs/project/goals.md) — G-0xx <name>
+**Goal index:** [docs/paperwork/goals.md](docs/paperwork/goals.md) — G-0xx <name>
 
 Docs win over chat. Store approved requirements before implementation. A torn Step rolls back. The Active Goal line lives only on the goal index.
 
-Last completed Goal: [G-0xx](docs/project/goals/G-0xx-<slug>.md).
+Last completed Goal: [G-0xx](docs/paperwork/goals/G-0xx-<slug>.md).
 ```
 
 ## Keep out

@@ -39,4 +39,4 @@ Noun/verb language (F-048): `session get`, `session advance [N]`, `list pool|sch
 
 `--steps` / empty argv: `session get dump` (settled world text). `-c` batches: concatenated command outputs; first failure stops with non-zero exit.
 
-**Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [docs/blockers/F-049.md](../docs/blockers/F-049.md)
+**Docs:** [docs/product/architecture.md](../docs/product/architecture.md) · [docs/paperwork/steps/F-049.md](../docs/paperwork/steps/F-049.md)

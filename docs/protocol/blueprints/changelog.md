@@ -7,7 +7,7 @@
 
 # Changelog
 
-This is `docs/project/changelog.md`. It records structure, phase, and scope. It does not record every commit, and it does not explain how a system works. A reader uses it to learn what moved, on which date, and why that move matters. The mechanism stays in the paper. The reason for a controversial choice stays in an ADR. The changelog is the index of those events.
+This is `docs/paperwork/changelog.md`. It records structure, phase, and scope. It does not record every commit, and it does not explain how a system works. A reader uses it to learn what moved, on which date, and why that move matters. The mechanism stays in the paper. The reason for a controversial choice stays in an ADR. The changelog is the index of those events.
 
 **Write or edit it when.** **Restructure**, **Scope**, **Open goal**, or **Close goal** says to append a line. A behavior Step that did not move a folder and did not change scope does not get a line.
 

@@ -16,7 +16,7 @@ A Step is one job. The lifecycle below is the whole job, in order. The algorithm
 | 1 | PROPOSE | Agent | The human has a plain-English job: scope, files, intent |
 | 2 | REQUIRE | Agent | The human has a list of measurable requirements |
 | 3 | APPROVE | Human | The human has accepted that job and that list. Until this moment, no Step record and no implementation |
-| 4 | STORE | Agent | `docs/blockers/F-0xx.md` contains the approved list. Chat is not the store. This is **Store step**, through the mark |
+| 4 | STORE | Agent | `docs/paperwork/steps/F-0xx.md` contains the approved list. Chat is not the store. This is **Store step**, through the mark |
 | 5 | MARK | Agent | The Step is `in progress` on the Step record, the step registry, and the Goal’s Step table. This happens before any implementation, so a crash leaves a visible torn Step |
 | 6 | PLAN | Agent | The human has heard which files will change. If they already approved the job and the requirements, that approval covers the plan. A wider plan needs a new approval |
 | 7 | CODE | Agent | The approved files are edited. This is **Implement**, together with the next stage |
@@ -38,16 +38,15 @@ A Step is one job. The lifecycle below is the whole job, in order. The algorithm
 
 **Steps.**
 
-1. Create `docs/blockers/F-0xx.md` from the step blueprint. Status `fr-approved`. The requirement table is the approved list, not a paraphrase that drops a clause.
-2. Add a row to the registry table in `docs/blockers/README.md`.
-3. On `docs/project/features.md`, set the row’s blocker link and then set status `in progress`.
-4. Set the same status on the Step record and on the Goal’s Step table.
+1. Create `docs/paperwork/steps/F-0xx.md` from the step blueprint. Status `fr-approved`. The requirement table is the approved list, not a paraphrase that drops a clause.
+2. On `docs/paperwork/steps.md`, set the row’s record link and then set status `in progress`. The steps folder door does not get a copy of that row.
+3. Set the same status on the Step record and on the Goal’s Step table.
 
 **Done.** A crash after this algorithm leaves `in progress` behind, which **Reconcile** can see.
 
 **Not done.** Source files changed in the same turn before the file existed.
 
-Implementation starts only after step 4.
+Implementation starts only after step 3.
 
 ## Implement
 
@@ -82,11 +81,11 @@ Implementation starts only after step 4.
 | 1 | Ties | The one paper, door, or glossary the change actually touched. One mechanism page, plus its parent list if a child was added or removed. Not every sibling |
 | 2 | Entrance | `docs/navigation.md` and `docs/README.md` when a document was added, moved, or removed. Status cells that still say “through F-00x” or “deferred until” after this Step made that false |
 | 3 | Changelog | A line when the change is structure, phase, or scope. Not a line for every edit |
-| 4 | Decision | A new `ADR-0xx` section when the change is a technical or structural decision |
+| 4 | Decision | A new `docs/paperwork/decisions/ADR-0xx-<slug>.md`, and a row on the decision index, when the change is a technical or structural decision |
 | 5 | Step record | The sync boxes in `F-0xx.md` checked, or marked `N/A` |
 | 6 | Goal progress | Counts on the Goal file if they changed |
 
-Do not copy the Active Goal sentence onto `AGENTS.md`, the editor rule, `README.md`, or `docs/navigation.md`. Those doors point at `docs/project/goals.md`.
+Do not copy the Active Goal sentence onto `AGENTS.md`, the editor rule, `README.md`, or `docs/navigation.md`. Those doors point at `docs/paperwork/goals.md`.
 
 **Done.** A reader of the entrance and of the one paper you touched sees the same world the code is in.
 
@@ -102,7 +101,7 @@ Do not copy the Active Goal sentence onto `AGENTS.md`, the editor rule, `README.
 
 1. Confirm the sync boxes, and confirm the doors point at the goal index rather than carrying their own Active Goal line.
 2. Commit the Step. The message says what became true, not a file list.
-3. Set `done` on the Step record, on `docs/project/features.md`, and on the Goal’s Step table.
+3. Set `done` on the Step record, on `docs/paperwork/steps.md`, and on the Goal’s Step table.
 4. Update the Goal’s progress counts.
 5. If that was the last Step and the claims hold, run **Close goal**.
 
@@ -118,7 +117,7 @@ Do not copy the Active Goal sentence onto `AGENTS.md`, the editor rule, `README.
 
 **Steps.**
 
-1. Edit the requirement table in `docs/blockers/F-0xx.md`. Write the reason in the record.
+1. Edit the requirement table in `docs/paperwork/steps/F-0xx.md`. Write the reason in the record.
 2. Keep checks that still match. Add checks for any new requirement.
 3. Do not delete a requirement, and do not weaken a check, in order to make the witness pass. If the human wants a weaker bar, the new sentence must say the weaker bar, and they must have approved it.
 

@@ -7,7 +7,7 @@
 
 # Roadmap
 
-This is `docs/project/roadmap.md`. It is the order of Goals, so a reader can see what came before and what is intended after, without opening every Goal file. It does not Accept anything. A row that says `done` is repeating the Goal’s status, not creating it. If the roadmap and the Goal disagree, the Goal wins, and the roadmap is fixed.
+This is `docs/paperwork/roadmap.md`. It is the order of Goals, so a reader can see what came before and what is intended after, without opening every Goal file. It does not Accept anything. A row that says `done` is repeating the Goal’s status, not creating it. If the roadmap and the Goal disagree, the Goal wins, and the roadmap is fixed.
 
 **Write or edit it when.** **Open goal** or **Close goal** runs, or the human reorders future work.
 

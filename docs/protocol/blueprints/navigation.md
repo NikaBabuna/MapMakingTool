@@ -26,7 +26,7 @@ This is `docs/navigation.md`. It is the map of the documentation that exists, no
 # Navigation
 
 **Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))
-**Goal index:** [project/goals.md](project/goals.md) — G-0xx <name>
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-0xx <name>
 **Protocol:** [protocol/README.md](protocol/README.md)
 
 ## <Folder>

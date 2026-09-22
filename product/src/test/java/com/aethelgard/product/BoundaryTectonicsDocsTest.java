@@ -49,7 +49,7 @@ class BoundaryTectonicsDocsTest {
     assertTrue(flows.contains("1920"));
     assertTrue(flows.contains("Play"));
 
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-008"));
     assertTrue(goals.contains("boundary-tectonics") || goals.contains("Boundary tectonics"));
 

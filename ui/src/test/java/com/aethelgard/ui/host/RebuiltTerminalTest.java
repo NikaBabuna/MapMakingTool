@@ -77,7 +77,7 @@ class RebuiltTerminalTest {
   void docsAndScope() throws Exception {
     Path root = findRepoRoot();
 
-    String blocker = Files.readString(root.resolve("docs/blockers/F-050.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-050.md"));
     assertFalse(blocker.contains("F-051 Accepted"));
     assertFalse(blocker.contains("F-052 Accepted"));
 

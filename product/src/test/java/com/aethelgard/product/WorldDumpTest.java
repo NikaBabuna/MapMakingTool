@@ -106,14 +106,14 @@ class WorldDumpTest {
     String readme = Files.readString(root.resolve("product/README.md"));
     assertTrue(readme.contains("WorldDump"));
 
-    String goal = Files.readString(root.resolve("docs/project/goals/G-003-first-product-world.md"));
+    String goal = Files.readString(root.resolve("docs/paperwork/goals/G-003-first-product-world.md"));
     assertTrue(goal.contains("**Status:** `done`"));
     assertFalse(goal.contains("**Status:** `in progress`"));
     assertTrue(goal.contains("- [x] Headless product observer dumps the settled grid"));
     assertTrue(
         goal.contains("- [x] Incremental suite: all G-001 and G-002 Step tests remain green"));
 
-    String goalsIndex = Files.readString(root.resolve("docs/project/goals.md"));
+    String goalsIndex = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goalsIndex.contains("G-003"));
     assertTrue(goalsIndex.contains("First product world"));
     assertTrue(goalsIndex.contains("done"));

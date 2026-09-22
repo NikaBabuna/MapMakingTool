@@ -25,7 +25,7 @@ This is `docs/protocol/environment/dictionary.md`. It fixes the words the other 
 ```markdown
 | Word | Meaning | Example | Do not confuse it with |
 |------|---------|---------|------------------------|
-| Step | One negotiated job under a Goal | F-063, `docs/blockers/F-063.md` | A Goal, or a chat |
+| Step | One negotiated job under a Goal | F-063, `docs/paperwork/steps/F-063.md` | A Goal, or a chat |
 ```
 
 ## Keep out

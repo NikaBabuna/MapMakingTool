@@ -114,7 +114,7 @@ class ProductSessionTest {
         Files.exists(
             findRepoRoot()
                 .resolve("product/src/main/java/com/aethelgard/product/ProductApp.java")));
-    String goal = Files.readString(findRepoRoot().resolve("docs/project/goals/G-004-see-the-world.md"));
+    String goal = Files.readString(findRepoRoot().resolve("docs/paperwork/goals/G-004-see-the-world.md"));
     assertTrue(goal.contains("**Status:** `done`"));
     assertFalse(goal.contains("**Status:** `in progress`"));
   }

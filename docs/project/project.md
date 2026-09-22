@@ -44,7 +44,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 
 | Choice | Status |
 |--------|--------|
-| Language: Java | Accepted — see ADR-003 in [decisions.md](decisions.md) |
+| Language: Java | Accepted — see ADR-003 in [../paperwork/decisions.md](../paperwork/decisions.md) |
 | Build: Maven + wrapper | Accepted — scaffolded in F-001 |
 | Layout: monorepo (engine + product) | Accepted — see ADR-001, ADR-007 |
 | JDK | Java 21 — recorded in [../engine/architecture.md](../engine/architecture.md) |
@@ -55,4 +55,4 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 
 ## Expansion
 
-Scope changes belong here first. Technical scope changes also get an entry in [decisions.md](decisions.md).
+Scope changes belong here first. Technical scope changes also get an entry in [../paperwork/decisions.md](../paperwork/decisions.md).

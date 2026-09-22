@@ -254,10 +254,10 @@ class RunnerUiInfraTest {
   @DisplayName("FR-8: docs synced for F-053 (F-054 may later close Goal)")
   void docsSynced() throws Exception {
     Path root = findRepoRoot();
-    String blocker = Files.readString(root.resolve("docs/blockers/F-053.md"));
+    String blocker = Files.readString(root.resolve("docs/paperwork/steps/F-053.md"));
     assertTrue(blocker.contains("FR-1") && blocker.contains("FR-8"));
 
-    String features = Files.readString(root.resolve("docs/project/features.md"));
+    String features = Files.readString(root.resolve("docs/paperwork/steps.md"));
     assertTrue(features.contains("F-053"));
 
     String style = Files.readString(root.resolve("docs/product/style-guide.md"));
@@ -277,11 +277,11 @@ class RunnerUiInfraTest {
     String flows = Files.readString(root.resolve("docs/product/journeys.md"));
     assertTrue(flows.contains("Play"));
 
-    String changelog = Files.readString(root.resolve("docs/project/changelog.md"));
+    String changelog = Files.readString(root.resolve("docs/paperwork/changelog.md"));
     assertTrue(changelog.contains("F-053"));
 
     String goal =
-        Files.readString(root.resolve("docs/project/goals/G-009-simulation-runner-harden.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-009-simulation-runner-harden.md"));
     assertTrue(goal.contains("F-053"));
   }
 

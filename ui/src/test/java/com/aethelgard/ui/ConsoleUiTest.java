@@ -83,10 +83,10 @@ class ConsoleUiTest {
   @DisplayName("FR-5: G-005 remains done in goals registry")
   void goalClosedEntryPoints() throws Exception {
     Path root = findRepoRoot();
-    String goals = Files.readString(root.resolve("docs/project/goals.md"));
+    String goals = Files.readString(root.resolve("docs/paperwork/goals.md"));
     assertTrue(goals.contains("G-005-living-map.md"));
     String g005 =
-        Files.readString(root.resolve("docs/project/goals/G-005-living-map.md"));
+        Files.readString(root.resolve("docs/paperwork/goals/G-005-living-map.md"));
     assertTrue(g005.contains("**Status:** `done`") || g005.contains("**Status:** done"));
     String table =
         goals

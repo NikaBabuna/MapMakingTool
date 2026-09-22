@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))  
-**Goal index:** [project/goals.md](project/goals.md) — G-011 Docs restructuring  
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-011 Docs restructuring  
 **Protocol:** [protocol/README.md](protocol/README.md)  
 **Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [engine/architecture.md](engine/architecture.md) · [product/architecture.md](product/architecture.md)
 
@@ -43,28 +43,40 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 ## Project (`docs/project/`)
 
-**Folder:** [project/README.md](project/README.md) · Goals: [project/goals/README.md](project/goals/README.md)
+**Folder:** [project/README.md](project/README.md)
 
 | Doc | Status |
 |-----|--------|
-| [project.md](project/project.md) | Active |
-| [goals.md](project/goals.md) | Active |
-| [goals/G-001-engine-skeleton.md](project/goals/G-001-engine-skeleton.md) | done |
-| [goals/G-002-engine-host-readiness.md](project/goals/G-002-engine-host-readiness.md) | done |
-| [goals/G-003-first-product-world.md](project/goals/G-003-first-product-world.md) | done |
-| [goals/G-004-see-the-world.md](project/goals/G-004-see-the-world.md) | done |
-| [goals/G-005-living-map.md](project/goals/G-005-living-map.md) | done |
-| [goals/G-006-webview-front.md](project/goals/G-006-webview-front.md) | done |
-| [goals/G-007-studio-cartography.md](project/goals/G-007-studio-cartography.md) | done |
-| [goals/G-008-boundary-tectonics-studio.md](project/goals/G-008-boundary-tectonics-studio.md) | done |
-| [goals/G-009-simulation-runner-harden.md](project/goals/G-009-simulation-runner-harden.md) | done |
-| [goals/G-010-crust-topology.md](project/goals/G-010-crust-topology.md) | done |
-| [goals/G-011-docs-restructuring.md](project/goals/G-011-docs-restructuring.md) | in progress — F-064 conceptual product shelf done |
-| [features.md](project/features.md) | Active — G-001–G-011 Steps registered |
-| [roadmap.md](project/roadmap.md) | Active |
-| [backlog.md](project/backlog.md) | Active |
-| [decisions.md](project/decisions.md) | Active (14 ADRs) |
-| [changelog.md](project/changelog.md) | Active |
+| [project.md](project/project.md) | Active — scope. Progress records are on the paperwork shelf |
+
+---
+
+## Paperwork (`docs/paperwork/`)
+
+**Folder:** [paperwork/README.md](paperwork/README.md)
+
+| Doc | Status |
+|-----|--------|
+| [goals.md](paperwork/goals.md) | Active — the only Active Goal line |
+| [goals/](paperwork/goals/README.md) | Active — one file per Goal. The index holds status |
+| [goals/G-001-engine-skeleton.md](paperwork/goals/G-001-engine-skeleton.md) | done |
+| [goals/G-002-engine-host-readiness.md](paperwork/goals/G-002-engine-host-readiness.md) | done |
+| [goals/G-003-first-product-world.md](paperwork/goals/G-003-first-product-world.md) | done |
+| [goals/G-004-see-the-world.md](paperwork/goals/G-004-see-the-world.md) | done |
+| [goals/G-005-living-map.md](paperwork/goals/G-005-living-map.md) | done |
+| [goals/G-006-webview-front.md](paperwork/goals/G-006-webview-front.md) | done |
+| [goals/G-007-studio-cartography.md](paperwork/goals/G-007-studio-cartography.md) | done |
+| [goals/G-008-boundary-tectonics-studio.md](paperwork/goals/G-008-boundary-tectonics-studio.md) | done |
+| [goals/G-009-simulation-runner-harden.md](paperwork/goals/G-009-simulation-runner-harden.md) | done |
+| [goals/G-010-crust-topology.md](paperwork/goals/G-010-crust-topology.md) | done |
+| [goals/G-011-docs-restructuring.md](paperwork/goals/G-011-docs-restructuring.md) | in progress — F-066 paperwork shelf done |
+| [steps.md](paperwork/steps.md) | Active — step registry. F-066 done. F-065 not started |
+| [steps/](paperwork/steps/README.md) | Active — one file per Step |
+| [decisions.md](paperwork/decisions.md) | Active — index through ADR-016. Next number is one higher than the last row |
+| [decisions/](paperwork/decisions/README.md) | Active — one file per decision |
+| [changelog.md](paperwork/changelog.md) | Active |
+| [roadmap.md](paperwork/roadmap.md) | Active |
+| [backlog.md](paperwork/backlog.md) | Active |
 
 ---
 
@@ -101,76 +113,6 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [glossary.md](product/glossary.md) | Active — domain words |
 | [style-guide.md](product/style-guide.md) | Active — screen and control labels |
 | [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [tectonics.md](product/wiki/tectonics.md) · [elevation.md](product/wiki/elevation.md) |
-
----
-
-## Blockers (`docs/blockers/`)
-
-**Folder:** [blockers/README.md](blockers/README.md)
-
-| Doc | Status |
-|-----|--------|
-| [F-001.md](blockers/F-001.md) | done — layout + Maven scaffold |
-| [F-002.md](blockers/F-002.md) | done — Pool + Step loop |
-| [F-003.md](blockers/F-003.md) | done — events + claiming + diagnostics |
-| [F-004.md](blockers/F-004.md) | done — Systems + typed merge + provenance |
-| [F-005.md](blockers/F-005.md) | done — claim/finish + determinism |
-| [F-006.md](blockers/F-006.md) | done — User Input / Input View / User View |
-| [F-007.md](blockers/F-007.md) | done — CLI runner |
-| [F-008.md](blockers/F-008.md) | done — basic UI + G-001 closure |
-| [F-009.md](blockers/F-009.md) | done — CI pipeline |
-| [F-010.md](blockers/F-010.md) | done — pluggable Pool compute |
-| [F-011.md](blockers/F-011.md) | done — Object fields + FieldMergeType |
-| [F-012.md](blockers/F-012.md) | done — EventEmissionPolicy + G-002 closure |
-| [F-013.md](blockers/F-013.md) | done — product Maven module |
-| [F-014.md](blockers/F-014.md) | done — world as Pool state |
-| [F-015.md](blockers/F-015.md) | done — first generative process |
-| [F-016.md](blockers/F-016.md) | done — witnessed world + G-003 closure |
-| [F-017.md](blockers/F-017.md) | done — Voronoi multi-plate tectonics |
-| [F-018.md](blockers/F-018.md) | done — large colored map UI |
-| [F-019.md](blockers/F-019.md) | done — product session + UI/CLI house |
-| [F-020.md](blockers/F-020.md) | done — plate kinematics |
-| [F-021.md](blockers/F-021.md) | done — motion-based orogeny |
-| [F-022.md](blockers/F-022.md) | done — tool UI |
-| [F-023.md](blockers/F-023.md) | done — placeholder CLI + in-UI console |
-| [F-024.md](blockers/F-024.md) | done — Java session HTTP host (`ui.host`) |
-| [F-025.md](blockers/F-025.md) | done — Next.js tool UI (`ui/web`) |
-| [F-026.md](blockers/F-026.md) | done — Tauri desktop; Swing removed; G-006 closed |
-| [F-027.md](blockers/F-027.md) | done — studio chrome + map-first shell |
-| [F-028.md](blockers/F-028.md) | done — pan / zoom |
-| [F-029.md](blockers/F-029.md) | done — shortcuts + QoL; G-007 closed |
-| [F-030.md](blockers/F-030.md) | done — G-008 wiki + decisions |
-| [F-031.md](blockers/F-031.md) | done — VIEW 1920×1080 |
-| [F-032.md](blockers/F-032.md) | done — loopback pan + zoom clamp |
-| [F-033.md](blockers/F-033.md) | done — plate partition + registry |
-| [F-034.md](blockers/F-034.md) | done — boundaries + cylinder map |
-| [F-035.md](blockers/F-035.md) | done — precedence + area_flux + motion_intent |
-| [F-036.md](blockers/F-036.md) | done — apply flux + fission + B1 distance |
-| [F-037.md](blockers/F-037.md) | done — edge-driven IntegrateVelocity |
-| [F-038.md](blockers/F-038.md) | done — boundary orogeny O(contacts) + status/camera/plates |
-| [F-039.md](blockers/F-039.md) | done — multi-panel studio + mappy style |
-| [F-040.md](blockers/F-040.md) | done — traditional console; G-008 closed |
-| [F-041.md](blockers/F-041.md) | done — G-009 docs lock |
-| [F-042.md](blockers/F-042.md) | done — DiagnosticsHub + CLI diag/stats |
-| [F-043.md](blockers/F-043.md) | done — ridge accretion diverge fill |
-| [F-044.md](blockers/F-044.md) | done — flood fill + crumb 0.2% + half-edge borders |
-| [F-045.md](blockers/F-045.md) | done — sphere polar wrap + bold/ragged borders |
-| [F-046.md](blockers/F-046.md) | done — phase collectors + crumb 0.01% + step-path hotspot |
-| [F-047.md](blockers/F-047.md) | done — raster buffer reuse + MapHost packed cache |
-| [F-048.md](blockers/F-048.md) | done — noun/verb command language |
-| [F-049.md](blockers/F-049.md) | done — CLI as full headless runner |
-| [F-050.md](blockers/F-050.md) | done — scrap + rebuild in-app terminal |
-| [F-051.md](blockers/F-051.md) | done — runner shell foundation |
-| [F-052.md](blockers/F-052.md) | done — Perf rail + runner fixes |
-| [F-053.md](blockers/F-053.md) | done — runner UI infrastructure + QoL |
-| [F-054.md](blockers/F-054.md) | done — Goal close + layer harden + doc hygiene |
-| [F-055.md](blockers/F-055.md) | done — G-010 docs lock |
-| [F-056.md](blockers/F-056.md) | done — occupancy + lockers + ride + isostasy |
-| [F-057.md](blockers/F-057.md) | done — ridge mint + Simulation restart |
-| [F-058.md](blockers/F-058.md) | done — buoyancy + oceanic subduction + SEPARATE mint |
-| [F-059.md](blockers/F-059.md) | done — margin relief |
-| [F-060.md](blockers/F-060.md) | done — continental suture + arc + cap |
-| [F-061.md](blockers/F-061.md) | done — G-010 close + dump/wiki/UI hygiene |
 
 ---
 

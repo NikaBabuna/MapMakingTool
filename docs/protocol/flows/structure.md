@@ -20,7 +20,7 @@ These algorithms keep the map honest when the tree or the scope changes. A move 
 1. Create or move the files.
 2. Put a `README.md` on any landmark folder that does not have one, from the readme blueprint. A landmark is a folder the entrance expects an agent to open. Build output and intermediate namespace segments are not landmarks.
 3. Update `docs/navigation.md` so every moved path resolves, and update `docs/README.md` if a top folder appeared or disappeared.
-4. Append a Structure line to `docs/project/changelog.md`: date, what moved, why a reader should care.
+4. Append a Structure line to `docs/paperwork/changelog.md`: date, what moved, why a reader should care.
 5. If a reader would not have guessed the new path, run **Decide** and point the changelog line at that ADR.
 6. Search the remaining documents for the old path and fix the links you find. A link to a deleted file is a broken door.
 
@@ -48,11 +48,11 @@ These algorithms keep the map honest when the tree or the scope changes. A move 
 
 **When.** A technical or structural choice should still be visible after this chat, or **Restructure** / **Scope** called this algorithm.
 
-**Before.** The next ADR number is one higher than the last `## ADR-0xx` in `docs/project/decisions.md`.
+**Before.** The next ADR number is one higher than the last row on `docs/paperwork/decisions.md`.
 
 **Steps.**
 
-1. Append a section from the decision blueprint. Status, date, the decision in sentences, why, and what it amends or supersedes.
+1. Write `docs/paperwork/decisions/ADR-0xx-<slug>.md` from the decision blueprint, and add a row to the index. Status, date, the decision in sentences, why, and what it amends or supersedes. Do not rewrite an old ADR. If this one amends an older file, add an “Amended by” line on that older file.
 2. In the paper or the scope page a reader will open, add a pointer to that ADR id. The paper states what is true now. The ADR states why and when. Do not make the paper carry the whole argument, and do not make the ADR the only place that says what the code does.
 
 **Done.** A reader who disagrees with the choice can find the reason without reading the chat.

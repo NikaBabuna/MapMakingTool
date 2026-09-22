@@ -7,7 +7,7 @@
 
 # Goal index
 
-This is `docs/project/goals.md`. It is the only file that carries the Active Goal line. Every door points here instead of repeating the sentence. When the line is copied, the copies rot, and agents follow the rotten one. That is why the line is singular.
+This is `docs/paperwork/goals.md`. It is the only file that carries the Active Goal line. Every door points here instead of repeating the sentence. When the line is copied, the copies rot, and agents follow the rotten one. That is why the line is singular.
 
 **Write or edit it when.** **Open goal**, **Amend goal**, or **Close goal** runs.
 
