@@ -211,7 +211,7 @@ G-010 makes **crust material that rides plates** so continents can form. Locks (
 | **Weld** | No plate-id merge on suture. Thickness is the continent. |
 | **Merge** | Occupancy STATIC (one writer). Lockers may use a product **custom** `FieldMergeType`. No `engine` source edits. |
 
-**Amends:** G-008 collide precedence “smaller plate loses (no types yet)” and F-038 contact-paint orogeny as the **relief author** — superseded on paper for G-010; buoyancy runtime F-058; margin relief runtime F-059; suture remaining F-060.
+**Amends:** G-008 collide precedence “smaller plate loses (no types yet)” and F-038 contact-paint orogeny as the **relief author** — superseded on paper for G-010; buoyancy runtime F-058; margin relief runtime F-059; suture runtime F-060.
 
 **Out of scope:** climate/biomes; Explore/Guide/Timeline; second topology System; scratch-pad wait-notify; plate weld; age/sediment/plumes; 3D globe; engine framework ports.
 

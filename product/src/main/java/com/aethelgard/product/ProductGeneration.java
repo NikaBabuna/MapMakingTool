@@ -1,6 +1,6 @@
 /*
  * File: product/src/main/java/com/aethelgard/product/ProductGeneration.java
- * Purpose: One-generation plate pipeline helper (integrate → apply → advect → subduct → locker stamp → mint → isostasy)
+ * Purpose: One-generation plate pipeline helper (integrate → apply → advect → subduct → locker stamp → mint → margin → suture → isostasy)
  * Audience: Tests / debugging
  * Update when: Generation Sub-System order changes
  */
@@ -12,7 +12,8 @@ import java.util.Objects;
 /**
  * Mirrors the tectonics System order for independent witnesses: boundaries/flux/intent from
  * standing plates, IntegrateVelocity, ApplyGeometry, occupancy remap, Subduct consume/unshare,
- * locker stamps on standing occupancy, ridge mint in gaps, margin relief, isostasy of remapped keys.
+ * locker stamps on standing occupancy, ridge mint in gaps, margin relief, continental collide,
+ * isostasy of remapped keys.
  */
 public final class ProductGeneration {
 
@@ -88,14 +89,17 @@ public final class ProductGeneration {
     RidgeCreate.Result minted = RidgeCreate.apply(moved.occupancy(), stamped);
     Lockers relieved =
         MarginRelief.apply(minted.occupancy(), minted.lockers(), moved.plates(), moved.velocities());
+    Lockers crust =
+        ContinentalCollide.apply(
+            minted.occupancy(), relieved, moved.plates(), moved.velocities());
     PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
-    Grid elevation = ThicknessToElevation.apply(minted.occupancy(), relieved);
+    Grid elevation = ThicknessToElevation.apply(minted.occupancy(), crust);
     return new Snapshot(
         moved.plates(),
         moved.velocities(),
         after,
         minted.occupancy(),
-        relieved,
+        crust,
         elevation);
   }
 }

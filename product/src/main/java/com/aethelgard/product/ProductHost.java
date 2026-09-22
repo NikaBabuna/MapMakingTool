@@ -29,8 +29,8 @@ import java.util.Objects;
  * plate_velocity / occupancy / lockers are STATIC. One tectonics System claims {@code
  * world/tectonics} after Step 0 and runs TraceBoundaries → BoundaryInteraction →
  * IntegrateVelocity → ApplyGeometry → Orogeny (locker stamps) → RidgeCreate →
- * MarginRelief → ThicknessToElevation. ApplyGeometry remaps occupancy and runs Subduct
- * corrections.
+ * MarginRelief → ContinentalCollide → ThicknessToElevation. ApplyGeometry remaps occupancy
+ * and runs Subduct corrections.
  */
 public final class ProductHost {
 
@@ -57,6 +57,7 @@ public final class ProductHost {
     SubSystem timedOrogeny = new TimingSubSystem(new Orogeny(), DiagnosticIds.PHASE_OROGENY);
     RidgeCreate ridgeCreate = new RidgeCreate();
     MarginRelief marginRelief = new MarginRelief();
+    ContinentalCollide continentalCollide = new ContinentalCollide();
     SubSystem timedIsostasy =
         new TimingSubSystem(new ThicknessToElevation(), DiagnosticIds.PHASE_ISOSTASY);
     EngineSystem tectonics =
@@ -73,10 +74,17 @@ public final class ProductHost {
                     timedOrogeny,
                     ridgeCreate,
                     marginRelief,
+                    continentalCollide,
                     timedIsostasy),
                 conflict -> {
                   List<SubSystem> preferred =
-                      List.of(timedIntegrate, timedApply, timedOrogeny, ridgeCreate, marginRelief);
+                      List.of(
+                          timedIntegrate,
+                          timedApply,
+                          timedOrogeny,
+                          ridgeCreate,
+                          marginRelief,
+                          continentalCollide);
                   List<SubSystem> ordered = new ArrayList<>();
                   for (SubSystem sub : preferred) {
                     if (conflict.contains(sub)) {

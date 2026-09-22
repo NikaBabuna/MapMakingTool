@@ -8,13 +8,13 @@
 # Current session
 
 **Updated:** 2026-09-22  
-**Status:** F-059 Accepted · Active Goal **G-010** · last completed G-009
+**Status:** F-060 Accepted · Active Goal **G-010** · last completed Step F-060
 
 ---
 
 ## Session goal
 
-Accept **F-059** (margin relief) under G-010. Done.
+Accept **F-060** (continental suture + arc thickening + cap) under G-010. Done.
 
 ---
 
@@ -29,17 +29,17 @@ Accept **F-059** (margin relief) under G-010. Done.
 
 | Step | Work | Status |
 |------|------|--------|
-| F-059 | Margin relief (rift trough + collide slope + lip blend) | done |
+| F-060 | Continental suture + arc thickening + cap | done |
 
 ---
 
 ## Torn-Step check
 
-- [x] F-059 marked `in progress` before code
-- [x] F-059 Accepted (witness + SYNC)
+- [x] F-060 marked `in progress` before code
+- [x] F-060 Accepted (witness + SYNC)
 
 ---
 
 ## Notes
 
-- F-059 margin relief is done. Suture + cap remain F-060. Goal close is F-061.
+- F-060 arc, suture, and cap are done. Goal close is F-061.

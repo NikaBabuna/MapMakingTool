@@ -98,12 +98,12 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Doc | Status |
 |-----|--------|
-| [architecture.md](product/architecture.md) | Active — G-010 in progress (F-059 margin relief); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
+| [architecture.md](product/architecture.md) | Active — G-010 in progress (F-060 arc, suture, cap); G-009 done (through F-054); panel registry + menu model; layer harden; Perf rail; Terminal |
 | [concept.md](product/concept.md) | Active |
-| [flows.md](product/flows.md) | G-010 in progress (F-059 margin relief); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
-| [glossary.md](product/glossary.md) | Active — margin relief **live** (F-059); buoyancy **live** (F-058); ridge mint **live** (F-057); lockers/occupancy/isostasy **live** (F-056); DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
-| [style-guide.md](product/style-guide.md) | Active — F-059 margin relief; F-058 buoyancy (runtime); F-057 ridge mint + restart menu; F-056 isostasy map; F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
-| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-059 margin relief; F-058 buoyancy; F-057 ridge mint; F-056 occupancy + isostasy; F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
+| [flows.md](product/flows.md) | G-010 in progress (F-060 arc, suture, cap); G-009 done through F-054; runner journeys current; Explore/Guide/Timeline still TBD |
+| [glossary.md](product/glossary.md) | Active — arc/suture/cap **live** (F-060); margin relief **live** (F-059); buoyancy **live** (F-058); ridge mint **live** (F-057); lockers/occupancy/isostasy **live** (F-056); DiagnosticsHub live; MapSpeed 1x…Fastest; panel registry; layer shortcuts |
+| [style-guide.md](product/style-guide.md) | Active — F-060 arc + suture; F-059 margin relief; F-058 buoyancy (runtime); F-057 ridge mint + restart menu; F-056 isostasy map; F-054 layer shortcuts + typing suppress; F-053 menu/panels/layout; brighter map |
+| [wiki/](product/wiki/) | Active — [tectonics.md](product/wiki/tectonics.md) (F-060 arc + suture; F-059 margin relief; F-058 buoyancy; F-057 ridge mint; F-056 occupancy + isostasy; F-046 crumb 0.01% + phases) · [world.md](product/wiki/world.md) · [elevation.md](product/wiki/elevation.md) |
 
 ---
 
@@ -172,6 +172,7 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [F-057.md](blockers/F-057.md) | done — ridge mint + Simulation restart |
 | [F-058.md](blockers/F-058.md) | done — buoyancy + oceanic subduction + SEPARATE mint |
 | [F-059.md](blockers/F-059.md) | done — margin relief |
+| [F-060.md](blockers/F-060.md) | done — continental suture + arc + cap |
 
 ---
 
