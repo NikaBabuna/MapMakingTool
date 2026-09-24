@@ -7,7 +7,7 @@
 
 # Steps
 
-One file per Step. Status lives on [../steps.md](../steps.md). Write one from the [step blueprint](../../protocol/blueprints/step.md).
+One file per Step. Status lives on [../steps.md](../steps.md). Write one from the [step blueprint](../../protocol/blueprints/paperwork/step.md).
 
 | Page | Read it when |
 |------|----------------|

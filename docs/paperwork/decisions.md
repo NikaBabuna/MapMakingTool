@@ -29,4 +29,4 @@ One file per decision. The next number is one higher than the last row.
 | ADR-016 | Paperwork shelf | accepted | [ADR-016-paperwork-shelf.md](decisions/ADR-016-paperwork-shelf.md) |
 | ADR-017 | Architecture paper by abstraction | accepted | [ADR-017-architecture-paper.md](decisions/ADR-017-architecture-paper.md) |
 
-How to write one: [../protocol/blueprints/adr.md](../protocol/blueprints/adr.md).
+How to write one: [../protocol/blueprints/paperwork/decision-record.md](../protocol/blueprints/paperwork/decision-record.md).

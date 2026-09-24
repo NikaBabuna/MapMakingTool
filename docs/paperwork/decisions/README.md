@@ -7,7 +7,7 @@
 
 # Decisions
 
-One file per decision. The index, and the next number, is [../decisions.md](../decisions.md). Write one from the [decision blueprint](../../protocol/blueprints/adr.md).
+One file per decision. The index, and the next number, is [../decisions.md](../decisions.md). Write one from the [decision blueprint](../../protocol/blueprints/paperwork/decision-record.md).
 
 | Page | Read it when |
 |------|----------------|

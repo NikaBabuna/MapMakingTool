@@ -2,12 +2,17 @@
   File: docs/architecture/program.md
   Purpose: Level 1 — modules and the dependency direction
   Audience: Agents and humans
-  Update when: A module is added or the dependency direction changes
+  Update when: A module is added, the dependency direction changes, or a project-fact line changes
 -->
 
 # Program
 
-Aethelgard is one Maven build. The parent artifact is `com.aethelgard:aethelgard`, packaging `pom`, at the repository root. The language level is Java 21 (`maven.compiler.release` 21). The build command is the Maven wrapper at the root (`mvnw` / `mvnw.cmd`). GitHub Actions runs that witness with `mvnw test`.
+Aethelgard is one Maven build. The parent artifact is `com.aethelgard:aethelgard`, packaging `pom`, at the repository root. The language level is Java 21 (`maven.compiler.release` 21). The build command is the Maven wrapper at the root (`mvnw` / `mvnw.cmd`).
+
+**Witness command:** `./mvnw test` from the repository root (`mvnw.cmd test` on Windows). GitHub Actions runs the same command on `main`.  
+**Tests:** JUnit tests in `<module>/src/test/java/`, in the same package as the unit they test, named `<Unit>Test.java`. The web front (`ui/web/`) and the desktop shell (`ui/desktop/`) have no tests.  
+**Declarations:** Java: `(class|interface|record|enum) <Name>\b` in `<module>/src/main/java/`. TypeScript: `(function|const|class|interface|type) <Name>\b` in `ui/web/src/`. Rust: `(fn|struct|enum) <name>\b` in `ui/desktop/src-tauri/src/`.  
+**Output summary:** lines matching `Tests run:`, `FAIL`, `ERROR`, `BUILD SUCCESS`, or `BUILD FAILURE` in the witness output.
 
 Four modules do four jobs. The engine is a host for a step-based simulation. The product is the world that plugs into that host. The CLI runs a world with no window. The UI paints a world and serves it on localhost.
 

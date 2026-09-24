@@ -1,63 +1,70 @@
 <!--
   File: docs/protocol/environment/correctness.md
-  Purpose: What Accept means, what is incremental, and which states are blocked
-  Audience: Agents and humans
-  Update when: The definition of Accept changes
+  Purpose: When a Step’s implementation is correct — source vs document standards
+  Audience: Agents
+  Update when: The definition of correctness or Accept changes
 -->
 
 # Correctness
 
-A Step is correct only when all of the following are true at once. Any one of them failing means the Step is not Acceptable, no matter how complete the prose looks.
+## Status
 
-```
-Accept(F-00n)  ⇔  this Step’s checks are green
-               ∧  every earlier Accepted Step’s checks are still green
-               ∧  the Sync flow has been applied to what this Step changed
-               ∧  the approved requirements are stored in the Step record
-               ∧  the work is inside the scope document
-               ∧  the Step belongs to the active Goal
-```
+This instrument defines when implemented work is correct under the protocol. It is the ground of judgment for a Step’s substance. It binds every agent.
 
-Compiling is not enough. A paragraph that says “clean” is not a requirement. A green suite obtained by deleting an older check is not Accept.
+How Goals and Steps are found, how a torn Step is recognised, and how rollback is performed, are prescribed by [core-workflow.md](../core-workflow.md) and by the flows that instrument invokes. This file does not restate those procedures.
 
-## Incremental suite
+This instrument is product-independent. It does not name a witness command. The project supplies the command that runs the suite.
 
-Each Accept adds to the bar. Later Steps keep every earlier Step’s checks green.
+## Article 1 — Unit of judgment
 
-| Situation | Result |
-|-----------|--------|
-| This Step’s checks green, an earlier Step’s checks red | **Reject.** It is a regression. Fix it, or roll back |
-| An earlier check deleted or skipped so the suite can pass | **Forbidden.** Restore the check |
-| A requirement removed from an Accepted Step without the human’s approval and a written reason | **Forbidden** |
-| This Step green, docs still describing the previous Step’s world | **Not Accept.** Run **Sync**, then judge again |
+Correctness is determined per Step. The store of claims for that Step is the Step record. Chat is not a store of claims.
 
-The witness command for this repository is the full suite through the Maven wrapper: `./mvnw test` or `mvnw.cmd test`. That command is a fact about this project’s implementation. The rule above is the protocol: whatever the command is, it must cover this Step and every earlier Accepted Step. A documentation-only Step does not invent a new program whose only job is to search documents for phrases. The existing suite is the witness that behavior still holds.
+## Article 2 — Two kinds of modification
 
-## Blocked states
+A Step falls under exactly one of the following heads, according to what it is authorised to change. The standard of correctness differs by head.
 
-Do not claim `done` in any of these states. Do the thing in the right-hand column instead.
+| Kind | What the Step touches | Standard of correctness |
+|------|------------------------|-------------------------|
+| Source modification | Source, or source together with documents | Article 3 |
+| Document modification | Documents only; no source change | Article 4 |
 
-| State | What it means | What to do |
-|-------|----------------|------------|
-| No human approval for the Step | The job was never agreed | Negotiate. Do not write the Step record yet |
-| Approved requirements are not in `F-0xx.md` | The store is still chat | **Store step** before any implementation |
-| No `in progress` mark, but files are already changing | The Step can look finished by accident | Mark first. If the edit is already wild, treat it as torn |
-| A stored requirement has no check | The requirement is a wish | Add the check and map it in the Step record |
-| New checks green, old checks red | Regression | Fix, or roll back |
-| Checks weakened to pass | The bar was moved in secret | Restore the old checks |
-| Requirements too vague to fail a check | They cannot witness anything | Rewrite them with the human until each one can fail |
-| Status says `done` and the suite is red or was never run | False Accept | Demote the status, or roll back |
-| Docs still describe the previous world | The prior is lying | **Sync** |
-| Torn marks, half-written files | Failure wearing a success mask | **Rollback** |
+A Step that touches source shall not be judged under Article 4 alone.
 
-## Legal states of a Step
+## Article 3 — Source modification
 
-| State | What an agent may claim |
-|-------|-------------------------|
-| Not started | Nothing has been agreed. The registry row may exist with no Step record |
-| `fr-approved` | The requirements are on disk. Implementation has not started |
-| `in progress` | Work is underway. The agent must not claim `done` |
-| `done` | Accept holds. The Step may be committed and marked done |
-| `rolled back` | The attempt was discarded. The tree matches the last Accept. Say so |
+### 3.1 Functional requirements
 
-> Failure must never look like success.
+The approved functional requirements in the Step record are the claims. Each claim shall be witnessed by one or more code tests. A claim without a code test is not a requirement under this instrument; it is a wish.
+
+### 3.2 Green suite
+
+Source work is correct if and only if:
+
+1. every code test that witnesses this Step’s claims is green; and
+2. every code test that witnesses every earlier Accepted Step remains green.
+
+Compiling is not sufficient. A narrative that the work is “clean” is not sufficient. A green suite obtained by deleting, skipping, or softening an earlier test is not correct; that conduct is forbidden.
+
+### 3.3 Mapping
+
+The Step record shall map each functional requirement to the test or tests that witness it. Absence of that mapping is absence of proof.
+
+## Article 4 — Document modification
+
+A Step that amends documents alone, and does not modify source, is correct if and only if the protocol has been followed to the letter: [brief.md](../brief.md), [quality.md](quality.md), [style.md](style.md), [core-workflow.md](../core-workflow.md), the active flow under [flows/](../flows/), and the blueprint under [blueprints/](../blueprints/) that the flow names.
+
+No new code test is required solely to search documents for phrases. Where the project’s existing suite already encodes a document fact, that suite shall remain green.
+
+## Article 5 — Accept
+
+Accept of a Step means that the standard applicable under Article 2 holds.
+
+A status line, a commit message, or a paragraph in a Goal does not Accept. The applicable standard Accepts. The status line records an Accept that has already occurred.
+
+## Article 6 — Relationship to quality
+
+This instrument judges correctness of the Step’s kind under Article 2. [quality.md](quality.md) judges organisation, synchronisation duty, and conduct as quality. Poor quality does not become correct by renaming it. Incorrect work does not become Acceptable by being neatly filed.
+
+## Exclusion
+
+This instrument does not define shelf layouts, product features, or the text of particular tests. It defines when a Step’s implementation is correct.

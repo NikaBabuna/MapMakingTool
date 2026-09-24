@@ -7,7 +7,7 @@
 
 # Goals
 
-One file per Goal. The index, including the Active Goal line, is [../goals.md](../goals.md). Write one from the [goal blueprint](../../protocol/blueprints/goal.md).
+One file per Goal. The index, including the Active Goal line, is [../goals.md](../goals.md). Write one from the [goal blueprint](../../protocol/blueprints/paperwork/goal.md).
 
 | Page | Read it when |
 |------|----------------|

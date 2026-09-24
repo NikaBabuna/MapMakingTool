@@ -16,7 +16,7 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 |-|-|
 | [Docs tree](docs/README.md) | Documentation folders |
 | [Goals index](docs/paperwork/goals.md) | G-011 Docs restructuring · last [G-010](docs/paperwork/goals/G-010-crust-topology.md) |
-| [Protocol](docs/protocol/README.md) | Conduct: environment, navigation, blueprints, flows |
+| [Protocol](docs/protocol/brief.md) | Conduct — begin at the global prompt |
 | [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
 | [Engine module](engine/README.md) | Code module index |
 | [Architecture](docs/architecture/README.md) | Implementation paper |
@@ -25,4 +25,4 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 
 ## For agents
 
-See [AGENTS.md](AGENTS.md). Conduct: [docs/protocol/README.md](docs/protocol/README.md). Goal index: [docs/paperwork/goals.md](docs/paperwork/goals.md).
+See [AGENTS.md](AGENTS.md). Begin at [docs/protocol/brief.md](docs/protocol/brief.md). Goal index: [docs/paperwork/goals.md](docs/paperwork/goals.md).

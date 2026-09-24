@@ -1,30 +1,21 @@
 <!--
   File: docs/protocol/environment/README.md
-  Purpose: Door to the territory and the global order
-  Audience: Agents and humans
-  Update when: An environment page is added
+  Purpose: Door to the operating environment — map, phase, standards, definitions
+  Audience: Agents
+  Update when: An environment page is added or removed
 -->
 
 # Environment
 
-This room is the global order. Everything else in the protocol assumes you have read it. It answers four questions:
+This room is the operating environment of the protocol. It states where documents live, how deep the tree may go, what quality and correctness require, how the agent shall speak, and what Goal and Step mean.
 
-- Where am I, and what kinds of documents exist?
-- When two sources disagree, which one wins?
-- What am I never allowed to do?
-- Which flow do I run for the situation in front of me?
-
-An agent operates inside these pages. A write sequence that [dispatch.md](dispatch.md) does not name is not allowed, even if it seems helpful.
+It does not name write sequences. Those live in [../core-workflow.md](../core-workflow.md) and [../flows/](../flows/README.md).
 
 | Page | Read it when |
 |------|----------------|
-| [territory.md](territory.md) | You need the map of shelves, and the meaning of Goal and Step |
-| [authority.md](authority.md) | Chat, a file, and a door disagree |
-| [conduct.md](conduct.md) | You need the hard rules that apply on every Step |
-| [correctness.md](correctness.md) | You need to know what Accept means, and what is blocked |
-| [engagement.md](engagement.md) | You are about to talk to the human, or you are unsure whether you must ask |
+| [map.md](map.md) | You need what each docs folder and standing page is for |
 | [phase.md](phase.md) | You are about to create, move, or rename a folder |
-| [dictionary.md](dictionary.md) | A protocol word is doing work and you need its meaning |
-| [dispatch.md](dispatch.md) | You are about to change any file |
-
-Read territory, dictionary, and dispatch before the first change in a chat. Read the others when their situation appears.
+| [quality.md](quality.md) | You need the standard of organisation |
+| [correctness.md](correctness.md) | You need when a Step’s work is correct |
+| [style.md](style.md) | You need how to write or speak |
+| [core-definition.md](core-definition.md) | You need Goal, Step, Accept, Torn, and related terms |

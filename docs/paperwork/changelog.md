@@ -13,6 +13,9 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-24** — Navigation room rewritten for context economy: `reading.md`, `bounds.md` (startup read set, open set per flow, stop signals), `pointers.md`, `code.md`, and `walks.md` under `docs/protocol/navigation/`. `docs/navigation.md` gains **Code** and **Heavy places** sections.
+- **2026-09-24** — Protocol rewrite, continued: the nine remaining flows rewritten as step-by-step algorithms. Blueprints regrouped under `docs/protocol/blueprints/` into `protocol/`, `doors/`, `headers/`, `paperwork/`, `product/`, `architecture/`, `project/`, and `messages/`, each blueprint with the named operations the flows cite. Seal commits and the safe point added; Reconcile checks for unsealed changes. The depth rule allows `docs/protocol/blueprints/<group>/<page>.md`.
+- **2026-09-23** — Protocol pillar rewrite: `brief`, `quality`, `correctness`, `style`, `core-workflow`, `core-definition`, `environment` map, `phase`, twelve flows under `flows/`. Old `protocol/environment/` room removed.
 - **2026-09-22** — **F-065:** implementation papers gathered into `docs/architecture/` as one paper by abstraction level (program, host, world, studio). `docs/engine/` and the old architecture files are removed. ADR-017.
 - **2026-09-22** — **F-064:** product pages rewritten as a conceptual explanation. User journeys move from `docs/product/flows.md` to `docs/product/journeys.md`. ADR-015. How the application operates stays in the existing architecture papers.
 - **2026-09-22** — **F-063:** every protocol page rewritten as an explanation with tables and copyable skeletons. The documentation-only Java witness added in F-062 is removed. No simulation change.

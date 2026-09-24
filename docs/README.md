@@ -13,7 +13,7 @@ Permanent prior. **Map:** [navigation.md](navigation.md). **Conduct:** [protocol
 
 | Folder | README | Role |
 |--------|--------|------|
-| [protocol/](protocol/) | [README](protocol/README.md) | Conduct. Product-independent. Four rooms |
+| [protocol/](protocol/) | [README](protocol/README.md) | Conduct. Begin at [brief.md](protocol/brief.md) |
 | [paperwork/](paperwork/) | [README](paperwork/README.md) | Progress: Goals, Steps, decisions, changelog, roadmap, backlog |
 | [project/](project/) | [README](project/README.md) | Scope. What this product includes |
 | [architecture/](architecture/) | [README](architecture/README.md) | Implementation paper: program, host, world, studio |

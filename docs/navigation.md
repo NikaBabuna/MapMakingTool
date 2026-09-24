@@ -1,16 +1,16 @@
 <!--
   File: docs/navigation.md
-  Purpose: Documentation map — authoritative index
+  Purpose: Documentation map — authoritative index of where things are, and which places are expensive to read
   Audience: Agents and humans
-  Update when: Any doc or folder is added, moved, or removed
+  Update when: Any doc or folder is added, moved, or removed, or a place becomes heavy
 -->
 
 # Navigation
 
 **Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))  
-**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-011 Docs restructuring  
-**Protocol:** [protocol/README.md](protocol/README.md)  
-**Code:** [../engine/README.md](../engine/README.md) · [../product/README.md](../product/README.md) · [architecture/](architecture/README.md)
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-011 Docs restructuring · last completed G-010  
+**Protocol:** [protocol/README.md](protocol/README.md) · begin at [protocol/brief.md](protocol/brief.md)  
+**Reading:** [protocol/navigation/README.md](protocol/navigation/README.md) — how to read this map, and the repository, without filling your context
 
 Folder indexes are **README.md** in each landmark directory. Prefer those links when entering a folder.
 
@@ -23,8 +23,9 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | Agents | [../AGENTS.md](../AGENTS.md) |
 | Humans | [../README.md](../README.md) |
 | Docs tree | [README.md](README.md) |
-| Protocol | [protocol/README.md](protocol/README.md) |
+| Protocol | [protocol/brief.md](protocol/brief.md) |
 | Flows | [protocol/flows/README.md](protocol/flows/README.md) |
+| Reading efficiently | [protocol/navigation/README.md](protocol/navigation/README.md) |
 
 ---
 
@@ -32,12 +33,14 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 **Folder:** [protocol/README.md](protocol/README.md)
 
-| Room | Status |
+| Page | Status |
 |------|--------|
-| [environment/](protocol/environment/README.md) | Active — territory, dispatch, dictionary |
-| [navigation/](protocol/navigation/README.md) | Active — pointers and bounds |
-| [blueprints/](protocol/blueprints/README.md) | Active — one shape per document kind |
-| [flows/](protocol/flows/README.md) | Active — bookkeeping algorithms |
+| [brief.md](protocol/brief.md) | Active — the global prompt. Read first |
+| [core-workflow.md](protocol/core-workflow.md) | Active — the startup sequence and the flow catalogue |
+| [environment/](protocol/environment/README.md) | Active — map, phase, quality, correctness, style, core definitions |
+| [navigation/](protocol/navigation/README.md) | Active — reading, bounds, pointers, code route, walks |
+| [blueprints/](protocol/blueprints/README.md) | Active — the shape of every document, and the operations that edit it, in eight groups |
+| [flows/](protocol/flows/README.md) | Active — the twelve named flows |
 
 ---
 
@@ -45,8 +48,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 **Folder:** [project/README.md](project/README.md)
 
-| Doc | Status |
-|-----|--------|
+| Page | Status |
+|------|--------|
 | [project.md](project/project.md) | Active — scope. Progress records are on the paperwork shelf |
 
 ---
@@ -55,28 +58,19 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 **Folder:** [paperwork/README.md](paperwork/README.md)
 
-| Doc | Status |
-|-----|--------|
-| [goals.md](paperwork/goals.md) | Active — the only Active Goal line |
+| Page | Status |
+|------|--------|
+| [goals.md](paperwork/goals.md) | Active — the only Active Goal line (G-006 G-007 G-008 G-009 G-010 G-011) |
 | [goals/](paperwork/goals/README.md) | Active — one file per Goal. The index holds status |
-| [goals/G-001-engine-skeleton.md](paperwork/goals/G-001-engine-skeleton.md) | done |
-| [goals/G-002-engine-host-readiness.md](paperwork/goals/G-002-engine-host-readiness.md) | done |
-| [goals/G-003-first-product-world.md](paperwork/goals/G-003-first-product-world.md) | done |
-| [goals/G-004-see-the-world.md](paperwork/goals/G-004-see-the-world.md) | done |
-| [goals/G-005-living-map.md](paperwork/goals/G-005-living-map.md) | done |
-| [goals/G-006-webview-front.md](paperwork/goals/G-006-webview-front.md) | done |
-| [goals/G-007-studio-cartography.md](paperwork/goals/G-007-studio-cartography.md) | done |
-| [goals/G-008-boundary-tectonics-studio.md](paperwork/goals/G-008-boundary-tectonics-studio.md) | done |
-| [goals/G-009-simulation-runner-harden.md](paperwork/goals/G-009-simulation-runner-harden.md) | done |
-| [goals/G-010-crust-topology.md](paperwork/goals/G-010-crust-topology.md) | done |
-| [goals/G-011-docs-restructuring.md](paperwork/goals/G-011-docs-restructuring.md) | in progress — F-065 architecture paper done |
-| [steps.md](paperwork/steps.md) | Active — step registry. F-065 done |
+| [steps.md](paperwork/steps.md) | Active — step registry |
 | [steps/](paperwork/steps/README.md) | Active — one file per Step |
-| [decisions.md](paperwork/decisions.md) | Active — index through ADR-016. Next number is one higher than the last row |
+| [decisions.md](paperwork/decisions.md) | Active — decision index |
 | [decisions/](paperwork/decisions/README.md) | Active — one file per decision |
-| [changelog.md](paperwork/changelog.md) | Active |
-| [roadmap.md](paperwork/roadmap.md) | Active |
-| [backlog.md](paperwork/backlog.md) | Active |
+| [changelog.md](paperwork/changelog.md) | Active — structure, scope, and Goal events, newest first |
+| [roadmap.md](paperwork/roadmap.md) | Active — the order of Goals |
+| [backlog.md](paperwork/backlog.md) | Active — ideas not yet promoted to a Goal |
+
+Goal files and Step records are listed on their indexes. This map does not duplicate every id.
 
 ---
 
@@ -84,47 +78,78 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 **Folder:** [architecture/README.md](architecture/README.md)
 
-| Level | Status |
-|-------|--------|
-| [program.md](architecture/program.md) | Active — modules and the dependency direction |
-| [host/](architecture/host/README.md) | Active — one engine step. Open questions #1 and #4 remain |
-| [world/](architecture/world/README.md) | Active — one generation |
-| [studio/](architecture/studio/README.md) | Active — session, raster, HTTP host |
+| Page | Status |
+|------|--------|
+| [README.md](architecture/README.md) | Active — abstract: the levels and the question each answers |
+| [program.md](architecture/program.md) | Active — modules, dependency direction, and the witness command |
+| [host/](architecture/host/README.md) | Active — one engine step, and one page per host mechanism |
+| [world/](architecture/world/README.md) | Active — one generation, and one page per procedure that writes the grids |
+| [studio/](architecture/studio/README.md) | Active — session, raster, and the HTTP host |
 
 ---
 
 ## Product (`docs/product/`)
 
-**Folder:** [product/README.md](product/README.md) · Wiki: [product/wiki/README.md](product/wiki/README.md)
+**Folder:** [product/README.md](product/README.md)
 
-| Doc | Status |
-|-----|--------|
-| [concept.md](product/concept.md) | Active — conceptual; no program names |
-| [journeys.md](product/journeys.md) | Active — what a person does. Explore, Guide, and Timeline are not built |
-| [glossary.md](product/glossary.md) | Active — domain words |
-| [style-guide.md](product/style-guide.md) | Active — screen and control labels |
-| [wiki/](product/wiki/) | Active — [world.md](product/wiki/world.md) · [tectonics.md](product/wiki/tectonics.md) · [elevation.md](product/wiki/elevation.md) |
+| Page | Status |
+|------|--------|
+| [concept.md](product/concept.md) | Active — what the product is for |
+| [journeys.md](product/journeys.md) | Active — what a person does |
+| [glossary.md](product/glossary.md) | Active — world words |
+| [style-guide.md](product/style-guide.md) | Active — screen language |
+| [wiki/](product/wiki/README.md) | Active — world rules |
+| [wiki/world.md](product/wiki/world.md) | Active — the map's shape, edges, and seed |
+| [wiki/tectonics.md](product/wiki/tectonics.md) | Active — plates and crust |
+| [wiki/elevation.md](product/wiki/elevation.md) | Active — what height means |
 
 ---
 
-## Code & tooling (repo root)
+## Code
 
-| Path | README / entry |
-|------|----------------|
-| [../engine/](../engine/) | [README](../engine/README.md) — Maven module |
-| [../cli/](../cli/) | [README](../cli/README.md) — F-049 headless runner |
-| [../ui/](../ui/) | [README](../ui/README.md) — MapHost + headless map · [web](../ui/web/README.md) · [desktop](../ui/desktop/README.md) |
-| [../product/](../product/) | [README](../product/README.md) — Maven module |
-| [../engine/.../pool/](../engine/src/main/java/com/aethelgard/engine/pool/) | [README](../engine/src/main/java/com/aethelgard/engine/pool/README.md) |
-| [../engine/.../event/](../engine/src/main/java/com/aethelgard/engine/event/) | [README](../engine/src/main/java/com/aethelgard/engine/event/README.md) |
-| [../engine/.../diag/](../engine/src/main/java/com/aethelgard/engine/diag/) | [README](../engine/src/main/java/com/aethelgard/engine/diag/README.md) |
-| [../engine/.../system/](../engine/src/main/java/com/aethelgard/engine/system/) | [README](../engine/src/main/java/com/aethelgard/engine/system/README.md) |
-| [../engine/.../merge/](../engine/src/main/java/com/aethelgard/engine/merge/) | [README](../engine/src/main/java/com/aethelgard/engine/merge/README.md) |
-| [../engine/.../user/](../engine/src/main/java/com/aethelgard/engine/user/) | [README](../engine/src/main/java/com/aethelgard/engine/user/README.md) |
-| [../.github/](../.github/) | [README](../.github/README.md) |
-| [../.github/workflows/](../.github/workflows/) | [README](../.github/workflows/README.md) · [ci.yml](../.github/workflows/ci.yml) |
-| [../.cursor/](../.cursor/) | [README](../.cursor/README.md) |
-| [../.cursor/rules/](../.cursor/rules/) | [README](../.cursor/rules/README.md) |
-| [../AGENTS.md](../AGENTS.md) | Agent entry |
+Enter code through the door of its folder, or through the paper page that describes it ([protocol/navigation/code.md](protocol/navigation/code.md)). Do not list source trees.
 
-**Exempt from README:** build output (`target/`), local bootstrap (`.tools/`), Maven wrapper internals (`.mvn/`), intermediate Java namespace segments (`com/`, `java/`, …).
+| Folder | Door | What it holds | Described by |
+|--------|------|---------------|--------------|
+| `engine/` | [../engine/README.md](../engine/README.md) | The step-based host: pool, events, systems, merge, user ports, diagnostics. Each package has its own door | [architecture/host/](architecture/host/README.md) |
+| `product/` | [../product/README.md](../product/README.md) | World fields and the tectonics generation | [architecture/world/](architecture/world/README.md) |
+| `cli/` | [../cli/README.md](../cli/README.md) | The headless runner and the shared command language | [architecture/program.md](architecture/program.md), [architecture/studio/host.md](architecture/studio/host.md) |
+| `ui/` | [../ui/README.md](../ui/README.md) | Raster, map controller, and the Java HTTP host | [architecture/studio/](architecture/studio/README.md) |
+| `ui/web/` | [../ui/web/README.md](../ui/web/README.md) | The Next.js studio front | Its door; the look is [product/style-guide.md](product/style-guide.md) |
+| `ui/desktop/` | [../ui/desktop/README.md](../ui/desktop/README.md) | The Tauri desktop shell | Its door |
+| `.github/` | [../.github/README.md](../.github/README.md) | The CI workflow | Its door |
+| `.cursor/` | [../.cursor/README.md](../.cursor/README.md) | The editor's always-on rule | Its door |
+
+---
+
+## Heavy places
+
+Reading any of these whole fills a context window with little of value. The rules for reading them are in [protocol/navigation/bounds.md](protocol/navigation/bounds.md). Sizes are approximate.
+
+### Never open
+
+| Path | What it is | Size | Instead |
+|------|------------|------|---------|
+| `ui/web/node_modules/`, `ui/desktop/node_modules/` | Installed JavaScript packages | ~9,200 files | Search the lock file for one package name |
+| `engine/target/`, `product/target/`, `cli/target/`, `ui/target/` | Maven build output | ~400 files | The source. For a failed test, the summary line of the witness output |
+| `ui/desktop/src-tauri/target/`, `ui/desktop/src-tauri/gen/` | Rust and Tauri build output | ~3,500 files | The source under `ui/desktop/src-tauri/src/` |
+| `ui/web/.next/` | Next.js build output | ~100 files | The source under `ui/web/src/` |
+| `.git/` | Version control internals | ~5,300 files | `git log --format="%h %s"`, `git status --porcelain`, `git diff --stat` |
+| `.tools/` | A local Maven install, not part of the repository | — | — |
+
+### Open narrowly
+
+| Path | What it is | Size | How to read it |
+|------|------------|------|----------------|
+| `ui/desktop/src-tauri/Cargo.lock` | Rust lock file | ~4,700 lines | Search for one crate name |
+| `ui/web/package-lock.json` | JavaScript lock file | ~1,000 lines | Search for one package name |
+| `ui/web/src/components/MapTool.tsx` | Web studio component | ~970 lines | Search the member, read its range |
+| `ui/web/src/app/globals.css` | Web stylesheet | ~960 lines | Search the selector, read its range |
+| `ui/src/main/java/com/aethelgard/ui/host/MapHost.java` | Java HTTP host | ~670 lines | Search the member, read its range |
+| `product/src/main/java/com/aethelgard/product/ApplyGeometry.java` | Geometry phase | ~610 lines | Search the member, read its range |
+| `cli/src/main/java/com/aethelgard/cli/CommandDispatch.java` | Command language | ~540 lines | Search the member, read its range |
+| `product/src/test/resources/worlds/` | Golden world dumps (test data) | Data, not prose | Only when a dump test fails: its first line, then the failing region |
+| `docs/paperwork/steps/` | Step records | ~66 files, ~4,200 lines | One record by id. Search a field across them |
+| `docs/paperwork/decisions/` | Decision records | ~17 files | One record, chosen from the index |
+| `docs/protocol/blueprints/` | Blueprints | ~35 files, ~4,000 lines | The group door, then one blueprint's key block and one operation |
+| `docs/protocol/flows/` | Flows | 12 files, ~2,000 lines | Only the flow the turn selected, one stage or algorithm at a time |

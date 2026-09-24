@@ -1,30 +1,25 @@
 <!--
   File: docs/protocol/flows/README.md
-  Purpose: Index of bookkeeping algorithms, and how to read one
-  Audience: Agents and humans
-  Update when: A flow file is added
+  Purpose: Door to the named flows of core-workflow
+  Audience: Agents
+  Update when: A flow file is added or removed
 -->
 
 # Flows
 
-A flow is the bookkeeping for one situation. It is an algorithm: when this is true, edit these files, in this order, and stop. It is not an essay about the idea, and it is not the shape of the file. The shape is a blueprint. The permission to run the algorithm is [../environment/dispatch.md](../environment/dispatch.md).
+The complete algorithm for each situation named in Article 3 of [../core-workflow.md](../core-workflow.md). A flow says when to write, which file, and in what order. Every document it writes is shaped by a blueprint under [../blueprints/](../blueprints/README.md), and the page shape is [../blueprints/protocol/flow.md](../blueprints/protocol/flow.md).
 
-Each algorithm below has the same parts:
-
-| Part | What it tells you |
-|------|-------------------|
-| When | The observation that makes this algorithm legal. If the observation is false, do not run it |
-| Before | What must already be true, or the algorithm will write a lie |
-| Steps | The files, in order |
-| Done | What the tree looks like when the algorithm has finished |
-| Not done | The tempting stop that leaves the tree half-updated |
-
-The witness command, when an algorithm says “run the witness,” is `./mvnw test` or `mvnw.cmd test`. It runs this Step’s checks and every earlier Accepted Step’s checks. A documentation Step does not add a program that searches documents for phrases.
-
-| File | Algorithms | The situation, in one line |
-|------|------------|----------------------------|
-| [goals.md](goals.md) | Open goal, Amend goal, Close goal | A Goal is being created, changed, or finished |
-| [steps.md](steps.md) | Store step, Implement, Sync, Close step, Amend step | A Step is being stored, done, recorded, finished, or its requirements changed |
-| [structure.md](structure.md) | Restructure, Scope, Decide | Folders move, scope changes, or a decision must be kept |
-| [source.md](source.md) | Record source | Source files changed, so the papers that describe them must change |
-| [judgment.md](judgment.md) | Reconcile, Rollback | A chat is starting, or a Step is torn |
+| Page | Read it when |
+|------|----------------|
+| [reconcile.md](reconcile.md) | A chat starts, or new work needs proof that nothing is torn |
+| [rollback.md](rollback.md) | Reconcile found torn work or unsealed changes, or the human ends a failing Step |
+| [status-report.md](status-report.md) | Reconcile (or Rollback) finished and the human needs the startup briefing |
+| [investigate.md](investigate.md) | An assumption must be tested before anyone relies on it |
+| [explain.md](explain.md) | The human asks what something is, means, or why it is where it is |
+| [audit.md](audit.md) | The human asks for an honest review against criteria |
+| [goal.md](goal.md) | A Goal is negotiated, opened, amended, closed, or abandoned, or an idea is captured |
+| [step.md](step.md) | One job is to be proposed, approved, stored, done, witnessed, and closed |
+| [bugfix.md](bugfix.md) | A confirmed defect is to be corrected |
+| [amendment.md](amendment.md) | A standing document, the protocol, the entrance, scope, or structure is to change |
+| [global-docsync.md](global-docsync.md) | A Goal closes, or a whole-tree sync is directed |
+| [conflict-resolve.md](conflict-resolve.md) | Two sources of authority disagree |

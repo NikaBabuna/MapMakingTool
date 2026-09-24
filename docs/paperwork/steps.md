@@ -11,7 +11,7 @@ Each **Step** is one AI job under a **Goal**. Approved FRs + test mapping: `docs
 
 **Incremental:** Accept requires this Step’s tests **and** all earlier Accepted Steps’ tests to stay green.
 
-Procedure: [../protocol/flows/steps.md](../protocol/flows/steps.md)
+Procedure: [../protocol/flows/step.md](../protocol/flows/step.md)
 
 **Status values:** `not started` | `in progress` | `done` | `rolled back`
 
@@ -184,6 +184,6 @@ Goal doc: [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md)
 
 ## Marking progress
 
-- Set Status to `in progress` **before** writing code for that Step.  
-- Set to `done` only after green witness + doc sync + commit.  
-- Torn `in progress` on a new chat → rollback.
+- Set Status to `in progress` before any work on that Step, in the record, here, and on the Goal.  
+- Set Status to `done` only after the witness is green and Sync is complete. The `done` marks go into the Step's Accept commit.  
+- A torn Step found by Reconcile is rolled back, not continued.
