@@ -18,8 +18,8 @@ Take the steps in order. Stop at the first step that answers the question. Most 
 | 1 | `docs/architecture/program.md` | The module that owns the behaviour, from the module table. Do not list the module's folders |
 | 2 | `docs/architecture/README.md`, the paper abstract | The area whose question matches yours, from its level table |
 | 3 | That area's level page, `docs/architecture/<area>/README.md` (and, if it points to one, the chapter's level page) | The stage or row that names the mechanism, and its page |
-| 4 | That mechanism page | **What it reads**, **What it writes**, **Procedure**, **What is true afterwards**. If this answers the question, stop here |
-| 5 | The mechanism page's **Where it lives** section | The unit's name and its source path |
+| 4 | That mechanism page | **What it reads**, **What it writes**, **Model**, **Procedure**, **What is true afterwards**. If this answers the question, stop here |
+| 5 | The mechanism page's **Where it lives** section | The unit's name, its members, and its source path |
 | 6 | In that one source file, search for the member's declaration, using the **Declarations** line of the program page, or the member's name | The line number of the declaration |
 | 7 | Read a line range starting at that line, up to the end of the member | The member's body, and nothing else |
 

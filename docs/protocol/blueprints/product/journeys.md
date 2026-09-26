@@ -26,9 +26,11 @@ What a person does, in order, and what they see after each action. If you are ab
 
 # Journeys
 
-What a person does. These are not the rules of the domain. Those live in the wiki.
+What a person does with <product name>, step by step, and what they see at each step. These are not the rules of the domain. Those live in the [wiki](wiki/README.md). Controls are named with the word on the screen, as the [style guide](style-guide.md) sets it out.
 
 ## <Journey name>
+
+<Optional: one sentence saying why a person takes this journey.>
 
 1. <The person | They> <action>. <What they see.>
 …
@@ -48,8 +50,9 @@ A person cannot do these <n> yet.
 
 | Part | Required | Rule |
 |------|----------|------|
-| Opening sentence | yes | Says that these are what a person does, not the rules of the domain, and points at the wiki |
+| Opening | yes | Up to three sentences: that these are what a person does and sees, that they are not the rules of the domain (with a link to the wiki), and that controls are named as the style guide names them |
 | Journey section | yes, one or more | `## <Journey name>` as a verb phrase ("Export a report"). Numbered steps. Each step is one action and its visible result. Controls are named with the exact word on the screen, per the style guide |
+| Purpose sentence | no | One sentence directly under the journey heading, before the steps: why a person takes this journey. It states no step and no control |
 | Not built | yes | Last section. One row per journey that is promised and not available. The closing sentence gives the count, in words or digits. If none, the table is replaced by `Every promised journey is built.` |
 
 ## Operations
@@ -65,7 +68,7 @@ A person cannot do these <n> yet.
 
 **Edit.**
 
-1. Insert `## <Journey name>` and its numbered steps directly above `## Not built`.
+1. Insert `## <Journey name>`, its purpose sentence if there is one, and its numbered steps directly above `## Not built`.
 
 ### Amend journey
 

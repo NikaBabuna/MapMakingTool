@@ -29,10 +29,9 @@ The entrance sits at the root of `docs/`. It is not a shelf of substance.
 | Shelf | Folder | Purpose |
 |-------|--------|---------|
 | Protocol | `docs/protocol/` | Conduct. Mode of operation. Product-independent. |
-| Product | `docs/product/` | What the product is, for a person. Not how the program is built. |
+| Product | `docs/product/` | What the product is, for a person, and what it includes and refuses. Binding scope. Not how the program is built. |
 | Architecture | `docs/architecture/` | What is built. The implementation paper. |
 | Paperwork | `docs/paperwork/` | Who did what, and when. Progress records. |
-| Scope | `docs/project/` | What the product includes and refuses. Binding scope. |
 
 An entrance maps shelves. It does not hold the substance of those shelves.
 
@@ -58,7 +57,7 @@ An entrance maps shelves. It does not hold the substance of those shelves.
 | Path | Purpose |
 |------|---------|
 | `README.md` | Door to the conceptual product. |
-| `concept.md` | What the product is for, and what it refuses. |
+| `concept.md` | What the product is for. The only scope document: what the product includes, and what it refuses. |
 | `journeys.md` | What a person does, and what they see. |
 | `glossary.md` | Meaning of domain words. |
 | `style-guide.md` | How the screen looks, and the word on a control. |
@@ -69,7 +68,9 @@ An entrance maps shelves. It does not hold the substance of those shelves.
 | Path | Purpose |
 |------|---------|
 | `README.md` | Abstract of the implementation paper. Levels and questions. No procedures. Links the paper's glossary and open-questions page. |
-| `program.md` | Modules and dependency direction, and the project facts the protocol relies on: the witness command, where tests live, how declarations are found, and how test output reports. |
+| `program.md` | Modules, build files, dependency direction, the processes the project runs and how they reach each other, the stack, and the project facts the protocol relies on: the witness command, where tests live, how declarations are found, and how test output reports. |
+| `glossary.md` | The paper's glossary: its public words, and the symbols that the models of several pages share. |
+| `open-questions.md` | The paper's open questions: implementation behaviour that is still undecided. |
 | `<area>/` | One folder per area of the implementation the project chooses. Its `README.md` is the level page: what one run of that area does, in order, naming one page per mechanism. |
 | `<area>/<chapter>/` | Optional. A chapter of procedures inside an area, with its own level page. |
 
@@ -91,13 +92,6 @@ Content of these folders is project-specific and is not described here. The fold
 | `changelog.md` | Dated log of structural and Accept events. |
 | `roadmap.md` | Ordered direction. Goals, not Accept claims. |
 | `backlog.md` | Candidates not yet promoted to a Goal. |
-
-## Article 7 — Scope
-
-| Path | Purpose |
-|------|---------|
-| `docs/project/README.md` | Door to scope. |
-| `docs/project/project.md` | Hard scope lock. What is in, what is out, stack intent. |
 
 ## Exclusion
 

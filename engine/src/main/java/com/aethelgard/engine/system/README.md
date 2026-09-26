@@ -10,4 +10,4 @@
 Pool-System Framework Systems: config, Sub-Systems, conflict-resolution hook, `EngineSystem`,
 claim/finish barrier.
 
-**Docs:** [docs/architecture/host/systems.md](../../../../../../../../docs/architecture/host/systems.md)
+**Docs:** [docs/architecture/engine/systems.md](../../../../../../../../docs/architecture/engine/systems.md)

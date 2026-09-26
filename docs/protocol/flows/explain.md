@@ -41,7 +41,7 @@ Write the question as one sentence, in the human's vocabulary, so that they can 
    | What the product is for a person, a domain word, a domain rule | `docs/product/` |
    | How the program is built or behaves | `docs/architecture/` |
    | What happened, when, or why a decision was made | `docs/paperwork/` |
-   | What is in or out of scope | `docs/project/project.md` |
+   | What is in or out of scope | `docs/product/concept.md`: **In scope** and **What it is not** |
 
 2. Open that shelf's door, then the one page the door names for the subject. Stop there, unless that page points to a finer page that holds the answer ([../navigation/bounds.md](../navigation/bounds.md)).  
 3. Open source only when the question is about behaviour and no architecture page answers it. In that case, say in the answer that the architecture paper is silent on it.

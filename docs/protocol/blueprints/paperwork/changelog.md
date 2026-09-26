@@ -40,7 +40,7 @@ A `## Scope` or `## Phase` section may follow `## Structure`, separated by `---`
 
 ## Line kinds
 
-Every line is exactly one of these. Newest lines are at the top of their section.
+Every line dated 2026-09-25 or later is exactly one of these. A line dated earlier keeps the words it was written with ([../../flows/amendment.md](../../flows/amendment.md) Step 5.5). Newest lines are at the top of their section.
 
 | Kind | Section | Line |
 |------|---------|------|
@@ -75,7 +75,7 @@ Every line is exactly one of these. Newest lines are at the top of their section
 
 ### Insert missing line
 
-**Before.** A Step record ticks the Changelog box, or a Goal opened or closed, and no line names it.
+**Before.** A Step record ticks the Changelog box, or a Goal opened or closed on or after 2026-09-25, and no line names it.
 
 **Edit.**
 
@@ -86,9 +86,9 @@ Every line is exactly one of these. Newest lines are at the top of their section
 
 | # | The file is legal only if |
 |---|---------------------------|
-| 1 | Every line matches one line kind |
+| 1 | Every line dated 2026-09-25 or later matches one line kind |
 | 2 | Within each section, dates never increase downwards |
-| 3 | Every Step whose record ticks the Changelog box, and every opened or closed Goal, has its line |
+| 3 | Every Step whose record ticks the Changelog box has its line, and so does every Goal opened or closed on or after 2026-09-25 |
 
 ## Keep out
 

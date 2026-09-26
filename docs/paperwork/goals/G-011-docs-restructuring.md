@@ -82,6 +82,7 @@ Roadmap and backlog sit with paperwork (project management). Decisions stay the 
 | F-064 | Conceptual product shelf | done |
 | F-065 | Architecture paper by abstraction level | done |
 | F-066 | Paperwork shelf: one file per record, lists stay one file | done |
+| F-067 | Architecture paper of the whole app: every layer, in plain English and mathematics, backed by its code | done |
 
 Protocol goes first so later Steps move files into homes the rules already name.
 
@@ -91,6 +92,6 @@ Protocol goes first so later Steps move files into homes the rules already name.
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 5 / 5 |
+| Steps done | 6 / 6 |
 | Claim boxes | 0 / 3 |
-| Last Accept | F-065 |
+| Last Accept | F-067 |

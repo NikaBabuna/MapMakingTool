@@ -5,7 +5,7 @@
 Procedural fantasy world generator — simulate tectonics, climate, and terrain so maps stay physically consistent, with a scrubbable history of how the world formed.
 
 **Status:** alpha  
-**Goal index:** [docs/paperwork/goals.md](docs/paperwork/goals.md) — G-011 Docs restructuring · Last completed: [G-010 Crust topology](docs/paperwork/goals/G-010-crust-topology.md)  
+**Goal index:** [docs/paperwork/goals.md](docs/paperwork/goals.md) — G-011 Docs restructuring · last completed G-010  
 **CI:** GitHub Actions on `main` — JDK 21 + `./mvnw test` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml))
 
 ---
@@ -15,9 +15,9 @@ Procedural fantasy world generator — simulate tectonics, climate, and terrain 
 | | |
 |-|-|
 | [Docs tree](docs/README.md) | Documentation folders |
-| [Goals index](docs/paperwork/goals.md) | G-011 Docs restructuring · last [G-010](docs/paperwork/goals/G-010-crust-topology.md) |
+| [Goals index](docs/paperwork/goals.md) | G-011 Docs restructuring · last completed G-010 |
 | [Protocol](docs/protocol/brief.md) | Conduct — begin at the global prompt |
-| [Product concept](docs/product/concept.md) | Vision (G-003 first product world) |
+| [Product concept](docs/product/concept.md) | What Aethelgard is for, and what it includes and refuses |
 | [Engine module](engine/README.md) | Code module index |
 | [Architecture](docs/architecture/README.md) | Implementation paper |
 | [Navigation](docs/navigation.md) | Full documentation map |

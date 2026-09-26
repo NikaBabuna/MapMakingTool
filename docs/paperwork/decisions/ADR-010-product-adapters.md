@@ -9,6 +9,8 @@
 
 **Date:** 2026-09-17  
 **Status:** accepted
+**Amended by:** [ADR-011](ADR-011-local-webview.md)
+**Amended by:** [ADR-012](ADR-012-simulation-runner.md)
 
 `ui` and `cli` depend on `product`. `product` depends on `engine`. `engine` never depends on `ui`, `cli`, or `product`.
 

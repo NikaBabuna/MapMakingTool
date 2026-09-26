@@ -41,7 +41,7 @@ Other shelves may hold product-specific content. Their structure and their role 
 | # | Rule |
 |---|------|
 | 3.1 | The folder in which a file sits is that file’s job. A file shall not perform the job of another folder. |
-| 3.2 | Shelves have fixed roles: protocol is conduct; product is what the product is for a person; architecture is what is built; paperwork is who did what and when; scope is what the product includes and refuses. An entrance maps shelves; it is not a shelf of substance. |
+| 3.2 | Shelves have fixed roles: protocol is conduct; product is what the product is for a person, including what it includes and refuses; architecture is what is built; paperwork is who did what and when. An entrance maps shelves; it is not a shelf of substance. |
 | 3.3 | Conduct, concept, machine, and log shall not be mixed on one shelf. |
 | 3.4 | A parent document names and points to the finer document. The procedure lives on the finer document. A parent shall not duplicate a child’s procedure. |
 | 3.5 | Every folder an agent is expected to open shall have a door: a `README.md` in that folder. The shape of that door is prescribed by [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md). A folder without such a door is forbidden. |

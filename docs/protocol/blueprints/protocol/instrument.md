@@ -145,7 +145,7 @@ Form B, `docs/protocol/environment/phase.md`:
 **Edit.**
 
 1. In `phase.md`, replace the value after `**Current phase:** ` with the new phase word.  
-2. The doc map, the repository README, and scope then need **Set phase** / **Set status** of their blueprints.
+2. The doc map and the repository README then need **Set phase** / **Set status** of their blueprints.
 
 ## Check
 

@@ -102,7 +102,7 @@ A **requirement** (functional requirement, FR) is an enforceable claim stored on
 
 | Term | Definition |
 |------|------------|
-| **Shelf** | A top-level docs folder with one job: protocol, product, architecture, or paperwork (and scope where the tree provides it) |
+| **Shelf** | A top-level docs folder with one job: protocol, product, architecture, or paperwork |
 | **Entrance** | The docs-root map. Not a fifth shelf of substance |
 | **Door** | A `README.md` that tells an agent what the folder’s children are for |
 | **Flow** | A bookkeeping algorithm: when, before, steps, done, not done |

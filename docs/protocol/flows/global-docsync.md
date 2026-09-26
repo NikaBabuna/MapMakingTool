@@ -128,10 +128,10 @@ For every page under `docs/product/`:
 
 ### Step 11 — Scope
 
-1. Read **In scope** and **Out of scope** in `docs/project/project.md`.  
-2. For each Step of the Goal being closed (or the invoking Step), the Job lies inside **In scope** and outside **Out of scope**.  
-3. Every Stack row that names a page or an ADR points at one that exists.  
-4. A broken pointer is a fix, by **Set stack row** of [../blueprints/project/scope.md](../blueprints/project/scope.md). Work outside scope is `needs approval` ([conflict-resolve.md](conflict-resolve.md) R6).
+1. Read **In scope** and **What it is not** in `docs/product/concept.md`.  
+2. For each Step of the Goal being closed (or the invoking Step), the Job lies inside **In scope** and outside **What it is not**.  
+3. Every row of the **Stack** table in `docs/architecture/program.md` links decision records that exist.  
+4. A broken link is a fix, by **Set stack row** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md). Work outside scope is `needs approval` ([conflict-resolve.md](conflict-resolve.md) R6).
 
 ### Step 12 — Protocol pointers
 

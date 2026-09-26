@@ -1,52 +1,47 @@
 <!--
   File: docs/architecture/world/README.md
-  Purpose: Level 3 — world fields and the tectonics pipeline order
+  Purpose: Level 3 — one generation of the world, in the order ProductHost.setup wires the tectonics phases
   Audience: Agents and humans
-  Update when: ProductHost field set or sub-system order changes
+  Update when: ProductHost.setup changes the phase list, the conflict order, or the field schema
 -->
 
 # One generation
 
-A world is a set of Pool fields plus one system, id `tectonics`, assigned to category `world/tectonics`. `ProductHost.setup` builds that system. `ProductHost.create` seeds the fields and completes step 0. The map window is 1920×1080. Placement of that window is [plates](plates.md).
+A world is a set of engine fields and one system, id `tectonics`, that rewrites them once per engine step after step 0. That step is a generation. [`ProductHost.setup`](../../../product/src/main/java/com/aethelgard/product/ProductHost.java) wires the system as nine phases, which run in the order below. The rule that holds across the whole level: every phase reads either the settled value of a field or the value an earlier phase of the same generation staged, and only the last staged value of each field survives, so a generation is a pipeline of pure transformations of the world.
 
-The product leaves `PoolCompute` at the skeleton default, so the heartbeat still increments. The world is not that heartbeat. It is the field map. `ApplyGeometry` reads the heartbeat as `generationIndex = value - 1`.
+$$\mathcal{W}_{g} \;=\; \mathrm{Isostasy} \circ \mathrm{Collide} \circ \mathrm{Margin} \circ \mathrm{Ridge} \circ \mathrm{Orogeny} \circ \mathrm{Apply} \circ \mathrm{Integrate} \circ \mathrm{Interaction} \circ \mathrm{Trace}\,\bigl(\mathcal{W}_{g-1}\bigr)$$
 
-`GenerationTickPolicy` is the emission policy. It emits `world/tectonics` when `updateCount >= 2`. Create leaves `updateCount` at 1, so step 0 does not run tectonics. The first `advance` does.
-
-Every world field uses `FieldType.STATIC`.
+$\mathcal{W}_g$ is the world after generation $g$, and generation $g$ runs in engine step $k = g$. The fields it owns:
 
 | Field | Value | What it holds |
-|-------|--------|----------------|
-| `elevation` | `Grid` | Height. Written only by isostasy. |
-| `plates` | `Grid` | Plate id per cell. |
-| `plate_velocity` | `PlateVelocities` | Per-plate `(vx, vy)` in `{-1,0,1}`. |
-| `plate_registry` | `PlateRegistry` | Per-plate area and velocity. |
-| `boundaries` | `Boundaries` | Classified contacts. |
-| `area_flux` | `AreaFlux` | Per-plate create and destroy budgets. |
-| `motion_intent` | `MotionIntent` | Per-plate preferred velocity change. |
-| `occupancy` | `Grid` | Locker id per cell. |
-| `lockers` | `Lockers` | Thickness per locker id. |
+|-------|-------|---------------|
+| `plates` | `Grid` | $P : \Omega \to \{0..N-1\}$, the plate of every cell |
+| `plate_velocity` | `PlateVelocities` | $v_p \in \{-1, 0, 1\}^2$ per plate |
+| `plate_registry` | `PlateRegistry` | Area $A_p$ and a copy of $v_p$ per plate |
+| `boundaries` | `Boundaries` | The classified contacts $K$ between cells of different plates |
+| `area_flux` | `AreaFlux` | Per-plate area budget $\Delta_p$ and the sink budget |
+| `motion_intent` | `MotionIntent` | Per-plate preferred velocity change $\iota_p$ |
+| `occupancy` | `Grid` | $O : \Omega \to$ locker ids, the crust column under every cell |
+| `lockers` | `Lockers` | $T : $ locker id $\to$ thickness |
+| `elevation` | `Grid` | $E = T \circ O - T_{\mathrm{ocean}}$, the height of every cell |
 
-Step 0 writes zeros for elevation, a nearest-site plate grid, one locker per cell at thickness 8, velocities from the seed, a registry counted from the plates, and boundaries, flux, and intent traced from that standing state. The seed rules are [plates](plates.md).
+1. **Trace.** `TraceBoundaries` classifies every contact between two plates from the settled plates and velocities. [Boundaries](boundaries.md).
+2. **Interaction.** `BoundaryInteraction` turns the contacts into area budgets and a preferred velocity change per plate. [Interaction](interaction.md).
+3. **Integrate.** `IntegrateVelocity` nudges each plate's velocity toward its preferred change. [Integrate](motion/integrate.md).
+4. **Apply.** `ApplyGeometry` sinks and refills cells along contacts, splits and renumbers plates, and carries plates and crust keys forward by one step of velocity. [Motion](motion/README.md).
+5. **Orogeny.** `Orogeny` thickens or thins the crust at the contact cells of the settled world. [Orogeny](crust/orogeny.md).
+6. **Ridge.** `RidgeCreate` gives every cell left without crust a new thin oceanic column. [Ridge](crust/ridge.md).
+7. **Margin.** `MarginRelief` shapes the oceanic crust near the moved contacts. [Margin](crust/margin.md).
+8. **Collide.** `ContinentalCollide` raises arcs where oceans meet and thickens sutures where continents meet. [Collide](crust/collide.md).
+9. **Isostasy.** `ThicknessToElevation` reads height from thickness. [Isostasy](crust/isostasy.md).
 
-## Pipeline
+Every world field is `STATIC` and has one writer, the system `tectonics`, so merge keeps the system's last staged value. Step 0 runs no phase; it only seeds the fields ([seed](seed.md)).
 
-`ProductHost.setup` wires one list. Later sub-systems read earlier staging. The conflict resolver orders the overlapping writers as integrate, apply, orogeny, ridge, margin, collide. Trace and interaction sit before that set. Isostasy is last and is the only writer of `elevation`, so it does not overlap them.
+The finer pages:
+- How the system, its phases, the tick, and the conflict order are wired: [wiring](wiring.md).
+- The value types and their invariants: [fields](fields.md).
+- Neighbours and pole crossings on the map: [topology](topology.md).
+- The single-call copy of this pipeline: [reference pipeline](reference.md).
+- The chapters: [motion/](motion/README.md) and [crust/](crust/README.md).
 
-The nine phases, in execution order:
-
-1. [TraceBoundaries](boundaries.md) — refresh `boundaries` from standing plates and velocities.
-2. [BoundaryInteraction](boundaries.md) — write `area_flux` and `motion_intent`.
-3. [IntegrateVelocity](motion.md) — nudge velocities from intent.
-4. [ApplyGeometry](motion.md) — flux, flood, fission, crumb, death, then advect plates and occupancy.
-5. [Orogeny](crust/orogeny.md) — stamp locker thickness from standing contacts.
-6. [RidgeCreate](crust/ridge.md) — mint thin ocean into unresolved occupancy.
-7. [MarginRelief](crust/margin.md) — trough, collide slope, lip blend.
-8. [ContinentalCollide](crust/collide.md) — arc and suture, capped.
-9. [ThicknessToElevation](crust/isostasy.md) — `elevation = thickness − 8`.
-
-Collide loser and the consume that follows advection are [CrustPrecedence](crust/precedence.md) and [Subduct](crust/subduct.md). The crust door lists those pages: [crust/](crust/README.md).
-
-Timing wrappers (`TimingSubSystem`) record phase durations into the session hub. They do not change field values. The hub is [the session](../studio/session.md).
-
-Host loop this generation runs inside: [../host/README.md](../host/README.md).
+The engine step this generation runs inside is described in [../engine/README.md](../engine/README.md); the run that owns the engine in [../session/README.md](../session/README.md); symbols in [../glossary.md](../glossary.md#symbols).

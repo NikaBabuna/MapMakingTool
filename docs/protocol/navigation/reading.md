@@ -20,7 +20,7 @@ Climb one rung at a time. Stop at the first rung that answers the question.
 | 1 | Take the path from the map, a door, or a pointer | Nothing new | Always first. Never search for a path a door already gives |
 | 2 | List a folder: names only, one level | One line per entry | You need to know what exists, not what it says |
 | 3 | Count the file's lines | One number | Before opening any file you have not read in this chat |
-| 4 | Read the header: lines 1–7 | Seven lines | To confirm it is the right file. Every docs page starts with a header ([../blueprints/headers/document-header.md](../blueprints/headers/document-header.md)) |
+| 4 | Read the header and the title: lines 1–8 | Eight lines | To confirm it is the right file. Every docs page starts with a header ([../blueprints/headers/document-header.md](../blueprints/headers/document-header.md)) |
 | 5 | List the headings: search `^#{1,3} ` in that one file | One line per heading, with line numbers | To find the section that holds the answer |
 | 6 | Search for a literal you know the answer contains | Matching lines only | You know an id, a type name, a status word, or a field label |
 | 7 | Read a line range | That range | You know where the answer is, from rung 5 or 6 |

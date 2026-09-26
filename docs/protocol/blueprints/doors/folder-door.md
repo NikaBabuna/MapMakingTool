@@ -7,7 +7,7 @@
 
 # Folder door
 
-**Shapes:** every `README.md` in a landmark folder, in `docs/` and in code, except the four doors with their own blueprint: `docs/README.md` ([docs-index.md](docs-index.md)), the four architecture level pages ([../architecture/level-page.md](../architecture/level-page.md)), `docs/architecture/README.md` ([../architecture/abstract.md](../architecture/abstract.md)), and the repository `README.md` ([repo-readme.md](repo-readme.md)).  
+**Shapes:** every `README.md` in a landmark folder, in `docs/` and in code, except the four doors with their own blueprint: `docs/README.md` ([docs-index.md](docs-index.md)), every architecture level page ([../architecture/level-page.md](../architecture/level-page.md)), `docs/architecture/README.md` ([../architecture/abstract.md](../architecture/abstract.md)), and the repository `README.md` ([repo-readme.md](repo-readme.md)).  
 **Register:** legal, brief · **Human-facing:** no  
 **Header:** [document header](../headers/document-header.md)  
 **Neighbours:** the doc map ([doc-map.md](doc-map.md)) — lists the whole tree. A door lists only its own folder.
@@ -30,6 +30,8 @@ Variant A, a folder of named pages (the default):
 
 <One sentence: what this folder is for.> <Optional: at most two pointer sentences, to a related door or the ADR that explains the folder.>
 
+<Optional orientation paragraph: at most four sentences on how the children relate, or in what order to read them.>
+
 | Page | Read it when |
 |------|----------------|
 | [<child>.md](<child>.md) | <the question this child answers> |
@@ -51,6 +53,8 @@ Variant B, a folder of numbered records (`goals/`, `steps/`, `decisions/`):
 
 One file per <record>. <The index> is [<index file>](<relative path to index>). Write one from the [<kind> blueprint](<relative path to blueprint>).
 
+<Optional: one sentence saying what one record holds, section by section.>
+
 | Page | Read it when |
 |------|----------------|
 | [<index file>](<relative path to index>) | <the question the index answers> |
@@ -67,6 +71,8 @@ Variant C, a code module or code folder: Variant A, plus up to three pointer lin
 | Title | yes | `# <Folder name>` in the reader's words, e.g. `# Paperwork` |
 | First sentence | yes | What the folder is for. Not how it came to be |
 | Pointer sentences | no | At most two (A, B) or three pointer lines (C) |
+| Orientation paragraph | no | Variant A only, and only on the door of a docs shelf or of a folder whose pages are read in order. At most four sentences, after the first sentence and its pointers: how the children relate, or the order to read them in. It names no child that the table does not list |
+| Contents sentence | no | Variant B only. One sentence after the pointer sentence: what one record holds, section by section |
 | Table | yes | Columns `Page` and `Read it when`. One row per child `.md` file (except this door) and one row per child folder, linking that folder's `README.md`. Variant B has exactly two rows. Rows in reading order |
 | Anything else | no | Nothing else appears |
 

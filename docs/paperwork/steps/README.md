@@ -9,7 +9,9 @@
 
 One file per Step. Status lives on [../steps.md](../steps.md). Write one from the [step blueprint](../../protocol/blueprints/paperwork/step.md).
 
+Each record holds, in order, its Goal and status, the approved job, the decisions made for it, its functional requirements, the test that proves each requirement, the Sync checklist, and the witness.
+
 | Page | Read it when |
 |------|----------------|
-| [../steps.md](../steps.md) | You need which Step is in progress |
-| `F-0xx.md` | You need that Step's requirements. The registry links each file |
+| [../steps.md](../steps.md) | You need which Step is in progress, or what each Step did |
+| `F-0xx.md` | You need what that Step was approved to do, its requirements, and the tests that prove them. The registry links each file |

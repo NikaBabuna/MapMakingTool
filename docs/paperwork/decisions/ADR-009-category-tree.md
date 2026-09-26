@@ -14,4 +14,4 @@ The event **category tree is application-owned**. For G-003, `product` builds it
 
 **Why:** Open question #2a was an application concern. F-015 needs a real tree to dispatch generation; product Java is the smallest honest authorship model.
 
-Resolves: [../engine/specs/open-questions.md](../../engine/specs/open-questions.md) #2a.
+Resolves: [../engine/specs/open-questions.md](../../architecture/open-questions.md) #2a.

@@ -9,6 +9,7 @@
 
 **Date:** 2026-09-22
 **Status:** accepted
+**Amended by:** [ADR-019](ADR-019-architecture-paper-by-layer.md)
 
 The implementation record is one paper at `docs/architecture/`, arranged by abstraction level.
 

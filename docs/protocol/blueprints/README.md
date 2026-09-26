@@ -17,5 +17,4 @@ The exact shape of every document the protocol writes, and the named operations 
 | [paperwork/](paperwork/README.md) | You are writing a file under `docs/paperwork/`, or need the next Goal, Step, or ADR id |
 | [product/](product/README.md) | You are writing a file under `docs/product/` |
 | [architecture/](architecture/README.md) | You are writing a file under `docs/architecture/`, or need the witness command line |
-| [project/](project/README.md) | You are writing `docs/project/project.md` |
 | [messages/](messages/README.md) | You are delivering the startup Status report |

@@ -10,7 +10,7 @@
 **Shapes:** `docs/paperwork/steps.md`  
 **Register:** legal · **Human-facing:** no  
 **Header:** [document header](../headers/document-header.md)  
-**Neighbours:** a Step record ([step.md](step.md)) — the requirements. The registry holds status and links only.
+**Neighbours:** a Step record ([step.md](step.md)) — the requirements. The registry holds status, one sentence per Step, and links.
 
 The index of every Step, grouped by Goal, so status can be read without opening every record. It is mark M2 for [../../flows/reconcile.md](../../flows/reconcile.md).
 
@@ -30,13 +30,13 @@ The index of every Step, grouped by Goal, so status can be read without opening 
 
 # Steps (feature registry)
 
-Each **Step** is one AI job under a **Goal**. Approved FRs + test mapping: `docs/paperwork/steps/F-0xx.md` (created at APPROVE / STORE, before code).
+A **Step** is one job under a **Goal**: agree the work, store its requirements, do it, prove it, and record it. This registry lists every Step, grouped by the Goal it belongs to, with its status and one sentence on what it does. The Step's own record, `docs/paperwork/steps/F-0xx.md`, holds the approved job, the decisions, the requirements, the test that proves each one, and the witness. A record is written when the Step is approved, before any work starts.
 
 **Incremental:** Accept requires this Step's tests **and** all earlier Accepted Steps' tests to stay green.
 
 Procedure: [../protocol/flows/step.md](../protocol/flows/step.md)
 
-**Status values:** `not started` | `in progress` | `done` | `rolled back`
+**Status values:** `not started` (planned, no record yet) | `in progress` (approved and underway; at most one) | `done` (proven and closed) | `rolled back` (the attempt was discarded)
 
 ---
 
@@ -44,9 +44,9 @@ Procedure: [../protocol/flows/step.md](../protocol/flows/step.md)
 
 Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 
-| ID | Name | Status | Record |
-|----|------|--------|---------|
-| F-0xx | <short name> | not started | — |
+| ID | Name | Status | What it does | Record |
+|----|------|--------|--------------|--------|
+| F-0xx | <short name> | not started | <one sentence> | — |
 …
 
 ---
@@ -65,7 +65,7 @@ Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 |------|----------|------|
 | Opening lines | yes | The four paragraphs of the Skeleton, word for word |
 | Goal section | yes, one per Goal | `---`, then `## G-0xx — <Goal name>`, then `Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)`, then the table. Sections in Goal id order |
-| Row | yes | `\| F-0xx \| <short name> \| <status> \| <record> \|`. **Record** is `—` while `not started`, and `[F-0xx.md](steps/F-0xx.md)` otherwise. Rows in the order of the Goal's Planned Steps |
+| Row | yes | `\| F-0xx \| <short name> \| <status> \| <one sentence> \| <record> \|`. **What it does** is one sentence in plain words: while `not started`, the Intent of the Goal's Planned Steps row; from **Mark in progress** on, what the approved Job makes true. It names no file path, program type, or field. **Record** is `—` while `not started`, and `[F-0xx.md](steps/F-0xx.md)` otherwise. Rows in the order of the Goal's Planned Steps |
 | Marking progress | yes | `---`, then the section exactly as in the Skeleton, last in the file |
 
 ## Operations
@@ -93,9 +93,9 @@ Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 
 Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 
-| ID | Name | Status | Record |
-|----|------|--------|---------|
-| F-0xx | <short name> | not started | — |
+| ID | Name | Status | What it does | Record |
+|----|------|--------|--------------|--------|
+| F-0xx | <short name> | not started | <the Intent of that Planned Steps row> | — |
 ```
 
 2. Write one row per planned Step, in planned order.
@@ -104,7 +104,7 @@ Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 
 **Edit.**
 
-1. In the Goal's section, insert `| F-0xx | <short name> | not started | — |` at the position matching the Goal's Planned Steps.
+1. In the Goal's section, insert `| F-0xx | <short name> | not started | <the Intent of that Planned Steps row> | — |` at the position matching the Goal's Planned Steps.
 
 ### Remove row
 
@@ -126,13 +126,13 @@ Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 
 **Edit.**
 
-1. Replace the row with `| F-0xx | <short name> | in progress | [F-0xx.md](steps/F-0xx.md) |`.
+1. Replace the row with `| F-0xx | <short name> | in progress | <one sentence: what the approved Job makes true> | [F-0xx.md](steps/F-0xx.md) |`.
 
 ### Mark done
 
 **Edit.**
 
-1. In the row, replace `in progress` with `done`. Keep the record link.
+1. In the row, replace `in progress` with `done`. Keep the sentence and the record link.
 
 ### Revert to in progress
 
@@ -147,6 +147,7 @@ Goal doc: [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md)
 | 1 | Every Goal in the Goal index has one section, and every Planned Steps row of that Goal has one row here, in the same order |
 | 2 | Every row that is not `not started` links a record that exists, and the record's `**Status:**` equals the row |
 | 3 | At most one row in the whole file is `in progress` |
+| 4 | Every **What it does** cell is one sentence and names no file path, program type, or field |
 
 ## Keep out
 

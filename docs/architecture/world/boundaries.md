@@ -1,80 +1,82 @@
 <!--
   File: docs/architecture/world/boundaries.md
-  Purpose: TraceBoundaries and BoundaryInteraction
+  Purpose: TraceBoundaries, Boundaries, BoundaryContact, BoundaryKind, Orogeny.closing — phase 1: finding and classifying every contact between two plates
   Audience: Agents and humans
-  Update when: Boundaries.trace, AreaFlux.from, or MotionIntent.from changes
+  Update when: Boundaries.trace, Boundaries.classify, Orogeny.closing, or TraceBoundaries.execute changes
 -->
 
 # Boundaries
 
-Two sub-systems run first in the tectonics list. Trace classifies contacts. Interaction turns those contacts into area budgets and a velocity nudge. Neither one moves a plate or a locker.
+Wherever two cells of different plates touch, the plates either close on each other, pull apart, or slide past. This phase walks the map once, finds every such touching pair, and labels it by how the two plates move relative to each other across that edge.
 
-## TraceBoundaries
+## What it reads
 
-### What it reads
+The settled `plates` and `plate_velocity`. It does not read staging, so it describes the world as the last generation left it.
 
-Standing `plates` and standing `plate_velocity` from the Pool. It does not read staging.
+## What it writes
 
-### What it writes
+`boundaries`: a `Boundaries` list of `BoundaryContact`s, each with its cell $(x, y)$, its direction $n = (n_x, n_y)$, the plate $a$ of the cell, the plate $b$ of the neighbour, and a `BoundaryKind`. A contact with $n = (0, 0)$ throws `IllegalArgumentException`; a settled field of the wrong type throws `IllegalStateException`.
 
-`boundaries`, a list of `BoundaryContact`.
+## Model
 
-### Procedure
+A contact is traced from every cell toward its east and its south neighbour only, $n \in \{(1,0), (0,1)\}$, so each interior edge of the map is seen once:
 
-`Boundaries.trace` walks every cell and only the east and south unit steps, so each undirected edge is seen once. The neighbor comes from `SphereTopology.neighbor`. A step that lands on the same cell is skipped. A neighbor with the same plate id is skipped.
+$$K = \Bigl(\,(c,\, n,\, P(c),\, P(\nu(c, n)),\, \kappa) \;:\; c \in \Omega \text{ in row-major order},\; n \in \bigl((1,0),(0,1)\bigr),\; \nu(c,n) \ne c,\; P(\nu(c,n)) \ne P(c)\Bigr).$$
 
-`Boundaries.classify` uses `Orogeny.closing`: `nx * (vxA - vxB) + ny * (vyA - vyB)`.
+The kind comes from the closing rate, the relative velocity of $a$ toward $b$ projected on the direction from $a$'s cell to $b$'s cell:
 
-| Closing | Kind |
-|---------|------|
-| `> 0` | `COLLIDE` |
-| `< 0` | `SEPARATE` |
-| `0` | `PASS_BY` |
+$$\chi = n \cdot (v_a - v_b) = n_x\,(v^x_a - v^x_b) + n_y\,(v^y_a - v^y_b), \qquad \kappa = \begin{cases} \textsf{COLLIDE} & \chi > 0 \\ \textsf{SEPARATE} & \chi < 0 \\ \textsf{PASS\_BY} & \chi = 0 . \end{cases}$$
 
-### What is true afterwards
+`Orogeny.closing` in [`Orogeny.java`](../../../product/src/main/java/com/aethelgard/product/Orogeny.java):
 
-`boundaries` matches the standing plates and velocities. Later phases in this generation that need contacts read this staging value.
+```java
+if (plateA == plateB) {
+  return 0;
+}
+int dvx = velocities.vx(plateA) - velocities.vx(plateB);
+int dvy = velocities.vy(plateA) - velocities.vy(plateB);
+return nx * dvx + ny * dvy;
+```
 
-### Where it lives
+`Boundaries.classify` in [`Boundaries.java`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java):
 
-`TraceBoundaries` and `Boundaries` in `product/src/main/java/com/aethelgard/product/`.
+```java
+int closing = Orogeny.closing(plateA, plateB, velocities, nx, ny);
+if (closing > 0) {
+  return BoundaryKind.COLLIDE;
+}
+if (closing < 0) {
+  return BoundaryKind.SEPARATE;
+}
+return BoundaryKind.PASS_BY;
+```
 
-## BoundaryInteraction
+**Polar rows.** The south step of a cell on the last row crosses the south pole to the antipodal cell of the same row ([topology](topology.md)). For even $W$, the cells $(x, H-1)$ and $(\operatorname{ap}(x), H-1)$ are each other's south neighbour, so every such pair of different plates is traced twice, once from each side, with the same $n = (0, 1)$. The two contacts have opposite closing rates, so a pair with $v^y_a \ne v^y_b$ yields one `COLLIDE` and one `SEPARATE` contact. The first row has no north step, so no contact crosses the north pole.
 
-### What it reads
+## Procedure
 
-Staged `boundaries` when trace has written them, otherwise the Pool. Standing `plate_registry`, `occupancy`, and `lockers`.
+1. `TraceBoundaries.execute` reads the settled plates and velocities, checks their types, and stages `Boundaries.trace` of them under `boundaries`. [`TraceBoundaries.execute`](../../../product/src/main/java/com/aethelgard/product/TraceBoundaries.java).
+2. `trace` visits the cells row by row, and for each cell the east step, then the south step, each through `SphereTopology.neighbor`. It skips a step that returns the cell itself or a cell of the same plate. [`Boundaries.trace`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java).
+3. `classify` computes $\chi$ with `Orogeny.closing` and returns the kind. [`Boundaries.classify`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java).
+4. Each contact is stored as an immutable `BoundaryContact` with its direction, not its neighbour's coordinates; a reader recovers the neighbour with `SphereTopology.neighbor`. [`BoundaryContact`](../../../product/src/main/java/com/aethelgard/product/BoundaryContact.java).
+5. The list is copied into an immutable `Boundaries`, which answers `contacts`, `size`, and `count` of one kind. [`Boundaries.count`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java).
 
-### What it writes
+## What is true afterwards
 
-`area_flux` and `motion_intent`. Plates and velocities stay as they were.
+The staged contacts describe the settled plates and velocities of the world before this generation moves anything. Later phases that need those contacts read this staged value: interaction, apply, orogeny, and, through apply, subduction. Margin relief and continental collision trace again, after the move ([margin](crust/margin.md), [collide](crust/collide.md)). A contact's kind depends only on the two velocities and the direction, never on the crust.
 
-### Procedure
+## Cost
 
-For each contact, `AreaFlux.from` and `MotionIntent.from` branch on kind.
+$O(WH)$ time; the list holds one entry per edge between two plates.
 
-`SEPARATE`: each plate's area budget gains 1, and the sink budget loses 2. Intent pushes both plates away from the contact normal.
+## Where it lives
 
-`COLLIDE`: the loser is [precedence](crust/precedence.md). When precedence returns no loser, the contact adds no flux. Otherwise the loser's budget loses 1 and the sink gains 1. Intent first pushes both plates apart along the normal, then adds the normal back onto the loser, which dampens the close.
+| Piece | Type | Members | Path |
+|-------|------|---------|------|
+| Phase | `TraceBoundaries` | `TraceBoundaries.id`, `TraceBoundaries.writeRanges`, `TraceBoundaries.execute` | [`product/src/main/java/com/aethelgard/product/TraceBoundaries.java`](../../../product/src/main/java/com/aethelgard/product/TraceBoundaries.java) |
+| Contact list | `Boundaries` | `Boundaries`, `empty`, `trace`, `classify`, `contacts`, `size`, `count` | [`product/src/main/java/com/aethelgard/product/Boundaries.java`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java) |
+| Contact | `BoundaryContact` | `BoundaryContact`, `x`, `y`, `nx`, `ny`, `plateA`, `plateB`, `kind` | [`product/src/main/java/com/aethelgard/product/BoundaryContact.java`](../../../product/src/main/java/com/aethelgard/product/BoundaryContact.java) |
+| Kind | `BoundaryKind` | `SEPARATE`, `COLLIDE`, `PASS_BY` | [`product/src/main/java/com/aethelgard/product/BoundaryKind.java`](../../../product/src/main/java/com/aethelgard/product/BoundaryKind.java) |
+| Closing rate | `Orogeny` | `closing` | [`product/src/main/java/com/aethelgard/product/Orogeny.java`](../../../product/src/main/java/com/aethelgard/product/Orogeny.java) |
 
-`PASS_BY`: no flux and no normal intent.
-
-`AreaFlux` keeps `sum(deltaArea) + sinkDelta == 0`.
-
-The area-only loser, used when occupancy is absent, is the plate with the smaller registry area. Equal area takes the lower plate id. Production passes occupancy and lockers, so the buoyancy rule is the one that runs.
-
-### What is true afterwards
-
-Flux and intent describe this generation's contacts. Plates have not moved. Lockers have not changed.
-
-### Where it lives
-
-| Piece | Type | Path |
-|-------|------|------|
-| Sub-system | `BoundaryInteraction` | `product/.../BoundaryInteraction.java` |
-| Budgets | `AreaFlux` | `product/.../AreaFlux.java` |
-| Nudge | `MotionIntent` | `product/.../MotionIntent.java` |
-| Contact | `BoundaryContact` | `product/.../BoundaryContact.java` |
-| Kind | `BoundaryKind` | `product/.../BoundaryKind.java` |
-
-Parent: [one generation](README.md). Who consumes the budgets: [motion](motion.md).
+Parent: [one generation](README.md). What the contacts drive next: [interaction](interaction.md). Whether the polar double contact is intended: [open questions](../open-questions.md).

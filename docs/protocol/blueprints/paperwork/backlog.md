@@ -26,12 +26,13 @@ Ideas that are neither Goals nor Steps. A row here is never permission to build.
 
 # Backlog
 
-Items here are **not** in progress. Promote into a Goal or Step when ready.
+Ideas that are not Goals yet. Nothing here is in progress, and a row is never permission to build. An idea becomes work only when a Goal that contains it is approved. Rows are never deleted: a promoted or settled idea stays, so the list shows where every idea went.
 
-| Idea | Notes |
-|------|-------|
-| <idea> | <where it was deferred from, or After <condition>> |
-| <idea> | Promoted to [G-0xx](goals/G-0xx-<slug>.md) |
+| Idea | What it means | Where it stands |
+|------|---------------|-----------------|
+| <idea> | <one or two sentences, in plain words> | <Deferred from G-0xx \| After <condition>><. One clause.> |
+| <idea> | <one or two sentences> | Promoted to [G-0xx](goals/G-0xx-<slug>.md) |
+| <idea> | <one or two sentences> | Settled by <ADR-0xx \| the Step or page that settled it>: <the answer, in one clause> |
 …
 ```
 
@@ -39,9 +40,11 @@ Items here are **not** in progress. Promote into a Goal or Step when ready.
 
 | Part | Required | Rule |
 |------|----------|------|
-| Opening sentence | yes | As in the Skeleton |
-| Waiting row | no | `\| <idea> \| <Deferred from G-0xx \| After <condition> \| <one clause>> \|` |
-| Promoted row | no | `\| <idea> \| Promoted to [G-0xx](goals/G-0xx-<slug>.md) \|`. A promoted row is never deleted |
+| Opening paragraph | yes | As in the Skeleton, word for word |
+| What it means | yes, on every row | One or two sentences a person who was not there can understand. No program type or field name unless the idea is about that name |
+| Waiting row | no | `\| <idea> \| <what it means> \| <Deferred from G-0xx \| After <condition>><. One clause.> \|` |
+| Promoted row | no | `\| <idea> \| <what it means> \| Promoted to [G-0xx](goals/G-0xx-<slug>.md) \|`. A promoted row is never deleted |
+| Settled row | no | `\| <idea> \| <what it means> \| Settled by <where>: <the answer> \|`, for an idea answered without a Goal of its own. A settled row is never deleted |
 
 ## Operations
 
@@ -56,13 +59,13 @@ Items here are **not** in progress. Promote into a Goal or Step when ready.
 
 **Edit.**
 
-1. Add at the bottom of the table: `| <idea, in the human's words> | <note> |`.
+1. Add at the bottom of the table: `| <idea, in the human's words> | <what it means, as the human explained it> | <where it stands> |`.
 
 ### Mark promoted
 
 **Edit.**
 
-1. In the idea's row, replace the Notes cell with `Promoted to [G-0xx](goals/G-0xx-<slug>.md)`.
+1. In the idea's row, replace the **Where it stands** cell with `Promoted to [G-0xx](goals/G-0xx-<slug>.md)`.
 
 ## Check
 

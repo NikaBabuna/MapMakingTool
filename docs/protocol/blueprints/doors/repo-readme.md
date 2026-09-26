@@ -21,7 +21,7 @@ The front page for a person who has just found the repository: what the product 
 
 **<One-line promise, from docs/product/concept.md.>**
 
-<The one line from docs/project/project.md.>
+<The one line from docs/product/concept.md.>
 
 **Status:** <alpha | beta | prod>  
 **Goal index:** [docs/paperwork/goals.md](docs/paperwork/goals.md) — <goal pointer>  
@@ -51,9 +51,9 @@ See [AGENTS.md](AGENTS.md). Begin at [docs/protocol/brief.md](docs/protocol/brie
 
 | Part | Required | Rule |
 |------|----------|------|
-| Title | yes | `# <Product name>` as on `docs/project/project.md` |
+| Title | yes | `# <Product name>` as on `docs/product/concept.md` |
 | Promise | yes | The concept's one-line promise, in bold |
-| One line | yes | The one line from `docs/project/project.md`, word for word |
+| One line | yes | The one line from `docs/product/concept.md` (its second paragraph), word for word |
 | Status line | yes | The `**Current phase:**` word from `phase.md` |
 | Goal index line | yes | Carries the pointer of [goal-pointer.md](goal-pointer.md) |
 | CI line | yes | Names the workflow file it describes, linked |
@@ -67,7 +67,7 @@ See [AGENTS.md](AGENTS.md). Begin at [docs/protocol/brief.md](docs/protocol/brie
 | **Set goal pointer** | **Set pointer**, **Clear pointer**, and **Correct pointer** of [goal-pointer.md](goal-pointer.md) |
 | **Set status** | [../../flows/amendment.md](../../flows/amendment.md) Step 8, when `phase.md` changes phase |
 | **Relink row** | [../../flows/amendment.md](../../flows/amendment.md) Step 5.3 |
-| **Sync one line** | [../../flows/amendment.md](../../flows/amendment.md) Step 7, when the scope one-line changes |
+| **Sync one line** | [../../flows/amendment.md](../../flows/amendment.md) Step 7, when the concept's one line changes |
 
 ### Set goal pointer
 
@@ -89,14 +89,14 @@ See [AGENTS.md](AGENTS.md). Begin at [docs/protocol/brief.md](docs/protocol/brie
 
 **Edit.**
 
-1. Replace the line under the promise with the new one line from `docs/project/project.md`, word for word.
+1. Replace the line under the promise with the new one line from `docs/product/concept.md`, word for word.
 
 ## Check
 
 | # | The file is legal only if |
 |---|---------------------------|
 | 1 | Every link resolves |
-| 2 | **Status** equals the phase in `phase.md`. The one line equals the scope one line |
+| 2 | **Status** equals the phase in `phase.md`. The one line equals the concept's one line |
 | 3 | Both Goal pointer places agree with [goal-pointer.md](goal-pointer.md) |
 
 ## Keep out

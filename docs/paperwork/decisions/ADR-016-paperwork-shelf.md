@@ -9,6 +9,7 @@
 
 **Date:** 2026-09-22
 **Status:** accepted
+**Amended by:** [ADR-018](ADR-018-scope-in-concept.md)
 
 Progress records live in `docs/paperwork/`. A record that has its own id, a status, and a life of its own is one file. A list whose value is seeing the whole sequence at once stays one file.
 

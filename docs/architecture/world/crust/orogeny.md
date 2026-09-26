@@ -1,45 +1,79 @@
 <!--
   File: docs/architecture/world/crust/orogeny.md
-  Purpose: Orogeny locker stamps from standing contacts
+  Purpose: Orogeny — phase 5: every contact cell thickens or thins its crust by one, by a rank ladder
   Audience: Agents and humans
-  Update when: Orogeny.applyToLockers changes
+  Update when: Orogeny.applyToLockers, Orogeny.execute, the rank ladder, or deltaFromRank changes
 -->
 
 # Orogeny
 
-`Orogeny` is the first crust writer in the pipeline. It stamps thickness from the contacts that were traced before plates moved. The stamps ride later because they sit on locker ids, and occupancy carries those ids. This phase runs after apply in the sub-system list, and it reads standing occupancy from the Pool, so the stamps land on the pre-move keys.
+Along a collision, the winning side's crust crumples upward and the losing side's is dragged down; along a rift, both sides thin. Every contact cell changes its crust by one unit per generation, in whichever direction its strongest contact says.
 
 ## What it reads
 
-Standing `occupancy`, standing `lockers`, staged or pool `boundaries`, standing `plate_registry`.
+The staged `boundaries` of phase 1, and the settled `occupancy`, `lockers`, and `plate_registry`. It stamps the crust under the contact cells as they were before this generation moved anything; the keys then ride with their cells.
 
 ## What it writes
 
-`lockers`.
+`lockers`, with thicknesses changed by the stamps. A field of the wrong type throws `IllegalStateException`.
+
+## Model
+
+Each contact $\xi = (c, n, a, b, \kappa)$, with $c_b = \nu(c, n)$ and loser $\lambda(\xi)$ ([precedence](precedence.md)), proposes a rank for its two cells:
+
+$$\textsf{SEPARATE}:\; c, c_b \mapsto 1; \qquad \textsf{COLLIDE},\ \lambda \ne \textsf{NONE}:\; \text{loser's cell} \mapsto 2,\;\; \text{winner's cell} \mapsto 3; \qquad \text{otherwise: nothing.}$$
+
+A cell keeps the highest rank proposed for it, $r(c) \in \{0, 1, 2, 3\}$, and its change is
+
+$$\delta(3) = +1, \qquad \delta(2) = \delta(1) = -1, \qquad \delta(0) = 0 .$$
+
+Every ranked cell adds its change to the locker under it:
+
+$$T'(j) = T(j) + \sum_{c \,:\, O(c) = j} \delta\bigl(r(c)\bigr).$$
+
+A locker shared by several contact cells takes every one of their changes. There is no floor and no cap here: a locker can thin below $T_{\mathrm{ocean}}$, and even below 0.
+
+`Orogeny.deltaFromRank` in [`Orogeny.java`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java):
+
+```java
+return switch (rank) {
+  case RANK_WIN -> 1;
+  case RANK_LOSE, RANK_SEPARATE -> -1;
+  default -> 0;
+};
+```
+
+`Orogeny.applyToLockers` (the stamp) in [`Orogeny.java`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java):
+
+```java
+for (Map.Entry<Long, Byte> e : ranks.entrySet()) {
+  long k = e.getKey();
+  int x = (int) (k >>> 32);
+  int y = (int) k;
+  int id = occupancy.get(x, y);
+  next[id] += deltaFromRank(e.getValue());
+}
+```
 
 ## Procedure
 
-`Orogeny.closing` is `n · (vA − vB)`, the same quantity trace uses to classify.
-
-Each contact cell gets a rank. Higher rank replaces lower rank. A cell keeps one rank.
-
-| Rank | Value | Thickness delta |
-|------|-------|-----------------|
-| Win | 3 | `+1` |
-| Lose | 2 | `−1` |
-| Separate | 1 | `−1` |
-| None, including pass-by | 0 | `0` |
-
-On a `COLLIDE`, the winner's cell is Win and the loser's cell is Lose, using [precedence](precedence.md). On a `SEPARATE`, both cells are Separate. The walk is one pass over the contacts.
-
-`applyToLockers` adds that delta to the locker id stored in standing occupancy at the contact cell. There is no floor. Thickness may go negative. The cap is not applied here.
+1. `execute` reads the settled occupancy, lockers, and registry, and the contacts (staged first), and stages `applyToLockers` of them. [`Orogeny.execute`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java).
+2. `ranks` walks the contacts once and, through `bump`, keeps the highest of `RANK_SEPARATE` (1), `RANK_LOSE` (2), and `RANK_WIN` (3) per cell, keyed by `key`. A cell with no contact keeps `RANK_NONE` (0). [`Orogeny.ranks`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java).
+3. `applyToLockers` copies the thicknesses and adds `deltaFromRank` of each ranked cell to the locker under it. The order of the additions does not matter. [`Orogeny.applyToLockers`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java).
+4. The two `apply` forms stamp a grid of numbers instead of lockers, with the area-only loser; `applyRanksToGrid` adds the changes. No phase of the pipeline calls them. [`Orogeny.apply`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java).
 
 ## What is true afterwards
 
-Lockers at standing contact cells have moved by at most 1. Cells that were not a contact are unchanged. `elevation` is still the previous generation's grid. [Isostasy](isostasy.md) reads thickness later.
+Every locker under a contact cell has changed by the sum of its cells' changes; every other locker is unchanged. A collision of two continents stamps nothing, because it has no loser: the [suture](collide.md) thickens it instead. The stamp is staged before the ridge mints new lockers, so new crust is never stamped in the generation it appears.
+
+## Cost
+
+$O(|K|)$ for the ranks and $O(L)$ for the copy of the table.
 
 ## Where it lives
 
-`Orogeny` in `product/src/main/java/com/aethelgard/product/Orogeny.java`.
+| Piece | Type | Members | Path |
+|-------|------|---------|------|
+| Phase | `Orogeny` | `Orogeny.id`, `Orogeny.writeRanges`, `Orogeny.execute`, `applyToLockers`, `apply`, `ranks`, `bump`, `deltaFromRank`, `applyRanksToGrid`, `key`, `RANK_NONE`, `RANK_SEPARATE`, `RANK_LOSE`, `RANK_WIN` | [`product/src/main/java/com/aethelgard/product/Orogeny.java`](../../../../product/src/main/java/com/aethelgard/product/Orogeny.java) |
 
-Parent: [crust](README.md).
+Parent: [crust](README.md). The closing rate that classifies a contact: [boundaries](../boundaries.md).

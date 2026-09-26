@@ -174,7 +174,7 @@ Only an Accept commit or a Seal commit is a safe point ([rollback.md](rollback.m
    | Changes the name, the result wording, out of scope, or a decision | **Amend text** |
 
    A planned Step that is `in progress`, `done`, or `rolled back` is never removed.
-3. **W2.** If the name changed, apply **Rename row** of [../blueprints/paperwork/goal-index.md](../blueprints/paperwork/goal-index.md).  
+3. **W2.** If the name changed, apply **Rename row** of [../blueprints/paperwork/goal-index.md](../blueprints/paperwork/goal-index.md). If the result changed, apply **Set result** of the same blueprint.  
 4. **W3.** If planned Steps changed, apply **Add row**, **Remove row**, or **Reorder rows** of [../blueprints/paperwork/step-registry.md](../blueprints/paperwork/step-registry.md), matching step 2.  
 5. **W7.** If the name changed and this Goal is active, apply **Set pointer** of [../blueprints/doors/goal-pointer.md](../blueprints/doors/goal-pointer.md).  
 6. **Verify.** Run the **Check** of the goal-file and step-registry blueprints.  

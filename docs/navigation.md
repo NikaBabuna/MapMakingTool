@@ -39,18 +39,8 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 | [core-workflow.md](protocol/core-workflow.md) | Active — the startup sequence and the flow catalogue |
 | [environment/](protocol/environment/README.md) | Active — map, phase, quality, correctness, style, core definitions |
 | [navigation/](protocol/navigation/README.md) | Active — reading, bounds, pointers, code route, walks |
-| [blueprints/](protocol/blueprints/README.md) | Active — the shape of every document, and the operations that edit it, in eight groups |
+| [blueprints/](protocol/blueprints/README.md) | Active — the shape of every document, and the operations that edit it, in seven groups |
 | [flows/](protocol/flows/README.md) | Active — the twelve named flows |
-
----
-
-## Project (`docs/project/`)
-
-**Folder:** [project/README.md](project/README.md)
-
-| Page | Status |
-|------|--------|
-| [project.md](project/project.md) | Active — scope. Progress records are on the paperwork shelf |
 
 ---
 
@@ -60,15 +50,15 @@ Folder indexes are **README.md** in each landmark directory. Prefer those links 
 
 | Page | Status |
 |------|--------|
-| [goals.md](paperwork/goals.md) | Active — the only Active Goal line (G-006 G-007 G-008 G-009 G-010 G-011) |
+| [goals.md](paperwork/goals.md) | Active — the only Active Goal line, and one row per Goal ever opened |
 | [goals/](paperwork/goals/README.md) | Active — one file per Goal. The index holds status |
-| [steps.md](paperwork/steps.md) | Active — step registry |
+| [steps.md](paperwork/steps.md) | Active — step registry: status and one sentence per Step, grouped by Goal |
 | [steps/](paperwork/steps/README.md) | Active — one file per Step |
-| [decisions.md](paperwork/decisions.md) | Active — decision index |
+| [decisions.md](paperwork/decisions.md) | Active — decision index: one sentence per decision, and the next number |
 | [decisions/](paperwork/decisions/README.md) | Active — one file per decision |
 | [changelog.md](paperwork/changelog.md) | Active — structure, scope, and Goal events, newest first |
 | [roadmap.md](paperwork/roadmap.md) | Active — the order of Goals |
-| [backlog.md](paperwork/backlog.md) | Active — ideas not yet promoted to a Goal |
+| [backlog.md](paperwork/backlog.md) | Active — ideas not yet promoted to a Goal, and where earlier ideas went |
 
 Goal files and Step records are listed on their indexes. This map does not duplicate every id.
 
@@ -80,11 +70,18 @@ Goal files and Step records are listed on their indexes. This map does not dupli
 
 | Page | Status |
 |------|--------|
-| [README.md](architecture/README.md) | Active — abstract: the levels and the question each answers |
-| [program.md](architecture/program.md) | Active — modules, dependency direction, and the witness command |
-| [host/](architecture/host/README.md) | Active — one engine step, and one page per host mechanism |
-| [world/](architecture/world/README.md) | Active — one generation, and one page per procedure that writes the grids |
-| [studio/](architecture/studio/README.md) | Active — session, raster, and the HTTP host |
+| [README.md](architecture/README.md) | Active — abstract: the levels, the question each answers, and how a page states and cites |
+| [program.md](architecture/program.md) | Active — modules, build files, dependency direction, processes, the stack, and the witness command |
+| [glossary.md](architecture/glossary.md) | Active — implementation words, and the symbols several models share |
+| [open-questions.md](architecture/open-questions.md) | Active — implementation behaviour still undecided |
+| [engine/](architecture/engine/README.md) | Active — one engine step, and one page per engine mechanism |
+| [world/](architecture/world/README.md) | Active — one generation, its wiring, fields, topology, seed, and phases |
+| [world/motion/](architecture/world/motion/README.md) | Active — integrate, sink, flood, fission, and advect |
+| [world/crust/](architecture/world/crust/README.md) | Active — precedence, subduction, orogeny, ridge, margin, collision, and isostasy |
+| [session/](architecture/session/README.md) | Active — the run, its diagnostics, and its dump |
+| [cli/](architecture/cli/README.md) | Active — one run of the CLI, the runner, and the command language |
+| [studio/](architecture/studio/README.md) | Active — controller, raster, HTTP host, and desktop shell |
+| [studio/web/](architecture/studio/web/README.md) | Active — the web front: tool, client, canvas, viewport, chrome, terminal, and styles |
 
 ---
 
@@ -94,7 +91,7 @@ Goal files and Step records are listed on their indexes. This map does not dupli
 
 | Page | Status |
 |------|--------|
-| [concept.md](product/concept.md) | Active — what the product is for |
+| [concept.md](product/concept.md) | Active — what the product is for, and the binding scope: what it includes and refuses |
 | [journeys.md](product/journeys.md) | Active — what a person does |
 | [glossary.md](product/glossary.md) | Active — world words |
 | [style-guide.md](product/style-guide.md) | Active — screen language |
@@ -111,13 +108,13 @@ Enter code through the door of its folder, or through the paper page that descri
 
 | Folder | Door | What it holds | Described by |
 |--------|------|---------------|--------------|
-| `engine/` | [../engine/README.md](../engine/README.md) | The step-based host: pool, events, systems, merge, user ports, diagnostics. Each package has its own door | [architecture/host/](architecture/host/README.md) |
-| `product/` | [../product/README.md](../product/README.md) | World fields and the tectonics generation | [architecture/world/](architecture/world/README.md) |
-| `cli/` | [../cli/README.md](../cli/README.md) | The headless runner and the shared command language | [architecture/program.md](architecture/program.md), [architecture/studio/host.md](architecture/studio/host.md) |
+| `engine/` | [../engine/README.md](../engine/README.md) | The step-based host: pool, events, systems, merge, user ports, diagnostics. Each package has its own door | [architecture/engine/](architecture/engine/README.md) |
+| `product/` | [../product/README.md](../product/README.md) | World fields, the tectonics generation, and the session | [architecture/world/](architecture/world/README.md), [architecture/session/](architecture/session/README.md) |
+| `cli/` | [../cli/README.md](../cli/README.md) | The headless runner and the shared command language | [architecture/cli/](architecture/cli/README.md) |
 | `ui/` | [../ui/README.md](../ui/README.md) | Raster, map controller, and the Java HTTP host | [architecture/studio/](architecture/studio/README.md) |
-| `ui/web/` | [../ui/web/README.md](../ui/web/README.md) | The Next.js studio front | Its door; the look is [product/style-guide.md](product/style-guide.md) |
-| `ui/desktop/` | [../ui/desktop/README.md](../ui/desktop/README.md) | The Tauri desktop shell | Its door |
-| `.github/` | [../.github/README.md](../.github/README.md) | The CI workflow | Its door |
+| `ui/web/` | [../ui/web/README.md](../ui/web/README.md) | The Next.js studio front | [architecture/studio/web/](architecture/studio/web/README.md); the look is [product/style-guide.md](product/style-guide.md) |
+| `ui/desktop/` | [../ui/desktop/README.md](../ui/desktop/README.md) | The Tauri desktop shell | [architecture/studio/desktop.md](architecture/studio/desktop.md) |
+| `.github/` | [../.github/README.md](../.github/README.md) | The CI workflow | [architecture/program.md](architecture/program.md) |
 | `.cursor/` | [../.cursor/README.md](../.cursor/README.md) | The editor's always-on rule | Its door |
 
 ---
@@ -150,6 +147,6 @@ Reading any of these whole fills a context window with little of value. The rule
 | `cli/src/main/java/com/aethelgard/cli/CommandDispatch.java` | Command language | ~540 lines | Search the member, read its range |
 | `product/src/test/resources/worlds/` | Golden world dumps (test data) | Data, not prose | Only when a dump test fails: its first line, then the failing region |
 | `docs/paperwork/steps/` | Step records | ~66 files, ~4,200 lines | One record by id. Search a field across them |
-| `docs/paperwork/decisions/` | Decision records | ~17 files | One record, chosen from the index |
+| `docs/paperwork/decisions/` | Decision records | ~18 files | One record, chosen from the index |
 | `docs/protocol/blueprints/` | Blueprints | ~35 files, ~4,000 lines | The group door, then one blueprint's key block and one operation |
 | `docs/protocol/flows/` | Flows | 12 files, ~2,000 lines | Only the flow the turn selected, one stage or algorithm at a time |

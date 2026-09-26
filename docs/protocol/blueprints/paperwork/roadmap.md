@@ -26,13 +26,13 @@ The order of Goals: what came before, and what is intended after. It Accepts not
 
 # Roadmap
 
-Ordered direction. **Accept** lives on Steps under Goals, not here.
+The order the Goals were taken in, and the direction after the last of them. Each row says what the Goal was for, in plain words, and where it stands. The status repeats the Goal index, and if the two disagree, the index wins. **Accept** lives on Steps under Goals, not here.
 
 | Order | Goal | Intent |
 |-------|------|--------|
 | <n> | [G-0xx <name>](goals/G-0xx-<slug>.md) | <one-line intent> — **<in progress \| done \| abandoned>** |
 …
-| <n> | _(later)_ <theme> | After <condition> |
+| <n> | _(later)_ <theme> | <one sentence: what it would add>. After <condition> |
 …
 
 Candidates and ideas: [backlog.md](backlog.md)
@@ -42,9 +42,9 @@ Candidates and ideas: [backlog.md](backlog.md)
 
 | Part | Required | Rule |
 |------|----------|------|
-| Opening sentence | yes | As in the Skeleton |
-| Goal row | yes, one per Goal | `\| <n> \| [G-0xx <name>](goals/G-0xx-<slug>.md) \| <intent> — **<status>** \|`. Status equals the Goal index |
-| Later row | no | `\| <n> \| _(later)_ <theme> \| After <condition> \|`, below every Goal row |
+| Opening paragraph | yes | As in the Skeleton, word for word |
+| Goal row | yes, one per Goal | `\| <n> \| [G-0xx <name>](goals/G-0xx-<slug>.md) \| <intent> — **<status>** \|`. **Intent** is one sentence in plain words: what the Goal was for. It names no Step id, file path, or program type. Status equals the Goal index |
+| Later row | no | `\| <n> \| _(later)_ <theme> \| <one sentence: what it would add>. After <condition> \|`, below every Goal row |
 | Order | yes | 1, 2, 3, … top to bottom, with no gap |
 | Backlog line | yes | As in the Skeleton |
 

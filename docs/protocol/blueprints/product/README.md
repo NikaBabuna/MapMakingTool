@@ -11,7 +11,7 @@ Forms for the pages under `docs/product/`, which describe the product for a pers
 
 | Page | Read it when |
 |------|----------------|
-| [concept.md](concept.md) | You are writing `docs/product/concept.md` |
+| [concept.md](concept.md) | You are writing `docs/product/concept.md`, or changing what is in or out of scope |
 | [journeys.md](journeys.md) | You are writing `docs/product/journeys.md` |
 | [glossary.md](glossary.md) | You are writing `docs/product/glossary.md` |
 | [style-guide.md](style-guide.md) | You are writing `docs/product/style-guide.md` |

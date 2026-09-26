@@ -95,6 +95,6 @@ Number: **Next ADR number** of [decision-index.md](decision-index.md). Slug: the
 
 ## Keep out
 
-- A second copy of the decision inside the index.  
+- A second copy of the decision inside the index. The index carries one summary sentence only.  
 - The implementation procedure: the architecture paper.  
 - A requirement list: the Step record.

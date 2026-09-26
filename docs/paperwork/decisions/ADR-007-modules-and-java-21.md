@@ -9,7 +9,8 @@
 
 **Date:** 2026-09-04  
 **Status:** accepted
+**Amended by:** [ADR-010](ADR-010-product-adapters.md)
 
 Monorepo Maven parent `com.aethelgard:aethelgard` with module `engine` (`com.aethelgard:engine`) first. Package root `com.aethelgard.engine`. Java 21. Future sibling modules `cli`, `ui`, `product` depend on `engine`; engine never depends on them. Empty sibling modules are not created until their Steps.
 
-**Why:** Preserves a production-grade dependency boundary without pre-carving unused trees. Details: [../engine/architecture.md](../../engine/architecture.md).
+**Why:** Preserves a production-grade dependency boundary without pre-carving unused trees. Details: [../engine/architecture.md](../../architecture/engine/README.md).

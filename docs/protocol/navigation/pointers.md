@@ -40,7 +40,7 @@ Each question has one home. Open that page, read it by the ladder in [reading.md
 
 | Question | Open | You are done when |
 |----------|------|-------------------|
-| Is X in scope? | `docs/project/project.md` | You found X in **In scope**, in **Out of scope**, or in neither (then it is out) |
+| Is X in scope? | `docs/product/concept.md`: **In scope** and **What it is not** | You found X in **In scope**, in **What it is not**, or in neither (then it is out) |
 | What is the product, for a person? | `docs/product/concept.md`: title and first paragraph | You can say it in one sentence |
 | What does a person do with it? | `docs/product/journeys.md`, one journey section | You have the steps |
 | What does domain word X mean? | `docs/product/glossary.md` (search the word) | You have the row |

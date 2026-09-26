@@ -16,7 +16,7 @@
 
 A **runnable Pool-System Framework skeleton** that:
 
-1. Implements the engine loop described in [../../engine/specs/](../../engine/specs/) (Pool, Steps, events, Systems, typed merge, User View / Input View).
+1. Implements the engine loop described in [../../engine/specs/](../../architecture/engine/README.md) (Pool, Steps, events, Systems, typed merge, User View / Input View).
 2. **Upholds the framework’s functional claims in tests** — determinism, claim/finish, merge behavior, cross-step propagation, etc. (see checklist below).
 3. Can be **run** via automated tests, a **CLI**, and a **basic UI** (enough to see Steps advance and View read settled state — not the Aethelgard product UI).
 
@@ -38,11 +38,11 @@ When this Goal is `done`, another agent can trust the engine core and start prod
 
 | Topic | Decision |
 |-------|----------|
-| Step 0 | Starting **config object** seeds the Pool ([../../engine/specs/open-questions.md](../../engine/specs/open-questions.md)) |
+| Step 0 | Starting **config object** seeds the Pool ([../../engine/specs/open-questions.md](../../architecture/open-questions.md)) |
 | Unmatched events | **Log** (no silent drop without a log) |
 | Non-finishing Systems | Deferred — not required to close G-001 |
 | Delete Request conflict policy | Deferred — may stub or omit until a later Step |
-| Package / module names | `com.aethelgard.engine`; modules per ADR-007 / [engine/architecture.md](../../engine/architecture.md) |
+| Package / module names | `com.aethelgard.engine`; modules per ADR-007 / [engine/architecture.md](../../architecture/engine/README.md) |
 | JDK | Java 21 (`maven.compiler.release` 21) — recorded at F-001 |
 
 ---

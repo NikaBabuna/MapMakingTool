@@ -70,8 +70,8 @@ A full build log can put thousands of lines into context. The summary is usually
 
 | # | Action | Reads |
 |--:|--------|-------|
-| 1 | Count the lines of `docs/project/project.md`. A scope page is usually small; if it is, read it whole | 1 page |
-| 2 | Look for the feature in **In scope** and **Out of scope**. If it is in neither, it is out ([../flows/conflict-resolve.md](../flows/conflict-resolve.md) R6) | — |
+| 1 | List the headings of `docs/product/concept.md`, then read the **In scope** and **What it is not** sections only | 2 sections |
+| 2 | Look for the feature in **In scope** and **What it is not**. If it is in neither, it is out ([../flows/conflict-resolve.md](../flows/conflict-resolve.md) R6) | — |
 
 ## W7 — Write a Step record at STORE
 

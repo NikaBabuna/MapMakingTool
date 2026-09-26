@@ -200,7 +200,7 @@ Shelf sections come in the order of the shelf table in `docs/README.md`, each fo
 | 2 | Every shelf has a section, and every page directly on a shelf and every subfolder of a shelf has a row |
 | 3 | No Status cell is false against the tree |
 | 4 | The **Phase** and **Goal index** lines agree with `phase.md` and with [goal-pointer.md](goal-pointer.md) |
-| 5 | Every code folder with a door appears under **Code** |
+| 5 | Every folder the **Code** part names appears under **Code**: every module, every front-end or shell folder with its own door, and every tool folder at the repository root with a door |
 | 6 | Every existing folder of dependencies, build output, version-control internals, or local tools appears under **Never open** |
 | 7 | Every tracked text file of more than 500 lines appears under **Open narrowly** |
 

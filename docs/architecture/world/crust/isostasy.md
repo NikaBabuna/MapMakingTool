@@ -1,32 +1,51 @@
 <!--
   File: docs/architecture/world/crust/isostasy.md
-  Purpose: ThicknessToElevation
+  Purpose: ThicknessToElevation — phase 9: height is read from crust thickness, and nothing else writes height
   Audience: Agents and humans
-  Update when: The isostasy formula changes
+  Update when: ThicknessToElevation.apply or ThicknessToElevation.execute changes
 -->
 
 # Isostasy
 
-`ThicknessToElevation` is the last tectonics sub-system and the only writer of `elevation`. Height is a reading of locker thickness at the occupancy key. It is not stored as an independent history of where plates used to meet.
+Height is never painted on. Thick crust floats high and thin crust floats low, so the height of every cell is read from the thickness of the crust column under it, at the end of every generation.
 
 ## What it reads
 
-Staged or pool `occupancy`, and `lockers`.
+The staged `occupancy` of the ridge and the staged `lockers` of the collision (the settled values when none were staged).
 
 ## What it writes
 
-`elevation`, a `Grid` of the same width and height.
+`elevation`, a new grid. It is the only phase with `elevation` in its write range. A cell whose locker id is outside the table throws `IllegalArgumentException`; a field of the wrong type throws `IllegalStateException`.
+
+## Model
+
+$$E(c) = T\bigl(O(c)\bigr) - T_{\mathrm{ocean}} \qquad \text{for every } c \in \Omega,$$
+
+so fresh ocean ($T = 8$) stands at 0, the land threshold ($T = 16$) at 8, and the collision cap ($T = 32$) at 24. Thinned crust stands below 0.
+
+`ThicknessToElevation.apply` (one cell) in [`ThicknessToElevation.java`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java):
+
+```java
+next[y][x] = lockers.thickness(occupancy.get(x, y)) - Lockers.T_OCEAN;
+```
 
 ## Procedure
 
-For each cell, `elevation = lockers.thickness(occupancy) − Lockers.T_OCEAN`. `T_OCEAN` is 8. The subtraction is integer. There is no extra slope in this formula. Troughs and caps are already in the thickness.
+1. `execute` reads the occupancy and lockers (staged first) and stages `apply` of them. [`ThicknessToElevation.execute`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java).
+2. `apply` computes the height of every cell from the thickness of its locker. [`ThicknessToElevation.apply`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java).
 
 ## What is true afterwards
 
-A locker at thickness 8 has elevation 0. Land, thickness at least 16, has elevation at least 8. A locker at the cap of 32 has elevation 24. Thickness below 8, including a negative stamp from orogeny, has negative elevation. The same occupancy and the same lockers produce the same grid.
+Invariant I5 of [fields](../fields.md) holds: the settled elevation agrees with the settled occupancy and lockers, cell for cell. Two cells that share a locker have the same height. The [studio](../../studio/raster.md) paints this grid.
+
+## Cost
+
+$O(WH)$.
 
 ## Where it lives
 
-`ThicknessToElevation` in `product/src/main/java/com/aethelgard/product/ThicknessToElevation.java`. Sub-system id `isostasy`.
+| Piece | Type | Members | Path |
+|-------|------|---------|------|
+| Phase | `ThicknessToElevation` | `ThicknessToElevation.id`, `ThicknessToElevation.writeRanges`, `ThicknessToElevation.execute`, `ThicknessToElevation.apply` | [`product/src/main/java/com/aethelgard/product/ThicknessToElevation.java`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java) |
 
-Parent: [crust](README.md). How the grid becomes pixels: [../../studio/raster.md](../../studio/raster.md).
+Parent: [crust](README.md). Why height is read from thickness: [ADR-013](../../../paperwork/decisions/ADR-013-crust-topology.md).

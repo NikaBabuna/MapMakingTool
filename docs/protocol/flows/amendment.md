@@ -22,7 +22,7 @@ Invoke this flow when one or more of the following targets is to change. Record 
 | A1 | A protocol instrument, flow, navigation page, or blueprint | Any file under `docs/protocol/` |
 | A2 | The entrance or an agent door | `docs/README.md`, `docs/navigation.md`, `AGENTS.md`, `README.md`, `.cursor/rules/protocol.mdc` |
 | A3 | A folder door | The `README.md` of any landmark folder |
-| A4 | Scope | `docs/project/project.md` |
+| A4 | Scope | The one line, **In scope**, and **What it is not** of `docs/product/concept.md` |
 | A5 | A standing product or architecture page, when the change is not the Sync of a source change | Any file under `docs/product/` or `docs/architecture/` |
 | A6 | Structure | A folder or a major document is created, moved, renamed, or deleted |
 
@@ -110,13 +110,18 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
    | A1 | A blueprint | **Create blueprint**, **Add operation**, **Change part** of [../blueprints/protocol/blueprint.md](../blueprints/protocol/blueprint.md) |
    | A2 | An entrance or root door | The operations of [../blueprints/doors/docs-index.md](../blueprints/doors/docs-index.md), [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md), [../blueprints/doors/agent-door.md](../blueprints/doors/agent-door.md), [../blueprints/doors/cursor-rule.md](../blueprints/doors/cursor-rule.md), or [../blueprints/doors/repo-readme.md](../blueprints/doors/repo-readme.md) |
    | A3 | A folder door | **Create door**, **Add child**, **Remove child**, **Relink child** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md) |
-   | A4 | Scope | The operations of [../blueprints/project/scope.md](../blueprints/project/scope.md) (Step 7) |
+   | A4 | Scope | The scope operations of [../blueprints/product/concept.md](../blueprints/product/concept.md) (Step 7) |
    | A5 | The concept | **Amend facet**, **Add facet** of [../blueprints/product/concept.md](../blueprints/product/concept.md) |
    | A5 | The journeys | **Amend journey**, **Add not-built row** of [../blueprints/product/journeys.md](../blueprints/product/journeys.md) |
    | A5 | The domain glossary | **Amend word**, **Remove word** of [../blueprints/product/glossary.md](../blueprints/product/glossary.md) |
    | A5 | The style guide | **Add area** of [../blueprints/product/style-guide.md](../blueprints/product/style-guide.md) |
    | A5 | A wiki page | **Create page**, **Amend rule** of [../blueprints/product/wiki-page.md](../blueprints/product/wiki-page.md) |
-   | A5 | The paper abstract | **Add level**, **Change question** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
+   | A5 | The paper abstract | **Add level**, **Change question**, **Set conventions** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
+   | A6 | The paper abstract | **Relink level** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
+   | A5 | The program page | **Set process** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
+   | A6 | The program page | **Set pointer table** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
+   | A5, A6 | A level page | **Create**, **Rewrite** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) |
+   | A5 | The paper glossary | **Add symbol**, **Amend symbol**, **Remove symbol** of [../blueprints/architecture/glossary.md](../blueprints/architecture/glossary.md) |
    | A5 | The open questions | **Add question** of [../blueprints/architecture/open-questions.md](../blueprints/architecture/open-questions.md) |
    | A5 | A mechanism page | **Relink** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md) |
    | any | Any document header | **Update path**, **Update purpose** of [../blueprints/headers/document-header.md](../blueprints/headers/document-header.md) |
@@ -135,8 +140,8 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
 
 ### Step 7 — Scope (only if A4 applies)
 
-1. Edit `docs/project/project.md` before any other file of the work that needs the new scope, by **Add in-scope area**, **Amend in-scope area**, **Add exclusion**, **Remove exclusion**, or **Change one line** of [../blueprints/project/scope.md](../blueprints/project/scope.md). If the one line changed, also apply **Sync one line** of [../blueprints/doors/repo-readme.md](../blueprints/doors/repo-readme.md).  
-2. If the change is technical (a language, a build tool, a module split, a new kind of program, a new runtime dependency, or a Stack row), run **Decide** in [step.md](step.md), then apply **Set stack row** of [../blueprints/project/scope.md](../blueprints/project/scope.md).  
+1. Edit `docs/product/concept.md` before any other file of the work that needs the new scope, by **Add in-scope area**, **Amend in-scope area**, **Add exclusion**, **Remove exclusion**, or **Change one line** of [../blueprints/product/concept.md](../blueprints/product/concept.md). If the one line changed, also apply **Sync one line** of [../blueprints/doors/repo-readme.md](../blueprints/doors/repo-readme.md).  
+2. If the change is technical (a language, a build tool, a module split, a new kind of program, a new runtime dependency, or a Stack row), run **Decide** in [step.md](step.md), then apply **Set stack row** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) to `docs/architecture/program.md`.  
 3. Apply **Add line** of [../blueprints/paperwork/changelog.md](../blueprints/paperwork/changelog.md), kind *Scope change*.  
 4. Work that depends on the new scope does not begin until step 1 is saved to disk.
 
@@ -150,7 +155,7 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
 | Changes which pages a flow reads, or the startup sequence | **Amend open set** of [../blueprints/protocol/navigation-page.md](../blueprints/protocol/navigation-page.md) on [../navigation/bounds.md](../navigation/bounds.md) |
 | Adds, removes, or renames a blueprint | **Create blueprint** of [../blueprints/protocol/blueprint.md](../blueprints/protocol/blueprint.md); **Add child** / **Remove child** on the group door; **Amend step** on every flow that must cite it |
 | Changes the meaning of a defined term | **Amend article** on [../environment/core-definition.md](../environment/core-definition.md), and every `fix term` row from Step 3.3 |
-| Changes the phase | **Set phase** of [../blueprints/protocol/instrument.md](../blueprints/protocol/instrument.md); **Set phase** of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md); **Set status** of [../blueprints/doors/repo-readme.md](../blueprints/doors/repo-readme.md); **Set phase** of [../blueprints/project/scope.md](../blueprints/project/scope.md); **Add line** of [../blueprints/paperwork/changelog.md](../blueprints/paperwork/changelog.md), kind *Phase change* |
+| Changes the phase | **Set phase** of [../blueprints/protocol/instrument.md](../blueprints/protocol/instrument.md); **Set phase** of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md); **Set status** of [../blueprints/doors/repo-readme.md](../blueprints/doors/repo-readme.md); **Add line** of [../blueprints/paperwork/changelog.md](../blueprints/paperwork/changelog.md), kind *Phase change* |
 | Moves the global prompt or the protocol door | **Relink protocol** of [../blueprints/doors/agent-door.md](../blueprints/doors/agent-door.md) and of [../blueprints/doors/cursor-rule.md](../blueprints/doors/cursor-rule.md) |
 
 Protocol text stays in the legal register ([../environment/style.md](../environment/style.md) Article 2).

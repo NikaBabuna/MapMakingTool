@@ -30,13 +30,19 @@ How the screen looks and what its controls are called, so that a person can say 
 
 ## <Area of the screen>
 
+<Optional: one sentence saying where the area is and what it is for.>
+
 | <Element kind> | <What the person sees or gets> |
 |----------------|--------------------------------|
 | <element, with its exact on-screen word> | <the current rule> |
 …
 
-<Optional: up to three sentences of rules that are not per element.>
+<Optional: up to six sentences of rules that are not per element.>
 …
+
+## What the <screen> refuses
+
+<Short sentences: what the screen never does.>
 ```
 
 ## Parts
@@ -44,8 +50,10 @@ How the screen looks and what its controls are called, so that a person can say 
 | Part | Required | Rule |
 |------|----------|------|
 | Principles | yes | The paragraph after the title |
-| Area section | yes, one or more | `## <Area>`: a region of the screen (e.g. The map, The frame), the keys, or what the screen refuses. One two-column table. The first column holds the exact word or name the person sees |
-| Area sentences | no | At most three, below the table |
+| Area section | yes, one or more | `## <Area>`: a region of the screen (e.g. The map, The frame), the menus, or the keys. One two-column table. The first column holds the exact word or name the person sees |
+| Area lead | no | One sentence between the heading and the table: where the area is and what it is for |
+| Area sentences | no | At most six, below the table, each a rule that is not per element |
+| Refusals | yes | `## What the <screen> refuses`, last. Short sentences, no table |
 
 ## Operations
 
@@ -78,7 +86,7 @@ How the screen looks and what its controls are called, so that a person can say 
 
 **Edit.**
 
-1. Insert `## <Area>` and its table at the position of that region on the screen, reading top to bottom, left to right.
+1. Insert `## <Area>` and its table above the refusals section, at the position of that region on the screen, reading top to bottom, left to right.
 
 ## Check
 

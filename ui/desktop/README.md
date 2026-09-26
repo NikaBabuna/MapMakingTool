@@ -31,4 +31,4 @@ Do **not** start Next in a separate broken `start` window — Tauri owns that pr
 
 Swing map UI was **removed** in F-026. Headless `MapController` + `MapHost` remain for tests and the HTTP API.
 
-Docs: [docs/architecture/studio/host.md](../../docs/architecture/studio/host.md) · [docs/product/journeys.md](../../docs/product/journeys.md)
+Docs: [docs/architecture/studio/desktop.md](../../docs/architecture/studio/desktop.md) · [docs/product/journeys.md](../../docs/product/journeys.md)

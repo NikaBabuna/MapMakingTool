@@ -25,7 +25,7 @@ The header tells a reader who arrived from a search whether they opened the righ
 -->
 ```
 
-The line after `-->` is the file's title (`# …`). There is no blank line before `<!--`.
+The line after `-->` is blank, and the line after that is the file's title (`# …`). There is no blank line before `<!--`.
 
 ## Parts
 
@@ -36,7 +36,7 @@ The line after `-->` is the file's title (`# …`). There is no blank line befor
 | `Purpose:` | yes | One sentence. What the file is responsible for. Not a history of edits |
 | `Audience:` | yes | `Agents` for protocol pages. `Agents and humans` for doors, paperwork, and architecture. `Humans and agents` for product pages |
 | `Update when:` | yes | The event, e.g. `A child of this folder is added or removed`. Not "when needed" |
-| `-->` | yes | Closes the comment. The title follows on the next line |
+| `-->` | yes | Line 6. Closes the comment. Line 7 is blank, and the title is line 8 |
 
 ## Operations
 
@@ -52,9 +52,9 @@ The line after `-->` is the file's title (`# …`). There is no blank line befor
 
 **Edit.**
 
-1. Write the Skeleton as lines 1–6, with the file's own path, purpose, audience, and update event.
+1. Write the Skeleton as lines 1–6, with the file's own path, purpose, audience, and update event, then one blank line.
 
-**Result.** Line 7 is the title.
+**Result.** Line 7 is blank, and line 8 is the title.
 
 ### Update path
 
@@ -83,7 +83,7 @@ The line after `-->` is the file's title (`# …`). There is no blank line befor
 |---|---------------------------|
 | 1 | Line 1 is `<!--`, and lines 2–5 begin `  File: `, `  Purpose: `, `  Audience: `, `  Update when: `, in that order |
 | 2 | The `File:` path is the file's actual path |
-| 3 | Line 6 is `-->` and line 7 begins `# ` |
+| 3 | Line 6 is `-->`, line 7 is blank, and line 8 begins `# ` |
 
 ## Keep out
 

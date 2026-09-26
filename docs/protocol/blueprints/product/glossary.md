@@ -12,25 +12,30 @@
 **Header:** [document header](../headers/document-header.md)  
 **Neighbours:** the paper glossary ([../architecture/glossary.md](../architecture/glossary.md)) — implementation names. Core definitions (`docs/protocol/environment/core-definition.md`) — protocol words. Three glossaries, so that a protocol word and a domain word are never explained in the same breath.
 
-The words a person uses for the product's domain, one row each.
+The words a person uses for the product's domain and for its screen, one row each, grouped by the part of the domain they belong to.
 
 ## Skeleton
 
 ```markdown
 <!--
   File: docs/product/glossary.md
-  Purpose: Words a person uses for this product's domain
+  Purpose: Words a person uses for this product's domain and its screen
   Audience: Humans and agents
   Update when: A domain word is introduced or its meaning changes
 -->
 
 # Glossary
 
-Words for the domain. The rule each word points at lives on the wiki page that owns it.
+Words for the domain. The rule each word points at lives on the wiki page that owns it. The last column names the word or idea it is most easily mistaken for.
+
+## <Group>
 
 | Word | Meaning | Not |
 |------|---------|-----|
 | <word> | <what a person should understand, with the unit or range when it is part of the meaning> | <the neighbouring word it is confused with, and how it differs> |
+…
+
+## <Group>
 …
 ```
 
@@ -38,7 +43,8 @@ Words for the domain. The rule each word points at lives on the wiki page that o
 
 | Part | Required | Rule |
 |------|----------|------|
-| Opening sentence | yes | One sentence naming what the words are for, and that the rule each word points at lives on the wiki page that owns it |
+| Opening | yes | Up to three sentences: what the words are for; that the rule each word points at lives on the wiki page that owns it; and what the **Not** column holds |
+| Group section | yes, one or more | `## <Group>`, named for a part of the domain or of the screen in a person's words (e.g. "The map", "The studio"), followed by one table with the columns `Word`, `Meaning`, `Not`. A glossary of fewer than ten words may use one group |
 | Row | yes | **Word** is the word the screen and the wiki use. **Meaning** is for a person, not a class. **Not** names the confusable neighbour; `—` if there is none |
 
 ## Operations
@@ -53,7 +59,8 @@ Words for the domain. The rule each word points at lives on the wiki page that o
 
 **Edit.**
 
-1. Add `| <word> | <meaning> | <not> |` directly below the row of the word it depends on, or at the bottom.
+1. In the group the word belongs to, add `| <word> | <meaning> | <not> |` directly below the row of the word it depends on, or at the bottom of that group's table.  
+2. If no group fits, insert `## <Group>` and a new table holding the row, after the group it is closest to.
 
 ### Amend word
 
@@ -73,7 +80,7 @@ Words for the domain. The rule each word points at lives on the wiki page that o
 
 | # | The file is legal only if |
 |---|---------------------------|
-| 1 | Each word appears once |
+| 1 | Each word appears once, in one group |
 | 2 | No row defines a protocol word or a program type |
 | 3 | No Meaning cell is "see F-0xx" or a class name |
 

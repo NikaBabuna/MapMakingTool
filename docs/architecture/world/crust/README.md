@@ -1,22 +1,24 @@
 <!--
   File: docs/architecture/world/crust/README.md
-  Purpose: Door to crust procedures
+  Purpose: Level 4 — door to the crust procedures: who loses a collision, how crust keys and locker thicknesses change, and how height is read from thickness
   Audience: Agents and humans
-  Update when: A crust page is added or removed
+  Update when: A crust page is added, or the question it answers changes
 -->
 
 # Crust
 
-These pages are the procedures that write locker thickness and the occupancy keys that point at lockers. The generation order that calls them is [the world page](../README.md).
+Every cell stands on a crust column, a locker, and a locker has a thickness. These pages are the procedures that decide which plate goes under at a collision, which locker each cell points at, and how thick each locker is; height is read from thickness at the end. The order in which they run is the generation's phase list, [../README.md](../README.md).
 
 | Page | Question |
 |------|----------|
-| [precedence.md](precedence.md) | Which plate loses a collision? |
-| [subduct.md](subduct.md) | What happens to the loser's occupancy, and to a rift that would stretch one locker? |
-| [orogeny.md](orogeny.md) | How does a standing contact change thickness by one? |
-| [ridge.md](ridge.md) | What fills an occupancy gap? |
-| [margin.md](margin.md) | How do a rift and a collision shape the ocean beside them? |
-| [collide.md](collide.md) | How do an ocean-ocean arc and a continental suture thicken? |
-| [isostasy.md](isostasy.md) | How does thickness become elevation? |
+| [precedence.md](precedence.md) | Which plate loses a collision, and when does neither lose? |
+| [subduct.md](subduct.md) | How are the moved crust keys corrected at collisions and rifts? |
+| [orogeny.md](orogeny.md) | How does each contact thicken or thin the crust by one? |
+| [ridge.md](ridge.md) | What crust fills a cell that no crust reached? |
+| [margin.md](margin.md) | How do rifts and collisions shape the ocean floor beside them? |
+| [collide.md](collide.md) | How do ocean collisions raise arcs, and continental collisions thicken sutures? |
+| [isostasy.md](isostasy.md) | How is height read from thickness? |
 
-Quantities shared by these pages: ocean thickness `T_ocean = 8`, continental threshold `T_land = 16`, thickness cap `32`. A locker at or above 16 is continental. Elevation is thickness minus 8, so oceanic crust at 8 is elevation 0.
+Shared quantities: new ocean is $T_{\mathrm{ocean}} = 8$ thick, a locker with $T \ge T_{\mathrm{land}} = 16$ is continental, collisions stop thickening at $32$, and height is $E = T - T_{\mathrm{ocean}}$, so fresh ocean stands at 0.
+
+The generation these procedures belong to: [../README.md](../README.md).

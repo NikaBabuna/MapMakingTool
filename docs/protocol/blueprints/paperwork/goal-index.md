@@ -26,13 +26,13 @@ The only file that carries the Active Goal line. Every door points here instead 
 
 # Goals
 
-A **Goal** is a durable result across sessions. Steps (`F-0xx`) belong to a Goal.
+A **Goal** is a durable result across sessions: what should be true when it is done, what it refuses, and the Steps that will get there. Steps (`F-0xx`) belong to a Goal. This index lists every Goal ever opened, with its status and the result it set out to make true. The Goal's own file holds its claims, its decisions, and its progress. Only one Goal is active at a time, and the line below names it.
 
 **Active Goal:** [G-0xx <name>](goals/G-0xx-<slug>.md) · Last completed: [G-0yy <name>](goals/G-0yy-<slug>.md)
 
-| ID | Name | Status | Doc |
-|----|------|--------|-----|
-| G-0xx | <name> | <not started \| in progress \| done \| abandoned> | [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md) |
+| ID | Name | Status | Result | Doc |
+|----|------|--------|--------|-----|
+| G-0xx | <name> | <not started \| in progress \| done \| abandoned> | <one sentence: what the Goal makes true> | [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md) |
 …
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
@@ -44,9 +44,9 @@ Procedure: [../protocol/flows/goal.md](../protocol/flows/goal.md)
 
 | Part | Required | Rule |
 |------|----------|------|
-| Opening sentence | yes | As in the Skeleton |
+| Opening paragraph | yes | As in the Skeleton, word for word. It names no Goal id |
 | Active Goal line | yes | Exactly one line in the file begins `**Active Goal:**`. It has one of three forms: (1) `**Active Goal:** [G-0xx <name>](goals/G-0xx-<slug>.md) · Last completed: [G-0yy <name>](goals/G-0yy-<slug>.md)`; (2) `**Active Goal:** none · Last completed: [G-0yy <name>](goals/G-0yy-<slug>.md)`; (3) either form with `Last completed: none` when no Goal is `done`. "Last completed" names the Goal most recently set to `done`. An `abandoned` Goal is never "last completed" |
-| Table | yes | One row per Goal ever opened, in id order. Columns `ID`, `Name`, `Status`, `Doc`. **Name** equals the Goal file's title after `— `. **Status** equals the Goal file's `**Status:**` value. At most one row is `in progress` |
+| Table | yes | One row per Goal ever opened, in id order. Columns `ID`, `Name`, `Status`, `Result`, `Doc`. **Name** equals the Goal file's title after `— `. **Status** equals the Goal file's `**Status:**` value. **Result** is one sentence in plain words saying what the Goal makes true, taken from the Goal file's **Result we want**; it names no Goal id, Step id, file path, or program type. At most one row is `in progress` |
 | Status legend | yes | As in the Skeleton |
 | Procedure line | yes | As in the Skeleton |
 
@@ -63,6 +63,7 @@ Procedure: [../protocol/flows/goal.md](../protocol/flows/goal.md)
 | **Add row** | [../../flows/goal.md](../../flows/goal.md) Open goal (W2) |
 | **Set row status** | [../../flows/goal.md](../../flows/goal.md) Close goal (W2), Abandon goal (W2) |
 | **Rename row** | [../../flows/goal.md](../../flows/goal.md) Amend goal (W2) |
+| **Set result** | [../../flows/goal.md](../../flows/goal.md) Amend goal (W2) |
 
 ### Set active goal
 
@@ -91,7 +92,7 @@ Procedure: [../protocol/flows/goal.md](../protocol/flows/goal.md)
 **Edit.**
 
 1. Add at the bottom of the table:  
-   `| G-0xx | <name> | in progress | [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md) |`
+   `| G-0xx | <name> | in progress | <result sentence> | [goals/G-0xx-<slug>.md](goals/G-0xx-<slug>.md) |`
 
 ### Set row status
 
@@ -106,6 +107,14 @@ Procedure: [../protocol/flows/goal.md](../protocol/flows/goal.md)
 1. In the row whose ID is `G-0xx`, replace the Name cell with the approved name.  
 2. If that Goal is on the Active Goal line, or is its "Last completed" Goal, replace the name inside that link text as well.
 
+### Set result
+
+**Before.** The approved change altered the Goal file's **Result we want**.
+
+**Edit.**
+
+1. In the row whose ID is `G-0xx`, replace the Result cell with one sentence stating the amended result.
+
 ## Check
 
 | # | The file is legal only if |
@@ -114,6 +123,7 @@ Procedure: [../protocol/flows/goal.md](../protocol/flows/goal.md)
 | 2 | If the line names a Goal, that Goal's row is `in progress`. If it says `none`, no row is `in progress` |
 | 3 | Each row's Name and Status equal the Goal file's title and `**Status:**` |
 | 4 | Every Doc link resolves |
+| 5 | Every Result cell is one sentence and names no Goal id, Step id, file path, or program type |
 
 ## Keep out
 
