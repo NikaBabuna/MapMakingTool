@@ -1,28 +1,17 @@
 <!--
   File: engine/README.md
-  Purpose: Code module index for the Pool-System Framework
+  Purpose: Door to the engine module, the host that runs a step-based simulation
   Audience: Agents and humans
-  Update when: Engine packages or layout change
+  Update when: A child of this folder is added or removed
 -->
 
 # Engine module
 
-Maven artifact `com.aethelgard:engine` — Pool-System Framework (Java 21). Clean host after G-002.
+The engine module is a host for any step-based simulation: it runs the steps, and knows nothing of the world it runs.
 
-**Docs:** [docs/architecture/engine/README.md](../docs/architecture/engine/README.md) · [program](../docs/architecture/program.md)
+**Docs:** [engine](../docs/architecture/engine/README.md) · [program](../docs/architecture/program.md)
 
-| Package | Role |
-|---------|------|
-| `com.aethelgard.engine.pool` | Step loop, config, Pool, `PoolCompute`, `EventEmissionPolicy`, snapshots |
-| `com.aethelgard.engine.event` | Categories, buffer, stub claimers |
-| `com.aethelgard.engine.diag` | Diagnostics / SLF4J bridge |
-| `com.aethelgard.engine.system` | Systems, Sub-Systems, conflict-resolution hook |
-| `com.aethelgard.engine.merge` | `FieldMergeType`, defaults, provenance, typed merge |
-| `com.aethelgard.engine.user` | User Input, Input View, User View |
-
-**Host ports:** `PoolCompute`, `FieldMergeType`, `EventEmissionPolicy` — product plugs in via `EngineSetup` / schema without editing this module.
-
-**Witness:** from repo root, `mvnw.cmd test` / `./mvnw test`.  
-**CI:** [../.github/workflows/README.md](../.github/workflows/README.md).
-
-Do not add UI/CLI/product dependencies here.
+| Path | Read it when |
+|------|----------------|
+| [pom.xml](pom.xml) | You need the engine's build: its artifact, and its one library, the SLF4J API |
+| `src/` | You need the engine's code or its tests. The code is `src/main/java/com/aethelgard/engine/`, one package per job, each with its own door: [pool](src/main/java/com/aethelgard/engine/pool/README.md), [event](src/main/java/com/aethelgard/engine/event/README.md), [system](src/main/java/com/aethelgard/engine/system/README.md), [merge](src/main/java/com/aethelgard/engine/merge/README.md), [user](src/main/java/com/aethelgard/engine/user/README.md), [diag](src/main/java/com/aethelgard/engine/diag/README.md). The tests are `src/test/java/`, one class per outcome |

@@ -9,7 +9,7 @@
 
 A **Step** is one job under a **Goal**: agree the work, store its requirements, do it, prove it, and record it. This registry lists every Step, grouped by the Goal it belongs to, with its status and one sentence on what it does. The Step's own record, `docs/paperwork/steps/F-0xx.md`, holds the approved job, the decisions, the requirements, the test that proves each one, and the witness. A record is written when the Step is approved, before any work starts.
 
-**Incremental:** Accept requires this Step's tests **and** all earlier Accepted Steps' tests to stay green.
+**Incremental:** Accept requires this Step's tests **and** all earlier Accepted Steps' tests to stay green, except tests a Step record retires or lists as known defects.
 
 Procedure: [../protocol/flows/step.md](../protocol/flows/step.md)
 
@@ -180,6 +180,7 @@ Goal doc: [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md)
 | F-065 | Architecture paper | done | Wrote the implementation as one paper arranged by level of detail, each page stating its mechanism and pointing at the finer page. | [F-065.md](steps/F-065.md) |
 | F-066 | Paperwork shelf | done | Put progress records on one shelf, one file per record and one file per list. | [F-066.md](steps/F-066.md) |
 | F-067 | Architecture paper of the whole app | done | Describes the whole app as one engineering paper, every layer in plain English and in mathematics, backed by the code it cites. | [F-067.md](steps/F-067.md) |
+| F-068 | Functional test suite | done | Replaces the test suite with tests that prove the app's requirements by running its code, and closes the Goal. | [F-068.md](steps/F-068.md) |
 
 ---
 

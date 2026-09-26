@@ -20,6 +20,26 @@
   <name>Aethelgard UI</name>
   <description>Aethelgard map tool — headless controller + MapHost; Next/Tauri under ui/web and ui/desktop</description>
 
+  <properties>
+    <!-- The web front's tests run in this module's test phase; -DskipTests skips them too. -->
+    <skipTests>false</skipTests>
+    <npm.executable>npm</npm.executable>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>windows-npm</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <npm.executable>npm.cmd</npm.executable>
+      </properties>
+    </profile>
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>com.aethelgard</groupId>
@@ -66,6 +86,24 @@
           <mainClass>com.aethelgard.ui.host.MapHostApp</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
+        <executions>
+          <execution>
+            <!-- Runs the web front's Vitest suite; needs ui/web/node_modules (npm ci). -->
+            <id>web-tests</id>
+            <phase>test</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${npm.executable}</executable>
+              <workingDirectory>${project.basedir}/web</workingDirectory>
+              <arguments>
+                <argument>test</argument>
+              </arguments>
+              <skip>${skipTests}</skip>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

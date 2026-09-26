@@ -24,7 +24,6 @@ Decided questions live on the page that states the rule, with the decision recor
 | 11 | Order of the schema | `ProductSession.fieldNames` and `schemaTypes` follow the iteration order of an immutable map, which is unspecified, so `list pool`, `list schema`, and `schema get` may list fields in a different order in another run. Should the schema keep its declaration order ([run](session/run.md))? |
 | 12 | Two play timers | The host has a play scheduler behind `/api/play` and `/api/pause`, while the web page plays with its own timer that posts `/api/advance` and never calls those routes. Which one is the studio's play ([controller](studio/controller.md), [tool](studio/web/tool.md))? |
 | 13 | Inspecting outside the map | `POST /api/inspect` with a cell outside the map makes the handler throw, and the request gets no answer from it. What should the host answer ([http](studio/http.md))? |
-| 14 | The CI workflow file | `.github/workflows/ci.yml` is a Markdown text with the job in a fenced block, and as a whole it is not valid YAML, so it does not define a workflow as written. Is continuous integration meant to run ([program](program.md))? |
 
 ## Decided elsewhere
 
@@ -38,5 +37,6 @@ Decided questions live on the page that states the rule, with the decision recor
 | One command language for the CLI and the studio | [language](cli/language.md), [ADR-010](../paperwork/decisions/ADR-010-product-adapters.md), [ADR-012](../paperwork/decisions/ADR-012-simulation-runner.md) |
 | The studio is a local web page served by a Java host | [http](studio/http.md), [ADR-011](../paperwork/decisions/ADR-011-local-webview.md) |
 | The shape of this paper | [architecture](README.md), [ADR-017](../paperwork/decisions/ADR-017-architecture-paper.md), [ADR-019](../paperwork/decisions/ADR-019-architecture-paper-by-layer.md) |
+| Continuous integration runs the witness command on `main`, with Node for the web front's tests | [program](program.md), [ADR-020](../paperwork/decisions/ADR-020-web-front-tests.md) |
 
 Parent: [architecture](README.md).

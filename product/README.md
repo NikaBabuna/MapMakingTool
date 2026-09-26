@@ -1,28 +1,18 @@
 <!--
   File: product/README.md
-  Purpose: Landmark index for the product Maven module
+  Purpose: Door to the product module, the world that runs on the engine
   Audience: Agents and humans
-  Update when: Product layout or host wiring changes
+  Update when: A child of this folder is added or removed
 -->
 
 # Product module
 
-Maven artifact `com.aethelgard:product` — Aethelgard world generation on the Pool-System host.
+The product module is the world that runs on the engine: its fields, the tectonics generation, and the session that owns a running world.
 
-**Depends on:** `engine` (one-way). **No Swing.** `ui` and `cli` depend on this module (ADR-010).
+**Docs:** [world](../docs/architecture/world/README.md) · [session](../docs/architecture/session/README.md)  
+**Rules:** [wiki](../docs/product/wiki/README.md)
 
-Package root: `com.aethelgard.product`.
-
-`ProductHost` constructs an `Engine` via product `EngineSetup`. `ProductSession` owns a run (serialized `advance`, grid reads, settled dump). Generation: `elevation` + Voronoi `plates` + CONSTANT `plate_velocity`, `world/tectonics` after Step 0, kinematics (advection) and tectonics (`Orogeny`: converge / diverge / transform). `WorldDump` prints a settled snapshot.
-
-The map **window** lives in [`ui/`](../ui/README.md) (F-022 tool chrome; F-023 console).
-
-## Interactive map
-
-From the repo root in **cmd**:
-
-```bat
-run-product.cmd
-```
-
-**Docs:** [docs/architecture/world/README.md](../docs/architecture/world/README.md) · [wiki/world](../docs/product/wiki/world.md) · [wiki/elevation](../docs/product/wiki/elevation.md)
+| Path | Read it when |
+|------|----------------|
+| [pom.xml](pom.xml) | You need the product's build: its artifact, and its dependency on the engine |
+| `src/` | You need the world's code or its tests. The code is `src/main/java/com/aethelgard/product/`. The tests are `src/test/java/`, one class per outcome, and `src/test/resources/worlds/` holds the stored dump of the 8 by 8, seed-0 world after 3 steps |

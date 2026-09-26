@@ -21,7 +21,7 @@ The order the Goals were taken in, and the direction after the last of them. Eac
 | 8 | [G-008 Boundary tectonics + cartography studio](goals/G-008-boundary-tectonics-studio.md) | Rebuild the plates so they meet, grow, split, and die like plates, on a 1920 by 1080 world, in a fuller studio — **done** |
 | 9 | [G-009 Simulation runner harden](goals/G-009-simulation-runner-harden.md) | Make the runner truthful: correct rifts, poles joined as on a sphere, measured costs, and one command language — **done** |
 | 10 | [G-010 Crust topology](goals/G-010-crust-topology.md) | Turn land into crust that rides the plates, so that continents can form — **done** |
-| 11 | [G-011 Docs restructuring](goals/G-011-docs-restructuring.md) | Sort the documentation onto four shelves: conduct, the product, the machine, and the log — **in progress** |
+| 11 | [G-011 Docs restructuring](goals/G-011-docs-restructuring.md) | Sort the documentation onto four shelves: conduct, the product, the machine, and the log — **done** |
 | 12 | _(later)_ Climate and further layers | Wind, rain, temperature, and biomes, each following from the land the plates made. After the doc shelves |
 | 13 | _(later)_ Timeline and inspection | Scrubbing through the history of a world, and asking why a place looks as it does. After the generation core |
 

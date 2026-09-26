@@ -9,7 +9,7 @@
 
 A **Goal** is a durable result across sessions: what should be true when it is done, what it refuses, and the Steps that will get there. Steps (`F-0xx`) belong to a Goal. This index lists every Goal ever opened, with its status and the result it set out to make true. The Goal's own file holds its claims, its decisions, and its progress. Only one Goal is active at a time, and the line below names it.
 
-**Active Goal:** [G-011 Docs restructuring](goals/G-011-docs-restructuring.md) · Last completed: [G-010 Crust topology](goals/G-010-crust-topology.md)
+**Active Goal:** none · Last completed: [G-011 Docs restructuring](goals/G-011-docs-restructuring.md)
 
 | ID | Name | Status | Result | Doc |
 |----|------|--------|--------|-----|
@@ -23,7 +23,7 @@ A **Goal** is a durable result across sessions: what should be true when it is d
 | G-008 | Boundary tectonics + cartography studio | done | A 1920 by 1080 world whose plates behave like plates, meeting at classified boundaries and growing, shrinking, splitting, and dying, shown in a multi-panel studio. | [goals/G-008-boundary-tectonics-studio.md](goals/G-008-boundary-tectonics-studio.md) |
 | G-009 | Simulation runner harden | done | A simulation runner that tells the truth: rifts fill from the plates that part, the poles join as on a sphere, costs are measured, and one command language drives both the terminal and the command line. | [goals/G-009-simulation-runner-harden.md](goals/G-009-simulation-runner-harden.md) |
 | G-010 | Crust topology | done | Land became material that rides on plates: oceans are born thin at ridges, ocean crust is drawn under, and continents rise from arcs and sutures. | [goals/G-010-crust-topology.md](goals/G-010-crust-topology.md) |
-| G-011 | Docs restructuring | in progress | Four documentation shelves behind one entrance, so a file's folder tells whether it holds the rules, the product idea, the machine, or the log. | [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md) |
+| G-011 | Docs restructuring | done | Four documentation shelves behind one entrance, an architecture paper of every layer tied to its code, and a suite that proves what the app does by running it. | [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md) |
 
 **Status:** `not started` | `in progress` | `done` | `abandoned`
 

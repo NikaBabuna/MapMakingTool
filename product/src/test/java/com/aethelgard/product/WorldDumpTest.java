@@ -1,147 +1,75 @@
 /*
  * File: product/src/test/java/com/aethelgard/product/WorldDumpTest.java
- * Purpose: F-016 witness — headless dump, golden fixture, G-003 close docs (F-017 golden)
+ * Purpose: Proves that the world dump is a function of the settled fields, and that printing it changes nothing
  * Audience: Agents / CI
- * Update when: F-016 FRs change
+ * Update when: WorldDump changes
  */
 
 package com.aethelgard.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.engine.pool.Engine;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class WorldDumpTest {
 
+  /** Proves F-068 FR-45 (docs/paperwork/steps/F-068.md). */
   @Test
-  @DisplayName("FR-1: same settled fields produce the same snapshot string")
-  void dumpIsStable() {
-    WorldSpec spec = new WorldSpec(4, 2, 0L);
-    Engine engine = ProductHost.create(spec);
-    engine.advance(2);
-    String a = WorldDump.of(engine, spec);
-    String b = WorldDump.of(engine, spec);
-    assertEquals(a, b);
-    assertTrue(a.startsWith("world w=4 h=2 seed=0 steps=2\n"));
-    assertTrue(a.contains("elevation:\n"));
-    assertTrue(a.contains("plates:\n"));
-    assertTrue(a.contains("occupancy:\n"));
-    assertTrue(a.contains("lockers:\n"));
-    assertTrue(a.contains("plate_velocity:\n"));
-    assertTrue(a.contains("plate_registry:\n"));
-    assertTrue(a.endsWith("\n"));
+  @DisplayName("Equal fields give equal text, and a change in one cell or one column changes it")
+  void dumpIsAFunctionOfTheFields() {
+    ProductSession session = new ProductSession(new WorldSpec(12, 6, 4L));
+    session.advance(2);
+    WorldSpec spec = session.spec();
+    Grid elevation = session.elevation();
+    Grid occupancy = (Grid) session.field(WorldFields.OCCUPANCY);
+    Lockers lockers = (Lockers) session.field(WorldFields.LOCKERS);
+
+    String text = dump(spec, elevation, occupancy, lockers, session);
+    assertEquals(text, dump(spec, copy(elevation, -1, -1, 0), occupancy, lockers, session), "equal fields, equal text");
+    assertEquals(session.settledWorld(), text);
+
+    Grid oneCellHigher = copy(elevation, 3, 2, elevation.get(3, 2) + 1);
+    assertNotEquals(text, dump(spec, oneCellHigher, occupancy, lockers, session));
+
+    int[] thicker = lockers.thicknesses();
+    thicker[occupancy.get(0, 0)] += 1;
+    assertNotEquals(text, dump(spec, elevation, occupancy, new Lockers(thicker), session));
   }
 
+  /** Proves F-068 FR-45 (docs/paperwork/steps/F-068.md). */
   @Test
-  @DisplayName("FR-2: DEFAULT + 3 Steps dump equals stored golden")
-  void canonicalFixtureMatchesGolden() throws Exception {
-    WorldSpec spec = WorldSpec.DEFAULT;
-    Engine engine = ProductHost.create(spec);
-    engine.advance(WorldDump.CANONICAL_STEPS);
-    String dump = WorldDump.of(engine, spec);
-    String golden =
-        Files.readString(
-                findRepoRoot().resolve("product/src/test/resources/worlds/default-n3.txt"),
-                StandardCharsets.UTF_8)
-            .replace("\r\n", "\n");
-    assertEquals(golden, dump);
+  @DisplayName("Printing the dump changes no field and no diagnostic")
+  void printingChangesNothing() {
+    ProductSession session = new ProductSession(new WorldSpec(12, 6, 4L));
+    session.advance(2);
+    String report = session.diagnostics().listReport();
+    String first = session.settledWorld();
+
+    String second = session.settledWorld();
+
+    assertEquals(first, second);
+    assertEquals(2, session.stepIndex());
+    assertEquals(report, session.diagnostics().listReport());
   }
 
-  @Test
-  @DisplayName("FR-3: Step 0 dump is zero elevation; after N, height matches ProductGeneration isostasy")
-  void stepZeroAndSutureRule() {
-    WorldSpec spec = new WorldSpec(4, 2, 0L);
-    Engine engine = ProductHost.create(spec);
-    String zero = WorldDump.of(engine, spec);
-    assertTrue(zero.startsWith("world w=4 h=2 seed=0 steps=0\n"));
-    assertTrue(zero.contains("elevation:\n0 0 0 0\n0 0 0 0\n"));
-    Grid plates = Plates.seed(4, 2, 0L);
-    assertTrue(zero.contains("plates:\n" + gridBlock(plates)));
-    assertTrue(zero.contains("plate_velocity:\n"));
-
-    engine.advance(2);
-    String risen = WorldDump.of(engine, spec);
-    ProductGeneration.Snapshot state =
-        new ProductGeneration.Snapshot(
-            plates,
-            PlateVelocities.seed(0L),
-            PlateRegistry.from(plates, PlateVelocities.seed(0L)),
-            Grid.zeros(4, 2));
-    state = ProductGeneration.advance(state, 1);
-    state = ProductGeneration.advance(state, 2);
-    assertTrue(risen.contains("elevation:\n" + gridBlock(state.elevation())));
-    assertTrue(risen.contains("plates:\n" + gridBlock(state.plates())));
+  private static String dump(WorldSpec spec, Grid elevation, Grid occupancy, Lockers lockers, ProductSession s) {
+    return WorldDump.format(spec, s.stepIndex(), elevation, s.plates(), occupancy, lockers,
+        s.plateVelocities(), s.plateRegistry(), s.boundaries(), s.areaFlux(), s.motionIntent());
   }
 
-  @Test
-  @DisplayName("FR-4: independent runs match; different seed differs when width > 1")
-  void independentRunsAndDifferentSeed() {
-    WorldSpec spec = WorldSpec.DEFAULT;
-    Engine a = ProductHost.create(spec);
-    Engine b = ProductHost.create(spec);
-    a.advance(WorldDump.CANONICAL_STEPS);
-    b.advance(WorldDump.CANONICAL_STEPS);
-    assertEquals(WorldDump.of(a, spec), WorldDump.of(b, spec));
-
-    WorldSpec other = new WorldSpec(spec.width(), spec.height(), spec.seed() + 1);
-    Engine c = ProductHost.create(other);
-    c.advance(WorldDump.CANONICAL_STEPS);
-    assertNotEquals(WorldDump.of(a, spec), WorldDump.of(c, other));
-  }
-
-  @Test
-  @DisplayName("FR-5: dump recorded; G-003 stays done")
-  void docsRecordDumpAndGoalDone() throws Exception {
-    Path root = findRepoRoot();
-    String arch = Files.readString(root.resolve("docs/architecture/studio/session.md"));
-    assertTrue(arch.contains("WorldDump"));
-    String readme = Files.readString(root.resolve("product/README.md"));
-    assertTrue(readme.contains("WorldDump"));
-
-    String goal = Files.readString(root.resolve("docs/paperwork/goals/G-003-first-product-world.md"));
-    assertTrue(goal.contains("**Status:** `done`"));
-    assertFalse(goal.contains("**Status:** `in progress`"));
-    assertTrue(goal.contains("- [x] Headless product observer dumps the settled grid"));
-    assertTrue(
-        goal.contains("- [x] Incremental suite: all G-001 and G-002 Step tests remain green"));
-
-    String goalsIndex = Files.readString(root.resolve("docs/paperwork/goals.md"));
-    assertTrue(goalsIndex.contains("G-003"));
-    assertTrue(goalsIndex.contains("First product world"));
-    assertTrue(goalsIndex.contains("done"));
-  }
-
-  private static Path findRepoRoot() {
-    var dir = Path.of("").toAbsolutePath().normalize();
-    for (var cursor = dir; cursor != null; cursor = cursor.getParent()) {
-      if (Files.isRegularFile(cursor.resolve("pom.xml"))
-          && Files.isDirectory(cursor.resolve("engine"))
-          && Files.isDirectory(cursor.resolve("docs"))) {
-        return cursor;
+  /** A copy of {@code grid}, with cell (x, y) set to {@code value} when x is not negative. */
+  private static Grid copy(Grid grid, int x, int y, int value) {
+    int[][] cells = new int[grid.height()][grid.width()];
+    for (int j = 0; j < grid.height(); j++) {
+      for (int i = 0; i < grid.width(); i++) {
+        cells[j][i] = grid.get(i, j);
       }
     }
-    throw new IllegalStateException("repo root not found");
-  }
-
-  private static String gridBlock(Grid grid) {
-    StringBuilder out = new StringBuilder();
-    for (int y = 0; y < grid.height(); y++) {
-      for (int x = 0; x < grid.width(); x++) {
-        if (x > 0) {
-          out.append(' ');
-        }
-        out.append(grid.get(x, y));
-      }
-      out.append('\n');
+    if (x >= 0) {
+      cells[y][x] = value;
     }
-    return out.toString();
+    return new Grid(cells);
   }
 }

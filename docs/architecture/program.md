@@ -9,10 +9,10 @@
 
 Aethelgard is one Maven build. The parent artifact is `com.aethelgard:aethelgard`, packaging `pom`, at the repository root. The language level is Java 21 (`maven.compiler.release` 21). The build command is the Maven wrapper at the root (`mvnw` / `mvnw.cmd`).
 
-**Witness command:** `./mvnw test` from the repository root (`mvnw.cmd test` on Windows). GitHub Actions runs the same command on `main`.  
-**Tests:** JUnit tests in `<module>/src/test/java/`, in the same package as the unit they test, named `<Unit>Test.java`. The web front (`ui/web/`) and the desktop shell (`ui/desktop/`) have no tests.  
+**Witness command:** `./mvnw test` from the repository root (`mvnw.cmd test` on Windows). It also runs the web front's tests, which need `npm ci` in `ui/web` first. GitHub Actions runs the same command on `main`.  
+**Tests:** JUnit tests in `<module>/src/test/java/`, one class per outcome area, named `<Area>Test.java`, in the package of the entry point they drive. Vitest tests beside the web front's source, `ui/web/src/**/*.test.ts` and `*.test.tsx`, run by `npm test` in the `ui` module's test phase. Each test states its outcome (`@DisplayName`, or the `it` title) and names the requirements it proves in a comment beside it: `Proves F-0xx FR-n (docs/paperwork/steps/F-0xx.md)`. No test reads a document, or another file's source or configuration as text. The desktop shell (`ui/desktop/`) has no tests.  
 **Declarations:** Java: `(class|interface|record|enum) <Name>\b` in `<module>/src/main/java/`. TypeScript: `(function|const|class|interface|type) <Name>\b` in `ui/web/src/`. Rust: `(fn|struct|enum) <name>\b` in `ui/desktop/src-tauri/src/`.  
-**Output summary:** lines matching `Tests run:`, `FAIL`, `ERROR`, `BUILD SUCCESS`, or `BUILD FAILURE` in the witness output.
+**Output summary:** lines matching `Tests run:`, `FAIL`, `ERROR`, `BUILD SUCCESS`, or `BUILD FAILURE` in the witness output, and the Vitest lines `Test Files` and `Tests`.
 
 Four Maven modules do four jobs, and two more parts are built by their own tools. The engine is a host for any step-based simulation. The product is the world that plugs into that host, and the session that runs it. The CLI runs a world with no window. The UI module paints a world and serves it on the local machine. The web front (`ui/web/`, Next.js) is the page that shows it, and the desktop shell (`ui/desktop/`, Tauri) is the window that starts everything.
 
@@ -31,8 +31,8 @@ Every build file:
 | [`engine/pom.xml`](../../engine/pom.xml) | The engine, against the SLF4J API only; JUnit and the simple SLF4J binding for tests |
 | [`product/pom.xml`](../../product/pom.xml) | The product, on the engine; the simple SLF4J binding at run time |
 | [`cli/pom.xml`](../../cli/pom.xml) | The CLI, on the product and the engine |
-| [`ui/pom.xml`](../../ui/pom.xml) | The UI module, on the product, the CLI, and the engine |
-| [`ui/web/package.json`](../../ui/web/package.json) | The web front with npm: Next.js 15, React 19, TypeScript 5; scripts `dev`, `build`, `start`, `lint` |
+| [`ui/pom.xml`](../../ui/pom.xml) | The UI module, on the product, the CLI, and the engine; in its test phase it runs `npm test` in `ui/web` (`npm.cmd` on Windows; skipped with `-DskipTests`) |
+| [`ui/web/package.json`](../../ui/web/package.json) | The web front with npm: Next.js 15, React 19, TypeScript 5; scripts `dev`, `build`, `start`, `lint`, and `test` (`vitest run`, configured by [`vitest.config.mts`](../../ui/web/vitest.config.mts): jsdom, the `@` path alias, and a setup file); test packages Vitest, jsdom, and Testing Library |
 | [`ui/desktop/package.json`](../../ui/desktop/package.json) | The desktop shell's Tauri command line; scripts `dev` (`tauri dev`) and `build` |
 | [`ui/desktop/src-tauri/Cargo.toml`](../../ui/desktop/src-tauri/Cargo.toml) | The Rust crate `aethelgard` with library `aethelgard_lib`, on Tauri 2 and its shell plugin |
 
@@ -68,7 +68,7 @@ webview ── HTTP ──→ map host
 person → CLI (own world, no window)
 ```
 
-[`run-product.cmd`](../../run-product.cmd) runs four steps: it installs the Java modules the UI needs (`mvnw.cmd -pl ui -am install -DskipTests`), installs the web front's and the shell's npm packages when their folders have none, and runs `npm run dev` in `ui/desktop`. [`run-ui.cmd`](../../run-ui.cmd) calls it with the same arguments. The workflow file [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) describes a job that checks out the repository, sets up JDK 21, and runs `./mvnw -B test` on every push and pull request to `main`. The file is a Markdown text with that job in a fenced block, and as a whole it is not valid YAML ([open questions](open-questions.md)).
+[`run-product.cmd`](../../run-product.cmd) runs four steps: it installs the Java modules the UI needs (`mvnw.cmd -pl ui -am install -DskipTests`), installs the web front's and the shell's npm packages when their folders have none, and runs `npm run dev` in `ui/desktop`. [`run-ui.cmd`](../../run-ui.cmd) calls it with the same arguments. The workflow file [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs one job on every push and pull request to `main`: it checks out the repository, sets up JDK 21 and Node 22, installs the web front's packages with `npm ci`, and runs `./mvnw -B test`.
 
 ## Stack
 
@@ -81,6 +81,7 @@ The choices of how the project is built, each with the decision record that made
 | Layout: one repository, with the engine and the product as sibling modules | [ADR-001](../paperwork/decisions/ADR-001-monorepo.md), [ADR-007](../paperwork/decisions/ADR-007-modules-and-java-21.md), [ADR-010](../paperwork/decisions/ADR-010-product-adapters.md) |
 | Engine logging: the SLF4J API only, with no binding in `engine` | [ADR-008](../paperwork/decisions/ADR-008-diagnostics.md) |
 | Interactive front: a Tauri 2 desktop shell, a Next.js page, and a Java HTTP host on localhost | [ADR-011](../paperwork/decisions/ADR-011-local-webview.md) |
+| Web front tests: Vitest in jsdom with Testing Library, run by the Maven witness command | [ADR-020](../paperwork/decisions/ADR-020-web-front-tests.md) |
 
 ## Where the rest of the paper is
 

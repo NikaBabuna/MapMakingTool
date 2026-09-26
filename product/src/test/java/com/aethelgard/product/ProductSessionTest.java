@@ -1,133 +1,79 @@
 /*
  * File: product/src/test/java/com/aethelgard/product/ProductSessionTest.java
- * Purpose: F-019 witness — ProductSession, serialized advance, unchanged world rules
+ * Purpose: Proves what a session is: one world it owns, reports, and advances one caller at a time
  * Audience: Agents / CI
- * Update when: F-019 FRs change
+ * Update when: ProductSession changes
  */
 
 package com.aethelgard.product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.engine.pool.Engine;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ProductSessionTest {
 
+  /** Proves F-068 FR-43 (docs/paperwork/steps/F-068.md). */
   @Test
-  @DisplayName("FR-3: session creates, reads grids, advances; no CLI verbs in type")
-  void sessionOwnsRun() throws Exception {
-    ProductSession session = ProductSession.ofDefault();
-    assertEquals(WorldSpec.DEFAULT, session.spec());
+  @DisplayName("A session owns one world, reports its spec, step and fields, and refuses a negative advance")
+  void sessionOwnsOneWorld() {
+    WorldSpec spec = new WorldSpec(16, 8, 2L);
+    ProductSession session = new ProductSession(spec);
+    assertEquals(spec, session.spec());
     assertEquals(0, session.stepIndex());
-    Grid elevation = session.elevation();
-    Grid plates = session.plates();
-    assertEquals(8, elevation.width());
-    assertEquals(8, plates.height());
-    for (int y = 0; y < elevation.height(); y++) {
-      for (int x = 0; x < elevation.width(); x++) {
-        assertEquals(0, elevation.get(x, y));
-      }
-    }
+    Grid platesAtZero = session.plates();
+    String worldAtZero = session.settledWorld();
 
-    session.advance();
-    assertEquals(1, session.stepIndex());
-    assertNotEquals(elevation, session.elevation());
-
-    String src =
-        Files.readString(
-            findRepoRoot()
-                .resolve("product/src/main/java/com/aethelgard/product/ProductSession.java"));
-    assertFalse(src.contains("javax.swing"));
-    assertFalse(src.contains("--steps"));
-    assertFalse(src.contains("parse("));
-  }
-
-  @Test
-  @DisplayName("FR-3: advance(n) is serialized; negative n fails")
-  void serializedAdvance() throws Exception {
-    ProductSession session = ProductSession.ofDefault();
-    Thread a = new Thread(session::advance);
-    Thread b = new Thread(session::advance);
-    a.start();
-    b.start();
-    a.join();
-    b.join();
-    assertEquals(2, session.stepIndex());
+    session.advance(3);
+    assertEquals(3, session.stepIndex());
+    assertEquals(16, session.elevation().width());
+    assertEquals(8, session.elevation().height());
+    assertEquals(session.plates(), session.field(WorldFields.PLATES));
+    assertTrue(session.fieldNames().containsAll(List.of(
+        WorldFields.ELEVATION, WorldFields.PLATES, WorldFields.PLATE_VELOCITY, WorldFields.PLATE_REGISTRY,
+        WorldFields.BOUNDARIES, WorldFields.AREA_FLUX, WorldFields.MOTION_INTENT, WorldFields.OCCUPANCY, WorldFields.LOCKERS)));
+    assertEquals(List.of(ProductHost.TECTONICS_SYSTEM_ID), session.systemIds());
+    assertEquals(new ProductSession(spec).plates(), platesAtZero, "a value read earlier does not change as the world moves");
+    assertTrue(!worldAtZero.equals(session.settledWorld()), "the world moved");
 
     assertThrows(IllegalArgumentException.class, () -> session.advance(-1));
-    session.advance(0);
-    assertEquals(2, session.stepIndex());
+    assertEquals(3, session.stepIndex());
   }
 
+  /** Proves F-068 FR-43 (docs/paperwork/steps/F-068.md). */
   @Test
-  @DisplayName("FR-4: same seed + N Steps as ProductHost; VIEW 1920×1080; dump golden path")
-  void worldRulesUnchanged() {
-    WorldSpec spec = WorldSpec.DEFAULT;
-    Engine engine = ProductHost.create(spec);
-    engine.advance(WorldDump.CANONICAL_STEPS);
-    ProductSession session = ProductSession.ofDefault();
-    session.advance(WorldDump.CANONICAL_STEPS);
-    assertEquals(WorldDump.of(engine, spec), session.settledWorld());
-    assertEquals(WorldDump.CANONICAL_STEPS, session.stepIndex());
-
-    ProductSession view = ProductSession.view();
-    assertEquals(1920, view.spec().width());
-    assertEquals(1080, view.spec().height());
-    assertEquals(0L, view.spec().seed());
-    assertEquals(1920, view.elevation().width());
-    assertEquals(1080, view.plates().height());
-    assertEquals(0, view.stepIndex());
-  }
-
-  @Test
-  @DisplayName("FR-2: product main sources have no Swing / JFrame / MapFrame")
-  void productMainHasNoSwing() throws Exception {
-    Path main = findRepoRoot().resolve("product/src/main/java");
-    try (Stream<Path> walk = Files.walk(main)) {
-      walk.filter(p -> p.toString().endsWith(".java"))
-          .forEach(
-              path -> {
-                try {
-                  String text = Files.readString(path);
-                  assertFalse(text.contains("javax.swing"), path.toString());
-                  assertFalse(text.contains("JFrame"), path.toString());
-                  assertFalse(text.contains("java.awt"), path.toString());
-                } catch (Exception e) {
-                  throw new RuntimeException(e);
-                }
-              });
+  @DisplayName("Advances from several threads run one after another and give the same world as one caller")
+  void concurrentAdvancesDoNotInterleave() throws Exception {
+    WorldSpec spec = new WorldSpec(24, 12, 6L);
+    ProductSession shared = new ProductSession(spec);
+    ExecutorService pool = Executors.newFixedThreadPool(4);
+    CountDownLatch start = new CountDownLatch(1);
+    List<Future<?>> done = new ArrayList<>();
+    for (int t = 0; t < 4; t++) {
+      done.add(pool.submit(() -> {
+        start.await();
+        shared.advance(5);
+        return null;
+      }));
     }
-    assertFalse(
-        Files.exists(
-            findRepoRoot()
-                .resolve("product/src/main/java/com/aethelgard/product/MapFrame.java")));
-    assertFalse(
-        Files.exists(
-            findRepoRoot()
-                .resolve("product/src/main/java/com/aethelgard/product/ProductApp.java")));
-    String goal = Files.readString(findRepoRoot().resolve("docs/paperwork/goals/G-004-see-the-world.md"));
-    assertTrue(goal.contains("**Status:** `done`"));
-    assertFalse(goal.contains("**Status:** `in progress`"));
-  }
-
-  private static Path findRepoRoot() {
-    var dir = Path.of("").toAbsolutePath().normalize();
-    for (var cursor = dir; cursor != null; cursor = cursor.getParent()) {
-      if (Files.isRegularFile(cursor.resolve("pom.xml"))
-          && Files.isDirectory(cursor.resolve("engine"))
-          && Files.isDirectory(cursor.resolve("docs"))) {
-        return cursor;
-      }
+    start.countDown();
+    for (Future<?> f : done) {
+      f.get();
     }
-    throw new IllegalStateException("repo root not found");
+    pool.shutdown();
+
+    ProductSession alone = new ProductSession(spec);
+    alone.advance(20);
+    assertEquals(20, shared.stepIndex());
+    assertEquals(alone.settledWorld(), shared.settledWorld());
   }
 }

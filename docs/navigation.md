@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))  
-**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-011 Docs restructuring · last completed G-010  
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — none · last completed G-011  
 **Protocol:** [protocol/README.md](protocol/README.md) · begin at [protocol/brief.md](protocol/brief.md)  
 **Reading:** [protocol/navigation/README.md](protocol/navigation/README.md) — how to read this map, and the repository, without filling your context
 
@@ -139,14 +139,15 @@ Reading any of these whole fills a context window with little of value. The rule
 | Path | What it is | Size | How to read it |
 |------|------------|------|----------------|
 | `ui/desktop/src-tauri/Cargo.lock` | Rust lock file | ~4,700 lines | Search for one crate name |
-| `ui/web/package-lock.json` | JavaScript lock file | ~1,000 lines | Search for one package name |
+| `ui/web/package-lock.json` | JavaScript lock file | ~2,800 lines | Search for one package name |
 | `ui/web/src/components/MapTool.tsx` | Web studio component | ~970 lines | Search the member, read its range |
 | `ui/web/src/app/globals.css` | Web stylesheet | ~960 lines | Search the selector, read its range |
 | `ui/src/main/java/com/aethelgard/ui/host/MapHost.java` | Java HTTP host | ~670 lines | Search the member, read its range |
 | `product/src/main/java/com/aethelgard/product/ApplyGeometry.java` | Geometry phase | ~610 lines | Search the member, read its range |
 | `cli/src/main/java/com/aethelgard/cli/CommandDispatch.java` | Command language | ~540 lines | Search the member, read its range |
 | `product/src/test/resources/worlds/` | Golden world dumps (test data) | Data, not prose | Only when a dump test fails: its first line, then the failing region |
-| `docs/paperwork/steps/` | Step records | ~66 files, ~4,200 lines | One record by id. Search a field across them |
-| `docs/paperwork/decisions/` | Decision records | ~18 files | One record, chosen from the index |
-| `docs/protocol/blueprints/` | Blueprints | ~35 files, ~4,000 lines | The group door, then one blueprint's key block and one operation |
+| `docs/paperwork/steps/` | Step records | ~69 files, ~5,100 lines | One record by id. Search a field across them |
+| `docs/paperwork/steps/F-068.md` | The Step record of the functional suite, with its retired and known-defect tables | ~510 lines | Search the requirement id or the test name, then read that row |
+| `docs/paperwork/decisions/` | Decision records | ~21 files | One record, chosen from the index |
+| `docs/protocol/blueprints/` | Blueprints | ~42 files, ~4,500 lines | The group door, then one blueprint's key block and one operation |
 | `docs/protocol/flows/` | Flows | 12 files, ~2,000 lines | Only the flow the turn selected, one stage or algorithm at a time |

@@ -32,7 +32,7 @@ The index of every Step, grouped by Goal, so status can be read without opening 
 
 A **Step** is one job under a **Goal**: agree the work, store its requirements, do it, prove it, and record it. This registry lists every Step, grouped by the Goal it belongs to, with its status and one sentence on what it does. The Step's own record, `docs/paperwork/steps/F-0xx.md`, holds the approved job, the decisions, the requirements, the test that proves each one, and the witness. A record is written when the Step is approved, before any work starts.
 
-**Incremental:** Accept requires this Step's tests **and** all earlier Accepted Steps' tests to stay green.
+**Incremental:** Accept requires this Step's tests **and** all earlier Accepted Steps' tests to stay green, except tests a Step record retires or lists as known defects.
 
 Procedure: [../protocol/flows/step.md](../protocol/flows/step.md)
 

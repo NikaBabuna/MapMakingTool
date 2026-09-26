@@ -1,39 +1,24 @@
 <!--
   File: ui/web/README.md
-  Purpose: Next.js map tool front (G-006 / G-007)
-  Audience: Humans and agents
-  Update when: Front layout or launch changes
+  Purpose: Door to the web front, the studio's page
+  Audience: Agents and humans
+  Update when: A child of this folder is added or removed
 -->
 
-# Aethelgard web front
+# Web front
 
-Next.js **runner shell** tool for the living map. Talks to Java [`MapHost`](../src/main/java/com/aethelgard/ui/host/MapHost.java) over localhost HTTP. Lives under `ui/web/`.
+The web front is the studio's page: it shows the map and drives the world through the local map host.
 
-## Dev loop
+**Docs:** [web front](../../docs/architecture/studio/web/README.md) · [processes](../../docs/architecture/program.md)  
+**Look:** [style guide](../../docs/product/style-guide.md)
 
-1. Start the host (repo root):
-
-```bat
-mvnw -pl ui -am install -DskipTests
-mvnw -pl ui exec:java -Dexec.mainClass=com.aethelgard.ui.host.MapHostApp
-```
-
-2. In another terminal:
-
-```bat
-cd ui\web
-npm install
-npm run dev
-```
-
-Open http://localhost:3000. Host default: `http://127.0.0.1:7420` (`NEXT_PUBLIC_MAP_HOST`).
-
-## Behavior
-
-Map-first **runner** (F-053): menu-bar row (File · Edit · View · Simulation · Help); top bar identity · transport (Play/Pause/`1x`…`Fastest`) · view; left **Perf** rail (hub means + steps/sec); World rail (step/seed/reset, Advance ×N, copy seed + Inspect/Legend); layer chips **top-left**; always-on Terminal panel with **Clear**. Rails and terminal are drag-resizable (sizes persist; **View → Reset layout**). Brighter elevation ramps. Play is a client timer → `/api/advance`. Busy gates Advance / Reset world (no Working… map overlay). **Simulation → Restart UI** reloads the page; **Restart engine** recreates the Java session at Step 0 (same seed, works while busy).
-
-Chrome is descriptor-driven (alpha): add a rail panel in `src/lib/panels.ts`, a menu item in `src/lib/menus.ts`, a resizable region in `src/lib/layout.ts`, a key row in `src/lib/shortcuts.ts`.
-
-Shortcuts: Space Play/Pause; A/. Advance; 1–3 layers; [/] speed; N Reset world; `/C focus terminal; D World rail; P Perf rail; R reset view; ? shortcut list.
-
-Docs: [docs/product/style-guide.md](../../docs/product/style-guide.md) · [docs/architecture/studio/web/README.md](../../docs/architecture/studio/web/README.md) · [docs/product/journeys.md](../../docs/product/journeys.md)
+| Path | Read it when |
+|------|----------------|
+| `src/` | You need the page's code, `src/app/`, `src/components/`, and `src/lib/`, or its tests, `*.test.ts` and `*.test.tsx` beside the code they test, with their stand-in host in `src/test/` |
+| [package.json](package.json) | You need the page's packages or its scripts: `dev`, `build`, `start`, `lint`, and `test` |
+| [package-lock.json](package-lock.json) | You need the exact version of one package; search it for the name |
+| [next.config.ts](next.config.ts) | You need the Next.js settings |
+| [tsconfig.json](tsconfig.json) | You need the TypeScript settings or the `@` path alias |
+| [next-env.d.ts](next-env.d.ts) | You need the types Next.js generates for the page |
+| [vitest.config.mts](vitest.config.mts) | You need how the tests run: the simulated browser, the alias, and the setup file |
+| [.env.example](.env.example) | You need to point the page at a map host other than `127.0.0.1:7420` |

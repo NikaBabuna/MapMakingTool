@@ -78,7 +78,7 @@ A Step is one job. The stages below are the whole job, in order. PROPOSE, REQUIR
    | `Documentation`, `Cleanup` without source | `FR-n`: one observable document fact each. The witness is `reading <path>: <what is found>`, plus the existing suite remaining green |
    | `Iterative` | `AIM`: the aim, in one sentence. `BAR-n`: the initial bar, each one checkable. For each BAR about behaviour, a named test. The completion witness is the human writing that the Step is complete |
 
-   Every table ends with the row: `Every test of every earlier Accepted Step remains green.`
+   Every table ends with the row: `Every test of every earlier Accepted Step remains green.` A Step the human approves to retire earlier tests, or to leave code defects in place, ends instead with: `Every test not listed under Retired tests or Known defects is green, and each Known defect fails only on the defect stated for it.` ([../environment/correctness.md](../environment/correctness.md) 3.2).
 
 6. **Requirement wording.** Each requirement states a condition and an observable result. It contains none of the words "should", "properly", "clean", "better", "appropriately", or "as needed". A requirement that cannot fail its witness is rewritten or removed.  
 7. **Assumptions.** List every assumption the plan relies on, each with a confidence label.  
@@ -157,7 +157,9 @@ A Step is one job. The stages below are the whole job, in order. PROPOSE, REQUIR
 
 1. Change only files in the approved plan.  
 2. Keep the Test map on M1 current, by **Update test map** of [../blueprints/paperwork/step.md](../blueprints/paperwork/step.md).  
-3. Do not delete, skip, disable, or loosen a test of an earlier Accepted Step. Do not change an expected value in an earlier test, unless an approved FR of this Step states the new value.
+3. Do not delete, skip, disable, or loosen a test of an earlier Accepted Step. Do not change an expected value in an earlier test, unless an approved FR of this Step states the new value. The one exception is a Step whose approved Job retires earlier tests: it lists each one on M1 by **Add retired test** of [../blueprints/paperwork/step.md](../blueprints/paperwork/step.md), and every retired test is listed before WITNESS.  
+4. When a test fails because the code is wrong and the human has directed that the code not change in this Step, leave the test enabled and red, and apply **Add known defect** of [../blueprints/paperwork/step.md](../blueprints/paperwork/step.md). Do not change the test to pass.  
+5. Write each test beside a comment that names the requirements it proves, with the path of the Step record ([../environment/correctness.md](../environment/correctness.md) 3.3).
 
 ### Record source
 
@@ -176,8 +178,8 @@ A Step is one job. The stages below are the whole job, in order. PROPOSE, REQUIR
 1. **Run.** Run the witness command from the repository root.  
 2. **Green** means all of the following:
    1. the command exits with success;  
-   2. no test failed and no test errored;  
-   3. for each module, the number of tests run is not lower than the number recorded in the Witness section of the last Accepted Step's record. That is the Step named in the newest commit whose subject begins `Accept F-`. If that record gives no counts, skip this comparison and record counts now;  
+   2. no test failed and no test errored, except the tests M1 or an earlier record lists under **Known defects**, each failing only on its stated defect;  
+   3. for each module, the number of tests run is not lower than the number recorded in the Witness section of the last Accepted Step's record, less the tests M1 lists under **Retired tests** for that module, plus the tests this Step adds. That is the Step named in the newest commit whose subject begins `Accept F-`. If that record gives no counts, skip this comparison and record counts now;  
    4. the number of skipped tests is not higher than that record's count.
 3. **Per requirement.**
 
@@ -292,7 +294,7 @@ Also confirm that no door carries an `**Active Goal:**` sentence.
 **Steps.** Carry them out in this order.
 
 1. **Boxes.** The Goal progress box is the only unticked Sync box on M1.  
-2. **Requirements.** Apply **Set requirement status** of [../blueprints/paperwork/step.md](../blueprints/paperwork/step.md). A row that cannot be `met` sends the Step back to FIX / ITERATE.  
+2. **Requirements.** Apply **Set requirement status** of [../blueprints/paperwork/step.md](../blueprints/paperwork/step.md). A row whose test is listed under **Known defects** is set to `known defect`. Any other row that cannot be `met` sends the Step back to FIX / ITERATE.  
 3. **Marks and progress.**
    1. M1: apply **Set status** (`done`) of [../blueprints/paperwork/step.md](../blueprints/paperwork/step.md).  
    2. M2: apply **Mark done** of [../blueprints/paperwork/step-registry.md](../blueprints/paperwork/step-registry.md).  

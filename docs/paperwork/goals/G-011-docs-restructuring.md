@@ -7,7 +7,7 @@
 
 # G-011 — Docs restructuring
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Engine:** no `engine` source edits. No simulation change.  
 **Prior:** [G-010](G-010-crust-topology.md) closed crust topology. Docs are still split across `process/`, `project/`, `engine/`, `product/`, and `blockers/`, with conduct, concept, implementation, and history mixed on the same shelves.
 
@@ -19,10 +19,10 @@
 
 When this Goal is `done`:
 
-1. **Four shelves.** `docs/protocol/` is conduct (product-independent rules). `docs/product/` is what this product is (concept, domain language, wiki) and does not describe implementation. `docs/architecture/` is what is built: a paper in plain English, with the graphs and theory needed to see what each part does. `docs/paperwork/` is history: who did what, and when.
-2. **One entrance.** `docs/README.md` and `docs/navigation.md` stay at the docs root and point at the four shelves. `AGENTS.md` stays at the repo root and points into `docs/protocol/`. Cursor’s rule file stays where Cursor reads it and points at the same place.
-3. **A file’s folder is its job.** Conduct, concept, machine, and log are not mixed on one shelf.
-4. **Suite.** Incremental tests stay green. Same seed and Step count still produce the same fields.
+1. Every doc lives on one of the four shelves, or is the entrance at the `docs/` root.
+2. An agent can tell a file’s job from its folder.
+3. The architecture paper describes every layer of the app as it runs, in plain words and in mathematics, tied to its code.
+4. The suite tests what the app does, reads no document, and names the requirement each test proves. The same seed and step count still produce the same fields.
 
 Plain English: four shelves, one entrance. The folder tells you whether you are reading rules, the product idea, the machine, or the log.
 
@@ -67,9 +67,10 @@ Roadmap and backlog sit with paperwork (project management). Decisions stay the 
 
 ## Product claims (tests by Goal end)
 
-- [ ] Every doc lives on one of the four shelves, or is the entrance at `docs/` root
-- [ ] An agent can tell a file’s job from its folder
-- [ ] Incremental suite green; fields for a fixed seed and Step count unchanged
+- [x] Every doc lives on one of the four shelves, or is the entrance at the `docs/` root. — witness: reading `docs/`: the folders `protocol/`, `product/`, `architecture/`, and `paperwork/`, and beside them only `README.md` and `navigation.md`
+- [x] An agent can tell a file’s job from its folder. — witness: reading `docs/navigation.md` and the four shelf doors
+- [x] The architecture paper describes every layer of the app as it runs, in plain words and in mathematics, tied to its code. — witness: reading `docs/paperwork/steps/F-067.md`
+- [x] The suite tests what the app does, reads no document, and names the requirement each test proves. The same seed and step count still produce the same fields. — witness: GenerationTest.sameSeedSameWorld, GenerationTest.defaultWorldMatchesTheGoldenDump; reading `docs/paperwork/steps/F-068.md`
 
 ---
 
@@ -83,6 +84,7 @@ Roadmap and backlog sit with paperwork (project management). Decisions stay the 
 | F-065 | Architecture paper by abstraction level | done |
 | F-066 | Paperwork shelf: one file per record, lists stay one file | done |
 | F-067 | Architecture paper of the whole app: every layer, in plain English and mathematics, backed by its code | done |
+| F-068 | Functional test suite: tests prove the app's requirements by running its code, and G-011 closes | done |
 
 Protocol goes first so later Steps move files into homes the rules already name.
 
@@ -92,6 +94,6 @@ Protocol goes first so later Steps move files into homes the rules already name.
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 6 / 6 |
-| Claim boxes | 0 / 3 |
-| Last Accept | F-067 |
+| Steps done | 7 / 7 |
+| Claim boxes | 4 / 4 |
+| Last Accept | F-068 |

@@ -30,5 +30,6 @@ One file per decision. The next number is one higher than the last row. Each row
 | ADR-017 | Architecture paper by abstraction | accepted | The implementation is written as one paper arranged by level of abstraction, each page pointing at the finer page. Amended by ADR-019. | [ADR-017-architecture-paper.md](decisions/ADR-017-architecture-paper.md) |
 | ADR-018 | Scope lives in the concept | accepted | The product's binding scope is part of the concept page, and the stack is listed on the program page. | [ADR-018-scope-in-concept.md](decisions/ADR-018-scope-in-concept.md) |
 | ADR-019 | Architecture paper by layer | accepted | The implementation paper covers the whole program, one area per layer of the code, and every page states its mechanism in plain words and as a model and names the code that performs it. | [ADR-019-architecture-paper-by-layer.md](decisions/ADR-019-architecture-paper-by-layer.md) |
+| ADR-020 | Web front tests with Vitest | accepted | The web front is tested with Vitest in a simulated browser, beside its source, and the Maven witness command runs those tests with the Java ones. | [ADR-020-web-front-tests.md](decisions/ADR-020-web-front-tests.md) |
 
 How to write one: [../protocol/blueprints/paperwork/decision-record.md](../protocol/blueprints/paperwork/decision-record.md).
