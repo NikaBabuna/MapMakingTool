@@ -83,7 +83,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <mainClass>com.aethelgard.ui.host.MapHostApp</mainClass>
+          <mainClass>com.aethelgard.ui.http.MapHostApp</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
         <executions>

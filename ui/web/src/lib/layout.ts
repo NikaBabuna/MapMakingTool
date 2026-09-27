@@ -1,6 +1,6 @@
 /*
  * File: ui/web/src/lib/layout.ts
- * Purpose: Resizable runner layout sizes + rail visibility persistence (F-053)
+ * Purpose: Resizable runner layout sizes + rail visibility persistence
  * Audience: MapTool
  * Update when: Layout regions, clamps, or storage keys change
  *

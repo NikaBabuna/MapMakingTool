@@ -23,7 +23,7 @@
   --dock-w: 280px;
   --perf-w: 220px;
   --terminal-h: 11rem;
-  /* F-053 separation tokens: gutters between regions, edges around panels */
+  /* Separation tokens: gutters between regions, edges around panels */
   --gutter: #0e0e10;
   --gutter-w: 5px;
   --panel-edge: rgba(255, 255, 255, 0.16);
@@ -72,7 +72,7 @@ input:focus-visible,
   background: var(--gutter);
 }
 
-/* Menu bar row (F-053) — descriptors from lib/menus.ts */
+/* Menu bar row — descriptors from lib/menus.ts */
 .menu-bar {
   display: flex;
   align-items: stretch;
@@ -157,7 +157,7 @@ input:focus-visible,
   font-size: 0.7rem;
 }
 
-/* Drag handles between regions (F-053) */
+/* Drag handles between regions */
 .rail-splitter {
   flex: 0 0 auto;
   width: var(--gutter-w);
@@ -393,7 +393,7 @@ input:focus-visible,
   image-rendering: pixelated;
 }
 
-/* Chart frame (F-039) — neatline + faint graticule + edge ticks */
+/* Chart frame — neatline + faint graticule + edge ticks */
 .map-neatline {
   position: absolute;
   inset: 0.55rem;
@@ -600,7 +600,7 @@ input:focus-visible,
 }
 
 .console-drawer {
-  /* legacy drawer class — F-052 uses .terminal-panel */
+  /* legacy drawer class — the terminal uses .terminal-panel */
   display: none;
 }
 
@@ -609,7 +609,7 @@ input:focus-visible,
   border-top: 1px solid var(--panel-edge);
   background: var(--terminal-bg);
   padding: 0.5rem 0.75rem 0.65rem;
-  /* Height is drag-resizable (F-053); clamps live in lib/layout.ts */
+  /* Height is drag-resizable; clamps live in lib/layout.ts */
   height: var(--terminal-h);
   min-height: 6rem;
   display: flex;
@@ -852,7 +852,7 @@ input:focus-visible,
   font-family: var(--font-mono);
 }
 
-/* Shortcuts overlay (F-053 QoL) */
+/* Shortcuts overlay */
 .shortcuts-backdrop {
   position: fixed;
   inset: 0;

@@ -1,11 +1,11 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/ExecutorPlayScheduler.java
+ * File: ui/src/main/java/com/aethelgard/ui/controller/ExecutorPlayScheduler.java
  * Purpose: Play ticks via ScheduledExecutorService (HTTP host / non-Swing)
  * Audience: MapHost / tests
  * Update when: Play scheduling contract changes
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.controller;
 
 import java.util.Objects;
 import java.util.concurrent.Executors;

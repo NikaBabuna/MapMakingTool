@@ -1,11 +1,11 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/host/MapHostApp.java
- * Purpose: CLI entry to run the localhost map host (F-024/F-026)
+ * File: ui/src/main/java/com/aethelgard/ui/http/MapHostApp.java
+ * Purpose: Starts the map host on the loopback address, as the desktop shell and Maven launch it
  * Audience: Dev / Tauri shell
  * Update when: Host launch flags change
  */
 
-package com.aethelgard.ui.host;
+package com.aethelgard.ui.http;
 
 import com.aethelgard.product.world.fields.WorldSpec;
 import java.io.IOException;

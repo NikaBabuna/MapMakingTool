@@ -2,7 +2,7 @@
 
 /*
  * File: ui/web/src/components/MapTool.tsx
- * Purpose: Simulation runner chrome against MapHost (F-053)
+ * Purpose: Simulation runner chrome against MapHost
  * Audience: App page
  * Update when: Tool controls, layout, or QoL shortcuts change
  */
@@ -150,7 +150,7 @@ export function MapTool() {
   const [confirmNew, setConfirmNew] = useState(false);
   const playRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const busyRef = useRef(false);
-  /** Bumps on explicit layer changes so in-flight poll/raster applies cannot overwrite (F-054). */
+  /** Bumps on explicit layer changes so in-flight poll/raster applies cannot overwrite. */
   const applyGenRef = useRef(0);
 
   useEffect(() => {
@@ -306,7 +306,7 @@ export function MapTool() {
     const startY = event.clientY;
     const startSize = layout[region];
 
-    function onMove(move: PointerEvent) {
+    function handleMove(move: PointerEvent) {
       const delta =
         region === "leftRail"
           ? move.clientX - startX
@@ -315,16 +315,16 @@ export function MapTool() {
             : startY - move.clientY;
       setLayout((prev) => ({ ...prev, [region]: clampSize(region, startSize + delta) }));
     }
-    function onUp() {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
+    function handleUp() {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", handleUp);
       setLayout((prev) => {
         writeLayout(prev);
         return prev;
       });
     }
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", handleUp);
   }
 
   function resetLayout() {
@@ -332,7 +332,7 @@ export function MapTool() {
     setLayout({ ...DEFAULT_LAYOUT });
   }
 
-  async function onAdvance() {
+  async function handleAdvance() {
     if (busyRef.current) {
       return;
     }
@@ -347,7 +347,7 @@ export function MapTool() {
   }
 
   /** Advance N steps through the shared dispatcher (`session advance N`). */
-  async function onAdvanceMany() {
+  async function handleAdvanceMany() {
     if (busyRef.current) {
       return;
     }
@@ -356,14 +356,14 @@ export function MapTool() {
       return;
     }
     try {
-      await onTerminalRun(`session advance ${count}`);
+      await handleTerminalRun(`session advance ${count}`);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     }
   }
 
-  async function onLayer(layer: MapLayerName) {
+  async function handleLayer(layer: MapLayerName) {
     const gen = ++applyGenRef.current;
     try {
       const next = await postLayer(layer);
@@ -384,7 +384,7 @@ export function MapTool() {
     }
   }
 
-  async function onSpeed(nextSpeed: MapSpeedName) {
+  async function handleSpeed(nextSpeed: MapSpeedName) {
     setSpeed(nextSpeed);
     try {
       const next = await postSpeed(nextSpeed);
@@ -398,7 +398,7 @@ export function MapTool() {
     const idx = SPEEDS.indexOf(speed);
     const next = SPEEDS[Math.min(SPEEDS.length - 1, Math.max(0, idx + dir))];
     if (next && next !== speed) {
-      void onSpeed(next);
+      void handleSpeed(next);
     }
   }
 
@@ -435,7 +435,7 @@ export function MapTool() {
     }
   }
 
-  async function onRestartEngine() {
+  async function handleRestartEngine() {
     setPlaying(false);
     const gen = ++applyGenRef.current;
     try {
@@ -487,7 +487,7 @@ export function MapTool() {
     }
   }
 
-  async function onCell(x: number, y: number) {
+  async function handleCell(x: number, y: number) {
     try {
       const next = await postInspect(x, y);
       setStatus(next);
@@ -496,7 +496,7 @@ export function MapTool() {
     }
   }
 
-  async function onTerminalRun(line: string) {
+  async function handleTerminalRun(line: string) {
     const gen = ++applyGenRef.current;
     const result = await postCommand(line);
     if (gen !== applyGenRef.current) {
@@ -512,7 +512,7 @@ export function MapTool() {
     return result;
   }
 
-  function onMenuAction(action: MenuActionId) {
+  function handleMenuAction(action: MenuActionId) {
     switch (action) {
       case "world.new":
         requestNewWorld();
@@ -545,25 +545,25 @@ export function MapTool() {
         setPlaying(false);
         return;
       case "sim.advance":
-        void onAdvance();
+        void handleAdvance();
         return;
       case "sim.speed.1x":
-        void onSpeed("1x");
+        void handleSpeed("1x");
         return;
       case "sim.speed.2x":
-        void onSpeed("2x");
+        void handleSpeed("2x");
         return;
       case "sim.speed.4x":
-        void onSpeed("4x");
+        void handleSpeed("4x");
         return;
       case "sim.speed.Fastest":
-        void onSpeed("Fastest");
+        void handleSpeed("Fastest");
         return;
       case "sim.restartUi":
         window.location.reload();
         return;
       case "sim.restartEngine":
-        void onRestartEngine();
+        void handleRestartEngine();
         return;
       case "help.shortcuts":
         setShortcutsOpen(true);
@@ -572,7 +572,7 @@ export function MapTool() {
   }
 
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
+    function handleKey(e: KeyboardEvent) {
       if (confirmNew) {
         if (e.key === "Escape") {
           setConfirmNew(false);
@@ -601,22 +601,22 @@ export function MapTool() {
       }
       if (key === "a" || key === "A" || key === ".") {
         e.preventDefault();
-        void onAdvance();
+        void handleAdvance();
         return;
       }
       if (key === "1") {
         e.preventDefault();
-        void onLayer("Elevation");
+        void handleLayer("Elevation");
         return;
       }
       if (key === "2") {
         e.preventDefault();
-        void onLayer("Plates");
+        void handleLayer("Plates");
         return;
       }
       if (key === "3") {
         e.preventDefault();
-        void onLayer("Overlay");
+        void handleLayer("Overlay");
         return;
       }
       if (key === "[") {
@@ -652,8 +652,8 @@ export function MapTool() {
         fitView();
       }
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
   });
 
   const busy = status?.busy ?? false;
@@ -737,12 +737,12 @@ export function MapTool() {
                 onChange={(e) => setAdvanceCount(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    void onAdvanceMany();
+                    void handleAdvanceMany();
                   }
                 }}
               />
             </label>
-            <button type="button" className="btn" disabled={busy} onClick={() => void onAdvanceMany()} title="Advance N steps">
+            <button type="button" className="btn" disabled={busy} onClick={() => void handleAdvanceMany()} title="Advance N steps">
               Advance ×N
             </button>
           </div>
@@ -811,7 +811,7 @@ export function MapTool() {
   return (
     <div className="studio" style={shellVars}>
       <MenuBar
-        onAction={onMenuAction}
+        onAction={handleMenuAction}
         checked={{ "view.leftRail": leftRailOpen, "view.rightRail": dockOpen }}
       />
 
@@ -848,7 +848,7 @@ export function MapTool() {
             <select
               value={speed}
               aria-label="Speed"
-              onChange={(e) => void onSpeed(e.target.value as MapSpeedName)}
+              onChange={(e) => void handleSpeed(e.target.value as MapSpeedName)}
             >
               {SPEEDS.map((s) => (
                 <option key={s} value={s}>
@@ -916,10 +916,10 @@ export function MapTool() {
             viewport={viewport}
             onViewportChange={setViewport}
             onStageMetrics={onStageMetrics}
-            onCell={(x, y) => void onCell(x, y)}
+            onCell={(x, y) => void handleCell(x, y)}
             layer={status?.layer ?? "Elevation"}
             layers={LAYERS}
-            onLayer={(name) => void onLayer(name as MapLayerName)}
+            onLayer={(name) => void handleLayer(name as MapLayerName)}
           />
 
           {dockOpen ? (
@@ -948,7 +948,7 @@ export function MapTool() {
           onPointerDown={(e) => beginResize("terminal", e)}
         />
 
-        <Terminal ref={terminalRef} onRun={onTerminalRun} />
+        <Terminal ref={terminalRef} onRun={handleTerminalRun} />
       </div>
 
       {shortcutsOpen ? <ShortcutsOverlay onClose={() => setShortcutsOpen(false)} /> : null}

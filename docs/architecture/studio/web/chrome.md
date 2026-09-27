@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/studio/web/chrome.md
-  Purpose: menus.ts, panels.ts, layout.ts, shortcuts.ts, MenuBar, Panel, ShortcutsOverlay — the declared menus, rail panels, resizable layout, and shortcut list, and the components that render them
+  Purpose: Chrome — the declared menus, rail panels, resizable layout, and shortcut list, and the components that render them
   Audience: Agents and humans
-  Update when: A menu, panel, layout region, clamp, storage key, or shortcut changes, or MenuBar, Panel, or ShortcutsOverlay changes
+  Update when: A menu, panel, layout region, clamp, storage key, or shortcut changes, or how the menus, panels, or shortcut list render changes
 -->
 
 # Chrome
@@ -46,41 +46,20 @@ $$\mathrm{clampSize}(r, x) = \begin{cases} \min\bigl(\mathrm{max}_r,\; \max(\mat
 
 with the left rail at 220 (168–420), the right rail at 280 (208–520), and the terminal at 176 (96–520). A drag on a splitter adds the pointer's travel since the press: $x - x_0$ for the left rail, $x_0 - x$ for the right rail, and $y_0 - y$ for the terminal.
 
-`clampSize` in [`layout.ts`](../../../../ui/web/src/lib/layout.ts):
-
-```ts
-const { min, max } = LAYOUT_LIMITS[region];
-if (!Number.isFinite(value)) {
-  return DEFAULT_LAYOUT[region];
-}
-return Math.min(max, Math.max(min, Math.round(value)));
-```
-
 **Storage keys.** `aethelgard.layout.<region>` holds a size; `aethelgard.rail.left.open` and `aethelgard.rail.right.open` hold rail flags; `aethelgard.panel.<id>.open` holds a panel flag; a flag is `"1"` or `"0"`.
 
 ## Procedure
 
-1. `MENUS` declares the menus with the types `MenuDescriptor`, `MenuItem`, and `MenuActionId`. [`MENUS`](../../../../ui/web/src/lib/menus.ts).
-2. `MenuBar` renders the menu titles and, for the open menu, its items. A click toggles a menu; hovering another title while one is open switches to it; the arrow keys move between menus; a click outside or Esc closes it. A choice calls the action and closes the menu, and a checkable item shows a tick from the `checked` map. [`MenuBar`](../../../../ui/web/src/components/MenuBar.tsx).
-3. `PANELS` declares the panels. `panelsFor` returns one rail's panels in order, `panelOpenKey` names a panel's storage key, and `defaultPanelOpen` gives the initial flags. [`panelsFor`](../../../../ui/web/src/lib/panels.ts).
-4. `Panel` renders a panel's header and, when the panel is open or not collapsible, its body; a collapsible panel has a `−` or `+` toggle. [`Panel`](../../../../ui/web/src/components/Panel.tsx).
-5. `DEFAULT_LAYOUT`, `LAYOUT_LIMITS`, `LAYOUT_KEY_PREFIX`, and `RAIL_OPEN_KEYS` declare the regions and keys. `layoutKey` names a region's key. `readLayout` reads and clamps the stored sizes, `writeLayout` stores them, and `clearLayout` removes them. On the server, where there is no window, each of them returns the defaults or does nothing. [`readLayout`](../../../../ui/web/src/lib/layout.ts).
-6. `SHORTCUTS` lists the eleven shortcut rows, and `ShortcutsOverlay` shows them in a dialog that a click outside, or Close, dismisses. The key handler that performs them is the root's ([tool](tool.md)). [`ShortcutsOverlay`](../../../../ui/web/src/components/ShortcutsOverlay.tsx), [`SHORTCUTS`](../../../../ui/web/src/lib/shortcuts.ts).
+1. The menus are declared as data, in the shape of the Model.
+2. The menu bar renders the menu titles and, for the open menu, its items. A click toggles a menu; hovering another title while one is open switches to it; the arrow keys move between menus; a click outside or Esc closes it. A choice calls the action and closes the menu, and a checkable item shows a tick when it is checked.
+3. The panels are declared as data. One rail's panels are listed in order, each panel has its storage key, and the initial flags come from the declarations.
+4. A panel renders its header and, when it is open or not collapsible, its body; a collapsible panel has a `−` or `+` toggle.
+5. The regions, their bounds, and their storage keys are declared as data. The stored sizes are read and clamped, written, and cleared. On the server, where there is no window, reading gives the defaults and writing does nothing.
+6. The eleven shortcut rows are declared as data, and the shortcut dialog shows them; a click outside, or Close, dismisses it. The key handler that performs them is the root's ([tool](tool.md)).
 
 ## What is true afterwards
 
 Every region size on screen lies within its bounds, and reloading the page restores the last sizes, rails, and panels. A stub menu item is visible and inert. The shortcut list and the key handler are two separate declarations that currently agree.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Menus | `MenuDescriptor` | `MenuActionId`, `MenuItem`, `MenuDescriptor`, `MENUS` | [`ui/web/src/lib/menus.ts`](../../../../ui/web/src/lib/menus.ts) |
-| Menu bar | `MenuBar` | `MenuBar` | [`ui/web/src/components/MenuBar.tsx`](../../../../ui/web/src/components/MenuBar.tsx) |
-| Panels | `PanelDescriptor` | `PanelDock`, `PanelDescriptor`, `PANELS`, `panelsFor`, `panelOpenKey`, `defaultPanelOpen` | [`ui/web/src/lib/panels.ts`](../../../../ui/web/src/lib/panels.ts) |
-| Panel | `Panel` | `Panel` | [`ui/web/src/components/Panel.tsx`](../../../../ui/web/src/components/Panel.tsx) |
-| Layout | `LayoutSizes` | `LayoutRegion`, `RailSide`, `LayoutSizes`, `DEFAULT_LAYOUT`, `LAYOUT_LIMITS`, `LAYOUT_KEY_PREFIX`, `RAIL_OPEN_KEYS`, `layoutKey`, `clampSize`, `readLayout`, `writeLayout`, `clearLayout` | [`ui/web/src/lib/layout.ts`](../../../../ui/web/src/lib/layout.ts) |
-| Shortcut list | `Shortcut` | `Shortcut`, `SHORTCUTS` | [`ui/web/src/lib/shortcuts.ts`](../../../../ui/web/src/lib/shortcuts.ts) |
-| Shortcut dialog | `ShortcutsOverlay` | `ShortcutsOverlay` | [`ui/web/src/components/ShortcutsOverlay.tsx`](../../../../ui/web/src/components/ShortcutsOverlay.tsx) |
-
+Code: [lib/](../../../../ui/web/src/lib/README.md) · [components/](../../../../ui/web/src/components/README.md)
 Parent: [web front](README.md).

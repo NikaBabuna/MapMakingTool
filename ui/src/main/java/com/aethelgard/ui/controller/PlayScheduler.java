@@ -1,11 +1,11 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/PlayScheduler.java
+ * File: ui/src/main/java/com/aethelgard/ui/controller/PlayScheduler.java
  * Purpose: Injected repeating ticks for Play (no Swing in MapController)
  * Audience: MapController / MapHost / tests
  * Update when: Play scheduling contract changes
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.controller;
 
 /**
  * Starts and stops a repeating play tick. Host/desktop use

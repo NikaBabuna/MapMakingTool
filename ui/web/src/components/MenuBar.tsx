@@ -2,7 +2,7 @@
 
 /*
  * File: ui/web/src/components/MenuBar.tsx
- * Purpose: Menu-bar row rendered from the menu descriptor model (F-053)
+ * Purpose: Menu-bar row rendered from the menu descriptor model
  * Audience: MapTool
  * Update when: Menu interaction or chrome changes
  */
@@ -25,21 +25,21 @@ export function MenuBar({ menus = MENUS, onAction, checked = {} }: MenuBarProps)
     if (openId === null) {
       return;
     }
-    function onPointerDown(e: PointerEvent) {
+    function handlePointerDown(e: PointerEvent) {
       if (!barRef.current?.contains(e.target as Node)) {
         setOpenId(null);
       }
     }
-    function onKey(e: KeyboardEvent) {
+    function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setOpenId(null);
       }
     }
-    window.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", handleKey);
     return () => {
-      window.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", handleKey);
     };
   }, [openId]);
 

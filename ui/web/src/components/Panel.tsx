@@ -2,7 +2,7 @@
 
 /*
  * File: ui/web/src/components/Panel.tsx
- * Purpose: Generic rail panel chrome driven by a PanelDescriptor (F-053)
+ * Purpose: Generic rail panel chrome driven by a PanelDescriptor
  * Audience: MapTool
  * Update when: Panel chrome or collapse behavior changes
  */

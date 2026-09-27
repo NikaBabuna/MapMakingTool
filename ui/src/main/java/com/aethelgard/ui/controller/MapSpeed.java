@@ -1,11 +1,11 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/MapSpeed.java
+ * File: ui/src/main/java/com/aethelgard/ui/controller/MapSpeed.java
  * Purpose: Play-tick periods for the map window
  * Audience: MapController / MapHost / tests
  * Update when: Speed table changes
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.controller;
 
 /** Play speeds. Periods are milliseconds between ticks. Default is {@link #X1}. */
 public enum MapSpeed {

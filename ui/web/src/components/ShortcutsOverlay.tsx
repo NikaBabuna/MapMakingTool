@@ -2,7 +2,7 @@
 
 /*
  * File: ui/web/src/components/ShortcutsOverlay.tsx
- * Purpose: Keyboard shortcut list dialog (F-053 QoL)
+ * Purpose: Keyboard shortcut list dialog
  * Audience: MapTool
  * Update when: SHORTCUTS or dialog chrome changes
  */

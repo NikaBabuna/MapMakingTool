@@ -194,7 +194,7 @@ Goal doc: [goals/G-012-code-structure-and-conventions.md](goals/G-012-code-struc
 | F-070 | Folder and code rules in the protocol | done | Makes every agent give each folder it creates an introduction and a place on the map, keep code one job per folder under the project's conventions, and leave the paper to concept and mathematics. | [F-070.md](steps/F-070.md) |
 | F-071 | Product module organised | done | Sorts the product module into packages that follow the paper, names every part by the conventions, and gives each of its folders an introduction. | [F-071.md](steps/F-071.md) |
 | F-072 | Engine and command line organised | done | Names the engine's packages with the paper's words, names every part by the conventions, and gives each folder of the engine and the command line an introduction. | [F-072.md](steps/F-072.md) |
-| F-073 | Studio and tooling organised | not started | The ui module (Java host, web front, desktop shell) and the build and tooling folders: the same, with the studio pages. | — |
+| F-073 | Studio and tooling organised | done | Sorts the ui module's Java into packages that follow the paper, names every part of the studio by the conventions, and gives each folder of the studio and the tooling an introduction. | [F-073.md](steps/F-073.md) |
 | F-074 | Whole-tree audit and close | not started | Whole-tree audit against the new rules, Why parts added to every docs README, then close the Goal. | — |
 
 ---

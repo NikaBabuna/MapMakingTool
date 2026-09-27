@@ -1,3 +1,8 @@
+# File: .gitignore
+# Purpose: Keeps build output, installed packages, local tools, editor files, and logs out of version control
+# Audience: Agents and developers adding a tool or a build step
+# Update when: A tool writes a new kind of file that is not to be committed
+
 # Build
 target/
 **/target/

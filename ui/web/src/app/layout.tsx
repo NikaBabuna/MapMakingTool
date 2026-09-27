@@ -1,3 +1,10 @@
+/*
+ * File: ui/web/src/app/layout.tsx
+ * Purpose: The page's root layout: its fonts, its title, and the global styles
+ * Audience: Next.js; agents changing the page's frame
+ * Update when: The page's fonts, title, or global stylesheet change
+ */
+
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";

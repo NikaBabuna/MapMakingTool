@@ -56,7 +56,7 @@ A person starts the studio with one script, which starts the desktop shell; the 
 |---------|------------|-------------|------------|----------|
 | Desktop shell | [`run-product.cmd`](../../run-product.cmd) step 4, `npm run dev` in `ui/desktop` (that is, `tauri dev`) | [`run`](../../ui/desktop/src-tauri/src/lib.rs) | — | Starts the web server and the map host; stops the map host on quit ([desktop](studio/desktop.md)) |
 | Web server | The shell's `beforeDevCommand`, `npm run --prefix ../web dev` (that is, `next dev`) | [`HomePage`](../../ui/web/src/app/page.tsx) | `localhost:3000` | Serves the page to the webview |
-| Map host | The shell, `mvnw -pl ui exec:java -Dexec.mainClass=com.aethelgard.ui.host.MapHostApp` | [`MapHostApp.main`](../../ui/src/main/java/com/aethelgard/ui/host/MapHostApp.java) | `127.0.0.1:7420` | Answers the page's requests; owns the studio's world ([http](studio/http.md)) |
+| Map host | The shell, `mvnw -pl ui exec:java -Dexec.mainClass=com.aethelgard.ui.http.MapHostApp` | [`MapHostApp.main`](../../ui/src/main/java/com/aethelgard/ui/http/MapHostApp.java) | `127.0.0.1:7420` | Answers the page's requests; owns the studio's world ([http](studio/http.md)) |
 | Webview | The shell's window | [`MapTool`](../../ui/web/src/components/MapTool.tsx) | — | Loads the page from the web server; calls the map host ([web front](studio/web/README.md)) |
 | CLI | A person or a script, `mvnw -pl cli exec:java -Dexec.mainClass=com.aethelgard.cli.Main` | [`Main.main`](../../cli/src/main/java/com/aethelgard/cli/Main.java) | — | Nothing; it owns its own world and prints ([cli](cli/README.md)) |
 

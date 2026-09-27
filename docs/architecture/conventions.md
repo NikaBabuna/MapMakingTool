@@ -37,6 +37,7 @@ How the code of this project is written: the names, the place of each file, the 
 | Type that carries out a process | Named after the process, as a noun, never with a verb | `Orogeny` |
 | Acronym inside a name | Written as a word: its first letter capital and the rest lowercase, or all lowercase where it begins a member name | `CliRunner`, `plateId` |
 | Method | lowerCamelCase verb or verb phrase | `emitPath` |
+| Method that only returns a value | A method with no side effect that returns one value may be named after that value, as a lowerCamelCase noun or noun phrase, as a record accessor is. A method with any other effect is named by the Method row | `width`, `statusText` |
 | Boolean query | Starts with `is`, `has` or `can`. A verb that already reads as a question (`contains`, `matches`) keeps its form. A record accessor is named after its component. A method that overrides or implements a library method keeps that method's name | `isEmpty`, `hasForeignNeighbor`, `contains` |
 | Field, parameter, local variable | lowerCamelCase noun or noun phrase | `updateCount` |
 | Constant (a `static final` field holding an immutable value) and enum constant | UPPER_SNAKE_CASE | `FIRST_GENERATION_UPDATE`, `COLLIDE` |
@@ -51,6 +52,7 @@ How the code of this project is written: the names, the place of each file, the 
 | Component, and its file | PascalCase noun | `MapTool`, `MapTool.tsx` |
 | Other module file | lowerCamelCase | `host.ts`, `fakeHost.ts` |
 | Function | lowerCamelCase verb or verb phrase | `fetchStatus` |
+| Function that only returns a value | A function with no side effect that returns one value may be named after that value, as a lowerCamelCase noun or noun phrase. A function with any other effect is named by the Function row | `centeredViewport` |
 | Variable, parameter | lowerCamelCase noun | `factor` |
 | Type, interface | PascalCase noun, no `I` prefix | `HostStatus` |
 | Module-level constant | UPPER_SNAKE_CASE | `DEFAULT_HOST` |
@@ -63,6 +65,7 @@ How the code of this project is written: the names, the place of each file, the 
 |--------------|------|---------|
 | Module, and its file | snake_case | `lib.rs` |
 | Function | snake_case verb phrase | `start_map_host` |
+| Function that only returns a value | A function with no side effect that returns one value may be named after that value, as a snake_case noun or noun phrase. A function with any other effect is named by the Function row | `repo_root` |
 | Variable, parameter | snake_case noun | `manifest` |
 | Type (struct, enum, trait) | UpperCamelCase noun | `HostProcess` |
 | Constant, static | SCREAMING_SNAKE_CASE | `CREATE_NO_WINDOW` |
@@ -125,6 +128,7 @@ Every source file begins with the four lines of the source header, in its langua
 | Windows scripts (`.cmd`) | `REM <line>` for each header line, directly after `@echo off` | `REM File: <path from the repository root>` |
 | JSON, and lock files | none — JSON allows no comments, and lock files are written by their package manager | — |
 | Maven Wrapper (`mvnw`, `mvnw.cmd`, `.mvn/wrapper/`), and the stored test world | none — written by their tools and replaced, never edited by hand | — |
+| Next.js type declarations (`ui/web/next-env.d.ts`) | none — Next.js writes the file and asks that it not be edited | — |
 
 A Purpose line states the file's one responsibility in one sentence. It names no Goal, Step or decision id, and tells no history: not what changed, and not which Step added it. In code, a record id appears in one place only: the comment beside a test that names the requirements it proves, in the form the **Tests** line of [program.md](program.md) gives.
 
@@ -146,3 +150,4 @@ These folders need no README.
 | `ui/web/src/` | layout segment | The layout Next.js expects; the web front's README introduces its folders |
 | `ui/desktop/src-tauri/icons/`, and every folder below it | generated | The Tauri icon tool writes them all from one source image |
 | `product/src/test/resources/worlds/` | generated | The stored dump of a world, written from the program's own output |
+| `.mvn/` | wrapper internals | Holds only the Maven Wrapper's own folder, `.mvn/wrapper/` |

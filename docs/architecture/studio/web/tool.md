@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/studio/web/tool.md
-  Purpose: MapTool, app/layout.tsx, app/page.tsx — the root of the page: its state, its poll, play, and action loops, and the guard against stale answers
+  Purpose: Tool — the root of the page: its state, its poll, play, and action loops, and the guard against stale answers
   Audience: Agents and humans
-  Update when: MapTool's loops, handlers, keyboard map, state, or persisted flags change, or the app shell changes
+  Update when: The root's loops, actions, keyboard map, state, or remembered flags change, or the app shell changes
 -->
 
 # Tool
@@ -25,25 +25,6 @@ $$\mathit{applyGen}_r = \mathit{applyGen} \quad \text{at the time the response a
 
 so a slow poll that returns after a layer change cannot put the old layer back.
 
-`MapTool` (the poll body) in [`MapTool.tsx`](../../../../ui/web/src/components/MapTool.tsx):
-
-```tsx
-const gen = applyGenRef.current;
-const next = await fetchStatus();
-if (gen !== applyGenRef.current) {
-  return;
-}
-setStatus(next);
-busyRef.current = next.busy;
-if (!next.busy) {
-  const bytes = await fetchRaster();
-  if (gen !== applyGenRef.current) {
-    return;
-  }
-  setRaster(bytes);
-}
-```
-
 **Loops.** With $\Delta t_{\mathrm{poll}} = 200$ ms and $\Delta t_{\mathrm{play}} \in \{250, 125, 62, 1\}$ ms the period of the chosen speed:
 
 $$\text{poll}: \text{every } \Delta t_{\mathrm{poll}}:\;\; \mathrm{health};\; \mathrm{status};\; \mathrm{raster} \text{ unless busy}; \qquad \text{play}: \text{every } \Delta t_{\mathrm{play}} \text{ while playing}:\;\; \mathrm{advance} \text{ unless busy}.$$
@@ -58,26 +39,19 @@ The rail shows `paint.wall`, `advance.wall`, five phase timings (every phase but
 
 ## Procedure
 
-1. The app shell sets the page title and description, loads the IBM Plex Sans and Mono fonts into CSS variables, imports the stylesheet, and renders the root component on the only route. [`RootLayout`](../../../../ui/web/src/app/layout.tsx), [`metadata`](../../../../ui/web/src/app/layout.tsx), [`HomePage`](../../../../ui/web/src/app/page.tsx).
-2. On mount, the root restores the rail and panel flags and the layout sizes from local storage with `readFlag` and `readLayout`, and writes each flag back when it changes with `writeFlag`. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-3. `connect` checks the host's health, shows `Map host offline at <host>. Start MapHostApp on port 7420.` when it fails, and otherwise refreshes status and raster. Then the 200 ms poll starts. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-4. While playing, the play timer posts one advance per period unless the last status said busy, and stops playing when a request fails. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-5. The canvas reports the stage size, and on the first report with a real size the root fits the whole map into the stage. `fitView` does the same on demand. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-6. The action handlers post to the host and apply the answer: advance one step; advance $N$ steps through the terminal line `session advance N`; change layer (with a new generation); change speed; new world (confirmed first when the step is above 0, then the view is fitted); restart the engine; inspect a clicked cell; run a terminal line (with a new generation). [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-7. The menu actions map to the same handlers, to toggling rails, focusing the terminal, resetting the view or the layout, reloading the page (`Restart UI`), and opening the shortcut list. The seed can be randomised below $2^{31} - 1$ and copied to the clipboard. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-8. A key handler on the window, ignored while typing in a field, implements the shortcut list: Space plays or pauses; A or . advances; 1, 2, 3 choose a layer; [ and ] change speed; N asks for a new world; ` or C focuses the terminal; D and P toggle the rails; R fits the view; ? opens the list; Esc closes a dialog. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
-9. The root renders the menu bar, the top bar (identity and online dot, transport, view toggles), the error banner, the left rail with the performance panel, the map canvas with its layer switch, the right rail with the world, inspect, and legend panels, the drag splitters, the terminal, and the two dialogs. `formatNs`, `formatBytes`, `formatDiag`, and `formatStepRate` format the rail, and `isTypingTarget` guards the keys. [`MapTool`](../../../../ui/web/src/components/MapTool.tsx).
+1. The app shell sets the page title and description, loads the IBM Plex Sans and Mono fonts into CSS variables, imports the stylesheet, and renders the root component on the only route.
+2. On mount, the root restores the rail and panel flags and the layout sizes from local storage, and writes each flag back when it changes.
+3. Connecting checks the host's health, shows `Map host offline at <host>. Start MapHostApp on port 7420.` when it fails, and otherwise refreshes the status and the raster. Then the 200 ms poll starts.
+4. While playing, the play timer posts one advance per period unless the last status said busy, and stops playing when a request fails.
+5. The canvas reports the stage size, and on the first report with a real size the root fits the whole map into the stage. Fitting the view does the same on demand.
+6. The actions post to the host and apply the answer: advance one step; advance $N$ steps through the terminal line `session advance N`; change layer (with a new generation); change speed; new world (confirmed first when the step is above 0, then the view is fitted); restart the engine; inspect a clicked cell; run a terminal line (with a new generation).
+7. The menu actions map to the same actions, to toggling rails, focusing the terminal, resetting the view or the layout, reloading the page ("Restart UI"), and opening the shortcut list. The seed can be randomised below $2^{31} - 1$ and copied to the clipboard.
+8. A key handler on the window, ignored while typing in a field, implements the shortcut list: Space plays or pauses; A or . advances; 1, 2, 3 choose a layer; [ and ] change speed; N asks for a new world; ` or C focuses the terminal; D and P toggle the rails; R fits the view; ? opens the list; Esc closes a dialog.
+9. The root renders the menu bar, the top bar (identity and online dot, transport, view toggles), the error banner, the left rail with the performance panel, the map canvas with its layer switch, the right rail with the world, inspect, and legend panels, the drag splitters, the terminal, and the two dialogs. The rail's durations, byte counts, and step rate are formatted as the Model states.
 
 ## What is true afterwards
 
 The page shows the host's last status within about 200 ms, and the raster of the last settled step whenever the host is not busy. No answer older than the latest picture-changing action is ever applied. While the host is busy, Play keeps asking and Advance is ignored, so a slow world plays at the rate it can step.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Root component | `MapTool` | `MapTool`, `readFlag`, `writeFlag`, `isTypingTarget`, `formatNs`, `formatBytes`, `formatDiag`, `formatStepRate`, `LAYERS`, `SPEEDS`, `PERF_ROWS` | [`ui/web/src/components/MapTool.tsx`](../../../../ui/web/src/components/MapTool.tsx) |
-| App shell | `RootLayout` | `RootLayout`, `metadata` | [`ui/web/src/app/layout.tsx`](../../../../ui/web/src/app/layout.tsx) |
-| Route | `HomePage` | `HomePage` | [`ui/web/src/app/page.tsx`](../../../../ui/web/src/app/page.tsx) |
-
+Code: [components/](../../../../ui/web/src/components/README.md) · [app/](../../../../ui/web/src/app/README.md)
 Parent: [web front](README.md). The requests it makes: [client](client.md).

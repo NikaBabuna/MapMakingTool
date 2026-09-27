@@ -1,6 +1,6 @@
 /*
  * File: ui/web/src/lib/shortcuts.ts
- * Purpose: Single source for runner keyboard shortcuts (F-053)
+ * Purpose: Single source for runner keyboard shortcuts
  * Audience: MapTool key handler, ShortcutsOverlay, menu labels
  * Update when: A shortcut is added, removed, or rebound
  */

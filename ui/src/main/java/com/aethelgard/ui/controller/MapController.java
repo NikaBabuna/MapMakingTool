@@ -1,24 +1,21 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/MapController.java
+ * File: ui/src/main/java/com/aethelgard/ui/controller/MapController.java
  * Purpose: Headless map tool logic — session, layers, play, inspect (no Swing)
  * Audience: Tests / MapHost / Next front
  * Update when: Map window behavior changes
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.controller;
 
 import com.aethelgard.cli.CliResult;
 import com.aethelgard.cli.CommandDispatch;
 import com.aethelgard.product.session.ProductSession;
-import com.aethelgard.product.session.ProductSession;
-import com.aethelgard.product.session.diagnostics.DiagnosticIds;
 import com.aethelgard.product.session.diagnostics.DiagnosticIds;
 import com.aethelgard.product.world.fields.Grid;
-import com.aethelgard.product.world.fields.Grid;
-import com.aethelgard.product.world.fields.PlateVelocities;
 import com.aethelgard.product.world.fields.PlateVelocities;
 import com.aethelgard.product.world.fields.WorldSpec;
-import com.aethelgard.product.world.fields.WorldSpec;
+import com.aethelgard.ui.raster.ElevationRaster;
+import com.aethelgard.ui.raster.MapLayer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Headless controller for the product map. No Swing types — safe for CI tests.
  *
  * <p>Owns a {@link ProductSession}. {@link #advance()} runs one generation Step on the caller.
- * {@link #advanceAsync()} runs it on the injected {@link Executor} and reports {@link #busy()} /
+ * {@link #advanceAsync()} runs it on the injected {@link Executor} and reports {@link #isBusy()} /
  * {@link #WORKING_STATUS} while in flight. Play uses an injected {@link PlayScheduler}. Terminal
  * lines go through {@link CommandDispatch} on the same session.
  */
@@ -42,7 +39,7 @@ public final class MapController {
   private final PlayScheduler playScheduler;
   private final AtomicBoolean busy = new AtomicBoolean(false);
   private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
-  /** Guards paint buffers, layer, and raster vs concurrent advance / setLayer (F-054). */
+  /** Guards paint buffers, layer, and raster vs concurrent advance / setLayer. */
   private final Object paintLock = new Object();
 
   private WorldSpec spec;
@@ -57,13 +54,13 @@ public final class MapController {
   private boolean playing;
   private CellInspect inspected;
   private long lastPaintNanos;
-  /** Reused paint backing stores when width×height unchanged (F-047). Double-buffered so prior
+  /** Reused paint backing stores when width×height unchanged. Double-buffered so prior
    * snapshots keep correct pixels. */
   private int[] paintBufferA;
 
   private int[] paintBufferB;
   private boolean paintIntoA = true;
-  /** Bumps on every paint so MapHost can invalidate packed cache (F-047). */
+  /** Bumps on every paint so MapHost can invalidate packed cache. */
   private int paintGeneration;
 
   public MapController(WorldSpec spec) {
@@ -106,7 +103,7 @@ public final class MapController {
 
   /**
    * Last captured step index. Does not take the session physics lock — safe during {@link
-   * #busy()} Advance.
+   * #isBusy()} Advance.
    */
   public int stepIndex() {
     return cachedStep;
@@ -135,7 +132,7 @@ public final class MapController {
     return speed;
   }
 
-  public boolean playing() {
+  public boolean isPlaying() {
     return playing;
   }
 
@@ -143,7 +140,7 @@ public final class MapController {
     return inspected;
   }
 
-  public boolean busy() {
+  public boolean isBusy() {
     return busy.get();
   }
 
@@ -155,7 +152,7 @@ public final class MapController {
     return "Step " + cachedStep;
   }
 
-  public void onChanged(Runnable listener) {
+  public void addChangeListener(Runnable listener) {
     Objects.requireNonNull(listener, "listener");
     listeners.add(listener);
     listener.run();
@@ -171,7 +168,7 @@ public final class MapController {
     synchronized (paintLock) {
       this.layer = layer;
       long t0 = System.nanoTime();
-      raster = paintReuse(elevation, plates, this.layer);
+      raster = paintIntoNextBuffer(elevation, plates, this.layer);
       paintNanos = System.nanoTime() - t0;
       lastPaintNanos = paintNanos;
     }
@@ -215,7 +212,7 @@ public final class MapController {
   }
 
   /**
-   * Replace the session with the same geometry and a new seed. Ignored while {@link #busy()}.
+   * Replace the session with the same geometry and a new seed. Ignored while {@link #isBusy()}.
    * Pauses play. Step index returns to 0.
    */
   public void newWorld(long seed) {
@@ -228,7 +225,7 @@ public final class MapController {
   }
 
   /**
-   * Recreate the session with the current geometry and seed. Works while {@link #busy()}. Pauses
+   * Recreate the session with the current geometry and seed. Works while {@link #isBusy()}. Pauses
    * play. In-flight Advance on the old session must not capture over the new world.
    */
   public void restartEngine() {
@@ -286,7 +283,7 @@ public final class MapController {
   }
 
   /**
-   * One generation Step on {@code executor}. Ignored while {@link #busy()}. Sets busy and status
+   * One generation Step on {@code executor}. Ignored while {@link #isBusy()}. Sets busy and status
    * before submit.
    */
   public void advanceAsync() {
@@ -320,7 +317,7 @@ public final class MapController {
   }
 
   /**
-   * Runs one shared-dispatcher line on this session. Ignored while {@link #busy()} ({@code error:
+   * Runs one shared-dispatcher line on this session. Ignored while {@link #isBusy()} ({@code error:
    * busy}). Refreshes the raster after the dispatcher returns so map Advance and terminal share one
    * view.
    */
@@ -364,7 +361,7 @@ public final class MapController {
       velocities = nextVel;
       cachedStep = nextStep;
       long t0 = System.nanoTime();
-      raster = paintReuse(elevation, plates, layer);
+      raster = paintIntoNextBuffer(elevation, plates, layer);
       paintNanos = System.nanoTime() - t0;
       lastPaintNanos = paintNanos;
     }
@@ -372,7 +369,7 @@ public final class MapController {
   }
 
   /** Caller must hold {@link #paintLock}. */
-  private ElevationRaster paintReuse(Grid elev, Grid plateGrid, MapLayer mapLayer) {
+  private ElevationRaster paintIntoNextBuffer(Grid elev, Grid plateGrid, MapLayer mapLayer) {
     int need = elev.width() * elev.height();
     if (paintBufferA == null || paintBufferA.length != need) {
       paintBufferA = new int[need];

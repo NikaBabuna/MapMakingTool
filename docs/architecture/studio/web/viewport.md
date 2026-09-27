@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/studio/web/viewport.md
-  Purpose: viewport.ts — the camera: fit, zoom around a point, pan with an east–west wrap and a north–south clamp, and stage points to map cells
+  Purpose: Viewport — the camera: fit, zoom around a point, pan with an east–west wrap and a north–south clamp, and stage points to map cells
   Audience: Agents and humans
-  Update when: A viewport.ts function or MAX_SCALE changes
+  Update when: The camera's fit, zoom, pan, clamp, or cell rule changes, or its largest scale changes
 -->
 
 # Viewport
@@ -35,24 +35,6 @@ $$\zeta' = \mathrm{clampScale}(\zeta f), \qquad \mathit{vp}' = \mathrm{clampV}\b
 
 so $m$ stays under $p$, up to the wrap and the clamp.
 
-`zoomAt` in [`viewport.ts`](../../../../ui/web/src/lib/viewport.ts):
-
-```ts
-const nextScale = clampScale(vp.scale * factor, minScale);
-const worldX = (stageX - vp.tx) / vp.scale;
-const worldY = (stageY - vp.ty) / vp.scale;
-const next = wrapPan(
-  {
-    scale: nextScale,
-    tx: stageX - worldX * nextScale,
-    ty: stageY - worldY * nextScale,
-  },
-  displayW,
-  displayH,
-);
-return clampVertical(next, stageH, displayH);
-```
-
 **Pan.** $\mathit{vp}' = \mathrm{clampV}(\mathrm{wrap}(\zeta, t + d))$.
 
 **Stage to cell.** With $m_x = ((p_x - t_x)/\zeta) \bmod D_w$ and $m_y = (p_y - t_y)/\zeta$, the cell is
@@ -61,22 +43,17 @@ $$(x, y) = \Bigl(\bigl\lfloor \tfrac{m_x}{D_w} W \bigr\rfloor \bmod W,\;\; \bigl
 
 ## Procedure
 
-1. `fitScale` returns the fit scale, and 1 when any size is not positive. `fittedViewport` centres the map at that scale through `centeredViewport`. [`fittedViewport`](../../../../ui/web/src/lib/viewport.ts).
-2. `clampScale` bounds a scale between the given minimum and `MAX_SCALE` (16). [`clampScale`](../../../../ui/web/src/lib/viewport.ts).
-3. `wrapPan` reduces $t_x$ modulo one map width at the current scale, with `floorMod`. [`wrapPan`](../../../../ui/web/src/lib/viewport.ts).
-4. `clampVertical` centres the map vertically with `lockVertical` when it fits in height, and otherwise keeps it between its top and bottom edges. [`clampVertical`](../../../../ui/web/src/lib/viewport.ts).
-5. `zoomAt` and `panBy` compose these as in the Model. [`zoomAt`](../../../../ui/web/src/lib/viewport.ts), [`panBy`](../../../../ui/web/src/lib/viewport.ts).
-6. `stageToCell` returns the cell under a stage point, or `null` in the margins or for a non-positive size. [`stageToCell`](../../../../ui/web/src/lib/viewport.ts).
-7. `IDENTITY_VIEWPORT` is $(1, 0, 0)$, the camera before the first fit. `cssTransform` writes a viewport as a CSS transform string and is not used by the page. [`cssTransform`](../../../../ui/web/src/lib/viewport.ts).
+1. The fit scale is $\mathrm{fit}$, and 1 when any size is not positive. The fitted viewport centres the map at that scale.
+2. A scale is bounded between the given minimum and the largest scale, 16.
+3. Wrapping reduces $t_x$ modulo one map width at the current scale, with the floor modulus.
+4. The vertical clamp centres the map when it fits in height, and otherwise keeps it between its top and bottom edges.
+5. Zoom at a point and pan compose these as in the Model.
+6. Stage to cell returns the cell under a stage point, or none in the margins or for a non-positive size.
+7. The identity viewport is $(1, 0, 0)$, the camera before the first fit. A viewport can also be written as a CSS transform string, which the page does not use.
 
 ## What is true afterwards
 
 After a pan or a zoom, $0 \le t_x < \zeta D_w$, the scale is between the fit scale and 16, and the map never leaves a gap above or below it: it either fills the stage's height or is centred in it. Every stage point inside the map's band maps to one cell, and the column wraps, so the seam between copies is invisible to inspection.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Camera | `Viewport` | `Viewport`, `IDENTITY_VIEWPORT`, `MAX_SCALE`, `floorMod`, `fitScale`, `clampScale`, `lockVertical`, `clampVertical`, `centeredViewport`, `fittedViewport`, `wrapPan`, `zoomAt`, `panBy`, `stageToCell`, `cssTransform` | [`ui/web/src/lib/viewport.ts`](../../../../ui/web/src/lib/viewport.ts) |
-
+Code: [lib/](../../../../ui/web/src/lib/README.md)
 Parent: [web front](README.md). Where the camera is applied: [canvas](canvas.md).

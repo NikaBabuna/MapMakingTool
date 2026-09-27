@@ -113,7 +113,7 @@ The protocol's README rules, which require a plain list and let the agent skip R
 | F-070 | The protocol mechanism: the folder rule, the Why part of docs READMEs, the code README blueprint, the organisation rule, the paper/README split, keeping conventions current, and the Step flow and audit changes | Documentation | done |
 | F-071 | The product module: packages by job, renames, tests moved to match, READMEs taking over the code detail of the world and session pages, those pages reduced to concept and maths, navigation rows | Cleanup | done |
 | F-072 | The engine and command-line modules: the same treatment, with their pages | Cleanup | done |
-| F-073 | The ui module (Java host, web front, desktop shell) and the build and tooling folders: the same, with the studio pages | Cleanup | not started |
+| F-073 | The ui module (Java host, web front, desktop shell) and the build and tooling folders: the same, with the studio pages | Cleanup | done |
 | F-074 | Whole-tree audit against the new rules, Why parts added to every docs README, then close the Goal | Documentation | not started |
 
 The conventions page comes first so the protocol never links to a file that does not exist yet.
@@ -124,6 +124,6 @@ The conventions page comes first so the protocol never links to a file that does
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 4 / 6 |
+| Steps done | 5 / 6 |
 | Claim boxes | 0 / 10 |
-| Last Accept | F-072 |
+| Last Accept | F-073 |

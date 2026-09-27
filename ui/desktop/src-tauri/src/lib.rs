@@ -68,7 +68,7 @@ fn start_map_host(root: &PathBuf) -> Result<Child, String> {
       "-pl",
       "ui",
       "exec:java",
-      "-Dexec.mainClass=com.aethelgard.ui.host.MapHostApp",
+      "-Dexec.mainClass=com.aethelgard.ui.http.MapHostApp",
     ])
     .stdout(Stdio::null())
     .stderr(Stdio::null());

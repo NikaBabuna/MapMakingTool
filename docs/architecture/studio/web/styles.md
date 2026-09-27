@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/studio/web/styles.md
-  Purpose: globals.css — the stylesheet: its tokens, the screen grid, the map stage's frame, and the narrow-screen and reduced-motion rules
+  Purpose: Styles — the stylesheet: its tokens, the screen grid, the map stage's frame, and the narrow-screen and reduced-motion rules
   Audience: Agents and humans
-  Update when: A token, the screen grid, the map frame, or a media rule in globals.css changes
+  Update when: A token, the screen grid, the map frame, or a media rule of the stylesheet changes
 -->
 
 # Styles
@@ -43,21 +43,16 @@ where the map stage takes the space left over. The top bar is a grid of three co
 
 ## Procedure
 
-1. The tokens and a border-box sizing rule for every element come first; the page and body fill the window on the `--ink` background, and focused controls get a 2 px ring in `--accent-strong`. [`globals.css`](../../../../ui/web/src/app/globals.css).
-2. `.studio`, `.studio-body`, and `.studio-work` build the grid of the Model; `.rail-splitter` draws the gutters, with a row-resize variant for the terminal. [`globals.css`](../../../../ui/web/src/app/globals.css).
-3. The menu (`.menu-bar`, `.menu-list`, `.menu-item`), the top bar (`.studio-bar`, `.runner-slot`, `.host-dot`), buttons and fields (`.btn`, `.field`), the status chip, and the error banner are styled next. [`globals.css`](../../../../ui/web/src/app/globals.css).
-4. The map stage (`.map-stage`, `.map-view`, `.map-neatline`, `.map-graticule`, `.map-ticks`, `.map-hud`, `.map-layer-switch`) is styled with a crosshair cursor, and a grabbing cursor while panning. [`globals.css`](../../../../ui/web/src/app/globals.css).
-5. The rails and panels (`.side-rail`, `.studio-panel`, `.panel-chrome`, `.inspect-grid`, `.legend-list`, `.perf-grid`), the terminal (`.terminal-panel`, `.console-log`, `.terminal-line`), and the dialogs (`.shortcuts-dialog`, `.confirm-dialog`) follow. The class `.console-drawer` is a hidden leftover. [`globals.css`](../../../../ui/web/src/app/globals.css).
-6. With reduced motion preferred, animations and transitions are cut to 0.01 ms. Below 720 px of width, the world rail floats over the map, and the performance rail and the splitters are hidden. [`globals.css`](../../../../ui/web/src/app/globals.css).
+1. The tokens and a border-box sizing rule for every element come first; the page and body fill the window on the `--ink` background, and focused controls get a 2 px ring in `--accent-strong`.
+2. The page, body, and working-area rules build the grid of the Model, and the splitter rule draws the gutters, with a row-resize variant for the terminal.
+3. The menu, the top bar, buttons and fields, the status chip, and the error banner are styled next.
+4. The map stage is styled with a crosshair cursor, and a grabbing cursor while panning, together with its neatline, graticule, ticks, corner readout, and layer switch.
+5. The rails and panels, the terminal, and the dialogs follow. One class of an older terminal drawer remains, hidden.
+6. With reduced motion preferred, animations and transitions are cut to 0.01 ms. Below 720 px of width, the world rail floats over the map, and the performance rail and the splitters are hidden.
 
 ## What is true afterwards
 
 The map stage always takes the space the rails and terminal leave, and a dragged size changes only one variable. The look the stylesheet produces, and the words on the controls, are specified for a person in [the style guide](../../../product/style-guide.md).
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Stylesheet | — | `:root`, `.studio`, `.studio-body`, `.studio-work`, `.map-stage`, `.side-rail`, `.terminal-panel` | [`ui/web/src/app/globals.css`](../../../../ui/web/src/app/globals.css) |
-
+Code: [app/](../../../../ui/web/src/app/README.md)
 Parent: [web front](README.md).

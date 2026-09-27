@@ -1,11 +1,11 @@
 /*
- * File: ui/src/test/java/com/aethelgard/ui/RasterTest.java
+ * File: ui/src/test/java/com/aethelgard/ui/raster/RasterTest.java
  * Purpose: Proves the colours the studio paints: water and land ramps, hill shading, and the plate stroke in the Plates and Overlay views
  * Audience: Agents / CI
  * Update when: ElevationRaster or the map's colour rules change
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.raster;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

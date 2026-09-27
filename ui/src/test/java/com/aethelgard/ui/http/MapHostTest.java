@@ -1,22 +1,22 @@
 /*
- * File: ui/src/test/java/com/aethelgard/ui/host/MapHostTest.java
+ * File: ui/src/test/java/com/aethelgard/ui/http/MapHostTest.java
  * Purpose: Proves the studio's HTTP host: what status and raster answer, how actions answer, what is refused, and that repeated rasters reuse their bytes
  * Audience: Agents / CI
  * Update when: MapHost's routes, status, or raster body change
  */
 
-package com.aethelgard.ui.host;
+package com.aethelgard.ui.http;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.product.world.fields.Plates;
 import com.aethelgard.product.world.fields.WorldSpec;
-import com.aethelgard.ui.ElevationRaster;
-import com.aethelgard.ui.MapController;
-import com.aethelgard.ui.MapLayer;
-import com.aethelgard.ui.PlayScheduler;
+import com.aethelgard.ui.controller.MapController;
+import com.aethelgard.ui.controller.PlayScheduler;
+import com.aethelgard.ui.raster.ElevationRaster;
+import com.aethelgard.ui.raster.MapLayer;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -168,6 +168,52 @@ class MapHostTest {
       assertEquals(400, refused.statusCode());
       assertTrue(refused.body().contains("\"exitCode\":2") && refused.body().contains("\"ok\":false"), refused.body());
       assertEquals(2, controller.stepIndex());
+    }
+  }
+
+  /** Proves F-073 FR-4 (docs/paperwork/steps/F-073.md). */
+  @Test
+  @DisplayName("Status reports playing and busy as the controller holds them, both off and on")
+  void statusReportsPlayingAndBusy() throws Exception {
+    ArrayDeque<Runnable> background = new ArrayDeque<>();
+    MapController controller = new MapController(SPEC, background::add, PlayScheduler.idle());
+    try (MapHost host = MapHost.start(controller, 0)) {
+      assertFalse(controller.isPlaying() || controller.isBusy());
+      String idle = get(host, "/api/status").body();
+      assertTrue(idle.contains("\"playing\":false") && idle.contains("\"busy\":false"), idle);
+
+      controller.play();
+      controller.advanceAsync();
+      assertTrue(controller.isPlaying() && controller.isBusy());
+      String working = get(host, "/api/status").body();
+      assertTrue(working.contains("\"playing\":true") && working.contains("\"busy\":true"), working);
+
+      background.removeFirst().run();
+      controller.pause();
+      assertFalse(controller.isPlaying() || controller.isBusy());
+      String settled = get(host, "/api/status").body();
+      assertTrue(settled.contains("\"playing\":false") && settled.contains("\"busy\":false"), settled);
+    }
+  }
+
+  /** Proves F-073 FR-4 (docs/paperwork/steps/F-073.md). */
+  @Test
+  @DisplayName("A preflight request is answered with 204 and the cross-origin headers, and changes nothing")
+  void preflightRequestsAreAnswered() throws Exception {
+    MapController controller = new MapController(SPEC, Runnable::run, PlayScheduler.idle());
+    try (MapHost host = MapHost.start(controller, 0)) {
+      String before = get(host, "/api/status").body();
+      HttpResponse<String> preflight = http.send(
+          HttpRequest.newBuilder(URI.create(host.baseUrl() + "/api/advance"))
+              .method("OPTIONS", HttpRequest.BodyPublishers.noBody())
+              .build(),
+          HttpResponse.BodyHandlers.ofString());
+      assertEquals(204, preflight.statusCode());
+      assertEquals("*", preflight.headers().firstValue("Access-Control-Allow-Origin").orElse(""));
+      assertEquals("GET, POST, OPTIONS", preflight.headers().firstValue("Access-Control-Allow-Methods").orElse(""));
+      assertEquals("Content-Type", preflight.headers().firstValue("Access-Control-Allow-Headers").orElse(""));
+      assertEquals(before, get(host, "/api/status").body());
+      assertEquals("*", get(host, "/api/status").headers().firstValue("Access-Control-Allow-Origin").orElse(""));
     }
   }
 

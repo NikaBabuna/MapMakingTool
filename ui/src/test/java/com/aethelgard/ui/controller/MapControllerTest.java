@@ -1,11 +1,11 @@
 /*
- * File: ui/src/test/java/com/aethelgard/ui/MapControllerTest.java
+ * File: ui/src/test/java/com/aethelgard/ui/controller/MapControllerTest.java
  * Purpose: Proves what the studio's controller does: layers, background steps, play, new world and restart, inspect, the console, and safe painting
  * Audience: Agents / CI
  * Update when: MapController, MapSpeed, or PlayScheduler changes
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.controller;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +20,8 @@ import com.aethelgard.product.session.ProductSession;
 import com.aethelgard.product.session.diagnostics.DiagnosticIds;
 import com.aethelgard.product.session.diagnostics.RingDiagnosticCollector;
 import com.aethelgard.product.world.fields.WorldSpec;
+import com.aethelgard.ui.raster.ElevationRaster;
+import com.aethelgard.ui.raster.MapLayer;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
@@ -84,7 +86,7 @@ class MapControllerTest {
     assertEquals("Step 0", map.statusText());
 
     map.advanceAsync();
-    assertTrue(map.busy());
+    assertTrue(map.isBusy());
     assertEquals("Working...", map.statusText());
     assertEquals(0, map.stepIndex(), "nothing moved until the background step runs");
 
@@ -95,7 +97,7 @@ class MapControllerTest {
     assertEquals(0, map.session().stepIndex(), "and did not run");
 
     background.removeFirst().run();
-    assertFalse(map.busy());
+    assertFalse(map.isBusy());
     assertEquals(1, map.stepIndex());
     assertEquals("Step 1", map.statusText());
   }
@@ -142,7 +144,7 @@ class MapControllerTest {
     assertEquals(0, background.size(), "a tick while paused does nothing");
 
     map.play();
-    assertTrue(map.playing());
+    assertTrue(map.isPlaying());
     int calm = scheduler.period;
     assertEquals(calm / 2, MapSpeed.X2.periodMillis());
     assertEquals(calm / 4, MapSpeed.X4.periodMillis());
@@ -152,14 +154,14 @@ class MapControllerTest {
     assertEquals(MapSpeed.X4.periodMillis(), scheduler.period, "the running schedule follows the new speed");
 
     scheduler.tick.run();
-    assertTrue(map.busy());
+    assertTrue(map.isBusy());
     scheduler.tick.run();
     assertEquals(1, background.size(), "a tick while busy is dropped");
     background.removeFirst().run();
     assertEquals(1, map.stepIndex());
 
     map.pause();
-    assertFalse(map.playing());
+    assertFalse(map.isPlaying());
     assertTrue(scheduler.stopped);
     scheduler.tick.run();
     assertEquals(0, background.size(), "no step after pause");
@@ -197,8 +199,8 @@ class MapControllerTest {
 
     assertEquals(0, map.stepIndex());
     assertEquals(SPEC, map.spec());
-    assertFalse(map.busy());
-    assertFalse(map.playing());
+    assertFalse(map.isBusy());
+    assertFalse(map.isPlaying());
     background.removeFirst().run();
     assertEquals(0, map.stepIndex(), "the step that was in flight does not undo the restart");
   }

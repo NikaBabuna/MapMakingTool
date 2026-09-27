@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/studio/web/canvas.md
-  Purpose: MapCanvas, resetViewport — drawing the raster with an east–west wrap, and turning wheel, drag, click, and hover into zoom, pan, inspection, and coordinates
+  Purpose: Canvas — drawing the raster with an east–west wrap, and turning wheel, drag, click, and hover into zoom, pan, inspection, and coordinates
   Audience: Agents and humans
-  Update when: MapCanvas's paint, its pointer or wheel handlers, the tile loop, or its overlays change
+  Update when: How the canvas paints, tiles the map, handles pointer and wheel, or draws its overlays changes
 -->
 
 # Canvas
@@ -15,7 +15,7 @@ The raster bytes, the viewport $\mathit{vp} = (\zeta, t_x, t_y)$ ([viewport](vie
 
 ## What it writes
 
-Pixels on the visible canvas; `onViewportChange` with a new viewport on zoom or pan; `onCell(x, y)` on a click; `onStageMetrics` with the stage and display sizes whenever they change; `onLayer` from the layer switch. A raster that fails to decode throws from its effect.
+Pixels on the visible canvas; to the root, a new viewport on zoom or pan, the cell $(x, y)$ on a click, the stage and display sizes whenever they change, and the layer chosen on the layer switch. A raster that fails to decode throws from its effect.
 
 ## Model
 
@@ -25,29 +25,16 @@ $$\mathrm{view} = \bigcup_{i \in \{-1, 0, 1\}} \bigl(\zeta\,(\mathrm{source} + (
 
 After a pan or a zoom the camera has $t_x \in [0, \zeta D_w)$ ([viewport](viewport.md)); the copies then span $[t_x - \zeta D_w,\; t_x + 2 \zeta D_w) \supseteq [0, 2 \zeta D_w)$, so the whole stage is covered whenever $V_w \le 2 \zeta D_w$.
 
-`MapCanvas` (paint) in [`MapCanvas.tsx`](../../../../ui/web/src/components/MapCanvas.tsx):
-
-```tsx
-ctx.setTransform(1, 0, 0, 1, 0, 0);
-ctx.clearRect(0, 0, stageW, stageH);
-ctx.imageSmoothingEnabled = false;
-ctx.setTransform(scale, 0, 0, scale, tx, ty);
-// Horizontal loop tiles only; N/S of the map band stay dark (blank margins)
-for (let i = -1; i <= 1; i++) {
-  ctx.drawImage(source, i * dw, 0);
-}
-```
-
 **Input.** A wheel step zooms by $f = 1.12$ (or $1/1.12$) around the pointer, never below the fit scale; a press starts a drag, which pans once the pointer has moved more than 2 px on an axis; a release that did not pan inspects the cell under the pointer.
 
 ## Procedure
 
-1. A new raster is decoded with `decodePackedRaster`, put into the source canvas (resized to $W \times H$ when needed), and the view is repainted and the sizes reported. [`MapCanvas`](../../../../ui/web/src/components/MapCanvas.tsx).
-2. A resize observer on the stage records its size, reports it, and repaints; a new viewport repaints. [`MapCanvas`](../../../../ui/web/src/components/MapCanvas.tsx).
-3. Paint sizes the view canvas to the stage, clears it, turns smoothing off, applies the camera transform, and draws the three copies. [`MapCanvas`](../../../../ui/web/src/components/MapCanvas.tsx).
-4. The wheel handler computes the fit scale and calls `zoomAt` with the pointer's stage position. The pointer handlers capture the pointer, pan with `panBy`, and on a click call `stageToCell` and `onCell`. Hover calls `stageToCell` to show `x <x> · y <y>` in the corner, next to the scale `×<s>`. [`MapCanvas`](../../../../ui/web/src/components/MapCanvas.tsx).
-5. The layer switch renders one button per layer, marks the current one, and stops its pointer events from starting a pan. [`MapCanvas`](../../../../ui/web/src/components/MapCanvas.tsx).
-6. `resetViewport` returns the fitted viewport for given stage and display sizes; the root calls it to reset the view. [`resetViewport`](../../../../ui/web/src/components/MapCanvas.tsx).
+1. A new raster is decoded, put into the source canvas (resized to $W \times H$ when needed), and the view is repainted and the sizes reported.
+2. A resize observer on the stage records its size, reports it, and repaints; a new viewport repaints.
+3. Paint sizes the view canvas to the stage, clears it, turns smoothing off, applies the camera transform, and draws the three copies.
+4. The wheel computes the fit scale and zooms at the pointer's stage position. The pointer handlers capture the pointer, pan, and on a click turn the stage point into a cell and pass it to the root. Hover turns the stage point into a cell to show `x <x> · y <y>` in the corner, next to the scale `×<s>`.
+5. The layer switch renders one button per layer, marks the current one, and stops its pointer events from starting a pan.
+6. Resetting the view returns the fitted viewport for given stage and display sizes; the root calls it to reset the view.
 
 ## What is true afterwards
 
@@ -57,10 +44,5 @@ The visible canvas shows the latest raster through the current camera, with squa
 
 Decoding is $O(WH)$ per raster. A repaint draws three scaled copies of the source.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Canvas | `MapCanvas` | `MapCanvas`, `resetViewport` | [`ui/web/src/components/MapCanvas.tsx`](../../../../ui/web/src/components/MapCanvas.tsx) |
-
+Code: [components/](../../../../ui/web/src/components/README.md)
 Parent: [web front](README.md). The camera it applies: [viewport](viewport.md).

@@ -1,23 +1,23 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/host/MapHost.java
- * Purpose: Localhost HTTP facade over MapController (G-006 / F-024)
+ * File: ui/src/main/java/com/aethelgard/ui/http/MapHost.java
+ * Purpose: Serves one map controller over HTTP on the loopback address: its status, its raster, and its actions
  * Audience: Next front / Tauri / Maven tests
  * Update when: Host API routes or status shape change
  */
 
-package com.aethelgard.ui.host;
+package com.aethelgard.ui.http;
 
 import com.aethelgard.cli.CliResult;
 import com.aethelgard.product.session.diagnostics.DiagnosticCollector;
 import com.aethelgard.product.session.diagnostics.DiagnosticsHub;
 import com.aethelgard.product.world.fields.WorldSpec;
-import com.aethelgard.ui.CellInspect;
-import com.aethelgard.ui.ElevationRaster;
-import com.aethelgard.ui.ExecutorPlayScheduler;
-import com.aethelgard.ui.LegendEntry;
-import com.aethelgard.ui.MapController;
-import com.aethelgard.ui.MapLayer;
-import com.aethelgard.ui.MapSpeed;
+import com.aethelgard.ui.controller.CellInspect;
+import com.aethelgard.ui.controller.ExecutorPlayScheduler;
+import com.aethelgard.ui.controller.LegendEntry;
+import com.aethelgard.ui.controller.MapController;
+import com.aethelgard.ui.controller.MapSpeed;
+import com.aethelgard.ui.raster.ElevationRaster;
+import com.aethelgard.ui.raster.MapLayer;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -61,7 +61,7 @@ public final class MapHost implements AutoCloseable {
   private final HttpServer server;
   private final boolean ownsLifecycle;
 
-  /** Reused packed raster body (F-047); invalidated when step or layer changes. */
+  /** Reused packed raster body; invalidated when step or layer changes. */
   private byte[] cachedPacked;
 
   private int cachedPackedStep = Integer.MIN_VALUE;
@@ -119,18 +119,18 @@ public final class MapHost implements AutoCloseable {
     java.util.concurrent.ExecutorService httpThreads =
         Executors.newCachedThreadPool(daemonFactory("map-host-http"));
     MapHost host = new MapHost(controller, play, advances, httpThreads, ownsLifecycle, http);
-    http.createContext("/health", host::health);
-    http.createContext("/api/status", host::status);
-    http.createContext("/api/raster", host::raster);
-    http.createContext("/api/advance", host::advance);
-    http.createContext("/api/play", host::play);
-    http.createContext("/api/pause", host::pause);
-    http.createContext("/api/layer", host::layer);
-    http.createContext("/api/speed", host::speed);
-    http.createContext("/api/new-world", host::newWorld);
-    http.createContext("/api/restart-engine", host::restartEngine);
-    http.createContext("/api/inspect", host::inspect);
-    http.createContext("/api/command", host::command);
+    http.createContext("/health", host::answerHealth);
+    http.createContext("/api/status", host::answerStatus);
+    http.createContext("/api/raster", host::answerRaster);
+    http.createContext("/api/advance", host::answerAdvance);
+    http.createContext("/api/play", host::answerPlay);
+    http.createContext("/api/pause", host::answerPause);
+    http.createContext("/api/layer", host::answerLayer);
+    http.createContext("/api/speed", host::answerSpeed);
+    http.createContext("/api/new-world", host::answerNewWorld);
+    http.createContext("/api/restart-engine", host::answerRestartEngine);
+    http.createContext("/api/inspect", host::answerInspect);
+    http.createContext("/api/command", host::answerCommand);
     http.setExecutor(httpThreads);
     http.start();
     return host;
@@ -172,8 +172,8 @@ public final class MapHost implements AutoCloseable {
     }
   }
 
-  private void health(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerHealth(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -183,8 +183,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "text/plain; charset=utf-8", "ok");
   }
 
-  private void status(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerStatus(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -194,8 +194,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void raster(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerRaster(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -205,7 +205,7 @@ public final class MapHost implements AutoCloseable {
     ElevationRaster image = controller.raster();
     byte[] body = packedRasterCached();
     Headers headers = exchange.getResponseHeaders();
-    cors(headers);
+    allowAnyOrigin(headers);
     headers.set("Content-Type", "application/octet-stream");
     headers.set("X-Width", Integer.toString(image.width()));
     headers.set("X-Height", Integer.toString(image.height()));
@@ -217,7 +217,7 @@ public final class MapHost implements AutoCloseable {
 
   /**
    * Returns the packed raster for the current controller step+layer, reusing one {@code byte[]}
-   * when size matches (F-047). Refills when step or layer changes.
+   * when size matches. Refills when step or layer changes.
    */
   byte[] packedRasterCached() {
     ElevationRaster image = controller.raster();
@@ -244,8 +244,8 @@ public final class MapHost implements AutoCloseable {
     return cachedPacked;
   }
 
-  private void advance(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerAdvance(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -257,8 +257,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void play(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerPlay(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -270,8 +270,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void pause(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerPause(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -283,8 +283,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void layer(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerLayer(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -306,8 +306,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void speed(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerSpeed(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -329,8 +329,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void newWorld(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerNewWorld(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -354,8 +354,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void restartEngine(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerRestartEngine(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -367,8 +367,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void inspect(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerInspect(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -395,8 +395,8 @@ public final class MapHost implements AutoCloseable {
     send(exchange, 200, "application/json; charset=utf-8", statusJson());
   }
 
-  private void command(HttpExchange exchange) throws IOException {
-    if (preflight(exchange)) {
+  private void answerCommand(HttpExchange exchange) throws IOException {
+    if (answerPreflight(exchange)) {
       return;
     }
     if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -422,27 +422,27 @@ public final class MapHost implements AutoCloseable {
     WorldSpec spec = controller.spec();
     StringBuilder sb = new StringBuilder(256);
     sb.append('{');
-    field(sb, "step", controller.stepIndex(), true);
-    field(sb, "seed", spec.seed(), false);
-    field(sb, "width", spec.width(), false);
-    field(sb, "height", spec.height(), false);
-    field(sb, "layer", controller.layer().label(), false);
-    field(sb, "speed", controller.speed().label(), false);
-    field(sb, "playing", controller.playing(), false);
-    field(sb, "busy", controller.busy(), false);
-    field(sb, "statusText", controller.statusText(), false);
+    appendField(sb, "step", controller.stepIndex(), true);
+    appendField(sb, "seed", spec.seed(), false);
+    appendField(sb, "width", spec.width(), false);
+    appendField(sb, "height", spec.height(), false);
+    appendField(sb, "layer", controller.layer().label(), false);
+    appendField(sb, "speed", controller.speed().label(), false);
+    appendField(sb, "playing", controller.isPlaying(), false);
+    appendField(sb, "busy", controller.isBusy(), false);
+    appendField(sb, "statusText", controller.statusText(), false);
     CellInspect inspected = controller.inspected();
     sb.append(",\"inspect\":");
     if (inspected == null) {
       sb.append("null");
     } else {
       sb.append('{');
-      field(sb, "x", inspected.x(), true);
-      field(sb, "y", inspected.y(), false);
-      field(sb, "elevation", inspected.elevation(), false);
-      field(sb, "plateId", inspected.plateId(), false);
-      field(sb, "vx", inspected.vx(), false);
-      field(sb, "vy", inspected.vy(), false);
+      appendField(sb, "x", inspected.x(), true);
+      appendField(sb, "y", inspected.y(), false);
+      appendField(sb, "elevation", inspected.elevation(), false);
+      appendField(sb, "plateId", inspected.plateId(), false);
+      appendField(sb, "vx", inspected.vx(), false);
+      appendField(sb, "vy", inspected.vy(), false);
       sb.append('}');
     }
     sb.append(",\"legend\":[");
@@ -484,21 +484,21 @@ public final class MapHost implements AutoCloseable {
     sb.append('}');
   }
 
-  private static void field(StringBuilder sb, String name, long value, boolean first) {
+  private static void appendField(StringBuilder sb, String name, long value, boolean first) {
     if (!first) {
       sb.append(',');
     }
     sb.append('"').append(name).append("\":").append(value);
   }
 
-  private static void field(StringBuilder sb, String name, boolean value, boolean first) {
+  private static void appendField(StringBuilder sb, String name, boolean value, boolean first) {
     if (!first) {
       sb.append(',');
     }
     sb.append('"').append(name).append("\":").append(value);
   }
 
-  private static void field(StringBuilder sb, String name, String value, boolean first) {
+  private static void appendField(StringBuilder sb, String name, String value, boolean first) {
     if (!first) {
       sb.append(',');
     }
@@ -617,8 +617,8 @@ public final class MapHost implements AutoCloseable {
     return java.net.URLDecoder.decode(raw, StandardCharsets.UTF_8);
   }
 
-  private static boolean preflight(HttpExchange exchange) throws IOException {
-    cors(exchange.getResponseHeaders());
+  private static boolean answerPreflight(HttpExchange exchange) throws IOException {
+    allowAnyOrigin(exchange.getResponseHeaders());
     if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
       exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
       exchange
@@ -631,7 +631,7 @@ public final class MapHost implements AutoCloseable {
     return false;
   }
 
-  private static void cors(Headers headers) {
+  private static void allowAnyOrigin(Headers headers) {
     headers.set("Access-Control-Allow-Origin", "*");
   }
 
@@ -639,7 +639,7 @@ public final class MapHost implements AutoCloseable {
       throws IOException {
     byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
     Headers headers = exchange.getResponseHeaders();
-    cors(headers);
+    allowAnyOrigin(headers);
     headers.set("Content-Type", type);
     exchange.sendResponseHeaders(code, bytes.length);
     try (OutputStream out = exchange.getResponseBody()) {

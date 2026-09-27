@@ -1,11 +1,11 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/CellInspect.java
+ * File: ui/src/main/java/com/aethelgard/ui/controller/CellInspect.java
  * Purpose: Click-inspect snapshot of one map cell
  * Audience: MapController / sidebar / tests
  * Update when: Inspect fields change
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.controller;
 
 /**
  * Values at one cell. Causal history is out of scope (later Goal).

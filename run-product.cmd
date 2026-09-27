@@ -1,5 +1,9 @@
 @echo off
-REM Primary Aethelgard launch (F-026): MapHost + Next + Tauri desktop shell.
+REM File: run-product.cmd
+REM Purpose: Starts the studio: installs the Java modules and npm packages it needs, then runs the desktop shell
+REM Audience: A person starting the studio on Windows
+REM Update when: The steps that start the studio change
+
 REM Tauri starts Next (beforeDevCommand) and waits for http://localhost:3000.
 REM Requires: JDK 21, Node.js, Rust (for first Tauri build).
 

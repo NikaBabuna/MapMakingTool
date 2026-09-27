@@ -1,3 +1,8 @@
+# File: ui/desktop/src-tauri/Cargo.toml
+# Purpose: The desktop shell's Rust crate: its name, its library, and its Tauri dependencies
+# Audience: Cargo; agents changing the shell's dependencies
+# Update when: A dependency, the crate's name, or its library changes
+
 [package]
 name = "aethelgard"
 version = "0.1.0"

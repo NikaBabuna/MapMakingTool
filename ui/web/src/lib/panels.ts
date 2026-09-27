@@ -1,6 +1,6 @@
 /*
  * File: ui/web/src/lib/panels.ts
- * Purpose: Panel registry for the runner rails (F-053)
+ * Purpose: Panel registry for the runner rails
  * Audience: MapTool / Panel
  * Update when: Panels are added, removed, moved between rails, or reordered
  *

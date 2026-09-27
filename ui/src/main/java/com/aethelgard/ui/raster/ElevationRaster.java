@@ -1,13 +1,12 @@
 /*
- * File: ui/src/main/java/com/aethelgard/ui/ElevationRaster.java
+ * File: ui/src/main/java/com/aethelgard/ui/raster/ElevationRaster.java
  * Purpose: Headless map RGB raster — elevation, plates, overlay (no Swing)
  * Audience: MapController / tests
  * Update when: Paint formulas change
  */
 
-package com.aethelgard.ui;
+package com.aethelgard.ui.raster;
 
-import com.aethelgard.product.world.fields.Grid;
 import com.aethelgard.product.world.fields.Grid;
 import com.aethelgard.product.world.topology.SphereTopology;
 import java.util.Arrays;
@@ -15,9 +14,9 @@ import java.util.Objects;
 
 /**
  * Deterministic RGB image of a map layer. One packed {@code 0xRRGGBB} per cell in a flat {@code
- * int[]} (row-major). Paint may reuse a caller buffer when dimensions match (F-047).
+ * int[]} (row-major). Paint may reuse a caller buffer when dimensions match.
  *
- * <p>Physical atlas ramp (F-052): brighter land stops clamp 64; bathymetry for negatives; hillshade
+ * <p>Physical atlas ramp: brighter land stops clamp 64; bathymetry for negatives; hillshade
  * on land for Elevation and Overlay. Formulas: product architecture + this class.
  */
 public final class ElevationRaster {
@@ -113,7 +112,7 @@ public final class ElevationRaster {
   /**
    * Unshaded cell color: bathymetry if {@code elevation < 0}, else physical land ramp (clamp 64).
    *
-   * <p>Ocean interpolates stops at e = −64…−1. Land interpolates atlas stops at e = 0…64 (F-052).
+   * <p>Ocean interpolates stops at e = −64…−1. Land interpolates atlas stops at e = 0…64.
    */
   public static int rgbOf(int elevation) {
     if (elevation < 0) {
@@ -192,7 +191,7 @@ public final class ElevationRaster {
   }
 
   /**
-   * Half-edge core (F-044): true when plate id differs from east or south neighbor under
+   * Half-edge core: true when plate id differs from east or south neighbor under
    * {@link com.aethelgard.product.world.topology.SphereTopology}.
    */
   public static boolean isPlateBoundaryCore(Grid plates, int x, int y) {
@@ -212,7 +211,7 @@ public final class ElevationRaster {
   }
 
   /**
-   * Bold border (F-045 P1): core half-edge plus orthogonal dilation so stroke is ≥2 cells — stays
+   * Bold border: core half-edge plus orthogonal dilation so stroke is ≥2 cells — stays
    * visible when the canvas nearest-neighbor scales down.
    */
   public static boolean isPlateBoundary(Grid plates, int x, int y) {

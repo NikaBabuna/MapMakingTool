@@ -2,7 +2,7 @@
 
 /*
  * File: ui/web/src/components/Terminal.tsx
- * Purpose: Always-on terminal panel on shared CommandDispatch (F-052)
+ * Purpose: Always-on terminal panel on shared CommandDispatch
  * Audience: MapTool
  * Update when: Terminal UX or transcript shape changes
  */
@@ -90,7 +90,7 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Termi
     }
   }
 
-  function onKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       e.preventDefault();
       void run();
@@ -161,7 +161,7 @@ export const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Termi
             setLine(e.target.value);
             setHistoryIndex(-1);
           }}
-          onKeyDown={onKeyDown}
+          onKeyDown={handleKeyDown}
         />
         <button type="button" className="btn terminal-run" onClick={() => void run()}>
           Run

@@ -143,11 +143,27 @@ Enter code through the door of its folder, or through the paper page that descri
 | `cli/` | [../cli/README.md](../cli/README.md) | The headless runner and the shared command language | [architecture/cli/](architecture/cli/README.md) |
 | `cli/src/main/java/com/aethelgard/cli/` | [../cli/src/main/java/com/aethelgard/cli/README.md](../cli/src/main/java/com/aethelgard/cli/README.md) | The runner and the command language | [architecture/cli/](architecture/cli/README.md) |
 | `cli/src/test/java/com/aethelgard/cli/` | [../cli/src/test/java/com/aethelgard/cli/README.md](../cli/src/test/java/com/aethelgard/cli/README.md) | The tests of one run of the command line, and of the command language | Its door |
-| `ui/` | [../ui/README.md](../ui/README.md) | Raster, map controller, and the Java HTTP host | [architecture/studio/](architecture/studio/README.md) |
-| `ui/web/` | [../ui/web/README.md](../ui/web/README.md) | The Next.js studio front | [architecture/studio/web/](architecture/studio/web/README.md); the look is [product/style-guide.md](product/style-guide.md) |
-| `ui/desktop/` | [../ui/desktop/README.md](../ui/desktop/README.md) | The Tauri desktop shell | [architecture/studio/desktop.md](architecture/studio/desktop.md) |
-| `.github/` | [../.github/README.md](../.github/README.md) | The CI workflow | [architecture/program.md](architecture/program.md) |
-| `.cursor/` | [../.cursor/README.md](../.cursor/README.md) | The editor's always-on rule | Its door |
+| `ui/` | [../ui/README.md](../ui/README.md) | The studio: its Java side (controller, raster, HTTP host), with the web front and the desktop shell beside it. Each folder has its own door | [architecture/studio/](architecture/studio/README.md) |
+| `ui/src/main/java/com/aethelgard/ui/controller/` | [../ui/src/main/java/com/aethelgard/ui/controller/README.md](../ui/src/main/java/com/aethelgard/ui/controller/README.md) | The studio's one session: background steps, play, inspection, commands, and the painted map | [architecture/studio/controller.md](architecture/studio/controller.md) |
+| `ui/src/main/java/com/aethelgard/ui/raster/` | [../ui/src/main/java/com/aethelgard/ui/raster/README.md](../ui/src/main/java/com/aethelgard/ui/raster/README.md) | The grids painted into one colour per cell, and the map layers | [architecture/studio/raster.md](architecture/studio/raster.md), [architecture/studio/controller.md](architecture/studio/controller.md) |
+| `ui/src/main/java/com/aethelgard/ui/http/` | [../ui/src/main/java/com/aethelgard/ui/http/README.md](../ui/src/main/java/com/aethelgard/ui/http/README.md) | The local HTTP host and the process that starts it | [architecture/studio/http.md](architecture/studio/http.md) |
+| `ui/src/test/java/com/aethelgard/ui/controller/` | [../ui/src/test/java/com/aethelgard/ui/controller/README.md](../ui/src/test/java/com/aethelgard/ui/controller/README.md) | The tests of the controller | Its door |
+| `ui/src/test/java/com/aethelgard/ui/raster/` | [../ui/src/test/java/com/aethelgard/ui/raster/README.md](../ui/src/test/java/com/aethelgard/ui/raster/README.md) | The tests of the raster's colours | Its door |
+| `ui/src/test/java/com/aethelgard/ui/http/` | [../ui/src/test/java/com/aethelgard/ui/http/README.md](../ui/src/test/java/com/aethelgard/ui/http/README.md) | The tests of the HTTP host, through real requests | Its door |
+| `ui/web/` | [../ui/web/README.md](../ui/web/README.md) | The Next.js studio front: its configuration, with its code below | [architecture/studio/web/](architecture/studio/web/README.md); the look is [product/style-guide.md](product/style-guide.md) |
+| `ui/web/src/app/` | [../ui/web/src/app/README.md](../ui/web/src/app/README.md) | The one route, its layout, and the stylesheet | [architecture/studio/web/tool.md](architecture/studio/web/tool.md), [architecture/studio/web/styles.md](architecture/studio/web/styles.md) |
+| `ui/web/src/components/` | [../ui/web/src/components/README.md](../ui/web/src/components/README.md) | The map tool and the canvas, menu bar, panels, shortcut list, and terminal it renders | [architecture/studio/web/tool.md](architecture/studio/web/tool.md), [architecture/studio/web/canvas.md](architecture/studio/web/canvas.md), [architecture/studio/web/chrome.md](architecture/studio/web/chrome.md), [architecture/studio/web/terminal.md](architecture/studio/web/terminal.md) |
+| `ui/web/src/lib/` | [../ui/web/src/lib/README.md](../ui/web/src/lib/README.md) | The host client, the raster decoder, the camera, and the declared menus, panels, layout, and shortcuts | [architecture/studio/web/client.md](architecture/studio/web/client.md), [architecture/studio/web/viewport.md](architecture/studio/web/viewport.md), [architecture/studio/web/chrome.md](architecture/studio/web/chrome.md) |
+| `ui/web/src/test/` | [../ui/web/src/test/README.md](../ui/web/src/test/README.md) | The stand-in host and the test setup the web front's tests share | Its door |
+| `ui/desktop/` | [../ui/desktop/README.md](../ui/desktop/README.md) | The Tauri desktop shell: its npm command line, with its crate below | [architecture/studio/desktop.md](architecture/studio/desktop.md) |
+| `ui/desktop/public/` | [../ui/desktop/public/README.md](../ui/desktop/public/README.md) | The static page a packaged build would bundle | [architecture/studio/desktop.md](architecture/studio/desktop.md) |
+| `ui/desktop/src-tauri/` | [../ui/desktop/src-tauri/README.md](../ui/desktop/src-tauri/README.md) | The shell's Rust crate, its build step, and its window configuration | [architecture/studio/desktop.md](architecture/studio/desktop.md) |
+| `ui/desktop/src-tauri/capabilities/` | [../ui/desktop/src-tauri/capabilities/README.md](../ui/desktop/src-tauri/capabilities/README.md) | The permission sets granted to the shell's window | Its door |
+| `ui/desktop/src-tauri/src/` | [../ui/desktop/src-tauri/src/README.md](../ui/desktop/src-tauri/src/README.md) | The shell's Rust code: the window's start, and the map host's start and stop | [architecture/studio/desktop.md](architecture/studio/desktop.md) |
+| `.github/` | [../.github/README.md](../.github/README.md) | The repository's GitHub configuration | [architecture/program.md](architecture/program.md) |
+| `.github/workflows/` | [../.github/workflows/README.md](../.github/workflows/README.md) | The CI workflow, which runs the witness command on `main` | [architecture/program.md](architecture/program.md) |
+| `.cursor/` | [../.cursor/README.md](../.cursor/README.md) | The Cursor editor's configuration | Its door |
+| `.cursor/rules/` | [../.cursor/rules/README.md](../.cursor/rules/README.md) | The editor's always-on rule, which points to the protocol | Its door |
 
 ---
 
@@ -174,7 +190,7 @@ Reading any of these whole fills a context window with little of value. The rule
 | `ui/web/package-lock.json` | JavaScript lock file | ~2,800 lines | Search for one package name |
 | `ui/web/src/components/MapTool.tsx` | Web studio component | ~970 lines | Search the member, read its range |
 | `ui/web/src/app/globals.css` | Web stylesheet | ~960 lines | Search the selector, read its range |
-| `ui/src/main/java/com/aethelgard/ui/host/MapHost.java` | Java HTTP host | ~670 lines | Search the member, read its range |
+| `ui/src/main/java/com/aethelgard/ui/http/MapHost.java` | Java HTTP host | ~670 lines | Search the member, read its range |
 | `product/src/main/java/com/aethelgard/product/world/motion/GeometryApplication.java` | Geometry phase | ~620 lines | Search the member, read its range |
 | `cli/src/main/java/com/aethelgard/cli/CommandDispatch.java` | Command language | ~540 lines | Search the member, read its range |
 | `product/src/test/resources/worlds/` | Golden world dumps (test data) | Data, not prose | Only when a dump test fails: its first line, then the failing region |

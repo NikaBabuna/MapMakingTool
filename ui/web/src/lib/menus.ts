@@ -1,6 +1,6 @@
 /*
  * File: ui/web/src/lib/menus.ts
- * Purpose: Menu-bar descriptor model for the runner (F-053)
+ * Purpose: Menu-bar descriptor model for the runner
  * Audience: MenuBar / MapTool action dispatch
  * Update when: Menus, items, or actions change
  *
