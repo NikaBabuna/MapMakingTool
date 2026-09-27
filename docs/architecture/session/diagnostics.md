@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/session/diagnostics.md
-  Purpose: DiagnosticsHub, DiagnosticCollector, RingDiagnosticCollector, DiagnosticIds, PhaseTiming, TimingSubSystem — measuring a run without touching the world
+  Purpose: Session diagnostics — measuring a run without touching the world
   Audience: Agents and humans
-  Update when: DiagnosticsHub, RingDiagnosticCollector, PhaseTiming, TimingSubSystem, or the collector ids change
+  Update when: What the diagnostics record or keep, how phases are timed, or the collector ids change
 -->
 
 # Session diagnostics
@@ -15,11 +15,11 @@ Samples: a collector id and a `long` value. The session records step time and me
 
 ## What it writes
 
-The samples, into fixed-size rings, and text reports of them. No world field. Refusals: registering an id twice, and `get`, `setEnabled`, or `clear` of an unknown id, throw `IllegalArgumentException`; a ring of capacity below 1 throws `IllegalArgumentException`.
+The samples, into fixed-size rings, and text reports of them. No world field. Refusals: registering an id twice, and reading, switching, or clearing an unknown id, throw `IllegalArgumentException`; a ring of capacity below 1 throws `IllegalArgumentException`.
 
 ## Model
 
-The hub is an ordered map from ids to collectors, in registration order. `withDefaults` registers ten rings of capacity $\mathit{cap} = 64$:
+The hub is an ordered map from ids to collectors, in registration order. The default hub registers ten rings of capacity $\mathit{cap} = 64$:
 
 | Id | Records | Unit |
 |----|---------|------|
@@ -35,50 +35,27 @@ $$\mathrm{latest} = x_m, \qquad \mathrm{mean} = \operatorname{trunc}\Bigl(\frac{
 
 both absent when $m = 0$, with $\operatorname{trunc}$ the rounding of `long` division toward zero.
 
-`RingDiagnosticCollector.record` in [`RingDiagnosticCollector.java`](../../../product/src/main/java/com/aethelgard/product/RingDiagnosticCollector.java):
-
-```java
-if (!enabled) {
-  return;
-}
-ring[next] = value;
-next = (next + 1) % ring.length;
-if (size < ring.length) {
-  size++;
-}
-```
-
 A timed phase measures its own run and hands the duration to the hub bound to the current thread, if any:
 
 $$\mathrm{record}\bigl(\text{phase id},\; t_{\mathrm{end}} - t_{\mathrm{start}}\bigr) \quad \text{(also when the phase throws).}$$
 
 ## Procedure
 
-1. `withDefaults` registers the ten collectors named by `DiagnosticIds`, each a `RingDiagnosticCollector` of `DEFAULT_CAPACITY` (64). [`DiagnosticsHub.withDefaults`](../../../product/src/main/java/com/aethelgard/product/DiagnosticsHub.java), [`DiagnosticIds`](../../../product/src/main/java/com/aethelgard/product/DiagnosticIds.java).
-2. `record(id, value)` forwards to the collector when the id is registered, and does nothing otherwise. `register`, `ids`, `get`, `has`, `setEnabled`, `clear`, `clearAll`, and `collectors` manage the map. Every hub method holds the hub's monitor. [`DiagnosticsHub.record`](../../../product/src/main/java/com/aethelgard/product/DiagnosticsHub.java).
-3. A ring writes at its cursor, advances the cursor modulo the capacity, and grows its size up to the capacity. `clear` resets size and cursor. `latest`, `mean`, `samples` (oldest first), `size`, `capacity`, `enabled`, and `setEnabled` read and switch it. Every ring method except `id` and `capacity` holds the ring's monitor. [`RingDiagnosticCollector.record`](../../../product/src/main/java/com/aethelgard/product/RingDiagnosticCollector.java).
-4. `DiagnosticCollector` is the port a collector implements, so a product can add one with `register`. [`DiagnosticCollector`](../../../product/src/main/java/com/aethelgard/product/DiagnosticCollector.java).
-5. `report` prints one `summaryLine` per collector, `<id> enabled=<bool> n=<m>/<cap> last=<v|-> mean=<v|->`. `listReport` prints `<id> enabled=<bool> n=<m>/<cap>`. [`DiagnosticsHub.report`](../../../product/src/main/java/com/aethelgard/product/DiagnosticsHub.java), [`RingDiagnosticCollector.summaryLine`](../../../product/src/main/java/com/aethelgard/product/RingDiagnosticCollector.java).
-6. `PhaseTiming.withHub(hub, action)` binds the hub to the current thread for the duration of the action, and restores the previous binding afterwards. `PhaseTiming.record` records into the bound hub, and does nothing when none is bound. [`PhaseTiming.withHub`](../../../product/src/main/java/com/aethelgard/product/PhaseTiming.java).
-7. `TimingSubSystem` wraps a phase: it reports the phase's own `id` and write range, so the engine sees the phase unchanged, and around `execute` it measures the elapsed time and calls `PhaseTiming.record` in a `finally` block. [`TimingSubSystem.execute`](../../../product/src/main/java/com/aethelgard/product/TimingSubSystem.java).
+1. The default hub registers the ten collectors of the table, each a `RingDiagnosticCollector` of capacity 64.
+2. A sample is forwarded to the collector with its id when that id is registered, and dropped otherwise. The hub also registers, lists, reads, switches, and clears collectors, one or all. Every hub operation holds the hub's monitor.
+3. A ring writes at its cursor, advances the cursor modulo the capacity, and grows its size up to the capacity. Clearing resets size and cursor. The ring's latest sample, its mean, its samples (oldest first), its size, its capacity, and whether it is enabled can be read, and it can be switched on or off. Every ring operation except reading its id and capacity holds the ring's monitor.
+4. `DiagnosticCollector` is the port a collector implements, so a product can register one of its own.
+5. The full report prints one line per collector, `<id> enabled=<bool> n=<m>/<cap> last=<v|-> mean=<v|->`; the short list prints `<id> enabled=<bool> n=<m>/<cap>`.
+6. A hub is bound to the current thread for the duration of one action, and the previous binding is restored afterwards. A timed phase records into the bound hub, and records nothing when none is bound.
+7. A `TimingSubSystem` wraps a phase: it reports the phase's own id and write range, so the engine sees the phase unchanged, and it measures the elapsed time of each run and records it, even when the run throws.
 
 ## What is true afterwards
 
-A world is the same with every collector enabled, disabled, or cleared: no sample reaches a field. Each ring holds at most 64 samples, so memory is bounded. A phase timed outside a session's `advance`, for example in the [reference pipeline](../world/reference.md), records nothing, because no hub is bound. The engine's own report port is a different mechanism: [engine diagnostics](../engine/diagnostics.md).
+A world is the same with every collector enabled, disabled, or cleared: no sample reaches a field. Each ring holds at most 64 samples, so memory is bounded. A phase timed outside a session's advance, for example in the [reference pipeline](../world/reference.md), records nothing, because no hub is bound. The engine's own report port is a different mechanism: [engine diagnostics](../engine/diagnostics.md).
 
 ## Cost
 
 A record is $O(1)$; a mean or a copy of samples is $O(\mathit{cap})$.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Hub | `DiagnosticsHub` | `DEFAULT_CAPACITY`, `withDefaults`, `register`, `ids`, `get`, `has`, `DiagnosticsHub.record`, `DiagnosticsHub.setEnabled`, `DiagnosticsHub.clear`, `clearAll`, `report`, `listReport`, `collectors` | [`product/src/main/java/com/aethelgard/product/DiagnosticsHub.java`](../../../product/src/main/java/com/aethelgard/product/DiagnosticsHub.java) |
-| Collector port | `DiagnosticCollector` | `DiagnosticCollector.id`, `DiagnosticCollector.enabled`, `DiagnosticCollector.setEnabled`, `DiagnosticCollector.capacity`, `DiagnosticCollector.size`, `DiagnosticCollector.record`, `DiagnosticCollector.clear`, `DiagnosticCollector.latest`, `DiagnosticCollector.mean`, `DiagnosticCollector.samples`, `DiagnosticCollector.summaryLine` | [`product/src/main/java/com/aethelgard/product/DiagnosticCollector.java`](../../../product/src/main/java/com/aethelgard/product/DiagnosticCollector.java) |
-| Ring | `RingDiagnosticCollector` | `RingDiagnosticCollector`, `RingDiagnosticCollector.record`, `RingDiagnosticCollector.latest`, `RingDiagnosticCollector.mean`, `RingDiagnosticCollector.samples`, `RingDiagnosticCollector.summaryLine` | [`product/src/main/java/com/aethelgard/product/RingDiagnosticCollector.java`](../../../product/src/main/java/com/aethelgard/product/RingDiagnosticCollector.java) |
-| Ids | `DiagnosticIds` | `ADVANCE_WALL`, `HEAP_USED`, `HEAP_MAX`, `PAINT_WALL`, `PHASE_TRACE`, `PHASE_INTERACTION`, `PHASE_INTEGRATE`, `PHASE_APPLY`, `PHASE_OROGENY`, `PHASE_ISOSTASY` | [`product/src/main/java/com/aethelgard/product/DiagnosticIds.java`](../../../product/src/main/java/com/aethelgard/product/DiagnosticIds.java) |
-| Thread binding | `PhaseTiming` | `withHub`, `PhaseTiming.record` | [`product/src/main/java/com/aethelgard/product/PhaseTiming.java`](../../../product/src/main/java/com/aethelgard/product/PhaseTiming.java) |
-| Phase timer | `TimingSubSystem` | `TimingSubSystem`, `TimingSubSystem.id`, `TimingSubSystem.writeRanges`, `TimingSubSystem.execute` | [`product/src/main/java/com/aethelgard/product/TimingSubSystem.java`](../../../product/src/main/java/com/aethelgard/product/TimingSubSystem.java) |
-
+Code: [session/diagnostics/](../../../product/src/main/java/com/aethelgard/product/session/diagnostics/README.md)  
 Parent: [session](README.md). Which phases are timed: [wiring](../world/wiring.md).

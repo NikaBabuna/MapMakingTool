@@ -7,7 +7,9 @@
 
 package com.aethelgard.ui;
 
-import com.aethelgard.product.Grid;
+import com.aethelgard.product.world.fields.Grid;
+import com.aethelgard.product.world.fields.Grid;
+import com.aethelgard.product.world.topology.SphereTopology;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -191,18 +193,18 @@ public final class ElevationRaster {
 
   /**
    * Half-edge core (F-044): true when plate id differs from east or south neighbor under
-   * {@link com.aethelgard.product.SphereTopology}.
+   * {@link com.aethelgard.product.world.topology.SphereTopology}.
    */
   public static boolean isPlateBoundaryCore(Grid plates, int x, int y) {
     Objects.requireNonNull(plates, "plates");
     int id = plates.get(x, y);
     int width = plates.width();
     int height = plates.height();
-    int[] east = com.aethelgard.product.SphereTopology.neighbor(x, y, 1, 0, width, height);
+    int[] east = com.aethelgard.product.world.topology.SphereTopology.neighbor(x, y, 1, 0, width, height);
     if (plates.get(east[0], east[1]) != id) {
       return true;
     }
-    int[] south = com.aethelgard.product.SphereTopology.neighbor(x, y, 0, 1, width, height);
+    int[] south = com.aethelgard.product.world.topology.SphereTopology.neighbor(x, y, 0, 1, width, height);
     if (plates.get(south[0], south[1]) != id) {
       return true;
     }
@@ -219,8 +221,8 @@ public final class ElevationRaster {
     }
     int width = plates.width();
     int height = plates.height();
-    for (int[] d : com.aethelgard.product.SphereTopology.ORTHO) {
-      int[] n = com.aethelgard.product.SphereTopology.neighbor(x, y, d[0], d[1], width, height);
+    for (int[] d : com.aethelgard.product.world.topology.SphereTopology.ORTHO) {
+      int[] n = com.aethelgard.product.world.topology.SphereTopology.neighbor(x, y, d[0], d[1], width, height);
       if (isPlateBoundaryCore(plates, n[0], n[1])) {
         return true;
       }
@@ -261,7 +263,7 @@ public final class ElevationRaster {
 
   /**
    * Elevation-layer pixel: ocean or hillshaded land. West/north use {@link
-   * com.aethelgard.product.SphereTopology}.
+   * com.aethelgard.product.world.topology.SphereTopology}.
    */
   public static int elevationCell(Grid elevation, int x, int y) {
     int e = elevation.get(x, y);
@@ -271,8 +273,8 @@ public final class ElevationRaster {
     int rgb = landRamp(e);
     int width = elevation.width();
     int height = elevation.height();
-    int[] west = com.aethelgard.product.SphereTopology.neighbor(x, y, -1, 0, width, height);
-    int[] north = com.aethelgard.product.SphereTopology.neighbor(x, y, 0, -1, width, height);
+    int[] west = com.aethelgard.product.world.topology.SphereTopology.neighbor(x, y, -1, 0, width, height);
+    int[] north = com.aethelgard.product.world.topology.SphereTopology.neighbor(x, y, 0, -1, width, height);
     int dw = e - elevation.get(west[0], west[1]);
     int dn = e - elevation.get(north[0], north[1]);
     return applyHillshade(rgb, hillshadeLit(dw, dn));

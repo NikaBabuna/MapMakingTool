@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/crust/ridge.md
-  Purpose: RidgeCreate — phase 6: a new oceanic locker for every cell left without crust
+  Purpose: Ridge — phase 6: a new oceanic locker for every cell left without crust
   Audience: Agents and humans
-  Update when: RidgeCreate.apply or RidgeCreate.execute changes
+  Update when: What the ridge phase computes, or the order of its steps, changes
 -->
 
 # Ridge
@@ -25,27 +25,11 @@ $$O'(c_i) = L + i, \qquad O'(c) = O(c) \;\; (c \notin G), \qquad T'(L + i) = T_{
 
 and every other thickness is unchanged. With no gap, the phase stages its inputs unchanged.
 
-`RidgeCreate.apply` (the mint) in [`RidgeCreate.java`](../../../../product/src/main/java/com/aethelgard/product/RidgeCreate.java):
-
-```java
-int nextId = lockers.count();
-for (int y = 0; y < height; y++) {
-  for (int x = 0; x < width; x++) {
-    int id = occupancy.get(x, y);
-    if (id == PlateKinematics.UNRESOLVED) {
-      cells[y][x] = nextId++;
-    } else {
-      cells[y][x] = id;
-    }
-  }
-}
-```
-
 ## Procedure
 
-1. `execute` reads the occupancy and lockers (staged first) and stages both parts of the `Result` of `apply`. [`RidgeCreate.execute`](../../../../product/src/main/java/com/aethelgard/product/RidgeCreate.java).
-2. `apply` counts the gaps, and with none returns its inputs. [`RidgeCreate.apply`](../../../../product/src/main/java/com/aethelgard/product/RidgeCreate.java).
-3. Otherwise it gives every gap, in row-major order, the next locker id, checks that it minted exactly one id per gap, and extends the table with `Lockers.appendOceanic`. [`RidgeCreate.apply`](../../../../product/src/main/java/com/aethelgard/product/RidgeCreate.java).
+1. The phase reads the occupancy and lockers (staged first) and stages both parts of its result.
+2. The gaps are counted; with none, the inputs are returned unchanged.
+3. Otherwise every gap, in row-major order, gets the next locker id; the phase checks that it minted exactly one id per gap, and extends the table by that many oceanic lockers.
 
 ## What is true afterwards
 
@@ -55,10 +39,5 @@ Every cell has a locker (invariant I4 of [fields](../fields.md)), and every mint
 
 $O(WH)$, plus $O(L)$ to extend the table.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Phase | `RidgeCreate` | `RidgeCreate.id`, `RidgeCreate.writeRanges`, `RidgeCreate.execute`, `RidgeCreate.apply`, `RidgeCreate.Result` | [`product/src/main/java/com/aethelgard/product/RidgeCreate.java`](../../../../product/src/main/java/com/aethelgard/product/RidgeCreate.java) |
-
+Code: [world/crust/](../../../../product/src/main/java/com/aethelgard/product/world/crust/README.md)  
 Parent: [crust](README.md). Why rifts mint ocean rather than stretch the border: [ADR-013](../../../paperwork/decisions/ADR-013-crust-topology.md).

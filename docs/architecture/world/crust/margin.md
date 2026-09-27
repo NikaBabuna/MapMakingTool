@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/crust/margin.md
-  Purpose: MarginRelief — phase 7: a trough beside every rift, a short slope beside every collision, and a blended lip, on oceanic crust only
+  Purpose: Margin — phase 7: a trough beside every rift, a short slope beside every collision, and a blended lip, on oceanic crust only
   Audience: Agents and humans
-  Update when: MarginRelief.apply, trough, collideBonus, selectsLip, shoulderLocker, distances, or a margin constant changes
+  Update when: What the margin phase computes, a margin constant, or the order of its steps changes
 -->
 
 # Margin
@@ -31,41 +31,9 @@ then the lip blend, when $1 \le d^{\mathrm{sep}}_j \le 4$ and $\mathrm{lip}(r_j)
 
 $$t := \min\bigl(\lfloor (t + T(h)) / 2 \rfloor,\; T_{\mathrm{land}} - 1\bigr),$$
 
-`MarginRelief.apply` (the trough and the lip) in [`MarginRelief.java`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java):
-
-```java
-if (sepD[id] <= DIVERGE_RADIUS) {
-  int d = sepD[id];
-  int curve = trough(d);
-  if (d >= 1 && d <= LIP && selectsLip(seed, repX[id], repY[id])) {
-    int neighbor = shoulderLocker(repX[id], repY[id], separate, occupancy, width, height);
-    if (neighbor >= 0 && neighbor < count) {
-      curve = (curve + pre[neighbor]) / 2;
-      if (curve >= Lockers.T_LAND) {
-        curve = Lockers.T_LAND - 1;
-      }
-    }
-  }
-  thickness = curve;
-  changed = true;
-}
-```
-
 then the collision slope, when $d^{\mathrm{col}}_j < 4$:
 
 $$t := \min\bigl(t + (4 - d^{\mathrm{col}}_j),\; T_{\mathrm{land}} - 1\bigr),$$
-
-`MarginRelief.apply` (the slope) in [`MarginRelief.java`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java):
-
-```java
-if (colD[id] < COLLIDE_RADIUS) {
-  thickness += collideBonus(colD[id]);
-  if (thickness >= Lockers.T_LAND) {
-    thickness = Lockers.T_LAND - 1;
-  }
-  changed = true;
-}
-```
 
 and $T'(j) = t$ when a trough or a slope applied. The lip hash, with $\phi_1 = \texttt{0x9E3779B97F4A7C15}$ and $\phi_5 = \texttt{0xC2B2AE3D27D4EB4F}$, selects half the cells:
 
@@ -75,10 +43,10 @@ A trough runs from 4 at the rift to 8, fresh-ocean thickness, at distance 8; a s
 
 ## Procedure
 
-1. `execute` reads the occupancy, lockers, plates, and velocities (staged first) and stages the four-argument `apply`, which traces the moved contacts and calls the contact form with the velocities' seed. [`MarginRelief.execute`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java).
-2. `distances` seeds both cells of every contact of one kind at distance 0 through `seed`, and grows the distance field breadth-first until the radius: `DIVERGE_RADIUS` (8) for rifts, `COLLIDE_RADIUS` (4) for collisions. [`MarginRelief.distances`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java).
-3. For every locker, it keeps the least rift distance with its representative cell, and the least collision distance. [`MarginRelief.apply`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java).
-4. It skips continental lockers, applies `trough` and, on the cells `selectsLip` picks within `LIP` (4) of a rift, blends with the locker `shoulderLocker` finds. It then adds `collideBonus`, and caps both results at $T_{\mathrm{land}} - 1$. [`MarginRelief.apply`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java).
+1. The phase reads the occupancy, lockers, plates, and velocities (staged first), traces the moved contacts, and stages the reshaped lockers, using the velocities' seed for the lip hash.
+2. For each kind, both cells of every contact of that kind start at distance 0, and the distance field grows breadth-first until the radius: 8 for rifts, 4 for collisions.
+3. Every locker keeps its least rift distance, with its representative cell, and its least collision distance.
+4. Continental lockers are skipped. Every other locker takes the trough and, on the cells the lip hash picks within 4 of a rift, is blended with the shoulder locker; then the collision slope is added, and both results are capped at $T_{\mathrm{land}} - 1$.
 
 ## What is true afterwards
 
@@ -88,10 +56,5 @@ No margin turns ocean into land: every locker it touches ends below $T_{\mathrm{
 
 Two breadth-first searches of $O(WH)$, and $O(WH + L)$ for the locker pass.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Phase | `MarginRelief` | `MarginRelief.id`, `MarginRelief.writeRanges`, `MarginRelief.execute`, `MarginRelief.apply`, `trough`, `collideBonus`, `selectsLip`, `shoulderLocker`, `distances`, `seed`, `DIVERGE_RADIUS`, `COLLIDE_RADIUS`, `LIP` | [`product/src/main/java/com/aethelgard/product/MarginRelief.java`](../../../../product/src/main/java/com/aethelgard/product/MarginRelief.java) |
-
+Code: [world/crust/](../../../../product/src/main/java/com/aethelgard/product/world/crust/README.md)  
 Parent: [crust](README.md).

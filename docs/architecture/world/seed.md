@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/seed.md
-  Purpose: ProductHost.create, Plates, PlateVelocities.seed, Occupancy.seed — step 0: the first world from a size and a seed
+  Purpose: Seed — step 0: the first world from a size and a seed
   Audience: Agents and humans
-  Update when: ProductHost.create, Plates.seed, Plates.assign, Plates.dist2, Plates.mix, or PlateVelocities.seed changes
+  Update when: How step 0 builds the first world, or the order of its steps, changes
 -->
 
 # Seed
@@ -11,7 +11,7 @@ The first world is a still ocean cut into a dozen or more plates. A single numbe
 
 ## What it reads
 
-A `WorldSpec` $(W, H, s)$: the width, the height, and the seed. `ProductHost.create()` uses `WorldSpec.DEFAULT`.
+A `WorldSpec` $(W, H, s)$: the width, the height, and the seed. Without a spec, the default spec is used.
 
 ## What it writes
 
@@ -29,15 +29,6 @@ $$z_1 = z + \phi_1, \quad z_2 = (z_1 \oplus (z_1 \gg 30))\,\phi_2, \quad z_3 = (
 
 the SplitMix64 finaliser of a key built from the seed, the site index $i$, and an axis $j$.
 
-`Plates.splitmix64` in [`Plates.java`](../../../product/src/main/java/com/aethelgard/product/Plates.java):
-
-```java
-z += MIX_GOLDEN;
-z = (z ^ (z >>> 30)) * MIX_SILVER;
-z = (z ^ (z >>> 27)) * MIX_BRONZE;
-return z ^ (z >>> 31);
-```
-
 **Sites.** Site $i < N$ is $(x_i, y_i) = \bigl(\mu(s,i,0) \bmod W,\; \mu(s,i,1) \bmod H\bigr)$.
 
 **Distance.** Rows are weighted by the latitude factor
@@ -47,15 +38,6 @@ $$q(y) = \max\Bigl(1,\; \operatorname{round}\bigl(1024 \sin\tfrac{\pi (y + 1/2)}
 so an east–west step counts fully at the equator and shrinks toward the poles. The squared distance from cell $(x, y)$ to site $i$ wraps east–west and is flat north–south:
 
 $$\delta_x = \min\bigl(|x - x_i|,\; W - |x - x_i|\bigr), \qquad d^2_i(x, y) = \Bigl\lfloor \frac{\delta_x\, q(y)}{1024} \Bigr\rfloor^2 + (y - y_i)^2 .$$
-
-`Plates.dist2` in [`Plates.java`](../../../product/src/main/java/com/aethelgard/product/Plates.java):
-
-```java
-long dx = toroidalDelta(x, sx, width);
-long dy = (long) y - (long) sy;
-long dxw = (dx * cosQ(y, height)) / COS_SCALE;
-return dxw * dxw + dy * dy;
-```
 
 **Plates.** Every cell takes the nearest site, and the lowest index wins a tie:
 
@@ -67,30 +49,22 @@ $$P_0(c) = \min \operatorname*{arg\,min}_{i < N} d^2_i(c).$$
 
 ## Procedure
 
-1. `create(spec)` rejects a null spec and builds every step-0 value. [`ProductHost.create`](../../../product/src/main/java/com/aethelgard/product/ProductHost.java).
-2. The elevation is the all-zero grid. [`Grid.zeros`](../../../product/src/main/java/com/aethelgard/product/Grid.java).
-3. `Plates.seed` computes $N$ with `count`, places each site with `siteX` and `siteY`, which reduce `mix` modulo the side, and assigns the cells. [`Plates.seed`](../../../product/src/main/java/com/aethelgard/product/Plates.java).
-4. `assign` gives every cell the site of least `dist2`, keeping the first (lowest) index on a tie. `dist2` wraps the column difference and scales it by `cosQ` of the cell's row, with `COS_SCALE` = 1024. [`Plates.assign`](../../../product/src/main/java/com/aethelgard/product/Plates.java).
-5. The occupancy gives cell $(x, y)$ the key $yW + x$, and the locker table holds $WH$ columns at $T_{\mathrm{ocean}}$. [`Occupancy.seed`](../../../product/src/main/java/com/aethelgard/product/Occupancy.java).
-6. The velocities apply `unit` to the mix of axis `AXIS_VX` (2) and axis `AXIS_VY` (3) for each of the $N$ plates, and force plate 0 east when no plate moves. [`PlateVelocities.seed`](../../../product/src/main/java/com/aethelgard/product/PlateVelocities.java).
-7. The registry is counted from the plates. The contacts are traced ([boundaries](boundaries.md)), and the budgets and intents are computed from them with the area-only loser, because no crust is passed ([interaction](interaction.md)). [`ProductHost.create`](../../../product/src/main/java/com/aethelgard/product/ProductHost.java).
-8. `create` builds an `EngineConfig` with heartbeat 0, no scripted paths, and the nine values as field seeds, and calls `Engine.create` with `ProductHost.setup()`. Step 0 fires no tick, so the settled fields are exactly the seeds. [`ProductHost.create`](../../../product/src/main/java/com/aethelgard/product/ProductHost.java).
+1. A null spec is refused, and every step-0 value is built.
+2. The elevation is the all-zero grid.
+3. The plate count $N$ is computed, and each site is placed by reducing $\mu$ modulo the side; then the cells are assigned.
+4. Every cell takes the site of least $d^2_i$, keeping the first (lowest) index on a tie. The distance wraps the column difference and scales it by $q$ of the cell's row, with the scale 1024.
+5. The occupancy gives cell $(x, y)$ the key $yW + x$, and the locker table holds $WH$ columns at $T_{\mathrm{ocean}}$.
+6. The velocities apply $u$ to the mix of axis 2 and axis 3 for each of the $N$ plates, and force plate 0 east when no plate moves.
+7. The registry is counted from the plates. The contacts are traced ([boundaries](boundaries.md)), and the budgets and intents are computed from them with the area-only loser, because no crust is passed ([interaction](interaction.md)).
+8. An `EngineConfig` is built with heartbeat 0, no scripted paths, and the nine values as field seeds, and the engine is created with the [wiring](wiring.md). Step 0 fires no tick, so the settled fields are exactly the seeds.
 
 ## What is true afterwards
 
-After `create`, the step index is 0; every cell holds a plate id below $N$, with $12 \le N \le 24$; at least one plate moves; every cell has elevation 0 because every locker is exactly $T_{\mathrm{ocean}}$; and the budgets and intents describe the step-0 contacts. The same spec always builds the same world. The site distance ignores the polar wrap of the [topology](topology.md): a site near one pole does not reach across it. Two helpers of `Plates` are not called by the pipeline: `hasForeignNeighbor`, which clips at the map edges, and the deprecated `dist2Cylinder`, which has no latitude weight.
+After step 0, the step index is 0; every cell holds a plate id below $N$, with $12 \le N \le 24$; at least one plate moves; every cell has elevation 0 because every locker is exactly $T_{\mathrm{ocean}}$; and the budgets and intents describe the step-0 contacts. The same spec always builds the same world. The site distance ignores the polar wrap of the [topology](topology.md): a site near one pole does not reach across it. Two helpers of the seed are not called by the pipeline: a test for a foreign neighbour, which clips at the map edges, and a deprecated distance without the latitude weight.
 
 ## Cost
 
 Assignment is $O(W H N)$ distance evaluations, and each one computes $q(y)$ with a sine: about $5 \times 10^7$ for the $1920 \times 1080$ window with 24 plates.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Step-0 world | `ProductHost` | `create` | [`product/src/main/java/com/aethelgard/product/ProductHost.java`](../../../product/src/main/java/com/aethelgard/product/ProductHost.java) |
-| Partition | `Plates` | `COS_SCALE`, `count`, `mix`, `siteX`, `siteY`, `cosQ`, `assign`, `seed`, `dist2`, `dist2Cylinder`, `hasForeignNeighbor`, `splitmix64`, `toroidalDelta` | [`product/src/main/java/com/aethelgard/product/Plates.java`](../../../product/src/main/java/com/aethelgard/product/Plates.java) |
-| Drift | `PlateVelocities` | `PlateVelocities.seed`, `unit`, `AXIS_VX`, `AXIS_VY` | [`product/src/main/java/com/aethelgard/product/PlateVelocities.java`](../../../product/src/main/java/com/aethelgard/product/PlateVelocities.java) |
-| Step-0 keys | `Occupancy` | `Occupancy.seed` | [`product/src/main/java/com/aethelgard/product/Occupancy.java`](../../../product/src/main/java/com/aethelgard/product/Occupancy.java) |
-
+Code: [world/](../../../product/src/main/java/com/aethelgard/product/world/README.md) · [world/fields/](../../../product/src/main/java/com/aethelgard/product/world/fields/README.md)  
 Parent: [one generation](README.md). The value types: [fields](fields.md). Why a world starts all oceanic: [ADR-013](../../paperwork/decisions/ADR-013-crust-topology.md).

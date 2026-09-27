@@ -7,8 +7,8 @@
 
 package com.aethelgard.cli;
 
-import com.aethelgard.product.ProductSession;
-import com.aethelgard.product.WorldSpec;
+import com.aethelgard.product.session.ProductSession;
+import com.aethelgard.product.world.fields.WorldSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;

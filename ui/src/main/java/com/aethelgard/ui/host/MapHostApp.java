@@ -7,7 +7,7 @@
 
 package com.aethelgard.ui.host;
 
-import com.aethelgard.product.WorldSpec;
+import com.aethelgard.product.world.fields.WorldSpec;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

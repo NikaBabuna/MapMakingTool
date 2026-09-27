@@ -59,6 +59,7 @@ Parent: [<the level page of this folder>](README.md).
 |-----------|------------|
 | **Add question** | [../../flows/step.md](../../flows/step.md) SYNC (Ties), when a Step leaves a behaviour undecided; [../../flows/amendment.md](../../flows/amendment.md) Step 5 (class A5) |
 | **Decide question** | [../../flows/step.md](../../flows/step.md) **Decide**, when the decision answers an open question |
+| **Relink** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 and Step 3.1 (class A5), when a type, member, or path a question names is renamed or moved |
 
 ### Add question
 
@@ -74,6 +75,16 @@ Parent: [<the level page of this folder>](README.md).
 
 1. Delete the question's row from **Still open**.  
 2. Add `| <topic> | [<page>](<page>.md), [ADR-0xx](<relative path to the ADR>) |` to **Decided elsewhere**.
+
+### Relink
+
+**Before.** A type, member, or path that a row names was renamed or moved.
+
+**Edit.**
+
+1. In that row, replace the old name or path with the new one. Leave the rest of the row's wording as it is.
+
+**Result.** Every name the row gives is declared in source, and every path it gives exists.
 
 ## Check
 

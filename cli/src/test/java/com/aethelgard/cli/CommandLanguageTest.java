@@ -10,10 +10,10 @@ package com.aethelgard.cli;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.product.Grid;
-import com.aethelgard.product.ProductSession;
-import com.aethelgard.product.RingDiagnosticCollector;
-import com.aethelgard.product.WorldSpec;
+import com.aethelgard.product.session.ProductSession;
+import com.aethelgard.product.session.diagnostics.RingDiagnosticCollector;
+import com.aethelgard.product.world.fields.Grid;
+import com.aethelgard.product.world.fields.WorldSpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

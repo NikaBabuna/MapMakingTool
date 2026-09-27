@@ -2,7 +2,7 @@
   File: docs/architecture/world/crust/subduct.md
   Purpose: Subduct — correcting the moved crust keys: a collision's loser takes the winner's locker, and a locker split by a rift keeps one copy
   Audience: Agents and humans
-  Update when: Subduct.correct, consumeCollide, or unshareSeparate changes
+  Update when: What the subduction corrections compute, or their order, changes
 -->
 
 # Subduct
@@ -27,19 +27,6 @@ $$O'\bigl(\delta(\ell)\bigr) := O(w).$$
 
 Every such contact counts; the ragged skip of the [sink](../motion/sink.md) does not apply here.
 
-`Subduct.consumeCollide` in [`Subduct.java`](../../../../product/src/main/java/com/aethelgard/product/Subduct.java):
-
-```java
-int destPlate = postFluxPlates.get(lx, ly);
-if (destPlate < 0 || destPlate >= velocities.count()) {
-  continue;
-}
-int[] step =
-    SphereTopology.advectCell(
-        lx, ly, velocities.vx(destPlate), velocities.vy(destPlate), width, height);
-occDest[step[1]][step[0]] = standingOccupancy.get(wx, wy);
-```
-
 **Unshare.** For every contact $\xi = (c, n, a, b, \textsf{SEPARATE})$, for $c$ and then $\nu(c, n)$, remember the first destination of the locker there:
 
 $$\mathrm{keep}\bigl(O(c)\bigr) := \delta(c) \quad \text{unless already set.}$$
@@ -50,9 +37,9 @@ $$O'(d) = j \ge 0,\;\; \mathrm{keep}(j) \text{ set},\;\; d \ne \mathrm{keep}(j) 
 
 ## Procedure
 
-1. `correct` checks its arguments and runs the two corrections in order. [`Subduct.correct`](../../../../product/src/main/java/com/aethelgard/product/Subduct.java).
-2. `consumeCollide` walks the collision contacts, finds the loser with `CrustPrecedence.collideLoser`, and writes the winner's settled key at the loser cell's destination. [`Subduct.consumeCollide`](../../../../product/src/main/java/com/aethelgard/product/Subduct.java).
-3. `unshareSeparate` walks the rift contacts and lets `rememberKeep` store, for the locker at each side's cell, the destination of that cell, packed by `key`. It then clears every other cell holding a remembered locker. [`Subduct.unshareSeparate`](../../../../product/src/main/java/com/aethelgard/product/Subduct.java), [`Subduct.rememberKeep`](../../../../product/src/main/java/com/aethelgard/product/Subduct.java).
+1. The arguments are checked, and the two corrections run in order.
+2. Consume: the collision contacts are walked, the loser is found by [precedence](precedence.md), and the winner's settled key is written at the destination of the loser's cell.
+3. Unshare: the rift contacts are walked, and for the locker at each side's cell the destination of that cell is remembered, the first one only. Then every other cell holding a remembered locker is cleared.
 
 ## What is true afterwards
 
@@ -62,10 +49,5 @@ At every consumed collision, the winner's locker now also lies under the cell wh
 
 $O(|K|)$ for the walks, plus one $O(WH)$ scan when some rift exists.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Key corrections | `Subduct` | `correct`, `consumeCollide`, `unshareSeparate`, `rememberKeep`, `key` | [`product/src/main/java/com/aethelgard/product/Subduct.java`](../../../../product/src/main/java/com/aethelgard/product/Subduct.java) |
-
+Code: [world/crust/](../../../../product/src/main/java/com/aethelgard/product/world/crust/README.md)  
 Parent: [crust](README.md).

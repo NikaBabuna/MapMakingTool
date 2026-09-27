@@ -1,13 +1,15 @@
 <!--
   File: docs/architecture/world/README.md
-  Purpose: Level 3 — one generation of the world, in the order ProductHost.setup wires the tectonics phases
+  Purpose: Level 3 — one generation of the world, in the order the wiring runs the tectonics phases
   Audience: Agents and humans
-  Update when: ProductHost.setup changes the phase list, the conflict order, or the field schema
+  Update when: The wiring changes the phase list, the conflict order, or the field schema
 -->
 
 # One generation
 
-A world is a set of engine fields and one system, id `tectonics`, that rewrites them once per engine step after step 0. That step is a generation. [`ProductHost.setup`](../../../product/src/main/java/com/aethelgard/product/ProductHost.java) wires the system as nine phases, which run in the order below. The rule that holds across the whole level: every phase reads either the settled value of a field or the value an earlier phase of the same generation staged, and only the last staged value of each field survives, so a generation is a pipeline of pure transformations of the world.
+A world is a set of engine fields and one system, id `tectonics`, that rewrites them once per engine step after step 0. That step is a generation. The wiring in `ProductHost` ([world/](../../../product/src/main/java/com/aethelgard/product/world/README.md)) builds the system as nine phases, which run in the order below. The rule that holds across the whole level: every phase reads either the settled value of a field or the value an earlier phase of the same generation staged, and only the last staged value of each field survives, so a generation is a pipeline of pure transformations of the world.
+
+**Why:** A generation is its own level because all nine phases run inside it, in one fixed order, over the same nine fields. What belongs here is that order and the rule that joins the phases; how the world is plugged into the engine is the [wiring](wiring.md), and how one phase computes is on that phase's page.
 
 $$\mathcal{W}_{g} \;=\; \mathrm{Isostasy} \circ \mathrm{Collide} \circ \mathrm{Margin} \circ \mathrm{Ridge} \circ \mathrm{Orogeny} \circ \mathrm{Apply} \circ \mathrm{Integrate} \circ \mathrm{Interaction} \circ \mathrm{Trace}\,\bigl(\mathcal{W}_{g-1}\bigr)$$
 
@@ -25,15 +27,15 @@ $\mathcal{W}_g$ is the world after generation $g$, and generation $g$ runs in en
 | `lockers` | `Lockers` | $T : $ locker id $\to$ thickness |
 | `elevation` | `Grid` | $E = T \circ O - T_{\mathrm{ocean}}$, the height of every cell |
 
-1. **Trace.** `TraceBoundaries` classifies every contact between two plates from the settled plates and velocities. [Boundaries](boundaries.md).
+1. **Trace.** `BoundaryTracing` classifies every contact between two plates from the settled plates and velocities. [Boundaries](boundaries.md).
 2. **Interaction.** `BoundaryInteraction` turns the contacts into area budgets and a preferred velocity change per plate. [Interaction](interaction.md).
-3. **Integrate.** `IntegrateVelocity` nudges each plate's velocity toward its preferred change. [Integrate](motion/integrate.md).
-4. **Apply.** `ApplyGeometry` sinks and refills cells along contacts, splits and renumbers plates, and carries plates and crust keys forward by one step of velocity. [Motion](motion/README.md).
+3. **Integrate.** `VelocityIntegration` nudges each plate's velocity toward its preferred change. [Integrate](motion/integrate.md).
+4. **Apply.** `GeometryApplication` sinks and refills cells along contacts, splits and renumbers plates, and carries plates and crust keys forward by one step of velocity. [Motion](motion/README.md).
 5. **Orogeny.** `Orogeny` thickens or thins the crust at the contact cells of the settled world. [Orogeny](crust/orogeny.md).
-6. **Ridge.** `RidgeCreate` gives every cell left without crust a new thin oceanic column. [Ridge](crust/ridge.md).
+6. **Ridge.** `RidgeCreation` gives every cell left without crust a new thin oceanic column. [Ridge](crust/ridge.md).
 7. **Margin.** `MarginRelief` shapes the oceanic crust near the moved contacts. [Margin](crust/margin.md).
-8. **Collide.** `ContinentalCollide` raises arcs where oceans meet and thickens sutures where continents meet. [Collide](crust/collide.md).
-9. **Isostasy.** `ThicknessToElevation` reads height from thickness. [Isostasy](crust/isostasy.md).
+8. **Collide.** `ContinentalCollision` raises arcs where oceans meet and thickens sutures where continents meet. [Collide](crust/collide.md).
+9. **Isostasy.** `Isostasy` reads height from thickness. [Isostasy](crust/isostasy.md).
 
 Every world field is `STATIC` and has one writer, the system `tectonics`, so merge keeps the system's last staged value. Step 0 runs no phase; it only seeds the fields ([seed](seed.md)).
 

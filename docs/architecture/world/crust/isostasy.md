@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/crust/isostasy.md
-  Purpose: ThicknessToElevation — phase 9: height is read from crust thickness, and nothing else writes height
+  Purpose: Isostasy — phase 9: height is read from crust thickness, and nothing else writes height
   Audience: Agents and humans
-  Update when: ThicknessToElevation.apply or ThicknessToElevation.execute changes
+  Update when: What isostasy computes changes
 -->
 
 # Isostasy
@@ -23,16 +23,10 @@ $$E(c) = T\bigl(O(c)\bigr) - T_{\mathrm{ocean}} \qquad \text{for every } c \in \
 
 so fresh ocean ($T = 8$) stands at 0, the land threshold ($T = 16$) at 8, and the collision cap ($T = 32$) at 24. Thinned crust stands below 0.
 
-`ThicknessToElevation.apply` (one cell) in [`ThicknessToElevation.java`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java):
-
-```java
-next[y][x] = lockers.thickness(occupancy.get(x, y)) - Lockers.T_OCEAN;
-```
-
 ## Procedure
 
-1. `execute` reads the occupancy and lockers (staged first) and stages `apply` of them. [`ThicknessToElevation.execute`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java).
-2. `apply` computes the height of every cell from the thickness of its locker. [`ThicknessToElevation.apply`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java).
+1. The phase reads the occupancy and lockers (staged first) and stages the new elevation.
+2. The height of every cell is computed from the thickness of its locker.
 
 ## What is true afterwards
 
@@ -42,10 +36,5 @@ Invariant I5 of [fields](../fields.md) holds: the settled elevation agrees with 
 
 $O(WH)$.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Phase | `ThicknessToElevation` | `ThicknessToElevation.id`, `ThicknessToElevation.writeRanges`, `ThicknessToElevation.execute`, `ThicknessToElevation.apply` | [`product/src/main/java/com/aethelgard/product/ThicknessToElevation.java`](../../../../product/src/main/java/com/aethelgard/product/ThicknessToElevation.java) |
-
+Code: [world/crust/](../../../../product/src/main/java/com/aethelgard/product/world/crust/README.md)  
 Parent: [crust](README.md). Why height is read from thickness: [ADR-013](../../../paperwork/decisions/ADR-013-crust-topology.md).

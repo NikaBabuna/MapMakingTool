@@ -87,6 +87,7 @@ Each folder of code has one job, and a new file goes into the folder whose job i
 | Language | Folder | What goes there |
 |----------|--------|-----------------|
 | Java | `<module>/src/main/java/com/aethelgard/<module>/…` | One package per area, chapter or mechanism of the implementation paper, named with the paper's word for it. When a module is one area of the paper, the module's own package is that area |
+| Java | `<module>/src/main/java/com/aethelgard/<module>/<area>/<package>/` | How the packages of one area depend on each other: the phase packages of an area are peers and may call each other; a package of values or geometry, such as `fields` or `topology`, calls no package above it; and the area's own package, which wires its phases together, is called only from outside the area |
 | TypeScript and React | `ui/web/src/app/` | Next.js routes: the page, its layout, and the global styles |
 | TypeScript and React | `ui/web/src/components/` | React components, one per file, each with its test beside it |
 | TypeScript and React | `ui/web/src/lib/` | Logic that uses no React, one concern per file, each with its test beside it |
@@ -141,6 +142,7 @@ These folders need no README.
 | `.tools/` | tool cache | A local Maven install that is not part of the repository |
 | `<module>/src/`, `<module>/src/main/`, `<module>/src/main/java/`, `<module>/src/test/`, `<module>/src/test/java/`, `<module>/src/test/resources/` | layout segment | Maven's layout; the module's README introduces what lies below |
 | `<module>/src/main/java/com/`, `<module>/src/main/java/com/aethelgard/`, and the same two under `src/test/java/` | layout segment | Java namespace segments above each module's own package |
+| `<module>/src/main/java/com/aethelgard/<module>/`, and the same under `src/test/java/`, when it holds only folders | layout segment | The module's own namespace level; the module's README introduces the packages below it |
 | `ui/web/src/` | layout segment | The layout Next.js expects; the web front's README introduces its folders |
 | `ui/desktop/src-tauri/icons/`, and every folder below it | generated | The Tauri icon tool writes them all from one source image |
 | `product/src/test/resources/worlds/` | generated | The stored dump of a world, written from the program's own output |

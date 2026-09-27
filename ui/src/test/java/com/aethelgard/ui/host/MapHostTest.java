@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.product.WorldSpec;
+import com.aethelgard.product.world.fields.Plates;
+import com.aethelgard.product.world.fields.WorldSpec;
 import com.aethelgard.ui.ElevationRaster;
 import com.aethelgard.ui.MapController;
 import com.aethelgard.ui.MapLayer;

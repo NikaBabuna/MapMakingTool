@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/session/dump.md
-  Purpose: WorldDump — the canonical text of a settled world
+  Purpose: Dump — the canonical text of a settled world
   Audience: Agents and humans
-  Update when: WorldDump.format or WorldDump.of changes
+  Update when: The text of a dump, or how it is built, changes
 -->
 
 # Dump
@@ -11,7 +11,7 @@ A settled world can be printed as plain text: a header line, then every grid row
 
 ## What it reads
 
-`of(engine, spec)`: the nine settled fields and the step index of an engine, and the spec that sized it. The shorter `format` forms take fewer fields and compute the rest (see Procedure).
+From an engine: its nine settled fields and its step index, and the spec that sized it. Shorter forms take fewer fields and compute the rest (see Procedure).
 
 ## What it writes
 
@@ -38,39 +38,20 @@ nl       = "\n" ;
 
 The lines hold, in order: the elevation, plate, and occupancy grids row by row; the locker thicknesses; each velocity $(v^x, v^y)$; each registry row $(A, v^x, v^y)$; each contact $(x, y, n_x, n_y, a, b, \kappa)$; the sink budget, then each plate budget; each intent $(\iota^x, \iota^y)$. Every cell and every table entry of the nine fields appears, so two worlds that differ in any of them print different text. The seed shown is the spec's.
 
-`WorldDump.format` (the header) in [`WorldDump.java`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java):
-
-```java
-out.append("world w=")
-    .append(spec.width())
-    .append(" h=")
-    .append(spec.height())
-    .append(" seed=")
-    .append(spec.seed())
-    .append(" steps=")
-    .append(steps)
-    .append('\n');
-```
-
 ## Procedure
 
-1. `of` reads the nine settled fields and the step index, and calls the full `format`. [`WorldDump.of`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java).
-2. The full `format` checks every part and each grid's size, then writes the header, the three grids through `appendGrid`, and the tables in the order of the Model. [`WorldDump.format`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java), [`WorldDump.appendGrid`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java).
-3. The shorter `format` forms fill in what they are not given. Velocities come from the seed. The registry and contacts are counted and traced from the plates. The budgets and intents use the area-only loser. The occupancy and lockers are the step-0 keys and an all-oceanic table. [`WorldDump.format`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java).
-4. `requireGeometry` rejects a grid of another size than the spec. [`WorldDump.requireGeometry`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java).
+1. The nine settled fields and the step index are read from the engine, and the full form is written.
+2. The full form checks every part and each grid's size, then writes the header, the three grids row by row, and the tables in the order of the Model.
+3. The shorter forms fill in what they are not given. Velocities come from the seed. The registry and contacts are counted and traced from the plates. The budgets and intents use the area-only loser. The occupancy and lockers are the step-0 keys and an all-oceanic table.
+4. A grid of another size than the spec is refused.
 
 ## What is true afterwards
 
-The same settled fields always give the same text, and a change in any cell or table entry changes the text. `CANONICAL_STEPS` (3) is the number of steps after which the $8 \times 8$, seed-0 world is kept as the stored canonical dump. Printing is read-only: it changes no field and no diagnostic.
+The same settled fields always give the same text, and a change in any cell or table entry changes the text. The canonical step count, 3, is the number of steps after which the $8 \times 8$, seed-0 world is kept as the stored canonical dump. Printing is read-only: it changes no field and no diagnostic.
 
 ## Cost
 
 $O(3WH + L + |K| + N)$ characters.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Dump | `WorldDump` | `CANONICAL_STEPS`, `of`, `format`, `appendGrid`, `requireGeometry` | [`product/src/main/java/com/aethelgard/product/WorldDump.java`](../../../product/src/main/java/com/aethelgard/product/WorldDump.java) |
-
+Code: [session/](../../../product/src/main/java/com/aethelgard/product/session/README.md)  
 Parent: [session](README.md). The fields it prints: [fields](../world/fields.md).

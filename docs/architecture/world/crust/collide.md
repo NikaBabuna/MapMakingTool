@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/crust/collide.md
-  Purpose: ContinentalCollide — phase 8: an arc where two oceans collide, a suture where two continents collide, both capped
+  Purpose: Collide — phase 8: an arc where two oceans collide, a suture where two continents collide, both capped
   Audience: Agents and humans
-  Update when: ContinentalCollide.apply, ARC, SUTURE, or CAP changes
+  Update when: What the collision phase computes, its arc, suture, or cap, or the order of its steps, changes
 -->
 
 # Collide
@@ -29,31 +29,11 @@ $$T'(j) = \begin{cases} T(j) & T(j) \ge \mathrm{CAP} \\ \min\bigl(T(j) + \mathrm
 
 A locker is thickened once per generation however many contacts name it, and a suture wins over an arc. An arc from fresh ocean ($T = 8$) lands exactly on $T_{\mathrm{land}}$: new land.
 
-`ContinentalCollide.apply` (the thickening) in [`ContinentalCollide.java`](../../../../product/src/main/java/com/aethelgard/product/ContinentalCollide.java):
-
-```java
-if (pre[id] >= CAP) {
-  continue;
-}
-int delta = suture[id] ? SUTURE : arc[id] ? ARC : 0;
-if (delta == 0) {
-  continue;
-}
-int thickened = pre[id] + delta;
-if (thickened > CAP) {
-  thickened = CAP;
-}
-if (arc[id] && thickened < Lockers.T_LAND) {
-  thickened = Lockers.T_LAND;
-}
-next[id] = thickened;
-```
-
 ## Procedure
 
-1. `execute` reads the occupancy, lockers, plates, and velocities (staged first) and stages the four-argument `apply`, which traces the moved contacts and counts the moved registry. [`ContinentalCollide.execute`](../../../../product/src/main/java/com/aethelgard/product/ContinentalCollide.java).
-2. The contact form walks the collision contacts, skips any whose locker id is out of range, and marks suture lockers when both sides are continental, or the winner's locker as an arc when both are oceanic. [`ContinentalCollide.apply`](../../../../product/src/main/java/com/aethelgard/product/ContinentalCollide.java).
-3. It then thickens each marked locker once, by `SUTURE` or `ARC`, caps at `CAP`, and lifts an arc to at least $T_{\mathrm{land}}$. [`ContinentalCollide.apply`](../../../../product/src/main/java/com/aethelgard/product/ContinentalCollide.java).
+1. The phase reads the occupancy, lockers, plates, and velocities (staged first), traces the moved contacts, counts the moved registry, and stages the result.
+2. The collision contacts are walked; one whose locker id is out of range is skipped. Both lockers are marked as suture when both sides are continental, or the winner's locker as arc when both are oceanic.
+3. Each marked locker is thickened once, by $\mathrm{SUTURE}$ or $\mathrm{ARC}$, capped at $\mathrm{CAP}$, and an arc is lifted to at least $T_{\mathrm{land}}$.
 
 ## What is true afterwards
 
@@ -63,10 +43,5 @@ Every arc locker is continental, and no locker thickened here exceeds 32. A lock
 
 $O(|K'|)$ for the marks, $O(L)$ for the thickening, and $O(WH)$ for the trace and the count.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Phase | `ContinentalCollide` | `ContinentalCollide.id`, `ContinentalCollide.writeRanges`, `ContinentalCollide.execute`, `ContinentalCollide.apply`, `ARC`, `SUTURE`, `CAP` | [`product/src/main/java/com/aethelgard/product/ContinentalCollide.java`](../../../../product/src/main/java/com/aethelgard/product/ContinentalCollide.java) |
-
+Code: [world/crust/](../../../../product/src/main/java/com/aethelgard/product/world/crust/README.md)  
 Parent: [crust](README.md). Why collisions make continents: [ADR-013](../../../paperwork/decisions/ADR-013-crust-topology.md).

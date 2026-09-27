@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/motion/integrate.md
-  Purpose: IntegrateVelocity — phase 3: each plate's velocity moves one unit toward its intent
+  Purpose: Integrate — phase 3: each plate's velocity moves one unit toward its intent
   Audience: Agents and humans
-  Update when: IntegrateVelocity.integrate or IntegrateVelocity.execute changes
+  Update when: What the integration computes, or the order of its steps, changes
 -->
 
 # Integrate
@@ -25,27 +25,12 @@ $$v'^{\,x}_p = \mathrm{clamp}\bigl(v^x_p + \operatorname{sgn} \iota^x_p\bigr), \
 
 and if $v'_p = (0, 0)$ for every $p$, then $v'_0 := (1, 0)$. The size of an intent does not matter, only its sign: many rifts and one rift turn a plate equally.
 
-`IntegrateVelocity.integrate` in [`IntegrateVelocity.java`](../../../../product/src/main/java/com/aethelgard/product/IntegrateVelocity.java):
-
-```java
-for (int i = 0; i < n; i++) {
-  vx[i] = clampUnit(standing.vx(i) + Integer.signum(intent.ix(i)));
-  vy[i] = clampUnit(standing.vy(i) + Integer.signum(intent.iy(i)));
-  if (vx[i] != 0 || vy[i] != 0) {
-    anyMove = true;
-  }
-}
-if (!anyMove) {
-  vx[0] = 1;
-}
-```
-
 ## Procedure
 
-1. `execute` reads the settled velocities and registry and the intent, staged first. [`IntegrateVelocity.execute`](../../../../product/src/main/java/com/aethelgard/product/IntegrateVelocity.java).
-2. `integrate` checks that the tables have the same length, then adds the sign of each intent component and clamps with `clampUnit`. [`IntegrateVelocity.integrate`](../../../../product/src/main/java/com/aethelgard/product/IntegrateVelocity.java).
-3. If no plate moves, plate 0 is set to $(1, 0)$. [`IntegrateVelocity.integrate`](../../../../product/src/main/java/com/aethelgard/product/IntegrateVelocity.java).
-4. `execute` stages the new velocities, and a registry that keeps the settled areas with the new velocities. [`IntegrateVelocity.execute`](../../../../product/src/main/java/com/aethelgard/product/IntegrateVelocity.java).
+1. The phase reads the settled velocities and registry and the intent, staged first.
+2. The tables are checked to have the same length; then the sign of each intent component is added and the result clamped to $[-1, 1]$.
+3. If no plate moves, plate 0 is set to $(1, 0)$.
+4. The phase stages the new velocities, and a registry that keeps the settled areas with the new velocities.
 
 ## What is true afterwards
 
@@ -55,10 +40,5 @@ Every component is still in $\{-1, 0, 1\}$, at least one plate moves, and the st
 
 $O(N)$.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Phase | `IntegrateVelocity` | `IntegrateVelocity.id`, `IntegrateVelocity.writeRanges`, `IntegrateVelocity.execute`, `integrate`, `clampUnit` | [`product/src/main/java/com/aethelgard/product/IntegrateVelocity.java`](../../../../product/src/main/java/com/aethelgard/product/IntegrateVelocity.java) |
-
+Code: [world/motion/](../../../../product/src/main/java/com/aethelgard/product/world/motion/README.md)  
 Parent: [motion](README.md). Where the intent comes from: [interaction](../interaction.md).

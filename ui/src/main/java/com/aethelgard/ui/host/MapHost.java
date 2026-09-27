@@ -8,6 +8,9 @@
 package com.aethelgard.ui.host;
 
 import com.aethelgard.cli.CliResult;
+import com.aethelgard.product.session.diagnostics.DiagnosticCollector;
+import com.aethelgard.product.session.diagnostics.DiagnosticsHub;
+import com.aethelgard.product.world.fields.WorldSpec;
 import com.aethelgard.ui.CellInspect;
 import com.aethelgard.ui.ElevationRaster;
 import com.aethelgard.ui.ExecutorPlayScheduler;
@@ -15,9 +18,6 @@ import com.aethelgard.ui.LegendEntry;
 import com.aethelgard.ui.MapController;
 import com.aethelgard.ui.MapLayer;
 import com.aethelgard.ui.MapSpeed;
-import com.aethelgard.product.DiagnosticCollector;
-import com.aethelgard.product.DiagnosticsHub;
-import com.aethelgard.product.WorldSpec;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;

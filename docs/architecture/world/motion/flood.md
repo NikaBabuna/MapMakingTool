@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/motion/flood.md
-  Purpose: ApplyGeometry.floodSink — the stage that gives every sunken cell to a bordering plate
+  Purpose: Flood — the stage that gives every sunken cell to a bordering plate
   Audience: Agents and humans
-  Update when: ApplyGeometry.floodSink, pickFloodOwner, or countContact changes
+  Update when: What the flood stage computes, or the order of its steps, changes
 -->
 
 # Flood
@@ -29,29 +29,11 @@ $$C(c) := \min \operatorname*{arg\,max}_{p \,\in\, \{C(\nu(c,d)) \,:\, d \in D_4
 
 the most-touching neighbour, the lowest id on a tie. Sweeps repeat until one changes nothing. A sweep updates in place, so a cell filled early in a sweep already counts for the cells after it: the fill advances in scan order, not in rings.
 
-`ApplyGeometry.pickFloodOwner` in [`ApplyGeometry.java`](../../../../product/src/main/java/com/aethelgard/product/ApplyGeometry.java):
-
-```java
-for (int[] d : DIRS) {
-  int[] n = SphereTopology.neighbor(x, y, d[0], d[1], width, height);
-  int id = cells[n[1]][n[0]];
-  if (id < 0) {
-    continue;
-  }
-  int contact = countContact(cells, width, height, x, y, id);
-  if (contact > bestContact || (contact == bestContact && (bestId < 0 || id < bestId))) {
-    bestContact = contact;
-    bestId = id;
-  }
-}
-return bestId;
-```
-
 ## Procedure
 
-1. `floodSink` sweeps the grid, and for every empty cell asks `pickFloodOwner` for an owner, until a sweep fills nothing. [`ApplyGeometry.floodSink`](../../../../product/src/main/java/com/aethelgard/product/ApplyGeometry.java).
-2. `pickFloodOwner` looks at the four neighbours in the order of $D_4$, and for each owned one counts that plate's contacts with `countContact`. It keeps the highest count, and the lowest id on a tie. [`ApplyGeometry.pickFloodOwner`](../../../../product/src/main/java/com/aethelgard/product/ApplyGeometry.java).
-3. A final scan throws if any cell is still empty. [`ApplyGeometry.floodSink`](../../../../product/src/main/java/com/aethelgard/product/ApplyGeometry.java).
+1. The grid is swept, and every empty cell is given an owner, until a sweep fills nothing.
+2. The owner is found by looking at the four neighbours in the order of $D_4$ and counting, for each owned one, that plate's contacts with the cell. The highest count wins, and the lowest id on a tie.
+3. A final scan throws if any cell is still empty.
 
 ## What is true afterwards
 
@@ -61,10 +43,5 @@ Every cell is owned by a plate that already existed. A hole is shared only among
 
 Each sweep is $O(WH)$; the number of sweeps is at most one more than the depth of the deepest hole, measured in cells from its border.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Flood | `ApplyGeometry` | `floodSink`, `pickFloodOwner`, `countContact` | [`product/src/main/java/com/aethelgard/product/ApplyGeometry.java`](../../../../product/src/main/java/com/aethelgard/product/ApplyGeometry.java) |
-
+Code: [world/motion/](../../../../product/src/main/java/com/aethelgard/product/world/motion/README.md)  
 Parent: [motion](README.md).

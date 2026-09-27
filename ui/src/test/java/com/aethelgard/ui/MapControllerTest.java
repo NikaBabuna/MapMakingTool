@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.aethelgard.cli.CliResult;
-import com.aethelgard.product.DiagnosticIds;
-import com.aethelgard.product.ProductSession;
-import com.aethelgard.product.RingDiagnosticCollector;
-import com.aethelgard.product.WorldSpec;
+import com.aethelgard.product.session.ProductSession;
+import com.aethelgard.product.session.diagnostics.DiagnosticIds;
+import com.aethelgard.product.session.diagnostics.RingDiagnosticCollector;
+import com.aethelgard.product.world.fields.WorldSpec;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;

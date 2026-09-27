@@ -124,7 +124,7 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
    | A6 | The program page | **Set pointer table** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
    | A5, A6 | A level page | **Create**, **Rewrite**, **Write why** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) |
    | A5 | The paper glossary | **Add symbol**, **Amend symbol**, **Remove symbol** of [../blueprints/architecture/glossary.md](../blueprints/architecture/glossary.md) |
-   | A5 | The open questions | **Add question** of [../blueprints/architecture/open-questions.md](../blueprints/architecture/open-questions.md) |
+   | A5 | The open questions | **Add question**, **Relink** of [../blueprints/architecture/open-questions.md](../blueprints/architecture/open-questions.md) |
    | A5 | A mechanism page | **Rewrite page**, **Relink** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md) |
    | any | Any document header | **Update path**, **Update purpose** of [../blueprints/headers/document-header.md](../blueprints/headers/document-header.md) |
 

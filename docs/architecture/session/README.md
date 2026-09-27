@@ -9,6 +9,8 @@
 
 A session is one run of one world. It owns the engine, lets only one caller at a time advance it or read it, measures what each step costs, and can print the settled world as text. The command line and the studio both drive a world only through a session. These pages have no fixed order among them; the order of a single step is [the generation](../world/README.md) inside [the engine step](../engine/README.md).
 
+**Why:** Running a world is not part of the world: the same generation runs under a session, under the reference pipeline, and in tests. So owning, measuring, and printing a run form their own level; what one step computes belongs to the [world](../world/README.md).
+
 | Page | Question |
 |------|----------|
 | [run.md](run.md) | Who owns the engine, how does one step at a time stay one step at a time, and what can a caller read? |

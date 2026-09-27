@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.product.ProductSession;
-import com.aethelgard.product.WorldSpec;
+import com.aethelgard.product.session.ProductSession;
+import com.aethelgard.product.world.fields.WorldSpec;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

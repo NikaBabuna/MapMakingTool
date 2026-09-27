@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/boundaries.md
-  Purpose: TraceBoundaries, Boundaries, BoundaryContact, BoundaryKind, Orogeny.closing — phase 1: finding and classifying every contact between two plates
+  Purpose: Boundaries — phase 1: finding and classifying every contact between two plates
   Audience: Agents and humans
-  Update when: Boundaries.trace, Boundaries.classify, Orogeny.closing, or TraceBoundaries.execute changes
+  Update when: What the boundaries phase computes, or the order of its steps, changes
 -->
 
 # Boundaries
@@ -27,39 +27,15 @@ The kind comes from the closing rate, the relative velocity of $a$ toward $b$ pr
 
 $$\chi = n \cdot (v_a - v_b) = n_x\,(v^x_a - v^x_b) + n_y\,(v^y_a - v^y_b), \qquad \kappa = \begin{cases} \textsf{COLLIDE} & \chi > 0 \\ \textsf{SEPARATE} & \chi < 0 \\ \textsf{PASS\_BY} & \chi = 0 . \end{cases}$$
 
-`Orogeny.closing` in [`Orogeny.java`](../../../product/src/main/java/com/aethelgard/product/Orogeny.java):
-
-```java
-if (plateA == plateB) {
-  return 0;
-}
-int dvx = velocities.vx(plateA) - velocities.vx(plateB);
-int dvy = velocities.vy(plateA) - velocities.vy(plateB);
-return nx * dvx + ny * dvy;
-```
-
-`Boundaries.classify` in [`Boundaries.java`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java):
-
-```java
-int closing = Orogeny.closing(plateA, plateB, velocities, nx, ny);
-if (closing > 0) {
-  return BoundaryKind.COLLIDE;
-}
-if (closing < 0) {
-  return BoundaryKind.SEPARATE;
-}
-return BoundaryKind.PASS_BY;
-```
-
 **Polar rows.** The south step of a cell on the last row crosses the south pole to the antipodal cell of the same row ([topology](topology.md)). For even $W$, the cells $(x, H-1)$ and $(\operatorname{ap}(x), H-1)$ are each other's south neighbour, so every such pair of different plates is traced twice, once from each side, with the same $n = (0, 1)$. The two contacts have opposite closing rates, so a pair with $v^y_a \ne v^y_b$ yields one `COLLIDE` and one `SEPARATE` contact. The first row has no north step, so no contact crosses the north pole.
 
 ## Procedure
 
-1. `TraceBoundaries.execute` reads the settled plates and velocities, checks their types, and stages `Boundaries.trace` of them under `boundaries`. [`TraceBoundaries.execute`](../../../product/src/main/java/com/aethelgard/product/TraceBoundaries.java).
-2. `trace` visits the cells row by row, and for each cell the east step, then the south step, each through `SphereTopology.neighbor`. It skips a step that returns the cell itself or a cell of the same plate. [`Boundaries.trace`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java).
-3. `classify` computes $\chi$ with `Orogeny.closing` and returns the kind. [`Boundaries.classify`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java).
-4. Each contact is stored as an immutable `BoundaryContact` with its direction, not its neighbour's coordinates; a reader recovers the neighbour with `SphereTopology.neighbor`. [`BoundaryContact`](../../../product/src/main/java/com/aethelgard/product/BoundaryContact.java).
-5. The list is copied into an immutable `Boundaries`, which answers `contacts`, `size`, and `count` of one kind. [`Boundaries.count`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java).
+1. The phase reads the settled plates and velocities, checks their types, and stages the traced contacts under `boundaries`.
+2. The trace visits the cells row by row, and for each cell takes the east step, then the south step, each through the sphere [topology](topology.md). It skips a step that returns the cell itself or a cell of the same plate.
+3. Each contact is classified: $\chi$ is computed from the two velocities and the direction, and gives the kind.
+4. Each contact is stored as an immutable `BoundaryContact` with its direction, not its neighbour's coordinates; a reader recovers the neighbour through the topology.
+5. The contacts are copied into an immutable `Boundaries` list, which answers the contacts, their number, and the number of one kind.
 
 ## What is true afterwards
 
@@ -69,14 +45,5 @@ The staged contacts describe the settled plates and velocities of the world befo
 
 $O(WH)$ time; the list holds one entry per edge between two plates.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Phase | `TraceBoundaries` | `TraceBoundaries.id`, `TraceBoundaries.writeRanges`, `TraceBoundaries.execute` | [`product/src/main/java/com/aethelgard/product/TraceBoundaries.java`](../../../product/src/main/java/com/aethelgard/product/TraceBoundaries.java) |
-| Contact list | `Boundaries` | `Boundaries`, `empty`, `trace`, `classify`, `contacts`, `size`, `count` | [`product/src/main/java/com/aethelgard/product/Boundaries.java`](../../../product/src/main/java/com/aethelgard/product/Boundaries.java) |
-| Contact | `BoundaryContact` | `BoundaryContact`, `x`, `y`, `nx`, `ny`, `plateA`, `plateB`, `kind` | [`product/src/main/java/com/aethelgard/product/BoundaryContact.java`](../../../product/src/main/java/com/aethelgard/product/BoundaryContact.java) |
-| Kind | `BoundaryKind` | `SEPARATE`, `COLLIDE`, `PASS_BY` | [`product/src/main/java/com/aethelgard/product/BoundaryKind.java`](../../../product/src/main/java/com/aethelgard/product/BoundaryKind.java) |
-| Closing rate | `Orogeny` | `closing` | [`product/src/main/java/com/aethelgard/product/Orogeny.java`](../../../product/src/main/java/com/aethelgard/product/Orogeny.java) |
-
+Code: [world/boundaries/](../../../product/src/main/java/com/aethelgard/product/world/boundaries/README.md)  
 Parent: [one generation](README.md). What the contacts drive next: [interaction](interaction.md). Whether the polar double contact is intended: [open questions](../open-questions.md).

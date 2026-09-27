@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/topology.md
-  Purpose: SphereTopology — neighbours and one-step motion on the rectangle that stands for a sphere
+  Purpose: Topology — neighbours and one-step motion on the rectangle that stands for a sphere
   Audience: Agents and humans
-  Update when: SphereTopology.neighbor, SphereTopology.advectCell, or SphereTopology.antipodeX changes
+  Update when: What the topology computes, or the order of its steps, changes
 -->
 
 # Topology
@@ -31,39 +31,12 @@ $$\alpha\bigl((x, y), v\bigr) = \begin{cases} \bigl(((x + v_x) \bmod W,\; y + v_
 
 Crossing a pole keeps the row, jumps to the antipodal column, and negates both velocity components. The rectangle is not a sphere mesh: rows keep their width $W$ at every latitude, and the only latitude correction in the world is the distance weight of the seed ([seed](seed.md)).
 
-`SphereTopology.neighbor` (crossing the north pole) in [`SphereTopology.java`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java):
-
-```java
-if (dy < 0) {
-  if (y + dy >= 0) {
-    ny = y + dy;
-  } else {
-    // Cross north pole → antipodal x, stay on north edge row.
-    nx = antipodeX(nx, width);
-    ny = 0;
-  }
-```
-
-`SphereTopology.advectCell` in [`SphereTopology.java`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java):
-
-```java
-int nx = Math.floorMod(x + vx, width);
-int ny = y + vy;
-int ovx = vx;
-int ovy = vy;
-if (ny < 0) {
-  nx = antipodeX(x + vx, width);
-  ny = 0;
-  ovx = -vx;
-  ovy = -vy;
-```
-
 ## Procedure
 
-1. `antipodeX` returns $\operatorname{ap}(x)$. [`SphereTopology.antipodeX`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java).
-2. `neighbor` returns the cell itself for $d = (0, 0)$; otherwise it wraps the column, then either steps the row or, past a pole, moves to the antipodal column of the wrapped column on the polar row. [`SphereTopology.neighbor`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java).
-3. `advectCell` returns the moved cell and the velocity after the move, $(n_x, n_y, v'_x, v'_y)$, negating the velocity when the move crossed a pole. [`SphereTopology.advectCell`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java).
-4. `ORTHO` lists $D_4$. [`SphereTopology.ORTHO`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java).
+1. The antipode of a column is $\operatorname{ap}(x)$.
+2. A neighbour is the cell itself for $d = (0, 0)$; otherwise the column wraps, then the row steps or, past a pole, the neighbour is the antipodal column of the wrapped column on the polar row.
+3. A move returns the moved cell and the velocity after the move, $(n_x, n_y, v'_x, v'_y)$, negating the velocity when the move crossed a pole.
+4. The four orthogonal directions are kept in the order of $D_4$.
 
 ## What is true afterwards
 
@@ -73,10 +46,5 @@ Every cell has four orthogonal neighbours on the map. A neighbour across a pole 
 
 Both functions are $O(1)$.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Topology | `SphereTopology` | `antipodeX`, `neighbor`, `advectCell`, `ORTHO` | [`product/src/main/java/com/aethelgard/product/SphereTopology.java`](../../../product/src/main/java/com/aethelgard/product/SphereTopology.java) |
-
+Code: [world/topology/](../../../product/src/main/java/com/aethelgard/product/world/topology/README.md)  
 Parent: [one generation](README.md). Why the map is a sphere on a rectangle: [ADR-012](../../paperwork/decisions/ADR-012-simulation-runner.md).

@@ -9,6 +9,8 @@
 
 Every cell stands on a crust column, a locker, and a locker has a thickness. These pages are the procedures that decide which plate goes under at a collision, which locker each cell points at, and how thick each locker is; height is read from thickness at the end. The order in which they run is the generation's phase list, [../README.md](../README.md).
 
+**Why:** The crust is a material of its own that rides on the plates, so every rule that changes a column's key or thickness is gathered in this chapter, and height always has one cause. Which plate owns a cell is decided in the [motion](../motion/README.md) chapter.
+
 | Page | Question |
 |------|----------|
 | [precedence.md](precedence.md) | Which plate loses a collision, and when does neither lose? |

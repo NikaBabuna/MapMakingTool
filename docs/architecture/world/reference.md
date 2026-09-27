@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/world/reference.md
-  Purpose: ProductGeneration — the whole generation as one function call, outside the engine
+  Purpose: Reference pipeline — the whole generation as one function call, outside the engine
   Audience: Agents and humans
-  Update when: ProductGeneration.advance changes, or the phase order of ProductHost.setup changes
+  Update when: What the reference pipeline computes changes, or the phase order of the wiring changes
 -->
 
 # Reference pipeline
@@ -25,35 +25,17 @@ $$\mathrm{advance}(\mathcal{S}, g) = \mathcal{S}' \quad\text{with}\quad \mathcal
 
 where $\mathcal{W}_g$ is the generation of the level page applied to a world whose settled fields are $\mathcal{S}$. The call differs from the engine run in three ways that do not change its result on a consistent world: it recounts the registry from $P$ and $v$ instead of reading the settled one, it calls each procedure directly instead of reading staged fields, and it records no phase timing.
 
-`ProductGeneration.advance` (the last four phases) in [`ProductGeneration.java`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java):
-
-```java
-RidgeCreate.Result minted = RidgeCreate.apply(moved.occupancy(), stamped);
-Lockers relieved =
-    MarginRelief.apply(minted.occupancy(), minted.lockers(), moved.plates(), moved.velocities());
-Lockers crust =
-    ContinentalCollide.apply(
-        minted.occupancy(), relieved, moved.plates(), moved.velocities());
-PlateRegistry after = PlateRegistry.from(moved.plates(), moved.velocities());
-Grid elevation = ThicknessToElevation.apply(minted.occupancy(), crust);
-```
-
 ## Procedure
 
-1. The registry is counted from the given plates and velocities. [`ProductGeneration.advance`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java).
-2. The contacts, budgets, and intents are computed from the given world with its crust, then the velocities are integrated. [`ProductGeneration.advance`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java).
-3. The geometry pass runs with the integrated velocities and a fresh skip mask, and the orogeny stamps are computed on the given occupancy and lockers. [`ProductGeneration.advance`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java).
-4. The plates and crust keys are advected, with the subduction corrections applied from the given contacts. [`ProductGeneration.advance`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java).
-5. Ridge mint, margin relief, continental collision, the registry of the moved plates, and isostasy follow, and the six results form the new snapshot. [`ProductGeneration.advance`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java).
+1. The registry is counted from the given plates and velocities.
+2. The contacts, budgets, and intents are computed from the given world with its crust, then the velocities are integrated.
+3. The geometry pass runs with the integrated velocities and a fresh skip mask, and the orogeny stamps are computed on the given occupancy and lockers.
+4. The plates and crust keys are advected, with the subduction corrections applied from the given contacts.
+5. Ridge mint, margin relief, continental collision, the registry of the moved plates, and isostasy follow, and the six results form the new snapshot.
 
 ## What is true afterwards
 
-When the snapshot's registry is the one counted from its plates and velocities, $R = \mathrm{from}(P, v)$, which every settled world satisfies, each procedure receives the same arguments as in the engine run. So `advance(snapshot, g)` computes the same six values as generation $g$ of an engine whose settled fields at step $g-1$ are the snapshot. This class is part of the main source, and nothing in the running program calls it.
+When the snapshot's registry is the one counted from its plates and velocities, $R = \mathrm{from}(P, v)$, which every settled world satisfies, each procedure receives the same arguments as in the engine run. So the call on a snapshot and $g$ computes the same six values as generation $g$ of an engine whose settled fields at step $g-1$ are the snapshot. This class is part of the main source, and nothing in the running program calls it.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Reference call | `ProductGeneration` | `advance`, `Snapshot` | [`product/src/main/java/com/aethelgard/product/ProductGeneration.java`](../../../product/src/main/java/com/aethelgard/product/ProductGeneration.java) |
-
+Code: [world/](../../../product/src/main/java/com/aethelgard/product/world/README.md)  
 Parent: [one generation](README.md).
