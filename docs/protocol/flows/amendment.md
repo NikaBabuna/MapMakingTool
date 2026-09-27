@@ -116,7 +116,8 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
    | A5 | The domain glossary | **Amend word**, **Remove word** of [../blueprints/product/glossary.md](../blueprints/product/glossary.md) |
    | A5 | The style guide | **Add area** of [../blueprints/product/style-guide.md](../blueprints/product/style-guide.md) |
    | A5 | A wiki page | **Create page**, **Amend rule** of [../blueprints/product/wiki-page.md](../blueprints/product/wiki-page.md) |
-   | A5 | The paper abstract | **Add level**, **Change question**, **Set conventions** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
+   | A5 | The paper abstract | **Add level**, **Change question**, **Set conventions**, **Add pointer** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
+   | A5 | The code conventions page | **Create**, **Add convention**, **Change convention**, **Add exemption**, **Remove exemption** of [../blueprints/architecture/conventions.md](../blueprints/architecture/conventions.md) |
    | A6 | The paper abstract | **Relink level** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
    | A5 | The program page | **Set process** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
    | A6 | The program page | **Set pointer table** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |

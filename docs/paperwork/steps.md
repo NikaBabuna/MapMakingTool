@@ -190,7 +190,7 @@ Goal doc: [goals/G-012-code-structure-and-conventions.md](goals/G-012-code-struc
 
 | ID | Name | Status | What it does | Record |
 |----|------|--------|--------------|--------|
-| F-069 | Conventions page | not started | The conventions page: its blueprint, its place on the protocol map, and this project's conventions written into it. | — |
+| F-069 | Conventions page | done | Gives the project one page of code conventions, for every language it uses, and makes that page a standing part of every project the protocol governs. | [F-069.md](steps/F-069.md) |
 | F-070 | Folder and code rules in the protocol | not started | The protocol mechanism: the folder rule, the Why part of docs READMEs, the code README blueprint, the organisation rule, the paper/README split, keeping conventions current, and the Step flow and audit changes. | — |
 | F-071 | Product module organised | not started | The product module: packages by job, renames, tests moved to match, READMEs taking over the code detail of the world and session pages, those pages reduced to concept and maths, navigation rows. | — |
 | F-072 | Engine and command line organised | not started | The engine and command-line modules: the same treatment, with their pages. | — |

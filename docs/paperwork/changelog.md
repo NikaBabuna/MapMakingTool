@@ -13,6 +13,7 @@ Not every commit — only structure, phase, and scope shifts.
 
 ## Structure
 
+- **2026-09-27** — **F-069:** the code conventions page `docs/architecture/conventions.md` added, shaped by the new blueprint `docs/protocol/blueprints/architecture/conventions.md`; the protocol map lists it as a standing page every project has, and the paper abstract and the doc map link it. How code in every language of the project is named, where a new file goes, how large a folder may grow, how a file is headed, and which folders need no README now stand in one place.
 - **2026-09-27** — **G-012 open:** Code structure and conventions approved (all code, in every language, in folders by job, each introduced by its README, under conventions the protocol makes every agent follow). No behaviour change.
 - **2026-09-26** — **F-068 / G-011 close:** the documentation sits on four shelves behind one entrance, the architecture paper describes every layer tied to its code, and the suite proves the app's requirements by running it. Active Goal none; last completed G-011.
 - **2026-09-26** — **F-068:** the test suite was replaced: 282 tests, many of which searched documents or source text, gave way to 151 tests of outcomes (112 JUnit tests, and 39 Vitest tests of the web front that `./mvnw test` now runs), each naming the F-068 requirement it proves; the correctness rules now let an approved Step retire tests and keep known defects. A test now fails when the app breaks, not when a page is reworded. ADR-020.

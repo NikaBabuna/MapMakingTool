@@ -74,6 +74,7 @@ Goal files and Step records are listed on their indexes. This map does not dupli
 | [program.md](architecture/program.md) | Active — modules, build files, dependency direction, processes, the stack, and the witness command |
 | [glossary.md](architecture/glossary.md) | Active — implementation words, and the symbols several models share |
 | [open-questions.md](architecture/open-questions.md) | Active — implementation behaviour still undecided |
+| [conventions.md](architecture/conventions.md) | Active — code conventions: names in every language, where a file goes, the folder limit, file headers, and the folders that need no README |
 | [engine/](architecture/engine/README.md) | Active — one engine step, and one page per engine mechanism |
 | [world/](architecture/world/README.md) | Active — one generation, its wiring, fields, topology, seed, and phases |
 | [world/motion/](architecture/world/motion/README.md) | Active — integrate, sink, flood, fission, and advect |

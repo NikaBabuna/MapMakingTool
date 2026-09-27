@@ -109,7 +109,7 @@ The protocol's README rules, which require a plain list and let the agent skip R
 
 | Step | Intent | Type | Status |
 |------|--------|------|--------|
-| F-069 | The conventions page: its blueprint, its place on the protocol map, and this project's conventions written into it | Documentation | not started |
+| F-069 | The conventions page: its blueprint, its place on the protocol map, and this project's conventions written into it | Documentation | done |
 | F-070 | The protocol mechanism: the folder rule, the Why part of docs READMEs, the code README blueprint, the organisation rule, the paper/README split, keeping conventions current, and the Step flow and audit changes | Documentation | not started |
 | F-071 | The product module: packages by job, renames, tests moved to match, READMEs taking over the code detail of the world and session pages, those pages reduced to concept and maths, navigation rows | Cleanup | not started |
 | F-072 | The engine and command-line modules: the same treatment, with their pages | Cleanup | not started |
@@ -124,6 +124,6 @@ The conventions page comes first so the protocol never links to a file that does
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 0 / 6 |
+| Steps done | 1 / 6 |
 | Claim boxes | 0 / 10 |
-| Last Accept | — |
+| Last Accept | F-069 |

@@ -35,7 +35,7 @@ This shelf is the implementation paper. <One or two sentences: what the paper st
 
 <Conventions: one paragraph saying how a page states a mechanism — first in plain words, then as a model in LaTeX whose shared symbols are defined in the glossary — how a page cites code — each step names its member, linked to the source file — and that quoted lines are copied from the source unchanged.>
 
-<Pointer sentences: the paper's glossary, its open-questions page, and the ADR that explains the shelf's shape.>
+<Pointer sentences: the paper's glossary, its open-questions page, the code conventions page, and the ADR that explains the shelf's shape.>
 ```
 
 ## Parts
@@ -45,7 +45,7 @@ This shelf is the implementation paper. <One or two sentences: what the paper st
 | Opening | yes | No procedure, no type names |
 | Level table | yes | One row per level, from coarsest to finest. **Page** links `program.md` or the level's `README.md` |
 | Conventions | yes | One paragraph. States the order in which a page explains a mechanism (plain words, then a model), the notation of the model (LaTeX, with shared symbols in the glossary), the form of a code citation (a member in backticks, linked to its source file), and that excerpts are copied unchanged. No type names |
-| Pointer sentences | yes | Link the paper's glossary ([glossary.md](glossary.md)) and open-questions page ([open-questions.md](open-questions.md)), wherever the project keeps them, and the ADR that explains the shelf. These links are how every other page finds those two pages |
+| Pointer sentences | yes | Link the paper's glossary ([glossary.md](glossary.md)) and open-questions page ([open-questions.md](open-questions.md)), wherever the project keeps them, the code conventions page (`conventions.md`, shaped by [conventions.md](conventions.md)), and the ADR that explains the shelf. These links are how every other page finds those three pages. Each pointer sentence has the form `<What the reader finds there>: [<file>](<relative link>).` |
 
 ## Operations
 
@@ -55,6 +55,7 @@ This shelf is the implementation paper. <One or two sentences: what the paper st
 | **Change question** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 (class A5) |
 | **Relink level** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 and Step 3.1 (class A6), when an area folder is renamed or moved |
 | **Set conventions** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 and Step 3.1 (class A5), when the shape of a mechanism page changes how a page states or cites |
+| **Add pointer** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 and Step 3.1 (class A5), when a page the Pointer sentences part requires has no pointer sentence |
 
 ### Add level
 
@@ -88,6 +89,16 @@ This shelf is the implementation paper. <One or two sentences: what the paper st
 
 **Result.** The abstract says how every page of the paper is to be read.
 
+### Add pointer
+
+**Before.** The Pointer sentences part requires a pointer to the page, and the abstract has none.
+
+**Edit.**
+
+1. At the end of the pointer sentences, before the sentences that link ADRs, add `<What the reader finds there>: [<file>](<relative link>).`
+
+**Result.** Every page the Pointer sentences part names is linked from the abstract.
+
 ## Check
 
 | # | The file is legal only if |
@@ -95,6 +106,7 @@ This shelf is the implementation paper. <One or two sentences: what the paper st
 | 1 | Every area folder under `docs/architecture/` has a row |
 | 2 | No procedure or type name appears |
 | 3 | The Conventions paragraph agrees with the Parts of [mechanism-page.md](mechanism-page.md) |
+| 4 | The pointer sentences link the glossary, the open-questions page, and the code conventions page, and every link resolves |
 
 ## Keep out
 

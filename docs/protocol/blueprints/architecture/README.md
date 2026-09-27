@@ -17,3 +17,4 @@ Forms for the pages of the implementation paper under `docs/architecture/`.
 | [mechanism-page.md](mechanism-page.md) | You are writing any other page of the paper that describes a mechanism |
 | [glossary.md](glossary.md) | You are writing the paper's glossary (the page the abstract links as its glossary) |
 | [open-questions.md](open-questions.md) | You are writing the paper's open-questions page (the page the abstract links as its open questions) |
+| [conventions.md](conventions.md) | You are writing `docs/architecture/conventions.md`, the project's code conventions |

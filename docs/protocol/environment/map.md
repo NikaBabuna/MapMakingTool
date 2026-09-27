@@ -71,6 +71,7 @@ An entrance maps shelves. It does not hold the substance of those shelves.
 | `program.md` | Modules, build files, dependency direction, the processes the project runs and how they reach each other, the stack, and the project facts the protocol relies on: the witness command, where tests live, how declarations are found, and how test output reports. |
 | `glossary.md` | The paper's glossary: its public words, and the symbols that the models of several pages share. |
 | `open-questions.md` | The paper's open questions: implementation behaviour that is still undecided. |
+| `conventions.md` | The code conventions: how code in each language of the project is named, where a new file goes, how large a folder may grow, the comment form of a file header, and which folders need no README. Every project has this page at this path; its contents are the project's. |
 | `<area>/` | One folder per area of the implementation the project chooses. Its `README.md` is the level page: what one run of that area does, in order, naming one page per mechanism. |
 | `<area>/<chapter>/` | Optional. A chapter of procedures inside an area, with its own level page. |
 
