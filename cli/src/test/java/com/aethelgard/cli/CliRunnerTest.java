@@ -72,7 +72,7 @@ class CliRunnerTest {
       CliResult result = CliRunner.run(args);
       String label = String.join(" ", args);
       assertNotEquals(0, result.exitCode(), label);
-      assertFalse(result.ok(), label);
+      assertFalse(result.isOk(), label);
       assertTrue(result.output().startsWith("error: "), label + " → " + result.output());
       assertFalse(result.output().contains("world w="), label + ": nothing ran");
     }

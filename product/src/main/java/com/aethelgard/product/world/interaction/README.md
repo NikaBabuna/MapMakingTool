@@ -29,7 +29,7 @@ Two later phases need the same verdict on every contact — who loses a collisio
 - [boundaries/](../boundaries/README.md) — the contacts
 - [fields/](../fields/README.md) — the registry, the occupancy, the lockers, and the field names
 - [crust/](../crust/README.md) — `CrustPrecedence`, which crust loses a collision; the crust and interaction phases are peers ([conventions](../../../../../../../../../docs/architecture/conventions.md))
-- [engine system](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — the `SubSystem` port the phase implements
+- [engine systems](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — the `SubSystem` port the phase implements
 
 ## Used by
 

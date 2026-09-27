@@ -7,8 +7,8 @@
 
 package com.aethelgard.product.world.interaction;
 
-import com.aethelgard.engine.system.SubSystem;
-import com.aethelgard.engine.system.SubSystemIo;
+import com.aethelgard.engine.systems.SubSystem;
+import com.aethelgard.engine.systems.SubSystemIo;
 import com.aethelgard.product.world.boundaries.Boundaries;
 import com.aethelgard.product.world.fields.Grid;
 import com.aethelgard.product.world.fields.Lockers;

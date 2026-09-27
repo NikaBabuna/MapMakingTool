@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.CategoryTree;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.CategoryTree;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.merge.FieldType;
-import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.systems.EngineSystem;
 import com.aethelgard.engine.user.InputKind;
 import com.aethelgard.engine.user.UserInput;
 import com.aethelgard.engine.user.UserView;
@@ -41,7 +41,7 @@ class EngineRunTest {
 
     assertEquals(0, engine.stepIndex());
     assertEquals(1, engine.settled().updateCount());
-    assertTrue(engine.eventBufferEmpty());
+    assertTrue(engine.isEventBufferEmpty());
     // The caller's values are where step 0 started: heartbeat 40 plus one update, depth as given.
     assertEquals(41L, engine.settled().value());
     assertEquals(3L, engine.settled().field("depth"));

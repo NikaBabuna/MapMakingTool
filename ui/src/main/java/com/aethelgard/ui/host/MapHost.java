@@ -409,13 +409,13 @@ public final class MapHost implements AutoCloseable {
         "{\"exitCode\":"
             + result.exitCode()
             + ",\"ok\":"
-            + result.ok()
+            + result.isOk()
             + ",\"output\":"
             + jsonString(result.output())
             + ",\"status\":"
             + statusJson()
             + "}";
-    send(exchange, result.ok() ? 200 : 400, "application/json; charset=utf-8", json);
+    send(exchange, result.isOk() ? 200 : 400, "application/json; charset=utf-8", json);
   }
 
   private String statusJson() {

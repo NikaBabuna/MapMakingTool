@@ -32,7 +32,7 @@ Everything that changes which plate owns a cell happens here, in the motion chap
 - [interaction/](../interaction/README.md) — the budgets the geometry pass spends, and the intents the integration follows
 - [topology/](../topology/README.md) — neighbours and moves on the sphere
 - [crust/](../crust/README.md) — `CrustPrecedence` for the sinking side, and `Subduction` inside advection; the crust and motion phases are peers ([conventions](../../../../../../../../../docs/architecture/conventions.md))
-- [engine system](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — the `SubSystem` port the phases implement
+- [engine systems](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — the `SubSystem` port the phases implement
 
 ## Used by
 

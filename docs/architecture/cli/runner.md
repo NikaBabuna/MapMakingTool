@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/cli/runner.md
-  Purpose: Main, CliRunner, CliOptions, CliResult — how the command line becomes one session, some dispatched lines, printed output, and an exit code
+  Purpose: Runner — how the command line becomes one session, some dispatched lines, printed output, and an exit code
   Audience: Agents and humans
-  Update when: Main.main, CliRunner.run, CliRunner.parse, CliRunner.flagMode, CliOptions, or CliResult changes
+  Update when: How an invocation is parsed, run, printed, or ended changes
 -->
 
 # Runner
@@ -31,42 +31,18 @@ $$\text{if } r > 0:\;\; o = [\,\mathrm{Dispatch}(\texttt{session advance } \math
 
 stopping at the first failure, which returns the outputs so far, then the failure, with the failure's code. The exit code is 0 when every line succeeded.
 
-`CliRunner.run` (the flag-mode lines) in [`CliRunner.java`](../../../cli/src/main/java/com/aethelgard/cli/CliRunner.java):
-
-```java
-for (String line : options.commands()) {
-  CliResult next = CommandDispatch.execute(session, line);
-  if (!next.ok()) {
-    if (out.length() > 0) {
-      return new CliResult(next.exitCode(), out + "\n" + next.output());
-    }
-    return next;
-  }
-  out.add(next.output());
-}
-return new CliResult(0, out.toString());
-```
-
 ## Procedure
 
-1. `Main.main` calls `CliRunner.run(args)`, prints the output, adds a newline when the output is not empty and does not end with one, and exits with the result's code. [`Main.main`](../../../cli/src/main/java/com/aethelgard/cli/Main.java).
-2. `run(String[])` treats a null vector as empty and chooses the mode with `flagMode`. It turns any `IllegalArgumentException` into the result `(2, "error: <message>")`. [`CliRunner.run`](../../../cli/src/main/java/com/aethelgard/cli/CliRunner.java), [`CliRunner.flagMode`](../../../cli/src/main/java/com/aethelgard/cli/CliRunner.java).
-3. `parse` reads the flags left to right, taking each value with `requireValue` and converting it with `parseLong` or `parseInt`. It rejects an unknown argument, a missing value, a non-number, and a negative step count, and marks the steps as given for an empty vector. [`CliRunner.parse`](../../../cli/src/main/java/com/aethelgard/cli/CliRunner.java).
-4. `CliOptions` holds the seed, the steps, whether steps were given, and an immutable copy of the lines. `defaults()` is seed 0, no steps, steps given, no lines. [`CliOptions`](../../../cli/src/main/java/com/aethelgard/cli/CliOptions.java).
-5. `run(CliOptions)` rejects a negative step count, creates the session on the $8 \times 8$ map with the given seed, and runs the lines as in the Model. [`CliRunner.run`](../../../cli/src/main/java/com/aethelgard/cli/CliRunner.java).
-6. `CliResult` pairs an exit code with a non-null output, and `ok()` is true for code 0. [`CliResult`](../../../cli/src/main/java/com/aethelgard/cli/CliResult.java).
+1. The entry point runs the arguments, prints the output, adds a newline when the output is not empty and does not end with one, and exits with the result's code.
+2. The run treats a null vector as empty and chooses between flag mode and verb mode. It turns any `IllegalArgumentException` into the result `(2, "error: <message>")`.
+3. The flags are read left to right, each value taken and converted to a number. An unknown argument, a missing value, a non-number, and a negative step count are refused, and an empty vector marks the steps as given.
+4. `CliOptions` holds the seed, the steps, whether steps were given, and an immutable copy of the lines. The default options are seed 0, no steps, steps given, no lines.
+5. With the options, a negative step count is refused, the session is created on the $8 \times 8$ map with the given seed, and the lines run as in the Model.
+6. `CliResult` pairs an exit code with a non-null output, and it is a success for code 0.
 
 ## What is true afterwards
 
 Every invocation builds exactly one world and exits. With no arguments at all, it prints the dump of the seed-0 world at step 0. The runner catches only `IllegalArgumentException`: any other failure inside a step ends the process with the Java runtime's uncaught-exception report and a non-zero exit code.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Entry | `Main` | `main` | [`cli/src/main/java/com/aethelgard/cli/Main.java`](../../../cli/src/main/java/com/aethelgard/cli/Main.java) |
-| Runner | `CliRunner` | `run`, `flagMode`, `parse`, `requireValue`, `CliRunner.parseInt`, `parseLong` | [`cli/src/main/java/com/aethelgard/cli/CliRunner.java`](../../../cli/src/main/java/com/aethelgard/cli/CliRunner.java) |
-| Options | `CliOptions` | `CliOptions`, `seed`, `steps`, `stepsSpecified`, `commands`, `defaults`, `DEFAULT_STEPS`, `DEFAULT_SEED` | [`cli/src/main/java/com/aethelgard/cli/CliOptions.java`](../../../cli/src/main/java/com/aethelgard/cli/CliOptions.java) |
-| Result | `CliResult` | `CliResult`, `exitCode`, `output`, `ok` | [`cli/src/main/java/com/aethelgard/cli/CliResult.java`](../../../cli/src/main/java/com/aethelgard/cli/CliResult.java) |
-
+Code: [cli/](../../../cli/src/main/java/com/aethelgard/cli/README.md)  
 Parent: [one run of the CLI](README.md). Why the CLI and the studio share one language: [ADR-012](../../paperwork/decisions/ADR-012-simulation-runner.md).

@@ -31,7 +31,7 @@ Because the trace steps only east and south, contacts that cross a pole are not 
 - [fields/](../fields/README.md) — the plates grid, the velocities, and the field names
 - [topology/](../topology/README.md) — the neighbour of a cell across the seam and the poles
 - [crust/](../crust/README.md) — `Orogeny.closing`, the closing speed of two plates; the crust and boundary phases are peers ([conventions](../../../../../../../../../docs/architecture/conventions.md))
-- [engine system](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — the `SubSystem` port the phase implements
+- [engine systems](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — the `SubSystem` port the phase implements
 
 ## Used by
 

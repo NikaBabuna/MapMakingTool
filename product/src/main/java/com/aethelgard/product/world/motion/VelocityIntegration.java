@@ -7,8 +7,8 @@
 
 package com.aethelgard.product.world.motion;
 
-import com.aethelgard.engine.system.SubSystem;
-import com.aethelgard.engine.system.SubSystemIo;
+import com.aethelgard.engine.systems.SubSystem;
+import com.aethelgard.engine.systems.SubSystemIo;
 import com.aethelgard.product.world.fields.PlateRegistry;
 import com.aethelgard.product.world.fields.PlateVelocities;
 import com.aethelgard.product.world.fields.WorldFields;

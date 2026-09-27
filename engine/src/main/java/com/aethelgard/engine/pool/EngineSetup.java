@@ -7,11 +7,11 @@
 
 package com.aethelgard.engine.pool;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.CategoryTree;
-import com.aethelgard.engine.event.EventClaimer;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.CategoryTree;
+import com.aethelgard.engine.events.EventClaimer;
 import com.aethelgard.engine.merge.FieldSchema;
-import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.systems.EngineSystem;
 import com.aethelgard.engine.user.UserInput;
 import com.aethelgard.engine.user.UserView;
 import java.util.List;
@@ -45,7 +45,7 @@ public record EngineSetup(
         eventEmissionPolicy == null ? ScriptedEventEmissionPolicy.INSTANCE : eventEmissionPolicy;
   }
 
-  /** F-003-compatible wiring (defaults for compute / emission). */
+  /** Wiring with claimers only: no systems, and the defaults for user layer, compute, and emission. */
   public EngineSetup(
       CategoryTree categoryTree, List<EventClaimer> claimers, EngineDiagnostics diagnostics) {
     this(
@@ -60,7 +60,7 @@ public record EngineSetup(
         null);
   }
 
-  /** F-004/F-005-compatible wiring without custom user layer. */
+  /** Wiring with systems and a field schema, without a custom user layer. */
   public EngineSetup(
       CategoryTree categoryTree,
       List<EventClaimer> claimers,
@@ -79,7 +79,7 @@ public record EngineSetup(
         null);
   }
 
-  /** F-006-compatible wiring without custom compute / emission. */
+  /** Wiring with a user layer, without custom compute / emission. */
   public EngineSetup(
       CategoryTree categoryTree,
       List<EventClaimer> claimers,
@@ -100,7 +100,7 @@ public record EngineSetup(
         null);
   }
 
-  /** F-010-compatible wiring without custom emission policy. */
+  /** Wiring with a custom compute, without a custom emission policy. */
   public EngineSetup(
       CategoryTree categoryTree,
       List<EventClaimer> claimers,

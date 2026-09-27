@@ -7,11 +7,11 @@
 
 package com.aethelgard.engine.pool;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.Category;
-import com.aethelgard.engine.event.CategoryTree;
-import com.aethelgard.engine.event.EngineEvent;
-import com.aethelgard.engine.event.EventBuffer;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.Category;
+import com.aethelgard.engine.events.CategoryTree;
+import com.aethelgard.engine.events.EngineEvent;
+import com.aethelgard.engine.events.EventBuffer;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.user.InputView;
 import java.util.List;

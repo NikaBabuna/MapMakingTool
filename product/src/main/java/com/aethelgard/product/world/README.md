@@ -32,9 +32,9 @@ This package is the only place that knows the whole generation at once: it assem
 - [motion/](motion/README.md) — the integration and geometry phases
 - [crust/](crust/README.md) — the orogeny, ridge, margin, collision, and isostasy phases
 - [session/diagnostics/](../session/diagnostics/README.md) — `TimingSubSystem` and the phase-timing ids of `DiagnosticIds`
-- [engine event](../../../../../../../../engine/src/main/java/com/aethelgard/engine/event/README.md) — the category tree
+- [engine events](../../../../../../../../engine/src/main/java/com/aethelgard/engine/events/README.md) — the category tree
 - [engine pool](../../../../../../../../engine/src/main/java/com/aethelgard/engine/pool/README.md) — the engine, its setup and configuration, and the emission policy
-- [engine system](../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — `EngineSystem` and the `SubSystem` port each phase implements
+- [engine systems](../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — `EngineSystem` and the `SubSystem` port each phase implements
 - [engine merge](../../../../../../../../engine/src/main/java/com/aethelgard/engine/merge/README.md) — the field schema
 
 ## Used by

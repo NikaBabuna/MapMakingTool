@@ -7,20 +7,20 @@
 
 package com.aethelgard.engine.pool;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.Category;
-import com.aethelgard.engine.event.ClaimResult;
-import com.aethelgard.engine.event.EngineEvent;
-import com.aethelgard.engine.event.EventBuffer;
-import com.aethelgard.engine.event.EventClaimer;
-import com.aethelgard.engine.event.EventClaiming;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.Category;
+import com.aethelgard.engine.events.ClaimResult;
+import com.aethelgard.engine.events.EngineEvent;
+import com.aethelgard.engine.events.EventBuffer;
+import com.aethelgard.engine.events.EventClaimer;
+import com.aethelgard.engine.events.EventClaiming;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.merge.ProvenancedWrite;
 import com.aethelgard.engine.merge.StepOutputBuffer;
 import com.aethelgard.engine.merge.TypedMerge;
-import com.aethelgard.engine.system.ClaimFinishBarrier;
-import com.aethelgard.engine.system.ClaimFinishSnapshot;
-import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.systems.ClaimFinishBarrier;
+import com.aethelgard.engine.systems.ClaimFinishSnapshot;
+import com.aethelgard.engine.systems.EngineSystem;
 import com.aethelgard.engine.user.InputView;
 import com.aethelgard.engine.user.UserInput;
 import com.aethelgard.engine.user.UserView;
@@ -32,12 +32,12 @@ import java.util.Objects;
 /**
  * Drives discrete Steps over a {@link Pool}.
  *
- * <p><b>Step index rule (F-002):</b> {@link #stepIndex()} is the 0-based index of the last
+ * <p><b>Step index rule:</b> {@link #stepIndex()} is the 0-based index of the last
  * completed Step. {@link #create} completes Step 0 → index {@code 0}. Each {@link #advance()}
  * completes the next Step and increments the index by 1. After create + {@code advance(n)},
  * {@code stepIndex() == n}.
  *
- * <p><b>Step order (F-006):</b> stage Input View → update (reads Input View) → claim → Systems →
+ * <p><b>Step order:</b> stage Input View → update (reads Input View) → claim → Systems →
  * barrier → typed merge → apply → clear → User View(settled) → settle.
  */
 public final class Engine {
@@ -139,12 +139,12 @@ public final class Engine {
     return pool.snapshot();
   }
 
-  /** Registered Systems for this run (construction introspection; F-048). */
+  /** Registered Systems for this run (construction introspection). */
   public List<EngineSystem> systems() {
     return systems;
   }
 
-  /** Field schema for this run (construction introspection; F-048). */
+  /** Field schema for this run (construction introspection). */
   public FieldSchema fieldSchema() {
     return pool.fieldSchema();
   }
@@ -175,7 +175,7 @@ public final class Engine {
   }
 
   /** True when the shared event buffer is empty (expected after settle). */
-  public boolean eventBufferEmpty() {
+  public boolean isEventBufferEmpty() {
     return eventBuffer.isEmpty();
   }
 
@@ -208,7 +208,7 @@ public final class Engine {
       diagnostics.unmatchedEvent(event);
     }
 
-    // Same snapshot for every System — independence (F-004).
+    // Same snapshot for every System — independence.
     // Note: this snapshot is post-update / pre-merge — not exposed to User View.
     PoolSnapshot snapshotForSystems = pool.snapshot();
     StepOutputBuffer output = new StepOutputBuffer();

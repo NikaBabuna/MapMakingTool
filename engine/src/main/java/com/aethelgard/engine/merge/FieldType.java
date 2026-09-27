@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/merge/FieldType.java
- * Purpose: Default FieldMergeType implementations (G-001 merge rules)
+ * Purpose: Default FieldMergeType implementations
  * Audience: Agents / callers / schema wiring
  * Update when: Default merge types change (Delete Request later)
  */

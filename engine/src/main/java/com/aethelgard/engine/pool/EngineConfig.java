@@ -14,9 +14,9 @@ import java.util.Objects;
 /**
  * Starting configuration for a run. Sole seed for Step 0 — no hidden globals.
  *
- * @param initialValue trivial Pool seed (F-002 heartbeat)
- * @param emitCategoryPathsEachUpdate category paths emitted on every Pool {@code update} (F-003)
- * @param initialFields typed field seeds (F-004/F-011); must match {@link
+ * @param initialValue trivial Pool seed (the heartbeat)
+ * @param emitCategoryPathsEachUpdate category paths emitted on every Pool {@code update}
+ * @param initialFields typed field seeds; must match {@link
  *     com.aethelgard.engine.merge.FieldSchema} keys when used; values are {@link Object}
  */
 public record EngineConfig(
@@ -33,7 +33,7 @@ public record EngineConfig(
     this(initialValue, List.of(), Map.of());
   }
 
-  /** Config with scripted emissions and no typed fields (F-003). */
+  /** Config with scripted emissions and no typed fields. */
   public EngineConfig(long initialValue, List<String> emitCategoryPathsEachUpdate) {
     this(initialValue, emitCategoryPathsEachUpdate, Map.of());
   }

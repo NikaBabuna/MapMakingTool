@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/engine/diagnostics.md
-  Purpose: EngineDiagnostics and its bindings — the engine's observability port
+  Purpose: Diagnostics — the engine's observability port and its bindings
   Audience: Agents and humans
-  Update when: The EngineDiagnostics methods, a binding, or the calls in Engine.runStep and PoolComputeContext.emit change
+  Update when: The reports of the port, a binding, or where the engine reports, changes
 -->
 
 # Diagnostics
@@ -31,13 +31,13 @@ with the emitted reports in emission order, and the unmatched reports in buffer 
 
 ## Procedure
 
-1. The engine reports the start of step $k$ before any other work, and the settle of step $k$ after the view has run. [`EngineDiagnostics.stepStarted`](../../../engine/src/main/java/com/aethelgard/engine/diag/EngineDiagnostics.java).
-2. Every emission reports through `eventEmitted`, from inside `PoolComputeContext.emit`. [`EngineDiagnostics.eventEmitted`](../../../engine/src/main/java/com/aethelgard/engine/diag/EngineDiagnostics.java).
-3. After claiming, the engine reports each claimed pair through `eventClaimed`, then each unmatched event through `unmatchedEvent`. [`EngineDiagnostics.unmatchedEvent`](../../../engine/src/main/java/com/aethelgard/engine/diag/EngineDiagnostics.java).
-4. The default binding, from `slf4j()`, logs to the logger named `com.aethelgard.engine`: step, emission, and claim reports at debug level, and unmatched events at warn level. [`Slf4jDiagnostics`](../../../engine/src/main/java/com/aethelgard/engine/diag/Slf4jDiagnostics.java).
-5. `noop()` discards every report. [`NoopDiagnostics`](../../../engine/src/main/java/com/aethelgard/engine/diag/NoopDiagnostics.java).
-6. `compose(first, second)` forwards each report to both, first then second. [`CompositeDiagnostics`](../../../engine/src/main/java/com/aethelgard/engine/diag/CompositeDiagnostics.java).
-7. `RecordingDiagnostics` appends a `Record(kind, stepIndex, event, claimer)` per report. The index is −1 for event reports, and the event and claimer are null where the kind has none. `records`, `unmatchedEvents`, and `clear` read and reset it. [`RecordingDiagnostics`](../../../engine/src/main/java/com/aethelgard/engine/diag/RecordingDiagnostics.java).
+1. The engine reports the start of step $k$ before any other work, and the settle of step $k$ after the view has run.
+2. Every emission is reported as it is made, from inside the compute context.
+3. After claiming, the engine reports each claimed pair, then each unmatched event.
+4. The default binding logs to the logger named `com.aethelgard.engine`: step, emission, and claim reports at debug level, and unmatched events at warn level.
+5. The silent binding discards every report.
+6. The composite binding forwards each report to both ports, first then second.
+7. `RecordingDiagnostics` appends a `Record` of the kind, the step index, the event, and the claimer per report. The index is −1 for event reports, and the event and claimer are null where the kind has none. Its records, its unmatched events, and a reset can be read or done.
 
 ## What is true afterwards
 
@@ -45,14 +45,5 @@ A recording binding shows that the step started, which events fired, which were 
 
 The product's hub of named timing and memory collectors is a different mechanism: [session diagnostics](../session/diagnostics.md).
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Port | `EngineDiagnostics` | `stepStarted`, `stepSettled`, `eventEmitted`, `eventClaimed`, `unmatchedEvent`, `slf4j`, `noop`, `compose` | [`engine/src/main/java/com/aethelgard/engine/diag/EngineDiagnostics.java`](../../../engine/src/main/java/com/aethelgard/engine/diag/EngineDiagnostics.java) |
-| Default binding | `Slf4jDiagnostics` | `Slf4jDiagnostics` | [`engine/src/main/java/com/aethelgard/engine/diag/Slf4jDiagnostics.java`](../../../engine/src/main/java/com/aethelgard/engine/diag/Slf4jDiagnostics.java) |
-| Silent binding | `NoopDiagnostics` | `NoopDiagnostics.INSTANCE` | [`engine/src/main/java/com/aethelgard/engine/diag/NoopDiagnostics.java`](../../../engine/src/main/java/com/aethelgard/engine/diag/NoopDiagnostics.java) |
-| Fan-out | `CompositeDiagnostics` | `CompositeDiagnostics` | [`engine/src/main/java/com/aethelgard/engine/diag/CompositeDiagnostics.java`](../../../engine/src/main/java/com/aethelgard/engine/diag/CompositeDiagnostics.java) |
-| Test sink | `RecordingDiagnostics` | `Kind`, `Record`, `records`, `unmatchedEvents`, `RecordingDiagnostics.clear` | [`engine/src/main/java/com/aethelgard/engine/diag/RecordingDiagnostics.java`](../../../engine/src/main/java/com/aethelgard/engine/diag/RecordingDiagnostics.java) |
-
+Code: [engine/diagnostics/](../../../engine/src/main/java/com/aethelgard/engine/diagnostics/README.md)  
 Parent: [one engine step](README.md). Why the engine logs through the API only: [ADR-008](../../paperwork/decisions/ADR-008-diagnostics.md).

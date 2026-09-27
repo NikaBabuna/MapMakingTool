@@ -7,15 +7,15 @@
 
 package com.aethelgard.product.world;
 
-import com.aethelgard.engine.event.CategoryTree;
+import com.aethelgard.engine.events.CategoryTree;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.merge.FieldType;
 import com.aethelgard.engine.pool.Engine;
 import com.aethelgard.engine.pool.EngineConfig;
 import com.aethelgard.engine.pool.EngineSetup;
-import com.aethelgard.engine.system.EngineSystem;
-import com.aethelgard.engine.system.SubSystem;
-import com.aethelgard.engine.system.SystemConfig;
+import com.aethelgard.engine.systems.EngineSystem;
+import com.aethelgard.engine.systems.SubSystem;
+import com.aethelgard.engine.systems.SystemConfig;
 import com.aethelgard.product.session.diagnostics.DiagnosticIds;
 import com.aethelgard.product.session.diagnostics.TimingSubSystem;
 import com.aethelgard.product.world.boundaries.Boundaries;

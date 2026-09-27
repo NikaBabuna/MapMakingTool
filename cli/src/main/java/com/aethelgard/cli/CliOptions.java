@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Headless runner flags (F-049). Geometry defaults to {@code WorldSpec.DEFAULT} width/height;
+ * Headless runner flags. Geometry defaults to {@code WorldSpec.DEFAULT} width/height;
  * {@code seed} overrides the recorded RNG seed.
  *
  * @param seed session seed (default {@code 0})

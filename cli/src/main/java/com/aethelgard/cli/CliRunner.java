@@ -17,7 +17,7 @@ import java.util.StringJoiner;
  * Testable CLI core — no interactive stdin. One invocation owns one {@link ProductSession}. Flag
  * mode: {@code --seed}, {@code --steps}, repeatable {@code -c}/{@code --command}. Bare argv (no
  * {@code -} args) is one {@link CommandDispatch} line. Advances and dumps go through the shared
- * dispatcher (F-049).
+ * dispatcher.
  */
 public final class CliRunner {
 
@@ -31,7 +31,7 @@ public final class CliRunner {
   public static CliResult run(String[] args) {
     String[] argv = args == null ? new String[0] : args;
     try {
-      if (flagMode(argv)) {
+      if (isFlagMode(argv)) {
         return run(parse(argv));
       }
       ProductSession session = ProductSession.ofDefault();
@@ -57,7 +57,7 @@ public final class CliRunner {
       if (options.stepsSpecified() && options.steps() > 0) {
         CliResult advanced =
             CommandDispatch.execute(session, "session advance " + options.steps());
-        if (!advanced.ok()) {
+        if (!advanced.isOk()) {
           return advanced;
         }
       }
@@ -67,14 +67,14 @@ public final class CliRunner {
     StringJoiner out = new StringJoiner("\n");
     if (options.stepsSpecified() && options.steps() > 0) {
       CliResult advanced = CommandDispatch.execute(session, "session advance " + options.steps());
-      if (!advanced.ok()) {
+      if (!advanced.isOk()) {
         return advanced;
       }
       out.add(advanced.output());
     }
     for (String line : options.commands()) {
       CliResult next = CommandDispatch.execute(session, line);
-      if (!next.ok()) {
+      if (!next.isOk()) {
         if (out.length() > 0) {
           return new CliResult(next.exitCode(), out + "\n" + next.output());
         }
@@ -85,7 +85,7 @@ public final class CliRunner {
     return new CliResult(0, out.toString());
   }
 
-  static boolean flagMode(String[] args) {
+  static boolean isFlagMode(String[] args) {
     if (args.length == 0) {
       return true;
     }

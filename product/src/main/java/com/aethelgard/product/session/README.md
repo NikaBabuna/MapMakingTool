@@ -31,7 +31,7 @@ The command line and the studio both drive a world, and neither should know how 
 - [world/boundaries/](../world/boundaries/README.md), [world/interaction/](../world/interaction/README.md) — the contacts, budgets, and intents the reads and the dump return
 - [diagnostics/](diagnostics/README.md) — the hub and the phase timing
 - [engine pool](../../../../../../../../engine/src/main/java/com/aethelgard/engine/pool/README.md) — the engine it drives
-- [engine merge](../../../../../../../../engine/src/main/java/com/aethelgard/engine/merge/README.md), [engine system](../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — the schema and systems its construction reads describe
+- [engine merge](../../../../../../../../engine/src/main/java/com/aethelgard/engine/merge/README.md), [engine systems](../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — the schema and systems its construction reads describe
 
 ## Used by
 

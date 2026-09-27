@@ -11,12 +11,12 @@ import static com.aethelgard.engine.TestSystems.writing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.CategoryTree;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.CategoryTree;
 import com.aethelgard.engine.pool.Engine;
 import com.aethelgard.engine.pool.EngineConfig;
 import com.aethelgard.engine.pool.EngineSetup;
-import com.aethelgard.engine.system.EngineSystem;
+import com.aethelgard.engine.systems.EngineSystem;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

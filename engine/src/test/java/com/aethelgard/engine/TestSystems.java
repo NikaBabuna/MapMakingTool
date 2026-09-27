@@ -7,12 +7,12 @@
 
 package com.aethelgard.engine;
 
-import com.aethelgard.engine.event.CategoryTree;
-import com.aethelgard.engine.system.ConflictResolutionSubSystem;
-import com.aethelgard.engine.system.EngineSystem;
-import com.aethelgard.engine.system.SubSystem;
-import com.aethelgard.engine.system.SubSystemIo;
-import com.aethelgard.engine.system.SystemConfig;
+import com.aethelgard.engine.events.CategoryTree;
+import com.aethelgard.engine.systems.ConflictResolutionSubSystem;
+import com.aethelgard.engine.systems.EngineSystem;
+import com.aethelgard.engine.systems.SubSystem;
+import com.aethelgard.engine.systems.SubSystemIo;
+import com.aethelgard.engine.systems.SystemConfig;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;

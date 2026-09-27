@@ -7,8 +7,8 @@
 
 package com.aethelgard.product.session.diagnostics;
 
-import com.aethelgard.engine.system.SubSystem;
-import com.aethelgard.engine.system.SubSystemIo;
+import com.aethelgard.engine.systems.SubSystem;
+import com.aethelgard.engine.systems.SubSystemIo;
 import java.util.Objects;
 import java.util.Set;
 

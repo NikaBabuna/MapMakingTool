@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/engine/setup.md
-  Purpose: EngineSetup, EngineConfig, Engine — wiring one run, seeding step 0, and the create/advance lifecycle
+  Purpose: Setup and lifecycle — wiring one run, seeding step 0, and the create/advance lifecycle
   Audience: Agents and humans
-  Update when: Engine.create, Engine.advance, the EngineSetup ports, or EngineConfig changes
+  Update when: How an engine is wired, seeded, created, or advanced changes
 -->
 
 # Setup and lifecycle
@@ -17,7 +17,7 @@ An `EngineSetup`: nine ports — `categoryTree`, `claimers`, `systems`, `fieldSc
 
 ## What it writes
 
-An `Engine` that has already completed step 0. Every later call of `advance` completes further steps. `advance(n)` with $n < 0$ throws `IllegalArgumentException`. The `Pool` constructor throws `IllegalArgumentException` when `initialFields` names a field the schema does not declare.
+An `Engine` that has already completed step 0. Every later advance completes further steps. An advance of $n < 0$ steps throws `IllegalArgumentException`. The `Pool` constructor throws `IllegalArgumentException` when `initialFields` names a field the schema does not declare.
 
 ## Model
 
@@ -37,47 +37,23 @@ $$S_0 = \mathrm{step}(S_{-1}), \qquad \texttt{advance}(n):\; S_{k+n} = \mathrm{s
 
 A null port is replaced by its default, so $\mathcal{E}$ is always total:
 
-`EngineSetup` (compact constructor) in [`EngineSetup.java`](../../../engine/src/main/java/com/aethelgard/engine/pool/EngineSetup.java):
-
-```java
-public EngineSetup {
-  categoryTree = categoryTree == null ? CategoryTree.empty() : categoryTree;
-  claimers = List.copyOf(Objects.requireNonNullElse(claimers, List.of()));
-  systems = List.copyOf(Objects.requireNonNullElse(systems, List.of()));
-  fieldSchema = fieldSchema == null ? FieldSchema.empty() : fieldSchema;
-  diagnostics = diagnostics == null ? EngineDiagnostics.slf4j() : diagnostics;
-  userInput = userInput == null ? new UserInput() : userInput;
-  userView = userView == null ? UserView.noop() : userView;
-  poolCompute = poolCompute == null ? SkeletonPoolCompute.INSTANCE : poolCompute;
-  eventEmissionPolicy =
-      eventEmissionPolicy == null ? ScriptedEventEmissionPolicy.INSTANCE : eventEmissionPolicy;
-}
-```
-
 ## Procedure
 
-1. The configuration copies its path list and seed map into immutable collections. A null list or map becomes empty. [`EngineConfig`](../../../engine/src/main/java/com/aethelgard/engine/pool/EngineConfig.java).
-2. The wiring replaces each null port with its default: an empty tree, no stub claimers, no systems, an empty schema, the SLF4J diagnostics bridge, a fresh input register, a view that does nothing, the skeleton compute, and the scripted emission policy. The shorter constructors (three, five, seven, and eight arguments) fill the ports they omit with the same defaults, and `EngineSetup.defaults()` wires every port to its default. [`EngineSetup`](../../../engine/src/main/java/com/aethelgard/engine/pool/EngineSetup.java).
-3. `Engine.create(config)` is `Engine.create(config, EngineSetup.defaults())`. [`Engine.create`](../../../engine/src/main/java/com/aethelgard/engine/pool/Engine.java).
-4. `Engine.create(config, setup)` resolves the scripted paths with `CategoryTree.resolveAll`, which creates any category the tree does not hold yet. It then builds the `Pool` from the config, schema, compute, tree, and policy, keeps immutable copies of the resolved emissions, the stub claimers, and the systems, and runs step 0. [`Engine.create`](../../../engine/src/main/java/com/aethelgard/engine/pool/Engine.java).
-5. `advance()` runs one step. `advance(n)` rejects $n < 0$ and then runs $n$ steps. [`Engine.advance`](../../../engine/src/main/java/com/aethelgard/engine/pool/Engine.java).
-6. Each step is `runStep`, whose stages are the [level page](README.md). It sets the step index to one more than the last completed index only after merge has applied. [`Engine.runStep`](../../../engine/src/main/java/com/aethelgard/engine/pool/Engine.java).
-7. A caller reads the run through `stepIndex`, `settled` (the settled `PoolSnapshot`), `lastInputView`, `lastClaimResult`, `lastStepOutput` (the provenanced writes before merge), `lastClaimFinish`, and through `systems`, `fieldSchema`, `userInput`, and `eventBufferEmpty`. [`Engine.settled`](../../../engine/src/main/java/com/aethelgard/engine/pool/Engine.java).
+1. The configuration copies its path list and seed map into immutable collections. A null list or map becomes empty.
+2. The wiring replaces each null port with its default: an empty tree, no stub claimers, no systems, an empty schema, the SLF4J diagnostics bridge, a fresh input register, a view that does nothing, the skeleton compute, and the scripted emission policy. The shorter constructors (three, five, seven, and eight arguments) fill the ports they omit with the same defaults, and the default setup wires every port to its default.
+3. Creating an engine from a configuration alone uses the default setup.
+4. Creating an engine resolves the scripted paths in the category tree, which creates any category the tree does not hold yet. It then builds the `Pool` from the config, schema, compute, tree, and policy, keeps immutable copies of the resolved emissions, the stub claimers, and the systems, and runs step 0.
+5. An advance runs one step, or $n$ steps; $n < 0$ is refused.
+6. Each step runs the stages of the [level page](README.md). The step index becomes one more than the last completed index only after merge has applied.
+7. A caller reads the run: the step index, the settled `PoolSnapshot`, and the last step's input view, claim result, provenanced writes before merge, and claim/finish counts; and the systems, the field schema, the input register, and whether the event buffer is empty.
 
 ## What is true afterwards
 
-After `create`, `stepIndex()` is 0, `settled().updateCount()` is 1, and `eventBufferEmpty()` is true. After `advance(n)` the index has grown by exactly $n$. The emission list, the claimers, and the systems of a run never change after `create`. The `UserInput` a caller presses between steps is the same object the setup holds, so a press is seen by the next stage.
+After creation, the step index is 0, the settled update count is 1, and the event buffer is empty. After an advance of $n$ steps the index has grown by exactly $n$. The emission list, the claimers, and the systems of a run never change after creation. The `UserInput` a caller presses between steps is the same object the setup holds, so a press is seen by the next stage.
 
 ## Cost
 
-Creation is $O(|\Phi| + |\mathcal{P}|\,d)$, with $d$ the depth of a category path, plus the cost of step 0. Each `advance(n)` costs $n$ steps.
+Creation is $O(|\Phi| + |\mathcal{P}|\,d)$, with $d$ the depth of a category path, plus the cost of step 0. Each advance of $n$ steps costs $n$ steps.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Step driver | `Engine` | `create`, `advance`, `runStep`, `stepIndex`, `settled`, `systems`, `fieldSchema`, `lastClaimResult`, `lastStepOutput`, `lastClaimFinish`, `lastInputView`, `userInput`, `eventBufferEmpty` | [`engine/src/main/java/com/aethelgard/engine/pool/Engine.java`](../../../engine/src/main/java/com/aethelgard/engine/pool/Engine.java) |
-| Wiring | `EngineSetup` | `EngineSetup`, `defaults`, `categoryTree`, `claimers`, `systems`, `fieldSchema`, `diagnostics`, `userInput`, `userView`, `poolCompute`, `eventEmissionPolicy` | [`engine/src/main/java/com/aethelgard/engine/pool/EngineSetup.java`](../../../engine/src/main/java/com/aethelgard/engine/pool/EngineSetup.java) |
-| Step-0 seed | `EngineConfig` | `EngineConfig`, `initialValue`, `emitCategoryPathsEachUpdate`, `initialFields` | [`engine/src/main/java/com/aethelgard/engine/pool/EngineConfig.java`](../../../engine/src/main/java/com/aethelgard/engine/pool/EngineConfig.java) |
-
+Code: [engine/pool/](../../../engine/src/main/java/com/aethelgard/engine/pool/README.md)  
 Parent: [one engine step](README.md). Why step 0 is seeded from one object: [ADR-005](../../paperwork/decisions/ADR-005-step-zero-config.md).

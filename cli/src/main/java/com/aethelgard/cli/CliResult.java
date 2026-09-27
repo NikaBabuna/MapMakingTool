@@ -19,7 +19,7 @@ public record CliResult(int exitCode, String output) {
     Objects.requireNonNull(output, "output");
   }
 
-  public boolean ok() {
+  public boolean isOk() {
     return exitCode == 0;
   }
 }

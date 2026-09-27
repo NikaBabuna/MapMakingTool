@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/engine/systems.md
-  Purpose: EngineSystem, SystemConfig, SubSystem, SubSystemIo, ConflictResolutionSubSystem, ClaimFinishBarrier, ClaimFinishSnapshot — how a claiming system runs its sub-systems and hands back one output
+  Purpose: Systems — how a claiming system runs its sub-systems and hands back one output
   Audience: Agents and humans
-  Update when: EngineSystem.run, EngineSystem.orderSubSystems, SubSystemIo.write, or ClaimFinishBarrier changes
+  Update when: How a system orders and runs its sub-systems, what a sub-system may read or write, or the barrier changes
 -->
 
 # Systems
@@ -15,7 +15,7 @@ The snapshot $\sigma_k$ taken after compute and before merge; every system of th
 
 ## What it writes
 
-`OUT_SYS`, an immutable map from field name to value, returned by `EngineSystem.run`. The engine copies each entry into the `StepOutputBuffer` as a `ProvenancedWrite(systemId, value)`. A system never writes the Pool. Refusals: `SubSystemIo.write` throws `IllegalArgumentException` for a field outside the declared range and `NullPointerException` for a null value. `run` throws `IllegalStateException` when write ranges overlap and no resolver is configured, or when the resolver does not return each conflicting sub-system exactly once. `ClaimFinishBarrier.requireBalanced` throws `IllegalStateException` when the claim and finish counts differ.
+`OUT_SYS`, an immutable map from field name to value, returned when the system runs. The engine copies each entry into the `StepOutputBuffer` as a `ProvenancedWrite` of the system's id and the value. A system never writes the Pool. Refusals: a write through the io throws `IllegalArgumentException` for a field outside the declared range and `NullPointerException` for a null value. Running a system throws `IllegalStateException` when write ranges overlap and no resolver is configured, or when the resolver does not return each conflicting sub-system exactly once. The barrier's check throws `IllegalStateException` when the claim and finish counts differ.
 
 ## Model
 
@@ -31,38 +31,20 @@ where $\oplus$ overwrites: the last write to a field inside a system is the one 
 
 $$\bigl|\{\, \psi : B_{\mathit{cl}(\psi)} \neq \emptyset \,\}\bigr| \;=\; \bigl|\{\, \psi \text{ that returned } \mathrm{Out}_\psi \,\}\bigr| .$$
 
-`EngineSystem.orderSubSystems` (the splice) in [`EngineSystem.java`](../../../engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java):
-
-```java
-List<SubSystem> result = new ArrayList<>();
-boolean spliced = false;
-for (SubSystem sub : subs) {
-  if (overlapping.contains(sub)) {
-    if (!spliced) {
-      result.addAll(conflictOrdered);
-      spliced = true;
-    }
-  } else {
-    result.add(sub);
-  }
-}
-return List.copyOf(result);
-```
-
 ## Procedure
 
-1. The configuration rejects a null id or category and keeps an immutable copy of the sub-system list. [`SystemConfig`](../../../engine/src/main/java/com/aethelgard/engine/system/SystemConfig.java).
-2. Building a system builds its claimer once, an `EventClaimer` with the system's id and category; the engine finds the system's claims through that object. [`EngineSystem.claimer`](../../../engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java).
-3. `findOverlapping` groups sub-systems by the fields they declare; every field with more than one writer puts all its writers into the conflict set. [`EngineSystem.findOverlapping`](../../../engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java).
-4. `orderSubSystems` keeps registration order when the conflict set is empty. Otherwise it requires a resolver, asks it to order the conflict set, checks that the answer holds each member exactly once, and splices that order in at the first conflicting position. [`EngineSystem.orderSubSystems`](../../../engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java), [`ConflictResolutionSubSystem.resolveOrder`](../../../engine/src/main/java/com/aethelgard/engine/system/ConflictResolutionSubSystem.java).
-5. `run` gives each sub-system, in that order, a `SubSystemIo` over the snapshot, the staging so far, and its own write range, and calls `execute`. [`SubSystem.execute`](../../../engine/src/main/java/com/aethelgard/engine/system/SubSystem.java).
-6. Through the io, a sub-system reads the snapshot with `readPool` (throws when the field is unset), `readPoolLong`, and `poolValue`, reads earlier staging with `readStaging` (null when absent), and writes with `write`, which checks the declared range. [`SubSystemIo.write`](../../../engine/src/main/java/com/aethelgard/engine/system/SubSystemIo.java).
-7. `run` returns an immutable copy of the staging map: that is `OUT_SYS`. [`EngineSystem.run`](../../../engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java).
-8. Around each claiming system the engine calls `onClaimed` before `run` and `onFinished` after it. Before merge it calls `requireBalanced`, and it keeps the counts and the finish order as a `ClaimFinishSnapshot`. [`ClaimFinishBarrier.requireBalanced`](../../../engine/src/main/java/com/aethelgard/engine/system/ClaimFinishBarrier.java), [`ClaimFinishSnapshot`](../../../engine/src/main/java/com/aethelgard/engine/system/ClaimFinishSnapshot.java).
+1. The configuration rejects a null id or category and keeps an immutable copy of the sub-system list.
+2. Building a system builds its claimer once, an `EventClaimer` with the system's id and category; the engine finds the system's claims through that object.
+3. The sub-systems are grouped by the fields they declare; every field with more than one writer puts all its writers into the conflict set.
+4. When the conflict set is empty, registration order is kept. Otherwise a resolver is required; it is asked to order the conflict set, its answer is checked to hold each member exactly once, and that order is spliced in at the first conflicting position.
+5. Running the system gives each sub-system, in that order, a `SubSystemIo` over the snapshot, the staging so far, and its own write range, and executes it.
+6. Through the io, a sub-system reads the snapshot (a read of an unset field throws), reads it as a number, reads the heartbeat, reads earlier staging (absent when nothing was staged), and writes, each write checked against the declared range.
+7. The run returns an immutable copy of the staging map: that is `OUT_SYS`.
+8. Around each claiming system the engine counts a claim before the run and a finish after it. Before merge it checks that the counts balance, and it keeps the counts and the finish order as a `ClaimFinishSnapshot`.
 
 ## What is true afterwards
 
-`OUT_SYS` holds the last staged value of every field the system wrote, and every key lies in the union of its sub-systems' write ranges. Overlapping sub-systems ran in the resolver's order; the others ran in registration order. The Pool is unchanged until [merge](merge.md). The barrier counts systems, not sub-systems. The loop is synchronous: `onFinished` follows every `run` that returns, and a `run` that throws ends the step before the barrier is checked, so in this loop the check cannot fail. It guards a loop that would run systems concurrently, and what such a loop does with a system that never finishes is not decided ([open question 1](../open-questions.md)).
+`OUT_SYS` holds the last staged value of every field the system wrote, and every key lies in the union of its sub-systems' write ranges. Overlapping sub-systems ran in the resolver's order; the others ran in registration order. The Pool is unchanged until [merge](merge.md). The barrier counts systems, not sub-systems. The loop is synchronous: a finish is counted after every run that returns, and a run that throws ends the step before the barrier is checked, so in this loop the check cannot fail. It guards a loop that would run systems concurrently, and what such a loop does with a system that never finishes is not decided ([open question 1](../open-questions.md)).
 
 The conflict set reaches the resolver in an order that follows the iteration order of the sub-systems' declared sets, which the engine does not fix. A resolver that returns the same order for any input order keeps the run deterministic ([determinism](determinism.md)).
 
@@ -70,16 +52,5 @@ The conflict set reaches the resolver in an order that follows the iteration ord
 
 Ordering is $O\bigl(\sum_q |\omega(q)| + m\bigr)$ plus the resolver. A run costs the sum of its sub-systems.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| System | `EngineSystem` | `EngineSystem`, `EngineSystem.id`, `config`, `claimer`, `run`, `orderSubSystems`, `findOverlapping` | [`engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java`](../../../engine/src/main/java/com/aethelgard/engine/system/EngineSystem.java) |
-| Configuration | `SystemConfig` | `SystemConfig`, `SystemConfig.id`, `assignedCategory`, `subSystems`, `conflictResolver` | [`engine/src/main/java/com/aethelgard/engine/system/SystemConfig.java`](../../../engine/src/main/java/com/aethelgard/engine/system/SystemConfig.java) |
-| Block | `SubSystem` | `SubSystem.id`, `writeRanges`, `execute` | [`engine/src/main/java/com/aethelgard/engine/system/SubSystem.java`](../../../engine/src/main/java/com/aethelgard/engine/system/SubSystem.java) |
-| Block view | `SubSystemIo` | `readPool`, `readPoolLong`, `poolValue`, `readStaging`, `write`, `stagingView` | [`engine/src/main/java/com/aethelgard/engine/system/SubSystemIo.java`](../../../engine/src/main/java/com/aethelgard/engine/system/SubSystemIo.java) |
-| Resolver port | `ConflictResolutionSubSystem` | `resolveOrder` | [`engine/src/main/java/com/aethelgard/engine/system/ConflictResolutionSubSystem.java`](../../../engine/src/main/java/com/aethelgard/engine/system/ConflictResolutionSubSystem.java) |
-| Barrier | `ClaimFinishBarrier` | `onClaimed`, `onFinished`, `requireBalanced`, `ClaimFinishBarrier.claimCount`, `ClaimFinishBarrier.finishCount`, `snapshot` | [`engine/src/main/java/com/aethelgard/engine/system/ClaimFinishBarrier.java`](../../../engine/src/main/java/com/aethelgard/engine/system/ClaimFinishBarrier.java) |
-| Barrier record | `ClaimFinishSnapshot` | `ClaimFinishSnapshot`, `claimCount`, `finishCount`, `finishedSystemIds`, `empty`, `isBalanced` | [`engine/src/main/java/com/aethelgard/engine/system/ClaimFinishSnapshot.java`](../../../engine/src/main/java/com/aethelgard/engine/system/ClaimFinishSnapshot.java) |
-
+Code: [engine/systems/](../../../engine/src/main/java/com/aethelgard/engine/systems/README.md)  
 Parent: [one engine step](README.md). How the outputs of several systems meet: [merge](merge.md).

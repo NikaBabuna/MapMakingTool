@@ -1,8 +1,8 @@
 <!--
   File: docs/architecture/engine/merge.md
-  Purpose: TypedMerge, FieldType, FieldMergeType, FieldSchema, ProvenancedWrite, StepOutputBuffer — how the proposals of all systems become one value per field
+  Purpose: Merge — how the proposals of all systems become one value per field
   Audience: Agents and humans
-  Update when: TypedMerge.merge, TypedMerge.pickOne, a FieldType rule, or FieldSchema changes
+  Update when: How the merge settles a field, a built-in rule, or the field schema changes
 -->
 
 # Merge
@@ -15,7 +15,7 @@ The standing field map $F'$ (the Pool after compute), the `FieldSchema`, and the
 
 ## What it writes
 
-A new, complete field map, which `Pool.applyFields` stores. Fields nobody wrote keep their standing values. Refusals: `FieldSchema.typeOf` throws `IllegalArgumentException` for a field the schema does not declare, so a system that writes an undeclared field fails the step at merge. `pickOne` throws `IllegalStateException` for an empty list. `INCREMENT` throws `IllegalArgumentException` when the standing value or a write is not a `Long` or an `Integer`. `CONSTANT` throws `IllegalStateException` when the standing value is null. A null merge result throws `NullPointerException`.
+A new, complete field map, which the Pool stores. Fields nobody wrote keep their standing values. Refusals: asking the schema for the rule of a field it does not declare throws `IllegalArgumentException`, so a system that writes an undeclared field fails the step at merge. Picking one write from an empty list throws `IllegalStateException`. `INCREMENT` throws `IllegalArgumentException` when the standing value or a write is not a `Long` or an `Integer`. `CONSTANT` throws `IllegalStateException` when the standing value is null. A null merge result throws `NullPointerException`.
 
 ## Model
 
@@ -31,38 +31,15 @@ $$\begin{aligned}
 \textsf{CONSTANT}:&\quad \tau(x, W) = x .
 \end{aligned}$$
 
-$\min_{\mathrm{lex}}$ compares ids by `String.compareTo`, code unit by code unit. Among equal ids the earliest write wins. The sum wraps like 64-bit two's-complement arithmetic. A product adds a rule by implementing `FieldMergeType` and naming it in the schema, not by adding an enum constant.
-
-`TypedMerge.merge` in [`TypedMerge.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java):
-
-```java
-Map<String, Object> result = new LinkedHashMap<>(standing);
-for (var entry : buffer.asMap().entrySet()) {
-  String field = entry.getKey();
-  List<ProvenancedWrite> writers = entry.getValue();
-  FieldMergeType type = schema.typeOf(field);
-  Object standingValue = standing.get(field);
-  Object merged = type.merge(standingValue, writers);
-  result.put(field, Objects.requireNonNull(merged, "merge result for " + field));
-}
-return Map.copyOf(result);
-```
-
-`TypedMerge.pickOne` in [`TypedMerge.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java):
-
-```java
-return writers.stream()
-    .min(Comparator.comparing(ProvenancedWrite::systemId))
-    .orElseThrow(() -> new IllegalStateException("empty writer set"));
-```
+$\min_{\mathrm{lex}}$ compares ids as strings, code unit by code unit. Among equal ids the earliest write wins. The sum wraps like 64-bit two's-complement arithmetic. A product adds a rule by implementing `FieldMergeType` and naming it in the schema, not by adding an enum constant.
 
 ## Procedure
 
-1. The schema maps each field name to its rule. `FieldSchema.of` copies the given map, `FieldSchema.empty` declares nothing, `has` asks, and `typeOf` answers or throws. [`FieldSchema`](../../../engine/src/main/java/com/aethelgard/engine/merge/FieldSchema.java).
-2. During the run of systems, the engine appends `ProvenancedWrite(systemId, value)` for every entry of every `OUT_SYS` under its field, in system order. A write rejects a null id or value. [`StepOutputBuffer.add`](../../../engine/src/main/java/com/aethelgard/engine/merge/StepOutputBuffer.java), [`ProvenancedWrite`](../../../engine/src/main/java/com/aethelgard/engine/merge/ProvenancedWrite.java).
-3. `merge` copies the standing map, and for every written field looks up the field's rule and replaces the value with the rule's result. [`TypedMerge.merge`](../../../engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java).
-4. The rule decides. `STATIC` and `DESTRUCTIVE` take the write of the lexicographically smallest system id through `pickOne`, ignoring the standing value. `INCREMENT` adds every write to the standing value (0 when absent). `CONSTANT` keeps the standing value and ignores every write. A product rule implements `FieldMergeType.merge`. [`FieldType.merge`](../../../engine/src/main/java/com/aethelgard/engine/merge/FieldType.java), [`FieldMergeType.merge`](../../../engine/src/main/java/com/aethelgard/engine/merge/FieldMergeType.java).
-5. `merge` returns the full map as an immutable copy, and the engine stores it with `Pool.applyFields`. [`TypedMerge.merge`](../../../engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java).
+1. The schema maps each field name to its rule. It is built from a map, which it copies, or declares nothing; it can be asked whether it declares a field, and it gives a field's rule or throws.
+2. During the run of systems, the engine appends a `ProvenancedWrite` of the system's id and the value for every entry of every `OUT_SYS` under its field, in system order. A write rejects a null id or value.
+3. The merge copies the standing map, and for every written field looks up the field's rule and replaces the value with the rule's result.
+4. The rule decides. `STATIC` and `DESTRUCTIVE` take the write of the lexicographically smallest system id, ignoring the standing value. `INCREMENT` adds every write to the standing value (0 when absent). `CONSTANT` keeps the standing value and ignores every write. A product rule implements the `FieldMergeType` port.
+5. The merge returns the full map as an immutable copy, and the engine stores it in the Pool.
 
 ## What is true afterwards
 
@@ -74,15 +51,5 @@ Two layers of conflict stay separate: inside one system, the resolver orders ove
 
 $O(|\Phi| + \sum_f |\mathrm{Wr}_f|)$ per step, plus the cost of any product rule.
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| Orchestration | `TypedMerge` | `merge`, `pickOne` | [`engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/TypedMerge.java) |
-| Built-in rules | `FieldType` | `STATIC`, `INCREMENT`, `CONSTANT`, `DESTRUCTIVE`, `FieldType.merge` | [`engine/src/main/java/com/aethelgard/engine/merge/FieldType.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/FieldType.java) |
-| Rule port | `FieldMergeType` | `FieldMergeType.merge` | [`engine/src/main/java/com/aethelgard/engine/merge/FieldMergeType.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/FieldMergeType.java) |
-| Schema | `FieldSchema` | `FieldSchema.empty`, `FieldSchema.of`, `typeOf`, `has`, `asMap`, `FieldSchema.isEmpty` | [`engine/src/main/java/com/aethelgard/engine/merge/FieldSchema.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/FieldSchema.java) |
-| Provenance | `ProvenancedWrite` | `ProvenancedWrite`, `systemId`, `ProvenancedWrite.value` | [`engine/src/main/java/com/aethelgard/engine/merge/ProvenancedWrite.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/ProvenancedWrite.java) |
-| Output buffer | `StepOutputBuffer` | `StepOutputBuffer.add`, `StepOutputBuffer.asMap`, `StepOutputBuffer.isEmpty` | [`engine/src/main/java/com/aethelgard/engine/merge/StepOutputBuffer.java`](../../../engine/src/main/java/com/aethelgard/engine/merge/StepOutputBuffer.java) |
-
+Code: [engine/merge/](../../../engine/src/main/java/com/aethelgard/engine/merge/README.md)  
 Parent: [one engine step](README.md). Why the order of systems still settles the same: [determinism](determinism.md). A delete rule is not decided: [open question 4](../open-questions.md).

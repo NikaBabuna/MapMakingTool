@@ -36,7 +36,7 @@ Two rules are called from other phases. `CrustPrecedence` decides which side of 
 - [topology/](../topology/README.md) — neighbours on the sphere
 - [interaction/](../interaction/README.md) — the area rule; the crust and interaction phases are peers ([conventions](../../../../../../../../../docs/architecture/conventions.md))
 - [motion/](../motion/README.md) — `PlateKinematics.UNRESOLVED`, the mark of a gap; the crust and motion phases are peers
-- [engine system](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — the `SubSystem` port the phases implement
+- [engine systems](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — the `SubSystem` port the phases implement
 
 ## Used by
 

@@ -41,7 +41,7 @@ How the code of this project is written: the names, the place of each file, the 
 | Field, parameter, local variable | lowerCamelCase noun or noun phrase | `updateCount` |
 | Constant (a `static final` field holding an immutable value) and enum constant | UPPER_SNAKE_CASE | `FIRST_GENERATION_UPDATE`, `COLLIDE` |
 | Type parameter | One capital letter | `T` |
-| File | The name of the one top-level type it declares, then `.java`. A package's documentation is `package-info.java` | `PlateRegistry.java` |
+| File | The name of the one top-level type it declares, then `.java`. A package is documented by its README only: no package keeps a `package-info.java` | `PlateRegistry.java` |
 
 ### TypeScript and React
 
@@ -87,7 +87,7 @@ Each folder of code has one job, and a new file goes into the folder whose job i
 | Language | Folder | What goes there |
 |----------|--------|-----------------|
 | Java | `<module>/src/main/java/com/aethelgard/<module>/…` | One package per area, chapter or mechanism of the implementation paper, named with the paper's word for it. When a module is one area of the paper, the module's own package is that area |
-| Java | `<module>/src/main/java/com/aethelgard/<module>/<area>/<package>/` | How the packages of one area depend on each other: the phase packages of an area are peers and may call each other; a package of values or geometry, such as `fields` or `topology`, calls no package above it; and the area's own package, which wires its phases together, is called only from outside the area |
+| Java | `<module>/src/main/java/com/aethelgard/<module>/…/<package>/` | How the packages of one area depend on each other: the mechanism packages of an area are peers and may call each other; a package of values or geometry, such as `fields` or `topology`, calls no package above it; and the area's own package, when it wires the area's mechanisms together, is called only from outside the area |
 | TypeScript and React | `ui/web/src/app/` | Next.js routes: the page, its layout, and the global styles |
 | TypeScript and React | `ui/web/src/components/` | React components, one per file, each with its test beside it |
 | TypeScript and React | `ui/web/src/lib/` | Logic that uses no React, one concern per file, each with its test beside it |
@@ -98,7 +98,7 @@ Each folder of code has one job, and a new file goes into the folder whose job i
 | Windows scripts (`.cmd`) | The repository root | Launch scripts, one per thing a person starts |
 | XML: Maven build files | The repository root, and each module's root | One build file per module, and the parent build file |
 
-**Folder limit:** a folder holds at most 12 source files, not counting its README, `package-info.java`, or test files kept beside the code. A folder over the limit, or a folder that holds two jobs, is split by job.
+**Folder limit:** a folder holds at most 12 source files, not counting its README or test files kept beside the code. A folder over the limit, or a folder that holds two jobs, is split by job.
 
 ## Tests
 

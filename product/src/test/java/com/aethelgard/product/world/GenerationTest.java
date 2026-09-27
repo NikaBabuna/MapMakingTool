@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.aethelgard.engine.pool.Engine;
 import com.aethelgard.engine.pool.PoolSnapshot;
-import com.aethelgard.engine.system.EngineSystem;
-import com.aethelgard.engine.system.SubSystem;
+import com.aethelgard.engine.systems.EngineSystem;
+import com.aethelgard.engine.systems.SubSystem;
 import com.aethelgard.product.session.ProductSession;
 import com.aethelgard.product.world.fields.Grid;
 import com.aethelgard.product.world.fields.Lockers;

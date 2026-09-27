@@ -1,6 +1,6 @@
 /*
  * File: engine/src/main/java/com/aethelgard/engine/pool/SkeletonPoolCompute.java
- * Purpose: Default G-001 Pool compute — heartbeat, nudge, then emission policy
+ * Purpose: Default Pool compute — heartbeat, nudge, then emission policy
  * Audience: EngineSetup defaults / regression witnesses
  * Update when: Skeleton demo rules change
  */

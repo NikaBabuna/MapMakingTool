@@ -1,6 +1,6 @@
 /*
  * File: cli/src/main/java/com/aethelgard/cli/CommandDispatch.java
- * Purpose: Shared noun/verb command language on a ProductSession (F-048)
+ * Purpose: Shared noun/verb command language on a ProductSession
  * Audience: CliRunner / MapController / tests
  * Update when: Command grammar or catalog changes
  */
@@ -39,7 +39,7 @@ import java.util.StringJoiner;
 /**
  * Shared operator language: {@code <noun-path> <verb> [args…]}, plus {@code help} and verb-first
  * {@code list <noun>}. Deprecated flat aliases ({@code status}, {@code advance}, …) remain for
- * G-009. Do not copy verb names into product Systems, Pool fields, or merge types.
+ * older callers. Do not copy verb names into product Systems, Pool fields, or merge types.
  */
 public final class CommandDispatch {
 
@@ -87,7 +87,7 @@ public final class CommandDispatch {
     };
   }
 
-  /** Deprecated flat verbs — preserve prior success outputs (F-048 / G-009). */
+  /** Deprecated flat verbs — preserve prior success outputs. */
   private static CliResult tryAlias(ProductSession session, String[] parts) {
     return switch (parts[0]) {
       case "status" -> {

@@ -7,7 +7,7 @@
 
 package com.aethelgard.product.world;
 
-import com.aethelgard.engine.event.CategoryTree;
+import com.aethelgard.engine.events.CategoryTree;
 
 /**
  * Category paths owned by the product. The engine does not author this tree.

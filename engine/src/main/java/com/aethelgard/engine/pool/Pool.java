@@ -7,10 +7,10 @@
 
 package com.aethelgard.engine.pool;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.Category;
-import com.aethelgard.engine.event.CategoryTree;
-import com.aethelgard.engine.event.EventBuffer;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.Category;
+import com.aethelgard.engine.events.CategoryTree;
+import com.aethelgard.engine.events.EventBuffer;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.user.InputView;
 import java.util.LinkedHashMap;
@@ -23,8 +23,8 @@ import java.util.Objects;
  *
  * <p>Update rules live in {@link PoolCompute} (default {@link SkeletonPoolCompute}). Emission rules
  * live in {@link EventEmissionPolicy} (default {@link ScriptedEventEmissionPolicy}). Typed fields
- * also receive merged System output after claim (F-004/F-011). Samples {@link InputView} once per
- * update (F-006).
+ * also receive merged System output after claim. Samples {@link InputView} once per
+ * update.
  */
 public final class Pool {
 

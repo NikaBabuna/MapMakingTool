@@ -10,10 +10,10 @@ package com.aethelgard.engine.pool;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.aethelgard.engine.diag.EngineDiagnostics;
-import com.aethelgard.engine.event.CategoryTree;
-import com.aethelgard.engine.event.EngineEvent;
-import com.aethelgard.engine.event.EventClaimer;
+import com.aethelgard.engine.diagnostics.EngineDiagnostics;
+import com.aethelgard.engine.events.CategoryTree;
+import com.aethelgard.engine.events.EngineEvent;
+import com.aethelgard.engine.events.EventClaimer;
 import com.aethelgard.engine.merge.FieldSchema;
 import com.aethelgard.engine.merge.FieldType;
 import com.aethelgard.engine.user.InputKind;

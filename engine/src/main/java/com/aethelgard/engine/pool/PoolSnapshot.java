@@ -23,7 +23,7 @@ public record PoolSnapshot(long value, int updateCount, Map<String, Object> fiel
     fields = Map.copyOf(Objects.requireNonNullElse(fields, Map.of()));
   }
 
-  /** Convenience for F-002-era snapshots with no typed fields. */
+  /** Convenience for snapshots with no typed fields. */
   public PoolSnapshot(long value, int updateCount) {
     this(value, updateCount, Map.of());
   }

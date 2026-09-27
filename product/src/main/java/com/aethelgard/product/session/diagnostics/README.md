@@ -27,7 +27,7 @@ The phases are timed from inside the engine's step, but the numbers belong to th
 
 ## Depends on
 
-- [engine system](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/system/README.md) — the `SubSystem` port that `TimingSubSystem` wraps
+- [engine systems](../../../../../../../../../engine/src/main/java/com/aethelgard/engine/systems/README.md) — the `SubSystem` port that `TimingSubSystem` wraps
 
 ## Used by
 

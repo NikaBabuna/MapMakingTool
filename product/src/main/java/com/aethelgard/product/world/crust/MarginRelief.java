@@ -7,8 +7,8 @@
 
 package com.aethelgard.product.world.crust;
 
-import com.aethelgard.engine.system.SubSystem;
-import com.aethelgard.engine.system.SubSystemIo;
+import com.aethelgard.engine.systems.SubSystem;
+import com.aethelgard.engine.systems.SubSystemIo;
 import com.aethelgard.product.world.boundaries.Boundaries;
 import com.aethelgard.product.world.boundaries.BoundaryContact;
 import com.aethelgard.product.world.boundaries.BoundaryKind;
