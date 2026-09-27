@@ -31,7 +31,7 @@ When this Goal is `done`:
 
 7. **The conventions page is written.** Java follows classic Java naming, applied consistently to every name: packages, types, methods, fields and constants. TypeScript and Rust follow their own classic conventions. The page also covers test names, where a new file goes, the folder limit, file headers, and the exempt folders. Witness: reading the page.
 8. **All code is organised and documented.** `product` is split into packages by job, following the paper's areas. No folder is over the limit, and every name, members included, follows the conventions. Every non-exempt folder has a README that passes its Check, plus a navigation row. Witness: a folder listing, a name sweep, and reading each README.
-9. **The paper holds concept and maths.** Code quotes, member-by-member links and code tables have moved into the code READMEs. A page may still name a type in passing, and it points to its README. Witness: a search of the architecture shelf for code blocks and source-file tables finds none outside `program.md`.
+9. **The paper holds concept and maths.** Code quotes, member-by-member links and code tables have moved into the code READMEs. A page may still name a type in passing, and it points to its README. Witness: a search of the architecture shelf finds no fenced excerpt of source and no source-file table outside `program.md`; a grammar or a wire format is not source.
 10. **Behaviour is unchanged.** Every test except the two known defects is green, and those two fail only on their stated defect. Witness: `./mvnw test`.
 
 ---
@@ -100,7 +100,7 @@ The protocol's README rules, which require a plain list and let the agent skip R
 - [ ] **The whole-tree audit enforces all of this.** It lists every folder on disk, not only those `navigation.md` already names. It checks that each has a README, that the README is true to the folder, and that it has a navigation row. It also checks names and placement against the conventions page. Witness: reading the audit flow.
 - [ ] **The conventions page is written.** Java follows classic Java naming, applied consistently to every name: packages, types, methods, fields and constants. TypeScript and Rust follow their own classic conventions. The page also covers test names, where a new file goes, the folder limit, file headers, and the exempt folders. Witness: reading the page.
 - [ ] **All code is organised and documented.** `product` is split into packages by job, following the paper's areas. No folder is over the limit, and every name, members included, follows the conventions. Every non-exempt folder has a README that passes its Check, plus a navigation row. Witness: a folder listing, a name sweep, and reading each README.
-- [ ] **The paper holds concept and maths.** Code quotes, member-by-member links and code tables have moved into the code READMEs. A page may still name a type in passing, and it points to its README. Witness: a search of the architecture shelf for code blocks and source-file tables finds none outside `program.md`.
+- [ ] **The paper holds concept and maths.** Code quotes, member-by-member links and code tables have moved into the code READMEs. A page may still name a type in passing, and it points to its README. Witness: a search of the architecture shelf finds no fenced excerpt of source and no source-file table outside `program.md`; a grammar or a wire format is not source.
 - [ ] **Behaviour is unchanged.** Every test except the two known defects is green, and those two fail only on their stated defect. Witness: `./mvnw test`.
 
 ---
@@ -114,6 +114,7 @@ The protocol's README rules, which require a plain list and let the agent skip R
 | F-071 | The product module: packages by job, renames, tests moved to match, READMEs taking over the code detail of the world and session pages, those pages reduced to concept and maths, navigation rows | Cleanup | done |
 | F-072 | The engine and command-line modules: the same treatment, with their pages | Cleanup | done |
 | F-073 | The ui module (Java host, web front, desktop shell) and the build and tooling folders: the same, with the studio pages | Cleanup | done |
+| F-075 | The command language's help text without record ids | Cleanup | done |
 | F-074 | Whole-tree audit against the new rules, Why parts added to every docs README, then close the Goal | Documentation | not started |
 
 The conventions page comes first so the protocol never links to a file that does not exist yet.
@@ -124,6 +125,6 @@ The conventions page comes first so the protocol never links to a file that does
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 5 / 6 |
+| Steps done | 6 / 7 |
 | Claim boxes | 0 / 10 |
-| Last Accept | F-073 |
+| Last Accept | F-075 |

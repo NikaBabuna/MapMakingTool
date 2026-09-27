@@ -507,7 +507,7 @@ public final class CommandDispatch {
 
   private static final String HELP_CATALOG =
       """
-      Aethelgard command language (F-048)
+      Aethelgard command language
       Grammar: <noun-path> <verb> [args…]
                list <noun>
                help [<topic>]
@@ -527,7 +527,7 @@ public final class CommandDispatch {
         diag.phase.apply get
         diag.advance.wall on
 
-      Deprecated aliases (G-009): status, advance, dump, at, layers, stats, diag …
+      Deprecated aliases: status, advance, dump, at, layers, stats, diag …
       """;
 
   private static final Map<String, String> HELP_TOPICS =

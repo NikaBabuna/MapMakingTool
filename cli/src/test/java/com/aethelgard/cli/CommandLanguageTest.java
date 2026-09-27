@@ -8,6 +8,7 @@
 package com.aethelgard.cli;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.aethelgard.product.session.ProductSession;
@@ -23,6 +24,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -171,6 +173,22 @@ class CommandLanguageTest {
     alone.advance(12);
     assertEquals(12, shared.stepIndex());
     assertEquals(alone.settledWorld(), shared.settledWorld(), "the same world as one caller advancing 12");
+  }
+
+  /** Proves F-075 FR-1 (docs/paperwork/steps/F-075.md). */
+  @Test
+  @DisplayName("help and every help topic name no Goal, Step, or decision id")
+  void helpNamesNoRecordId() {
+    ProductSession session = new ProductSession(SPEC);
+    Pattern recordId = Pattern.compile("\\b(F|G)-\\d{3}\\b|\\bADR-\\d{3}\\b");
+    String help = ok(session, "help");
+    assertTrue(help.startsWith("Aethelgard command language\n"), help);
+    assertTrue(help.contains("Deprecated aliases: status, advance"), help);
+    assertFalse(recordId.matcher(help).find(), help);
+    for (String topic : List.of("session", "pool", "schema", "systems", "diag", "list", "get", "advance", "help")) {
+      String text = ok(session, "help " + topic);
+      assertFalse(recordId.matcher(text).find(), "help " + topic + ": " + text);
+    }
   }
 
   private static String ok(ProductSession session, String line) {
