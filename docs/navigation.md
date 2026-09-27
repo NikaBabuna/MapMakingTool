@@ -8,7 +8,7 @@
 # Navigation
 
 **Phase:** alpha ([protocol/environment/phase.md](protocol/environment/phase.md))  
-**Goal index:** [paperwork/goals.md](paperwork/goals.md) — none · last completed G-011  
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-012 Code structure and conventions · last completed G-011  
 **Protocol:** [protocol/README.md](protocol/README.md) · begin at [protocol/brief.md](protocol/brief.md)  
 **Reading:** [protocol/navigation/README.md](protocol/navigation/README.md) — how to read this map, and the repository, without filling your context
 

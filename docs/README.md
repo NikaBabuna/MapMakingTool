@@ -9,7 +9,7 @@
 
 Permanent prior. **Map:** [navigation.md](navigation.md). **Conduct:** [protocol/README.md](protocol/README.md).
 
-**Goal index:** [paperwork/goals.md](paperwork/goals.md) — none · last completed G-011
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-012 Code structure and conventions · last completed G-011
 
 | Folder | README | Role |
 |--------|--------|------|

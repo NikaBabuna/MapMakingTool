@@ -184,6 +184,21 @@ Goal doc: [goals/G-011-docs-restructuring.md](goals/G-011-docs-restructuring.md)
 
 ---
 
+## G-012 — Code structure and conventions
+
+Goal doc: [goals/G-012-code-structure-and-conventions.md](goals/G-012-code-structure-and-conventions.md)
+
+| ID | Name | Status | What it does | Record |
+|----|------|--------|--------------|--------|
+| F-069 | Conventions page | not started | The conventions page: its blueprint, its place on the protocol map, and this project's conventions written into it. | — |
+| F-070 | Folder and code rules in the protocol | not started | The protocol mechanism: the folder rule, the Why part of docs READMEs, the code README blueprint, the organisation rule, the paper/README split, keeping conventions current, and the Step flow and audit changes. | — |
+| F-071 | Product module organised | not started | The product module: packages by job, renames, tests moved to match, READMEs taking over the code detail of the world and session pages, those pages reduced to concept and maths, navigation rows. | — |
+| F-072 | Engine and command line organised | not started | The engine and command-line modules: the same treatment, with their pages. | — |
+| F-073 | Studio and tooling organised | not started | The ui module (Java host, web front, desktop shell) and the build and tooling folders: the same, with the studio pages. | — |
+| F-074 | Whole-tree audit and close | not started | Whole-tree audit against the new rules, Why parts added to every docs README, then close the Goal. | — |
+
+---
+
 ## Marking progress
 
 - Set Status to `in progress` before any work on that Step, in the record, here, and on the Goal.  
