@@ -11,7 +11,8 @@ Forms for files whose job is to point into the tree: folder doors, the docs entr
 
 | Page | Read it when |
 |------|----------------|
-| [folder-door.md](folder-door.md) | You are writing any folder's `README.md` that has no blueprint of its own |
+| [folder-door.md](folder-door.md) | You are writing the `README.md` of a folder under `docs/` that has no blueprint of its own |
+| [code-door.md](code-door.md) | You are writing the `README.md` of a folder outside `docs/`: code, tests, build files, scripts, or tool configuration |
 | [goal-pointer.md](goal-pointer.md) | You are setting or clearing the Goal id shown beside the Goal-index link on the five doors |
 | [docs-index.md](docs-index.md) | You are writing `docs/README.md` |
 | [doc-map.md](doc-map.md) | You are writing `docs/navigation.md` |

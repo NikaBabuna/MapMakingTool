@@ -7,7 +7,7 @@
 
 # Code
 
-Source is the most expensive read in a repository. The implementation paper, `docs/architecture/`, exists so that an agent opens one page and then one member of one file, instead of a module. This page is that route. The project facts it relies on (where tests live, how declarations are found, how the witness output reports) are the project-fact lines of `docs/architecture/program.md` ([../blueprints/architecture/program.md](../blueprints/architecture/program.md)).
+Source is the most expensive read in a repository. The implementation paper, `docs/architecture/`, and the code doors, the `README.md` of every code folder, exist so that an agent opens one page, one door, and then one member of one file, instead of a module. This page is that route. The project facts it relies on (where tests live, how declarations are found, how the witness output reports) are the project-fact lines of `docs/architecture/program.md` ([../blueprints/architecture/program.md](../blueprints/architecture/program.md)).
 
 ## The route
 
@@ -19,11 +19,11 @@ Take the steps in order. Stop at the first step that answers the question. Most 
 | 2 | `docs/architecture/README.md`, the paper abstract | The area whose question matches yours, from its level table |
 | 3 | That area's level page, `docs/architecture/<area>/README.md` (and, if it points to one, the chapter's level page) | The stage or row that names the mechanism, and its page |
 | 4 | That mechanism page | **What it reads**, **What it writes**, **Model**, **Procedure**, **What is true afterwards**. If this answers the question, stop here |
-| 5 | The mechanism page's **Where it lives** section | The unit's name, its members, and its source path |
+| 5 | The door linked from the mechanism page's `Code:` line: its **Where each step happens** section | The row of the step in question: the member that performs it, and its file |
 | 6 | In that one source file, search for the member's declaration, using the **Declarations** line of the program page, or the member's name | The line number of the declaration |
 | 7 | Read a line range starting at that line, up to the end of the member | The member's body, and nothing else |
 
-For code that the paper does not describe, step 1 is the code folder's own `README.md` door, listed under **Code** in `docs/navigation.md`.
+For code that the paper does not describe, open the door of its folder, listed under **Code** in `docs/navigation.md`. Its **How it works** and **Contents** name the one file to open; then take steps 6 and 7.
 
 ## Tests
 
@@ -44,7 +44,7 @@ For code that the paper does not describe, step 1 is the code folder's own `READ
 
 | # | Rule |
 |---|------|
-| C1 | Do not list a source tree recursively. The module door and any package doors say what each part holds |
+| C1 | Do not list a source tree recursively. Every code folder's door says what each file holds, how the files are wired, and where to start reading |
 | C2 | Do not open a source file because its name looks relevant. Reach it through the paper or through a search hit |
 | C3 | Do not read a whole source file of more than 150 lines. Read the member ([reading.md](reading.md) size rules) |
 | C4 | Do not read tests to learn behaviour that the paper states. Read a test to learn what is witnessed |

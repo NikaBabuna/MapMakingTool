@@ -73,7 +73,7 @@ Form B, `docs/protocol/environment/phase.md`:
 | `<path shape>` | <Yes — reason \| No> |
 …
 
-## Landmark folders
+## Folder doors
 
 <The rule, and what is exempt.>
 

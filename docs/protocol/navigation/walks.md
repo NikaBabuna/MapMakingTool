@@ -34,10 +34,10 @@ Each walk is one common question, followed through the doors with the rules of [
 | 2 | Take the area from the level table of `docs/architecture/README.md` | 1 table |
 | 3 | Open `docs/architecture/<area>/README.md`, and take the stage or row that names X's mechanism | 1 page |
 | 4 | Open that mechanism page. If its sections answer the question, stop | 1 page |
-| 5 | Take the unit and path from **Where it lives**. Search that file for the member, using the **Declarations** line of the program page | 1 line |
+| 5 | Open the door on the page's `Code:` line, and take the step's row from **Where each step happens**: the member and its file. Search that file for the member, using the **Declarations** line of the program page | 1 table row, 1 line |
 | 6 | Read from that line to the end of the member | 1 member |
 
-**Total:** three short pages and one member. Listing and opening the module instead costs every file in it.
+**Total:** three short pages, one row of a door, and one member. Listing and opening the module instead costs every file in it.
 
 ## W3 — What did Step F-0xx require?
 

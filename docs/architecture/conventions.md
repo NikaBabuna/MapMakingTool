@@ -37,7 +37,7 @@ How the code of this project is written: the names, the place of each file, the 
 | Type that carries out a process | Named after the process, as a noun, never with a verb | `Orogeny` |
 | Acronym inside a name | Written as a word: its first letter capital and the rest lowercase, or all lowercase where it begins a member name | `CliRunner`, `plateId` |
 | Method | lowerCamelCase verb or verb phrase | `emitPath` |
-| Boolean query | Starts with `is`, `has` or `can`. A record accessor is named after its component. A method that overrides or implements a library method keeps that method's name | `isEmpty`, `hasForeignNeighbor` |
+| Boolean query | Starts with `is`, `has` or `can`. A verb that already reads as a question (`contains`, `matches`) keeps its form. A record accessor is named after its component. A method that overrides or implements a library method keeps that method's name | `isEmpty`, `hasForeignNeighbor`, `contains` |
 | Field, parameter, local variable | lowerCamelCase noun or noun phrase | `updateCount` |
 | Constant (a `static final` field holding an immutable value) and enum constant | UPPER_SNAKE_CASE | `FIRST_GENERATION_UPDATE`, `COLLIDE` |
 | Type parameter | One capital letter | `T` |

@@ -83,7 +83,7 @@ These folders need no README.
 
 | Folder | Kind | Reason |
 |--------|------|--------|
-| `<path or pattern, from the repository root>` | <build output \| dependency install \| tool cache \| wrapper internals \| layout segment \| generated> | <why a README would not help there> |
+| `<path or pattern, from the repository root>` | <one exempt kind of quality 3.14> | <why a README would not help there> |
 …
 ```
 
@@ -99,7 +99,7 @@ These folders need no README.
 | Where a file goes | yes | `## Where a file goes`, one to three sentences, the table, then the **Folder limit** line. One table row per kind of folder: its path or pattern and its one job. The limit is one whole number, followed by the files it does not count |
 | Tests | yes | `## Tests`, the pointer sentence of the Skeleton, then one row per language that has tests. The page does not restate where tests live or how a test file is named |
 | File headers | yes | `## File headers`, the sentence of the Skeleton, the table, then the content rules. One row per language or kind of file. **Form** is the comment syntax, or `none — <reason>` for a kind of file that allows no comment. The content rules say that a Purpose line carries no record id and no history, and name the only places in code where a record id may appear |
-| Exempt folders | yes | `## Exempt folders`, the sentence of the Skeleton, then one row per folder or folder pattern. **Kind** is exactly one of the six values of the Skeleton. `layout segment` is a folder that holds no file of its own, only folders, and exists for the layout or namespace of a language or build tool. **Reason** is one sentence |
+| Exempt folders | yes | `## Exempt folders`, the sentence of the Skeleton, then one row per folder or folder pattern. **Kind** is exactly one of the exempt kinds that [../../environment/quality.md](../../environment/quality.md) 3.14 names, written as that rule writes it. **Reason** is one sentence |
 
 ## Operations
 
@@ -151,7 +151,7 @@ These folders need no README.
 
 ### Add exemption
 
-**Before.** The folder is of one of the six kinds.
+**Before.** The folder is of one of the exempt kinds of [../../environment/quality.md](../../environment/quality.md) 3.14.
 
 **Edit.**
 
@@ -178,13 +178,13 @@ These folders need no README.
 | 3 | The **Folder limit** line gives one whole number and the files it does not count |
 | 4 | The Tests section links `program.md` and restates neither where tests live nor how a test file is named |
 | 5 | Every File headers row gives a form or `none — <reason>`, and the content rules name where record ids may appear |
-| 6 | Every Exempt folders row has exactly one of the six kinds |
+| 6 | Every Exempt folders row has exactly one of the exempt kinds of quality 3.14 |
 | 7 | The page names no record id and tells no history |
 
 ## Keep out
 
 - Where tests live and how a test file is named: the **Tests** line of `docs/architecture/program.md`.  
 - The four header lines and their meaning: [../headers/source-header.md](../headers/source-header.md).  
-- The shape of a folder's README: [../doors/folder-door.md](../doors/folder-door.md).  
+- The shape of a code folder's README: [../doors/code-door.md](../doors/code-door.md).  
 - How a page of the paper states a mechanism and cites code: the Conventions paragraph of the paper abstract.  
 - A history of renames: the changelog.

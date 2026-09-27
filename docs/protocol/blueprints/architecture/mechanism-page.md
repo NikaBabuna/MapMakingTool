@@ -7,12 +7,12 @@
 
 # Mechanism page
 
-**Shapes:** every `.md` under `docs/architecture/` except: `README.md` files ([abstract.md](abstract.md), [level-page.md](level-page.md)), `program.md` ([program.md](program.md)), the paper's glossary ([glossary.md](glossary.md)), and the paper's open-questions page ([open-questions.md](open-questions.md))  
+**Shapes:** every `.md` under `docs/architecture/` except: `README.md` files ([abstract.md](abstract.md), [level-page.md](level-page.md)), `program.md` ([program.md](program.md)), the paper's glossary ([glossary.md](glossary.md)), the paper's open-questions page ([open-questions.md](open-questions.md)), and the code conventions page `conventions.md` ([conventions.md](conventions.md))  
 **Register:** legal, plain · **Human-facing:** no  
 **Header:** [document header](../headers/document-header.md)  
-**Neighbours:** a wiki page ([../product/wiki-page.md](../product/wiki-page.md)) — the rule for a person. A mechanism page — how the program computes it. A decision record ([../paperwork/decision-record.md](../paperwork/decision-record.md)) — why.
+**Neighbours:** a wiki page ([../product/wiki-page.md](../product/wiki-page.md)) — the rule for a person. A mechanism page — the concept and the mathematics of how the program computes it. A code door ([../doors/code-door.md](../doors/code-door.md)) — the members and files that perform each step. A decision record ([../paperwork/decision-record.md](../paperwork/decision-record.md)) — why.
 
-The page an agent reads instead of the source file. It says what one mechanism reads, what it writes, what it computes as mathematics, how it computes it step by step, what is true afterwards, and where the code is. It states the mechanism twice: in plain words, and as a model. It backs both with the code: every step names the member that performs it, and the lines that compute a formula are quoted. Where the page and the source disagree, the page is wrong.
+The concept, the engineering, and the mathematics of one mechanism. It says what the mechanism reads, what it writes, what it computes as a model, the steps it takes in the order the code takes them, and what is true afterwards. It states the mechanism twice: in plain words, and as a model. It may name a type or a field in passing, but it quotes no source and names no member: the code door of each folder that performs the mechanism, linked from the page's `Code:` line, maps every step to the member that performs it. Where the page and the source disagree, the page is wrong.
 
 ## Skeleton
 
@@ -21,9 +21,9 @@ Form A, one mechanism per page (the default):
 ````markdown
 <!--
   File: docs/architecture/<area>/<page>.md
-  Purpose: <Type> — <what it does>
+  Purpose: <Mechanism> — <what it does>
   Audience: Agents and humans
-  Update when: <Type.method> changes
+  Update when: What <mechanism> computes, or the order of its steps, changes
 -->
 
 # <Mechanism>
@@ -32,27 +32,19 @@ Form A, one mechanism per page (the default):
 
 ## What it reads
 
-<Inputs: fields, types, and values, named exactly as in the source.>
+<Inputs: fields and values, in the paper's words. A field or a type may be named in backticks, as in the source, in passing.>
 
 ## What it writes
 
-<Outputs, and what throws or is refused.>
+<Outputs, and what is refused.>
 
 ## Model
 
 <The mechanism as mathematics, in LaTeX: the sets and functions it works on, what it computes, and the invariants it keeps. Every symbol is defined here or in the Symbols table of the paper glossary. Example: $d_{k+1} = \min(b \cdot 2^{k}, c)$.>
 
-<Excerpt, after the formula it implements:>
-
-`<Type.member>` in [`<file name>`](<relative link to the source file>):
-
-```<language of the source file>
-<at most 15 lines, copied from the source>
-```
-
 ## Procedure
 
-1. <One step in plain words, with its quantities and rules.> [`<Type.member>`](<relative link to the source file>).
+1. <One step in plain words, with its quantities and rules.>
 …
 
 ## What is true afterwards
@@ -63,34 +55,29 @@ Form A, one mechanism per page (the default):
 
 <Optional: the time and memory of one run, in the Model's symbols, e.g. $O(n)$ time and one buffer of $n$ entries.>
 
-## Where it lives
-
-| Piece | Type | Members | Path |
-|-------|------|---------|------|
-| <role> | `<Type>` | `<member>`, `<member>` | [`<source path>`](<relative link>) |
-…
-
+Code: [<folder>/](<relative link to the README.md of the code folder that performs this mechanism>) <· further folders, when several perform it>
 Parent: [<parent page>](README.md). <Optional: further pointers, e.g. Why: [ADR-0xx](../../paperwork/decisions/ADR-0xx-<slug>.md).>
 ````
 
-Form B, several mechanisms that a reader needs together: an opening of one or two plain sentences, then one `## <Type>` per mechanism, each holding the sections of Form A as `###` headings (What it reads, What it writes, Model, Procedure, What is true afterwards, optional Cost, Where it lives), and one `Parent:` line at the end of the page.
+Form B, several mechanisms that a reader needs together: an opening of one or two plain sentences, then one `## <Mechanism>` per mechanism, each holding the sections of Form A as `###` headings (What it reads, What it writes, Model, Procedure, What is true afterwards, optional Cost), and one `Code:` line and one `Parent:` line at the end of the page.
 
 ## Parts
 
 | Part | Required | Rule |
 |------|----------|------|
-| Header comment | yes | `Purpose` names the type(s). `Update when` names the method(s) whose change changes the page |
+| Header comment | yes | `Purpose` names the mechanism. `Update when` names the behaviour whose change changes the page |
 | Title | yes | `# <Mechanism>` in the paper's words |
 | Opening | yes | One or two plain sentences. No math, no code span, no Step id |
-| What it reads | yes | Every input, named as in the source |
-| What it writes | yes | Every output, and every refusal or exception |
+| What it reads | yes | Every input, in the paper's words. A field, type, or value may be named in backticks as in the source, in passing |
+| What it writes | yes | Every output, and every refusal |
 | Model | yes | The mechanism in LaTeX: `$…$` inline, `$$…$$` for a display formula. Every symbol is defined in the section, or has a row in the Symbols table of the paper glossary. Invariants the code keeps are stated as formulas |
-| Excerpt | when the code computes a formula the Model or the Procedure states | Directly after the formula or the step it implements. One line naming the member in backticks and linking its source file, then a fence in the source file's language holding at most 15 consecutive lines copied from that file. Leading indentation may be removed. Nothing else may change: no elision, no added comment |
-| Procedure | yes | Numbered steps in the order the source runs them, with every quantity and threshold. Each step ends with the member that performs it, in backticks, linked to its source file. A parent's procedure lists children. It does not repeat them |
+| Procedure | yes | Numbered steps in the order the code runs them, in plain words, with every quantity and threshold. No step names a member or links a source file: the code door maps each step to its member. A parent's procedure lists children. It does not repeat them |
 | What is true afterwards | yes | Guarantees a later stage relies on |
 | Cost | no | Time and memory of one run, in the Model's symbols |
-| Where it lives | yes | A table `\| Piece \| Type \| Members \| Path \|`. **Members** names every member whose behaviour this page describes, and no member that another page's table names. **Path** is the source path in backticks, linked to the file |
+| Code line | yes | The line before the pointer line. Begins `Code: `, then one link per code folder that performs this mechanism, to that folder's `README.md` ([../doors/code-door.md](../doors/code-door.md)), separated by ` · ` |
 | Pointer line | yes | Last line. Begins `Parent: ` with a link to the level page or door. Further pointers follow, separated by `. ` |
+| Code detail | no | Never on the page: a fenced excerpt of source, a link from a Procedure step to a source file, or a table of types and members. They belong in the code door's Where each step happens and Contents |
+
 
 ## Operations
 
@@ -98,7 +85,9 @@ Form B, several mechanisms that a reader needs together: an opening of one or tw
 |-----------|------------|
 | **Create page** | [../../flows/step.md](../../flows/step.md) SYNC (Ties), when a Step adds a mechanism with no page |
 | **Rewrite section** | [../../flows/step.md](../../flows/step.md) SYNC (Ties), when a Step changes the mechanism's behaviour; [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 9 (fix) |
-| **Add mechanism** | [../../flows/step.md](../../flows/step.md) SYNC (Ties), when a new type belongs on an existing Form B page |
+| **Rewrite page** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 and Step 3.1 (class A5), when a page written to an earlier form of this blueprint is brought to the current form |
+| **Add mechanism** | [../../flows/step.md](../../flows/step.md) SYNC (Ties), when a new mechanism belongs on an existing Form B page |
+| **Set code line** | [../../flows/step.md](../../flows/step.md) SYNC (Ties), when the code folders that perform the mechanism change |
 | **Add pointer** | [../../flows/step.md](../../flows/step.md) **Decide** step 7 |
 | **Relink** | [../../flows/amendment.md](../../flows/amendment.md) Step 5.3; [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 5 |
 
@@ -107,25 +96,52 @@ Form B, several mechanisms that a reader needs together: an opening of one or tw
 **Edit.**
 
 1. **Write header** of [../headers/document-header.md](../headers/document-header.md).  
-2. Copy Form A and fill every section from the source as it now is: the Model from what the code computes, each Procedure step with the member that performs it, and an excerpt after each formula the code computes.  
-3. The level page gains a stage or a row, by **Add stage** or **Add child row** of [level-page.md](level-page.md).
+2. Copy Form A and fill every section from the source as it now is: the Model from what the code computes, and the Procedure as the steps the code takes, in its order, in plain words.  
+3. Write the `Code:` line, linking the door of each code folder that performs the mechanism.
+
+**Result.** The page exists. The level page still needs **Add stage** or **Add child row** of [level-page.md](level-page.md), and each door on the `Code:` line still needs **Set step map** of [../doors/code-door.md](../doors/code-door.md).
 
 ### Rewrite section
 
-**Before.** You have read the source of the method named in `Update when`.
+**Before.** You have read the source of the mechanism, reached through the doors on the `Code:` line.
 
 **Edit.**
 
-1. Replace the text of each section that the change made false (What it reads, What it writes, Model, Procedure, What is true afterwards, Cost, Where it lives) with a description of the source as it now is.  
-2. Copy again every excerpt whose source lines changed, and move its member line if the member moved.  
-3. Update the header's `Update when` if the method moved.  
-4. Do not add a banner, a Step id, or a "previously" clause.
+1. Replace the text of each section that the change made false (What it reads, What it writes, Model, Procedure, What is true afterwards, Cost) with a description of the source as it now is.  
+2. Update the header's `Update when` if the behaviour it names changed.  
+3. Do not add a banner, a Step id, or a "previously" clause.
+
+**Result.** The page is true. If the Procedure's steps changed, each door on the `Code:` line still needs **Set step map** of [../doors/code-door.md](../doors/code-door.md).
+
+### Rewrite page
+
+**Before.** The page has a part this blueprint no longer allows (a source excerpt, a member link in the Procedure, or a table of types and members), or lacks the `Code:` line. The doors of the code folders that perform the mechanism exist.
+
+**Edit.**
+
+1. Keep the header, title, opening, What it reads, What it writes, Model, What is true afterwards, and Cost where they are true; remove every backticked member name from them, keeping a type or field named in passing.  
+2. Delete every fenced source excerpt and the line that introduces it.  
+3. Rewrite each Procedure step in plain words, deleting its member and its source link.  
+4. Delete the table of types and members, with its heading.  
+5. Write the `Code:` line before the pointer line.
+
+**Result.** The page is in the current form. The member behind each step is on the code doors, by **Set step map** of [../doors/code-door.md](../doors/code-door.md).
 
 ### Add mechanism
 
 **Edit.**
 
-1. Before the `Parent:` line, add `## <Type>` with the `###` sections of Form B filled from source.
+1. Before the `Code:` line, add `## <Mechanism>` with the `###` sections of Form B filled from source.
+
+### Set code line
+
+**Before.** A code folder began or stopped performing this mechanism, or its door moved.
+
+**Edit.**
+
+1. Replace the `Code:` line with `Code: ` followed by one link per code folder that now performs the mechanism, to that folder's `README.md`, separated by ` · `.
+
+**Result.** The `Code:` line names every door that maps this page's steps.
 
 ### Add pointer
 
@@ -137,24 +153,25 @@ Form B, several mechanisms that a reader needs together: an opening of one or tw
 
 **Edit.**
 
-1. Replace the moved path in the link target, in the backticked source path, and in every source link of the Procedure, the excerpts, and Where it lives.
+1. Replace the moved path in every link target on the page, including the `Code:` line and the pointer line, and in every backticked path.
 
 ## Check
 
 | # | The file is legal only if |
 |---|---------------------------|
-| 1 | It has the sections of Form A in order, or those sections as `###` under each `## <Type>` of Form B |
+| 1 | It has the sections of Form A in order, or those sections as `###` under each `## <Mechanism>` of Form B |
 | 2 | Every backticked path exists, and every backticked type is declared in source |
 | 3 | The last line begins `Parent: ` and its link resolves |
 | 4 | No Step id, status banner, or requirement table appears |
 | 5 | The opening contains no `$` and no backtick |
 | 6 | Every Model section contains LaTeX, and every symbol in it is defined in the section or in the Symbols table of the paper glossary |
-| 7 | Every numbered Procedure step ends with a member in backticks, linked to a source file that declares it |
-| 8 | Every excerpt has at most 15 lines, and its lines occur consecutively in the linked source file, ignoring leading indentation |
-| 9 | No member in the Members column also appears in the Members column of another page |
+| 7 | No numbered Procedure step names a member or links a source file |
+| 8 | The page holds no fenced excerpt of source and no table of types and members |
+| 9 | The line before the last begins `Code: `, and each of its links resolves to a code door whose Where each step happens has a `###` for this page |
 
 ## Keep out
 
+- Member names, source excerpts, and the table of types and members: the code door ([../doors/code-door.md](../doors/code-door.md)).  
 - Step history: the changelog.  
 - Requirement tables: Step records.  
 - A child's procedure copied onto a parent.  

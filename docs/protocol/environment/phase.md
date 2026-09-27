@@ -28,9 +28,9 @@ Phase is the amount of structural freedom the repository allows. It is not a Goa
 | `docs/protocol/blueprints/<group>/<page>.md` | Yes — blueprints are grouped by the shelf or kind of file they shape, at a fourth level |
 | A fourth level anywhere else | No |
 
-## Landmark folders
+## Folder doors
 
-A landmark folder an agent is expected to enter has a `README.md` door. Exempt: build output, tool caches, wrapper internals, and intermediate language-namespace segments.
+Every folder has a `README.md` door, created in the same Step as the folder, except the exempt kinds of [quality.md](quality.md) 3.14. The project lists its exempt folders on `docs/architecture/conventions.md`.
 
 ## Alpha structural change
 

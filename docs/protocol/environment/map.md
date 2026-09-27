@@ -65,6 +65,8 @@ An entrance maps shelves. It does not hold the substance of those shelves.
 
 ## Article 5 — Architecture
 
+The architecture shelf states the concept, the engineering, and the mathematics of what is built. A page may name a type in passing. The names of members, the wiring between files, and the member that performs each step live in the code doors (Article 7).
+
 | Path | Purpose |
 |------|---------|
 | `README.md` | Abstract of the implementation paper. Levels and questions. No procedures. Links the paper's glossary and open-questions page. |
@@ -93,6 +95,17 @@ Content of these folders is project-specific and is not described here. The fold
 | `changelog.md` | Dated log of structural and Accept events. |
 | `roadmap.md` | Ordered direction. Goals, not Accept claims. |
 | `backlog.md` | Candidates not yet promoted to a Goal. |
+
+## Article 7 — Code
+
+Code lives outside `docs/`. It is not a shelf. Its folders are listed in the **Code** section of `docs/navigation.md`, and each one is introduced by its own door.
+
+| Path | Purpose |
+|------|---------|
+| `<folder>/README.md` | The code door: the deep dive into that folder's code. Its one job, why it is organised as it is, how its parts are wired and where to start reading, what it depends on and what uses it, the member that performs each step the paper describes, and what each file and subfolder holds. Shaped by [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md). |
+| `docs/architecture/conventions.md` | How that code is named, where each file goes, and how each file is headed (Article 5). |
+
+Every folder of code has a door, except the kinds [quality.md](quality.md) 3.14 exempts.
 
 ## Exclusion
 

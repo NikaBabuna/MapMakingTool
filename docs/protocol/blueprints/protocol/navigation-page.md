@@ -224,6 +224,7 @@ These pages keep an agent's context small: they say how to read part of a file, 
 | **Add search pattern** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 (class A1) |
 | **Add walk** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 (class A1) |
 | **Relink walk** | [../../flows/amendment.md](../../flows/amendment.md) Step 5.3, when a page a walk passes through moves |
+| **Amend section** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 (class A1), when the human approves new text for one section of a navigation page, such as a route, a rules table, or a walk |
 
 ### Add pointer
 
@@ -278,6 +279,17 @@ These pages keep an agent's context small: they say how to read part of a file, 
 **Edit.**
 
 1. In each walk that passes through the moved page, replace its path. If the route itself changed, walk the question again and rewrite the rows.
+
+### Amend section
+
+**Before.** The approved old text and new text of the section are known, word for word.
+
+**Edit.**
+
+1. Replace the approved old text with the approved new text, inside that section only. Keep the section's heading, and keep every row number or rule number that other pages cite.  
+2. Search `docs/protocol/` for citations of the section's rows or rules, and confirm each still holds.
+
+**Result.** The section states the approved text, and every citation of it still holds.
 
 ## Check
 

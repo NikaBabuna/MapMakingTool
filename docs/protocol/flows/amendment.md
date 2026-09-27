@@ -21,7 +21,7 @@ Invoke this flow when one or more of the following targets is to change. Record 
 |-------|--------|-------|
 | A1 | A protocol instrument, flow, navigation page, or blueprint | Any file under `docs/protocol/` |
 | A2 | The entrance or an agent door | `docs/README.md`, `docs/navigation.md`, `AGENTS.md`, `README.md`, `.cursor/rules/protocol.mdc` |
-| A3 | A folder door | The `README.md` of any landmark folder |
+| A3 | A folder door | The `README.md` of any folder, under `docs/` or outside it |
 | A4 | Scope | The one line, **In scope**, and **What it is not** of `docs/product/concept.md` |
 | A5 | A standing product or architecture page, when the change is not the Sync of a source change | Any file under `docs/product/` or `docs/architecture/` |
 | A6 | Structure | A folder or a major document is created, moved, renamed, or deleted |
@@ -95,7 +95,7 @@ Build the list before editing any file.
 
 Apply each row by its blueprint operation, in this order, so that at no moment does a door point at a missing path:
 
-1. Create new folders. Give each landmark folder its door by **Create door** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md).  
+1. Create new folders. Give each folder that is not of an exempt kind ([../environment/quality.md](../environment/quality.md) 3.14) its door: under `docs/`, by **Create door** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md); outside `docs/`, by **Create door** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md), once its files exist.  
 2. Create new files by the **Create** operation of their blueprint. For moved files, use `git mv` for tracked files so that history follows the file, then apply **Update path** of [../blueprints/headers/document-header.md](../blueprints/headers/document-header.md).  
 3. Apply every `edit`, `fix reference`, and `fix term` row.  
 4. Apply `delete` rows last.  
@@ -106,25 +106,26 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
    |-------|------|------------|
    | A1 | An instrument | **Add article**, **Amend article**, **Repeal article**, **Add rule**, **Set phase** of [../blueprints/protocol/instrument.md](../blueprints/protocol/instrument.md) |
    | A1 | A flow page | **Create flow**, **Amend step**, **Add step** of [../blueprints/protocol/flow.md](../blueprints/protocol/flow.md) |
-   | A1 | A navigation page | **Add pointer**, **Relink pointer**, **Add bound**, **Add reading rule**, **Add search pattern**, **Add walk**, **Relink walk**, **Add open-set row**, **Amend open set** of [../blueprints/protocol/navigation-page.md](../blueprints/protocol/navigation-page.md) |
+   | A1 | A navigation page | **Add pointer**, **Relink pointer**, **Add bound**, **Add reading rule**, **Add search pattern**, **Add walk**, **Relink walk**, **Add open-set row**, **Amend open set**, **Amend section** of [../blueprints/protocol/navigation-page.md](../blueprints/protocol/navigation-page.md) |
    | A1 | A blueprint | **Create blueprint**, **Add operation**, **Change part** of [../blueprints/protocol/blueprint.md](../blueprints/protocol/blueprint.md) |
    | A2 | An entrance or root door | The operations of [../blueprints/doors/docs-index.md](../blueprints/doors/docs-index.md), [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md), [../blueprints/doors/agent-door.md](../blueprints/doors/agent-door.md), [../blueprints/doors/cursor-rule.md](../blueprints/doors/cursor-rule.md), or [../blueprints/doors/repo-readme.md](../blueprints/doors/repo-readme.md) |
-   | A3 | A folder door | **Create door**, **Add child**, **Remove child**, **Relink child** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md) |
+   | A3 | A folder door | **Create door**, **Add child**, **Remove child**, **Relink child**, **Write why** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md) |
+   | A3 | A code door | **Create door**, **Add entry**, **Remove entry**, **Relink entry**, **Rewrite overview**, **Set step map** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md) |
    | A4 | Scope | The scope operations of [../blueprints/product/concept.md](../blueprints/product/concept.md) (Step 7) |
    | A5 | The concept | **Amend facet**, **Add facet** of [../blueprints/product/concept.md](../blueprints/product/concept.md) |
    | A5 | The journeys | **Amend journey**, **Add not-built row** of [../blueprints/product/journeys.md](../blueprints/product/journeys.md) |
    | A5 | The domain glossary | **Amend word**, **Remove word** of [../blueprints/product/glossary.md](../blueprints/product/glossary.md) |
    | A5 | The style guide | **Add area** of [../blueprints/product/style-guide.md](../blueprints/product/style-guide.md) |
    | A5 | A wiki page | **Create page**, **Amend rule** of [../blueprints/product/wiki-page.md](../blueprints/product/wiki-page.md) |
-   | A5 | The paper abstract | **Add level**, **Change question**, **Set conventions**, **Add pointer** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
+   | A5 | The paper abstract | **Add level**, **Change question**, **Set conventions**, **Add pointer**, **Write why** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
    | A5 | The code conventions page | **Create**, **Add convention**, **Change convention**, **Add exemption**, **Remove exemption** of [../blueprints/architecture/conventions.md](../blueprints/architecture/conventions.md) |
    | A6 | The paper abstract | **Relink level** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md) |
    | A5 | The program page | **Set process** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
    | A6 | The program page | **Set pointer table** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
-   | A5, A6 | A level page | **Create**, **Rewrite** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) |
+   | A5, A6 | A level page | **Create**, **Rewrite**, **Write why** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) |
    | A5 | The paper glossary | **Add symbol**, **Amend symbol**, **Remove symbol** of [../blueprints/architecture/glossary.md](../blueprints/architecture/glossary.md) |
    | A5 | The open questions | **Add question** of [../blueprints/architecture/open-questions.md](../blueprints/architecture/open-questions.md) |
-   | A5 | A mechanism page | **Relink** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md) |
+   | A5 | A mechanism page | **Rewrite page**, **Relink** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md) |
    | any | Any document header | **Update path**, **Update purpose** of [../blueprints/headers/document-header.md](../blueprints/headers/document-header.md) |
 
    A row that needs an operation not in this table follows Step 3.1: the blueprint gains it by **Add operation** first.
@@ -132,7 +133,7 @@ Apply each row by its blueprint operation, in this order, so that at no moment d
 ### Step 6 — Restructure (only if A6 applies)
 
 1. **Depth.** Before creating a path, check it against the Depth table in [../environment/phase.md](../environment/phase.md). If the path is not allowed, stop and ask.  
-2. **Doors.** Every landmark folder that was created has a door (Step 5.1). On the door of each parent folder, apply **Add child** for each new child and **Remove child** for each removed child, of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md). For an architecture area or chapter, use the level-page and abstract blueprints instead: **Add child row** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md), **Add level** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md).  
+2. **Doors.** Every folder that was created has a door, unless it is of an exempt kind (Step 5.1). On the door of each parent folder under `docs/`, apply **Add child** for each new child and **Remove child** for each removed child, of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md). On the door of each parent folder outside `docs/`, apply **Add entry** and **Remove entry** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md). For an architecture area or chapter, use the level-page and abstract blueprints instead: **Add child row** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md), **Add level** of [../blueprints/architecture/abstract.md](../blueprints/architecture/abstract.md).  
 3. **Entrance.** On `docs/navigation.md`, apply **Add row**, **Remove row**, or **Add shelf section** of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md). If a top-level folder under `docs/` appeared, disappeared, or changed job, apply **Add shelf**, **Remove shelf**, or **Change role** of [../blueprints/doors/docs-index.md](../blueprints/doors/docs-index.md).  
 4. **Map.** If a shelf or a standing-document role changed, apply **Amend article** of [../blueprints/protocol/instrument.md](../blueprints/protocol/instrument.md) to the matching Article of `docs/protocol/environment/map.md`.  
 5. **Changelog.** Apply **Add line** of [../blueprints/paperwork/changelog.md](../blueprints/paperwork/changelog.md), kind *Step structure change*, naming the container Step.  

@@ -68,7 +68,7 @@ A Step is one job. The stages below are the whole job, in order. PROPOSE, REQUIR
    | `Cleanup` | Dead matter is removed, or structure or organisation is restored, with no new product behaviour |
 
 2. **Job.** A plain-English paragraph saying what will be true when the Step is done. No file list inside the paragraph.  
-3. **Files.** Every file that will be created, edited, moved, deleted, or adopted, each with a confidence label. For every new source folder, say `landmark: yes` or `landmark: no`. A landmark folder gets a door (**Record source**). Every kept unsealed path appears with the action `adopt`, and for each the proposal says whether it will be kept as is, changed, or reverted.  
+3. **Files.** Every file that will be created, edited, moved, deleted, or adopted, each with a confidence label. For every new source file, name the folder it goes into and the row of `docs/architecture/conventions.md` that places it there. For every new folder, list its door and its row in `docs/navigation.md` ([../environment/quality.md](../environment/quality.md) 3.14); a folder left without a door must be of an exempt kind the conventions page names. For every existing folder whose files the Step adds, removes, or renames, or whose job or wiring it changes, list that folder's door. If the Step brings in something the conventions page does not cover — a language, a kind of file or folder, or a pattern — list `docs/architecture/conventions.md` with the convention to be added (quality 3.16). Every kept unsealed path appears with the action `adopt`, and for each the proposal says whether it will be kept as is, changed, or reverted.  
 4. **Out of scope.** What will not change, especially the nearby things the human may assume will change.  
 5. **Requirements.** Write the table:
 
@@ -148,7 +148,7 @@ A Step is one job. The stages below are the whole job, in order. PROPOSE, REQUIR
 |------|-----------|
 | `Modification` | Implement the stored requirements in one pass. For each FR, write or adjust the test named in the Test map. Run **Record source** for each source file added, changed, or moved |
 | `Documentation` | Edit documents only, each through the operations of its blueprint. Do not add a test whose only job is to search documents for phrases. A change to a standing document follows [amendment.md](amendment.md) Steps 3–9 |
-| `Cleanup` | Remove or tidy only. No new behaviour. If a test must change because a path moved, retarget it. Never delete, skip, or soften it |
+| `Cleanup` | Remove or tidy only. No new behaviour. If a test must change because a path moved, retarget it. Never delete, skip, or soften it. Run **Record source** for each source file added, changed, moved, or deleted |
 | `Iterative` | Work towards the AIM, one increment at a time. After each increment, send the increment message (FIX / ITERATE) and wait for the human's feedback |
 
 **Adopted paths.** For each path under `### Adopted paths`, do what the approved proposal said: keep it as is, change it within the Job, or revert it (`git checkout -- <path>` for a tracked file, delete for an untracked one). Each adopted path that is a document must pass the **Check** of its blueprint before WITNESS.
@@ -168,8 +168,11 @@ A Step is one job. The stages below are the whole job, in order. PROPOSE, REQUIR
 1. A **new** source file: apply **Write header** of [../blueprints/headers/source-header.md](../blueprints/headers/source-header.md).  
 2. A **changed** source file whose responsibility changed: apply **Update purpose** of [../blueprints/headers/source-header.md](../blueprints/headers/source-header.md).  
 3. A **moved** source file: apply **Update path** of [../blueprints/headers/source-header.md](../blueprints/headers/source-header.md).  
-4. A new source folder marked `landmark: yes`: apply **Create door** (Variant C) of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md) in that folder, then **Add child** of the same blueprint on its parent door or the module's `README.md`.  
-5. The architecture and product pages are updated in SYNC (row Ties).
+4. A **new** folder that is not of an exempt kind ([../environment/quality.md](../environment/quality.md) 3.14): apply **Create door** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md) in that folder, once its files exist. No new folder is left without a door.  
+5. A file or subfolder **added**, **removed**, or **renamed** in a folder: apply **Add entry**, **Remove entry**, or **Relink entry** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md) on that folder's door. A new folder is an entry on its parent's door.  
+6. A folder whose job, organisation, wiring, entry point, or dependencies **changed**: apply **Rewrite overview** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md) on its door. If the folder now holds two jobs, or more source files than the folder limit of `docs/architecture/conventions.md`, and the plan does not split it, stop and propose the split under **Amend step requirements** (quality 3.15).  
+7. Every new or renamed folder, file, type, and member follows `docs/architecture/conventions.md`, and every new file's header takes the form that page gives. A convention the page lacks is added in this Step by **Add convention** of [../blueprints/architecture/conventions.md](../blueprints/architecture/conventions.md) (quality 3.16).  
+8. The architecture and product pages are updated in SYNC (row Ties). The row in `docs/navigation.md` of each new door is added in SYNC (Entrance).
 
 ## 8 — WITNESS
 
@@ -237,7 +240,9 @@ On feedback, apply it within the AIM, and repeat. If the feedback moves outside 
 
 | Situation | Apply |
 |-----------|-------|
-| A mechanism's behaviour changed | **Rewrite section** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md), on the page found by searching `docs/architecture/` for the type or file name |
+| A mechanism's behaviour changed | **Rewrite section** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md), on the page whose `Code:` line links the door of the folder that changed (search `docs/architecture/` for that door's path) |
+| The steps of a mechanism changed, or a step is now performed by another member | **Set step map** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md), on each door the page's `Code:` line links |
+| The code folders that perform a mechanism changed | **Set code line** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md) |
 | A new mechanism has no page | **Create page** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md), or **Add mechanism** on the existing page that groups it (Form B) |
 | A stage was added, removed, or reordered in a level's run | **Add stage**, **Remove stage**, or **Reorder stages** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) |
 | A module, a dependency, or the witness command changed | **Add module**, **Change dependency**, or **Set witness command** of [../blueprints/architecture/program.md](../blueprints/architecture/program.md) |
@@ -249,7 +254,8 @@ On feedback, apply it within the AIM, and repeat. If the feedback moves outside 
 | A person-facing sequence was added or changed | **Add journey**, **Amend journey**, or **Move to built** of [../blueprints/product/journeys.md](../blueprints/product/journeys.md) |
 | A visible label, colour role, key, or screen region changed | **Add element**, **Amend element**, **Remove element**, or **Add area** of [../blueprints/product/style-guide.md](../blueprints/product/style-guide.md) |
 | A promised facet of the product became available | **Mark facet built** of [../blueprints/product/concept.md](../blueprints/product/concept.md) |
-| A folder's children changed | **Add child** or **Remove child** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md), on that folder's door. For an architecture level page, **Add child row** or **Remove child row** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) |
+| A folder's children changed | Under `docs/`: **Add child** or **Remove child** of [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md), on that folder's door; for an architecture level page, **Add child row** or **Remove child row** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md). Outside `docs/`: confirm that WORK (**Record source** steps 4–6) left every touched door passing the Check of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md) |
+| The Step brought in a language, a kind of file or folder, or a pattern that `docs/architecture/conventions.md` does not cover | **Add convention** of [../blueprints/architecture/conventions.md](../blueprints/architecture/conventions.md), if WORK did not already add it |
 | A document's responsibility changed | **Update purpose** of [../blueprints/headers/document-header.md](../blueprints/headers/document-header.md) |
 
 **Entrance.** Apply the operations of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md) that match:
@@ -257,7 +263,7 @@ On feedback, apply it within the AIM, and repeat. If the feedback moves outside 
 | Situation | Apply |
 |-----------|-------|
 | A document was added, moved, or removed, or a Status cell of `docs/navigation.md` became false | **Add row**, **Remove row**, **Relink row**, or **Correct status** |
-| A module, or a code folder with its own door, was added | **Add code folder** |
+| A folder outside `docs/` received its door | **Add code folder** |
 | A generated folder appeared, or a tracked text file grew past 500 lines | **Add heavy place** |
 | A heavy place was deleted, or shrank to 500 lines or fewer | **Remove heavy place** |
 

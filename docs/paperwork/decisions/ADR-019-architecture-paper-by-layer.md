@@ -9,6 +9,7 @@
 
 **Date:** 2026-09-25
 **Status:** accepted
+**Amended by:** [ADR-021](ADR-021-code-doors-and-the-paper.md)
 
 The implementation paper describes the whole program as its code stands, one area per layer of the code, and every page backs its words with a model and with the code itself.
 

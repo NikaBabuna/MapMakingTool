@@ -104,7 +104,7 @@ A **requirement** (functional requirement, FR) is an enforceable claim stored on
 |------|------------|
 | **Shelf** | A top-level docs folder with one job: protocol, product, architecture, or paperwork |
 | **Entrance** | The docs-root map. Not a fifth shelf of substance |
-| **Door** | A `README.md` that tells an agent what the folder’s children are for |
+| **Door** | A `README.md` that introduces its folder. A door under `docs/` says what the folder is for, why it exists, and what each child is for. The door of a code folder is the deep dive into its code: its one job, its wiring, the member behind each step the paper describes, and what each file holds. Every folder has a door, except the kinds [quality.md](quality.md) 3.14 exempts |
 | **Flow** | A bookkeeping algorithm: when, before, steps, done, not done |
 | **Blueprint** | The mandatory shape of a document a flow writes, and the named operations by which that document is created and edited. A flow that writes a document names the blueprint and the operation |
 | **Paperwork** | Progress records: Goals, Steps, decisions, changelog, roadmap, backlog |

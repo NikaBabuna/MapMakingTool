@@ -31,7 +31,7 @@ The map of what exists. An agent who knows a page's name but not its path finds 
 **Protocol:** [protocol/README.md](protocol/README.md) · begin at [protocol/brief.md](protocol/brief.md)  
 **Reading:** [protocol/navigation/README.md](protocol/navigation/README.md) — how to read this map, and the repository, without filling your context
 
-Folder indexes are **README.md** in each landmark directory. Prefer those links when entering a folder.
+Every folder has a **README.md** door, except the exempt folders listed on `architecture/conventions.md`. Prefer those links when entering a folder.
 
 ---
 
@@ -103,7 +103,7 @@ Shelf sections come in the order of the shelf table in `docs/README.md`, each fo
 | Shelf section | yes, one per shelf | Title `## <Shelf name> (\`docs/<folder>/\`)`, then `**Folder:**` linking the shelf door, then one table with columns `Page` and `Status` |
 | Shelf table rows | yes | One row for every `.md` page directly in the shelf folder (except its door), and one row for every subfolder, linking its door. Deeper pages may be listed. Numbered records are never listed. Their index is |
 | Status cell | yes | `Active — <fact>`, `Draft — <fact>`, or `Historical — <fact>`. The fact says what the page is for, or why a reader should not rely on it. It is not a changelog |
-| Code | yes | One row per code folder that has a door: every module in `docs/architecture/program.md`, every front-end or shell folder with its own door, and every tool folder at the repository root with a door |
+| Code | yes | One row per folder outside `docs/` that has a `README.md` door ([code-door.md](code-door.md)), in tree order: each module in the order of `docs/architecture/program.md`, followed by its folders, then the other folders outside `docs/` |
 | Never open | yes | One row per folder that holds installed dependencies, build output, version-control internals, or local tools, whenever it exists on disk. The file count is approximate |
 | Open narrowly | yes | One row per tracked text file of more than 500 lines, per folder of generated test data, and per folder of numbered records or of protocol pages an agent must enter by one file. **How to read it** names the search, and what range to read |
 
@@ -116,7 +116,7 @@ Shelf sections come in the order of the shelf table in `docs/README.md`, each fo
 | **Relink row** | [../../flows/amendment.md](../../flows/amendment.md) Step 5.3; [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 5 |
 | **Correct status** | [../../flows/step.md](../../flows/step.md) SYNC (Entrance); [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 5 |
 | **Add shelf section** | [../../flows/amendment.md](../../flows/amendment.md) Step 6.3 |
-| **Add code folder** | [../../flows/step.md](../../flows/step.md) SYNC (Entrance), when a Step adds a module or a code folder with a door |
+| **Add code folder** | [../../flows/step.md](../../flows/step.md) SYNC (Entrance), when a Step gives a folder outside `docs/` its door; [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 13 |
 | **Add heavy place** | [../../flows/step.md](../../flows/step.md) SYNC (Entrance), when a Step creates a generated folder or grows a tracked text file past 500 lines; [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 13 |
 | **Remove heavy place** | [../../flows/step.md](../../flows/step.md) SYNC (Entrance), when a heavy place is deleted or shrinks to 500 lines or fewer; [../../flows/global-docsync.md](../../flows/global-docsync.md) Step 13 |
 | **Set goal pointer** | **Set pointer**, **Clear pointer**, and **Correct pointer** of [goal-pointer.md](goal-pointer.md) |
@@ -162,11 +162,11 @@ Shelf sections come in the order of the shelf table in `docs/README.md`, each fo
 
 ### Add code folder
 
-**Before.** The folder has its own `README.md` door.
+**Before.** The folder is outside `docs/` and has its own `README.md` door.
 
 **Edit.**
 
-1. Add to **Code**: `| \`<folder>/\` | [../<folder>/README.md](../<folder>/README.md) | <what it holds, in one sentence> | <the architecture page that describes it, or "Its door"> |`, in the order of `docs/architecture/program.md` for modules, and after the modules for other folders.
+1. Add to **Code**: ``| `<folder>/` | [../<folder>/README.md](../<folder>/README.md) | <what it holds, in one sentence> | <the architecture page that describes it, or "Its door"> |``. Place it in tree order: a module's row in the order of `docs/architecture/program.md`; a folder inside a module directly after the last row of its parent folder's subtree; any other folder after the modules.
 
 ### Add heavy place
 
@@ -200,7 +200,7 @@ Shelf sections come in the order of the shelf table in `docs/README.md`, each fo
 | 2 | Every shelf has a section, and every page directly on a shelf and every subfolder of a shelf has a row |
 | 3 | No Status cell is false against the tree |
 | 4 | The **Phase** and **Goal index** lines agree with `phase.md` and with [goal-pointer.md](goal-pointer.md) |
-| 5 | Every folder the **Code** part names appears under **Code**: every module, every front-end or shell folder with its own door, and every tool folder at the repository root with a door |
+| 5 | Every folder outside `docs/` that has a `README.md` has exactly one row under **Code**, and every **Code** row names a folder that has one |
 | 6 | Every existing folder of dependencies, build output, version-control internals, or local tools appears under **Never open** |
 | 7 | Every tracked text file of more than 500 lines appears under **Open narrowly** |
 

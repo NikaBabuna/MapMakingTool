@@ -28,6 +28,8 @@ The first page of the documentation, for a reader who has not chosen a shelf yet
 
 Permanent prior. **Map:** [navigation.md](navigation.md). **Conduct:** [protocol/README.md](protocol/README.md).
 
+**Why:** <At most three sentences: why the documentation is kept on these shelves, what belongs under `docs/`, and what does not belong there and where it lives instead.>
+
 **Goal index:** [paperwork/goals.md](paperwork/goals.md) — <goal pointer>
 
 | Folder | README | Role |
@@ -47,6 +49,7 @@ Phase: [protocol/environment/phase.md](protocol/environment/phase.md).
 | Header comment | yes | As in the Skeleton |
 | Title | yes | `# Documentation` |
 | Pointer line | yes | `Permanent prior. **Map:** … **Conduct:** …` exactly as in the Skeleton |
+| Why | yes | A paragraph that begins `**Why:** `, directly after the pointer line: at most three sentences saying why the documentation is kept on these shelves, what belongs under `docs/`, and what does not belong there and where it lives instead |
 | Goal index line | yes | Carries the Goal pointer per [goal-pointer.md](goal-pointer.md) |
 | Shelf table | yes | One row per folder directly under `docs/`. Columns `Folder`, `README`, `Role`. **Role** is the shelf's job in at most one sentence, matching Article 2 of `docs/protocol/environment/map.md` |
 | Phase line | yes | `Phase: [protocol/environment/phase.md](protocol/environment/phase.md).` |
@@ -59,6 +62,7 @@ Phase: [protocol/environment/phase.md](protocol/environment/phase.md).
 | **Add shelf** | [../../flows/amendment.md](../../flows/amendment.md) Step 6.3 |
 | **Remove shelf** | [../../flows/amendment.md](../../flows/amendment.md) Step 6.3 |
 | **Change role** | [../../flows/amendment.md](../../flows/amendment.md) Step 6.3, when a shelf's job changes |
+| **Write why** | [../../flows/amendment.md](../../flows/amendment.md) Step 5 and Step 3.1 (class A2), when the index has no Why paragraph or its Why became false |
 
 ### Set goal pointer
 
@@ -90,6 +94,16 @@ Phase: [protocol/environment/phase.md](protocol/environment/phase.md).
 
 1. Replace the **Role** cell of that shelf's row with the new sentence.
 
+### Write why
+
+**Before.** The index has no paragraph that begins `**Why:** `, or its Why paragraph became false.
+
+**Edit.**
+
+1. If a paragraph begins `**Why:** `, replace it. Otherwise insert `**Why:** <at most three sentences>` as its own paragraph directly after the pointer line.
+
+**Result.** The index says why the documentation is shelved this way and what does not belong under `docs/`.
+
 ## Check
 
 | # | The file is legal only if |
@@ -97,6 +111,7 @@ Phase: [protocol/environment/phase.md](protocol/environment/phase.md).
 | 1 | Every folder directly under `docs/` has exactly one row, and no row names a missing folder |
 | 2 | The Goal index line matches [goal-pointer.md](goal-pointer.md) |
 | 3 | It lists no individual page other than `navigation.md`, `protocol/README.md`, `protocol/brief.md`, and `phase.md` |
+| 4 | It has a Why paragraph of at most three sentences, directly after the pointer line |
 
 ## Keep out
 

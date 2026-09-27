@@ -44,7 +44,7 @@ Other shelves may hold product-specific content. Their structure and their role 
 | 3.2 | Shelves have fixed roles: protocol is conduct; product is what the product is for a person, including what it includes and refuses; architecture is what is built; paperwork is who did what and when. An entrance maps shelves; it is not a shelf of substance. |
 | 3.3 | Conduct, concept, machine, and log shall not be mixed on one shelf. |
 | 3.4 | A parent document names and points to the finer document. The procedure lives on the finer document. A parent shall not duplicate a child’s procedure. |
-| 3.5 | Every folder an agent is expected to open shall have a door: a `README.md` in that folder. The shape of that door is prescribed by [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md). A folder without such a door is forbidden. |
+| 3.5 | Every folder shall have a door: a `README.md` in that folder, except the folders rule 3.14 exempts. The door of a folder under `docs/` is shaped by [../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md), or by the blueprint its group names for it; the door of any other folder is shaped by [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md). A folder without such a door is forbidden. |
 | 3.6 | Every document an agent is expected to open shall be reachable from a door. Orphan pages are forbidden. |
 | 3.7 | A structural choice among documents shall be intelligible from the tree and the doors. The agent shall not rely on chat memory to explain why a document lives where it lives. |
 
@@ -68,6 +68,15 @@ Other shelves may hold product-specific content. Their structure and their role 
 | # | Rule |
 |---|------|
 | 3.13 | Every page under `docs/protocol/` is project-independent. It states the mechanism of the protocol, and names no product, domain, programming language, build tool, framework, module, code path, architecture area, or record id of the project it governs. The protocol may name the paths of its own shelves, doors, and paperwork, because those are part of the mechanism. A protocol rule that depends on a project fact names the project page and line that states the fact (for example, the project-fact lines of `docs/architecture/program.md`, or the **Heavy places** of `docs/navigation.md`), and never the fact itself. Examples in protocol pages use neutral placeholders or invented names. |
+
+### 3.E Folders, organisation of code, and conventions
+
+| # | Rule |
+|---|------|
+| 3.14 | Every folder an agent creates, under `docs/` or outside it, receives its door and its row in `docs/navigation.md` in the same Step that creates it. No agent may judge that a folder needs no door. Only these kinds of folder are exempt: **build output**; **dependency install** (installed packages); **tool cache** (a local tool install or cache); **wrapper internals** (the files of a build-tool wrapper); **layout segment** (a folder that holds no file of its own, only folders, and exists for the layout or namespace of a language or build tool); **generated** (a folder whose every file a tool writes). The project names its concrete exempt folders in the Exempt folders section of `docs/architecture/conventions.md`. |
+| 3.15 | Code is organised into folders by job. A folder of code has one job, stated in the first sentence of its door. A folder that holds two jobs, or more source files than the folder limit of `docs/architecture/conventions.md`, shall be split by job. |
+| 3.16 | Every project keeps `docs/architecture/conventions.md`, shaped by [../blueprints/architecture/conventions.md](../blueprints/architecture/conventions.md). Code shall follow it: its names, the place of each file, and the header of each file. A Step that brings in something the page does not cover — a language, a kind of file or folder, or a pattern — adds the convention to the page in the same Step. |
+| 3.17 | The implementation paper states the concept, the engineering, and the mathematics of what is built. A page may name a type in passing. The names of members, the wiring between files, and the member that performs each step of a mechanism live in the door of the code folder that holds them ([../blueprints/doors/code-door.md](../blueprints/doors/code-door.md)). The paper quotes no source, and a door does not restate the paper's model. |
 
 ## Article 4 — Synchronisation
 

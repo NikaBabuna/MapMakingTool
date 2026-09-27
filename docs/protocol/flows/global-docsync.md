@@ -55,21 +55,25 @@ Carry out every check. For each finding, write one row in the findings log (Step
 ### Step 1 — Inventory
 
 1. List every `.md` file under `docs/`, tracked or untracked.  
-2. Add the root doors (`README.md`, `AGENTS.md`, `.cursor/rules/protocol.mdc`) and every door listed in the **Code** section of `docs/navigation.md`.  
+2. Add the root doors (`README.md`, `AGENTS.md`, `.cursor/rules/protocol.mdc`).  
 3. List every folder under `docs/` that contains at least one `.md` file.  
-4. For each file, note its blueprint, as named by [../blueprints/README.md](../blueprints/README.md) and the group doors.  
-5. This inventory is the whole scope of Steps 2–14.
+4. List every folder outside `docs/` that holds a tracked file, or a folder that does. Leave out the folders the Exempt folders section of `docs/architecture/conventions.md` lists (with every folder below a row that says so), and the places under **Never open** in `docs/navigation.md`. These are the code folders. Add the `README.md` of each code folder that has one to the file list of 1.1.  
+5. For each file, note its blueprint, as named by [../blueprints/README.md](../blueprints/README.md) and the group doors.  
+6. This inventory is the whole scope of Steps 2–14.
 
 ### Step 2 — Doors exist
 
-1. Every folder from Step 1.3 contains `README.md`. The exemptions are those in [../environment/phase.md](../environment/phase.md) (Landmark folders).  
-2. A missing door is a `needs approval` finding under Restructure. It is not created silently, because a door states the folder's job.
+1. Every folder from Steps 1.3 and 1.4 contains `README.md`. The only exempt folders are those Step 1.4 left out, by [../environment/quality.md](../environment/quality.md) 3.14 and the conventions page.  
+2. A missing door is a `needs approval` finding under Restructure. It is not created silently, because a door states the folder's job.  
+3. A folder from Step 1.4 that is of an exempt kind of quality 3.14, but is not listed on the conventions page, is a `needs approval` finding: the route is **Add exemption** of [../blueprints/architecture/conventions.md](../blueprints/architecture/conventions.md), not a new door.
 
 ### Step 3 — Doors list their children
 
 1. For each door, list the `.md` files and subfolders beside it.  
 2. Compare against the door's table, by its blueprint's **Check** ([../blueprints/doors/folder-door.md](../blueprints/doors/folder-door.md), [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md)).  
-3. For each missing row, apply **Add child** (or **Add child row**). For each row whose target does not exist, apply **Remove child** (or **Remove child row**). Both are fixes.
+3. For each missing row, apply **Add child** (or **Add child row**). For each row whose target does not exist, apply **Remove child** (or **Remove child row**). Both are fixes.  
+4. For each code door (the doors of Step 1.4), list every file and subfolder beside it, and run the **Check** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md).  
+5. A missing Contents row is a fix, by **Add entry**; a row whose target does not exist is a fix, by **Remove entry**; a name or link that a rename made false is a fix, by **Relink entry**, when the new name is certain from source. A part that the source proves false is a fix, by **Rewrite overview**. A door that lacks a required part, or is only a list of its files, is `needs approval`, because writing its Why and its wiring states the folder's job.
 
 ### Step 4 — Reachability
 
@@ -81,7 +85,7 @@ Carry out every check. For each finding, write one row in the findings log (Step
 1. In every file from Step 1, take every markdown link target that does not begin with `http:`, `https:`, `mailto:`, or `#`, and is not inside a code span or fence.  
 2. Strip any `#anchor` part. Resolve the target relative to the folder of the file that contains the link.  
 3. The resolved path must exist.  
-4. Broken link: if exactly one existing file is the obvious target, fix it by the **Relink** operation of the file's blueprint (**Relink child**, **Relink row**, **Relink protocol**, **Relink pointer**, **Relink**). For a status cell on `docs/navigation.md` that has become false, apply **Correct status** of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md). Otherwise mark it `needs approval`.
+4. Broken link: if exactly one existing file is the obvious target, fix it by the **Relink** operation of the file's blueprint (**Relink child**, **Relink entry**, **Relink row**, **Relink protocol**, **Relink pointer**, **Relink**). For a status cell on `docs/navigation.md` that has become false, apply **Correct status** of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md). Otherwise mark it `needs approval`.
 
 ### Step 6 — Depth
 
@@ -109,7 +113,7 @@ Carry out every check. For each finding, write one row in the findings log (Step
 
 A difference in counts, links, or copied status words is a fix, made by the operation of the index's blueprint ([../blueprints/paperwork/](../blueprints/paperwork/README.md)): the Goal file or the Step record wins over the index copy ([conflict-resolve.md](conflict-resolve.md) R8). A difference between a Goal file and a Step record about whether something was Accepted is `needs approval`.
 
-### Step 9 — Architecture against source
+### Step 9 — Architecture and code against source
 
 For every page under `docs/architecture/`:
 
@@ -117,7 +121,15 @@ For every page under `docs/architecture/`:
 2. Every program name in backticks that the page presents as a declared unit (a type, function, or module) is declared in source. Search with the **Declarations** line of `docs/architecture/program.md`.  
 3. The module table in `docs/architecture/program.md` matches the modules the build declares, and its four project-fact lines exist ([../blueprints/architecture/program.md](../blueprints/architecture/program.md) Check).  
 4. Every ordered list that claims to be the order the code runs (the stage list of each level page, [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md) Form A) matches the order in the source it names. Open that source file and compare.  
-5. A missing path or a missing type is a fix, by **Rewrite section** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md), when the rename is certain from source. Otherwise it is `needs approval`. A wrong order is `needs approval`, because it may be a defect in the source rather than in the paper. After approval, apply **Reorder stages** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md).
+5. A missing path or a missing type is a fix, by **Rewrite section** of [../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md), when the rename is certain from source. Otherwise it is `needs approval`. A wrong order is `needs approval`, because it may be a defect in the source rather than in the paper. After approval, apply **Reorder stages** of [../blueprints/architecture/level-page.md](../blueprints/architecture/level-page.md).  
+6. Every mechanism page's `Code:` line links code doors, and each of them has a `###` for the page under Where each step happens, with one row per Procedure step it performs ([../blueprints/architecture/mechanism-page.md](../blueprints/architecture/mechanism-page.md) Check 9). A missing or stale step map is a fix, by **Set step map** of [../blueprints/doors/code-door.md](../blueprints/doors/code-door.md), when the member behind each step is certain from source. Otherwise it is `needs approval`.
+
+For every code folder from Step 1.4, against `docs/architecture/conventions.md`:
+
+7. The folder holds no more source files than the **Folder limit** line allows, counted as that line says.  
+8. Every folder name, file name, and declared name in it follows the Names section for its language. Find declarations with the **Declarations** line of `docs/architecture/program.md`, and compare each name with the rule for its kind of name.  
+9. Every source file begins with a header in the form the File headers section gives for its language, and no `Purpose:` line names a Goal, Step, or decision id.  
+10. Every finding of 7–9 is `needs approval`, because fixing it changes source. The findings message proposes the Step that would fix it.
 
 ### Step 10 — Product shelf
 
@@ -145,7 +157,7 @@ For every page under `docs/product/`:
 ### Step 13 — Blueprint conformance
 
 1. For every file in the inventory, run the **Check** section of its blueprint.  
-2. For `docs/navigation.md`, measure before checking: list the folders on disk that hold dependencies, build output, version-control internals, or local tools, and count the lines of every tracked text file. A missing row is fixed by **Add heavy place**, a row for a place that no longer qualifies by **Remove heavy place**, and a code door with no row by **Add code folder**, of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md).  
+2. For `docs/navigation.md`, measure before checking: list the folders on disk that hold dependencies, build output, version-control internals, or local tools, and count the lines of every tracked text file. A missing row is fixed by **Add heavy place**, a row for a place that no longer qualifies by **Remove heavy place**, and a code door of Step 1.4 with no row under **Code** by **Add code folder**, of [../blueprints/doors/doc-map.md](../blueprints/doors/doc-map.md).  
 3. A failed row that one of the fixes above covers is fixed by that operation. Any other failed row is `needs approval`, with the blueprint and the row number in the finding.
 
 ### Step 14 — Changelog and decisions for this Goal
@@ -176,7 +188,7 @@ Apply **Add docsync log** of [../blueprints/paperwork/step.md](../blueprints/pap
 ```markdown
 ## Global docsync findings
 
-**What I checked:** the whole docs tree and the root doors, against the source, the paperwork, and each file's blueprint.
+**What I checked:** the whole docs tree, the root doors, and every code folder and its door, against the source, the paperwork, the conventions page, and each file's blueprint.
 
 **Fixed without asking:** <count> — broken links, stale rows, and wrong Goal pointers. Listed on the Step record.
 
