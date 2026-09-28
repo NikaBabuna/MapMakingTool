@@ -9,6 +9,8 @@
 
 The studio is how a person watches and drives a world. It does not decide anything about the world: a controller in the Java process holds a session, paints its settled grids into colours, and serves them over HTTP on the local machine; a web page shows the colours and sends the person's actions back; a desktop shell starts both and closes them. These parts are peers; the order in which they start and talk to each other is the Processes section of [../program.md](../program.md).
 
+**Why:** The studio is its own level because it shows and drives a world and decides nothing about it, so none of its mechanisms belongs to the world or the session. Its pages are the controller, the raster, the HTTP host, the desktop shell, and the web front's chapter. The world it shows and the session it holds have their own levels, and how the studio looks belongs to the style guide.
+
 | Page | Question |
 |------|----------|
 | [controller.md](controller.md) | How does the studio hold a session, advance it without blocking, play it, and keep the painted map current? |

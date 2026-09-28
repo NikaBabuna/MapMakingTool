@@ -9,6 +9,8 @@
 
 The exact shape of every document the protocol writes, and the named operations that create and edit it. A flow says when to write and which operation to apply. The blueprint says exactly what that edit is.
 
+**Why:** The shapes of documents are kept apart from the flows that write them, so a flow names an operation and never restates a shape. One blueprint per kind of document belongs here, grouped by the shelf of the documents it shapes. When and in what order to write belongs to the flows.
+
 | Page | Read it when |
 |------|----------------|
 | [protocol/](protocol/README.md) | You are writing a protocol instrument, a flow page, a navigation page, or a blueprint |

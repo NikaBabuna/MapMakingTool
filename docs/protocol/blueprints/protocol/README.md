@@ -9,6 +9,8 @@
 
 Forms for the pages under `docs/protocol/`, including the form of a blueprint itself.
 
+**Why:** The protocol's own pages have forms so that every instrument, flow, and navigation page is written the same way. The forms of an instrument, a flow, a navigation page, and a blueprint itself belong here. The forms of project documents belong in the other blueprint folders.
+
 | Page | Read it when |
 |------|----------------|
 | [instrument.md](instrument.md) | You are amending `docs/protocol/brief.md`, `docs/protocol/core-workflow.md`, or a page under `docs/protocol/environment/` |

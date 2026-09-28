@@ -9,6 +9,8 @@
 
 This room is the operating environment of the protocol. It states where documents live, how deep the tree may go, what quality and correctness require, how the agent shall speak, and what Goal and Step mean.
 
+**Why:** The operating environment is kept apart from the flows because it states the standards and terms every flow relies on, not steps. The docs map, the phase, the quality and correctness standards, the style, and the core definitions belong here. Write sequences belong to the core workflow and the flows.
+
 It does not name write sequences. Those live in [../core-workflow.md](../core-workflow.md) and [../flows/](../flows/README.md).
 
 | Page | Read it when |

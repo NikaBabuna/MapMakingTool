@@ -9,7 +9,9 @@
 
 Permanent prior. **Map:** [navigation.md](navigation.md). **Conduct:** [protocol/README.md](protocol/README.md).
 
-**Goal index:** [paperwork/goals.md](paperwork/goals.md) — G-012 Code structure and conventions · last completed G-011
+**Why:** The documentation is kept apart from the code, on four shelves behind this one entrance, so any fact about the project is reached through one map. Conduct, the product, the program's design, and the record of progress each have their own shelf here. Source, build files, and the description of one code folder do not belong under `docs/`; they live beside the code, in each code folder's README.
+
+**Goal index:** [paperwork/goals.md](paperwork/goals.md) — none · last completed G-012
 
 | Folder | README | Role |
 |--------|--------|------|

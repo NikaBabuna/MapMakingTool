@@ -9,6 +9,8 @@
 
 This folder is the conduct of the repository. It does not describe the product. It defines how an agent operates.
 
+**Why:** The conduct of the repository is kept apart from what the repository builds, so the same protocol can govern any project. The global prompt, the operating instruments, the flows, the blueprints, and the reading rules belong here. Anything about one project, its product, its code, or its progress does not; that lives on the other shelves.
+
 Begin at [brief.md](brief.md). Then follow [core-workflow.md](core-workflow.md).
 
 | Page | Read it when |

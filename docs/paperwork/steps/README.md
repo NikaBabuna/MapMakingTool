@@ -9,6 +9,8 @@
 
 One file per Step. Status lives on [../steps.md](../steps.md). Write one from the [step blueprint](../../protocol/blueprints/paperwork/step.md).
 
+**Why:** Each Step is its own file because its record is the contract for one job, and one of the three marks that show whether work is torn. Only Step records belong here; each Step's status row belongs to the Step registry, and what a Goal promises belongs to its Goal file.
+
 Each record holds, in order, its Goal and status, the approved job, the decisions made for it, its functional requirements, the test that proves each requirement, the Sync checklist, and the witness.
 
 | Page | Read it when |

@@ -9,6 +9,8 @@
 
 Forms for the pages under `docs/product/`, which describe the product for a person and never the program.
 
+**Why:** The product shelf has its own forms because its pages are written for a person, in a register the protocol checks. The forms of the concept, the journeys, the glossary, the style guide, and the wiki pages belong here. Forms of pages that describe the program belong with the architecture blueprints.
+
 | Page | Read it when |
 |------|----------------|
 | [concept.md](concept.md) | You are writing `docs/product/concept.md`, or changing what is in or out of scope |

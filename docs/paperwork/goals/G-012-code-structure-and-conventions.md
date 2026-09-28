@@ -7,7 +7,7 @@
 
 # G-012 — Code structure and conventions
 
-**Status:** `in progress`  
+**Status:** `done`  
 **Type:** `Polishing`  
 **Prior:** [G-011](G-011-docs-restructuring.md) closed with the docs on four shelves, an architecture paper by layer that quotes the code line by line, and a test suite that proves requirements by running the code. Two pole-contact tests are red on purpose.  
 **Approved:** 2026-09-27 (human). Organise all code, in every language, into folders by job, each folder introduced by its README, under conventions the protocol makes every agent follow and keep current.
@@ -92,16 +92,16 @@ The protocol's README rules, which require a plain list and let the agent skip R
 
 ## Product claims (tests by Goal end)
 
-- [ ] **Every folder gets a README and a navigation row.** Whenever an agent creates a folder, in docs or in code, it creates the README and adds the navigation row in the same Step, with no opt-out. The protocol exempts only a few kinds of folder: build output, dependency installs, tool caches, generated files, and path segments that exist only for a language's namespace. The project names its concrete exempt folders on its conventions page. A docs README carries a **Why** part of at most three sentences: why the folder exists, what belongs in it, and what does not. Witness: reading the changed protocol pages.
-- [ ] **A code README is the deep dive into its folder.** It says: what the folder does as a whole, and why it is organised this way; how its parts are wired together, and where to start reading; what it depends on and what uses it; for each file and subfolder, what it does and its main types or functions; which architecture page explains the concept. A README that only lists files fails its blueprint's Check. Any Step that changes a folder's code updates that folder's README. Witness: reading the new blueprint and the Step flow.
-- [ ] **Paper and READMEs split the work.** The architecture paper states concept, engineering and maths. It may name a type briefly, and points to the code README for the deep dive. The README owns names, wiring, and where each step of a mechanism happens. Witness: reading the map, the quality rules and the mechanism-page blueprint.
-- [ ] **Code is organised into folders by job.** A code folder has one job, stated first in its README. A folder that holds two jobs, or more files than the conventions page's limit, gets split. Every Step proposal says where each new file goes and why, citing the conventions page. Witness: reading quality and the Step flow.
-- [ ] **The conventions page is a standing, living file every project has.** It lives at `docs/architecture/conventions.md` and has its own blueprint. The protocol names it and binds every agent to follow it, and its contents belong to the project. When a Step introduces something the page doesn't yet cover (a new kind of file, folder, pattern or language), that Step adds the convention to the page, so later agents follow it too. Witness: reading the map, quality, the Step flow and the blueprint.
-- [ ] **The whole-tree audit enforces all of this.** It lists every folder on disk, not only those `navigation.md` already names. It checks that each has a README, that the README is true to the folder, and that it has a navigation row. It also checks names and placement against the conventions page. Witness: reading the audit flow.
-- [ ] **The conventions page is written.** Java follows classic Java naming, applied consistently to every name: packages, types, methods, fields and constants. TypeScript and Rust follow their own classic conventions. The page also covers test names, where a new file goes, the folder limit, file headers, and the exempt folders. Witness: reading the page.
-- [ ] **All code is organised and documented.** `product` is split into packages by job, following the paper's areas. No folder is over the limit, and every name, members included, follows the conventions. Every non-exempt folder has a README that passes its Check, plus a navigation row. Witness: a folder listing, a name sweep, and reading each README.
-- [ ] **The paper holds concept and maths.** Code quotes, member-by-member links and code tables have moved into the code READMEs. A page may still name a type in passing, and it points to its README. Witness: a search of the architecture shelf finds no fenced excerpt of source and no source-file table outside `program.md`; a grammar or a wire format is not source.
-- [ ] **Behaviour is unchanged.** Every test except the two known defects is green, and those two fail only on their stated defect. Witness: `./mvnw test`.
+- [x] **Every folder gets a README and a navigation row.** Whenever an agent creates a folder, in docs or in code, it creates the README and adds the navigation row in the same Step, with no opt-out. The protocol exempts only a few kinds of folder: build output, dependency installs, tool caches, generated files, and path segments that exist only for a language's namespace. The project names its concrete exempt folders on its conventions page. A docs README carries a **Why** part of at most three sentences: why the folder exists, what belongs in it, and what does not. Witness: reading the changed protocol pages. — witness: reading `docs/protocol/environment/quality.md` 3.14 and `docs/protocol/blueprints/doors/folder-door.md` (the Why part)
+- [x] **A code README is the deep dive into its folder.** It says: what the folder does as a whole, and why it is organised this way; how its parts are wired together, and where to start reading; what it depends on and what uses it; for each file and subfolder, what it does and its main types or functions; which architecture page explains the concept. A README that only lists files fails its blueprint's Check. Any Step that changes a folder's code updates that folder's README. Witness: reading the new blueprint and the Step flow. — witness: reading `docs/protocol/blueprints/doors/code-door.md` and `docs/protocol/flows/step.md` (Record source)
+- [x] **Paper and READMEs split the work.** The architecture paper states concept, engineering and maths. It may name a type briefly, and points to the code README for the deep dive. The README owns names, wiring, and where each step of a mechanism happens. Witness: reading the map, the quality rules and the mechanism-page blueprint. — witness: reading `docs/protocol/environment/map.md`, `docs/protocol/environment/quality.md` 3.17, and `docs/protocol/blueprints/architecture/mechanism-page.md`
+- [x] **Code is organised into folders by job.** A code folder has one job, stated first in its README. A folder that holds two jobs, or more files than the conventions page's limit, gets split. Every Step proposal says where each new file goes and why, citing the conventions page. Witness: reading quality and the Step flow. — witness: reading `docs/protocol/environment/quality.md` 3.15 and `docs/protocol/flows/step.md` (PROPOSE step 3)
+- [x] **The conventions page is a standing, living file every project has.** It lives at `docs/architecture/conventions.md` and has its own blueprint. The protocol names it and binds every agent to follow it, and its contents belong to the project. When a Step introduces something the page doesn't yet cover (a new kind of file, folder, pattern or language), that Step adds the convention to the page, so later agents follow it too. Witness: reading the map, quality, the Step flow and the blueprint. — witness: reading `docs/protocol/environment/map.md`, `docs/protocol/environment/quality.md` 3.16, `docs/protocol/flows/step.md`, and `docs/protocol/blueprints/architecture/conventions.md`
+- [x] **The whole-tree audit enforces all of this.** It lists every folder on disk, not only those `navigation.md` already names. It checks that each has a README, that the README is true to the folder, and that it has a navigation row. It also checks names and placement against the conventions page. Witness: reading the audit flow. — witness: reading `docs/protocol/flows/global-docsync.md` Steps 1.4, 2, 3.4, and 9.7–9.10
+- [x] **The conventions page is written.** Java follows classic Java naming, applied consistently to every name: packages, types, methods, fields and constants. TypeScript and Rust follow their own classic conventions. The page also covers test names, where a new file goes, the folder limit, file headers, and the exempt folders. Witness: reading the page. — witness: reading `docs/architecture/conventions.md`
+- [x] **All code is organised and documented.** `product` is split into packages by job, following the paper's areas. No folder is over the limit, and every name, members included, follows the conventions. Every non-exempt folder has a README that passes its Check, plus a navigation row. Witness: a folder listing, a name sweep, and reading each README. — witness: reading the Global docsync log of `docs/paperwork/steps/F-074.md`: every code folder listed, the name sweep, and each README against its Check
+- [x] **The paper holds concept and maths.** Code quotes, member-by-member links and code tables have moved into the code READMEs. A page may still name a type in passing, and it points to its README. Witness: a search of the architecture shelf finds no fenced excerpt of source and no source-file table outside `program.md`; a grammar or a wire format is not source. — witness: reading a search of `docs/architecture/`: no fenced excerpt of source and no source-file table outside `program.md`
+- [x] **Behaviour is unchanged.** Every test except the two known defects is green, and those two fail only on their stated defect. Witness: `./mvnw test`. — witness: `./mvnw test` — every test green except the two Known defects of F-074, each on its stated defect
 
 ---
 
@@ -115,7 +115,7 @@ The protocol's README rules, which require a plain list and let the agent skip R
 | F-072 | The engine and command-line modules: the same treatment, with their pages | Cleanup | done |
 | F-073 | The ui module (Java host, web front, desktop shell) and the build and tooling folders: the same, with the studio pages | Cleanup | done |
 | F-075 | The command language's help text without record ids | Cleanup | done |
-| F-074 | Whole-tree audit against the new rules, Why parts added to every docs README, then close the Goal | Documentation | not started |
+| F-074 | Whole-tree audit against the new rules, Why parts added to every docs README, then close the Goal | Documentation | done |
 
 The conventions page comes first so the protocol never links to a file that does not exist yet.
 
@@ -125,6 +125,6 @@ The conventions page comes first so the protocol never links to a file that does
 
 | Metric | Value |
 |--------|-------|
-| Steps done | 6 / 7 |
-| Claim boxes | 0 / 10 |
-| Last Accept | F-075 |
+| Steps done | 7 / 7 |
+| Claim boxes | 10 / 10 |
+| Last Accept | F-074 |

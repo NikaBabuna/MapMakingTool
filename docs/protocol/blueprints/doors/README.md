@@ -9,6 +9,8 @@
 
 Forms for files whose job is to point into the tree: folder doors, the docs entrance, and the doors at the repository root.
 
+**Why:** Doors have their own forms because their one job is to point, and a door that explains too much stops being one. The forms of folder doors, code doors, the docs entrance, the map, the root doors, and the Goal pointer belong here. The form of an architecture level page, which is also a folder's door, belongs with the architecture blueprints.
+
 | Page | Read it when |
 |------|----------------|
 | [folder-door.md](folder-door.md) | You are writing the `README.md` of a folder under `docs/` that has no blueprint of its own |

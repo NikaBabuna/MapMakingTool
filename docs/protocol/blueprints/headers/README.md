@@ -9,6 +9,8 @@
 
 Forms for the comment at the top of a file.
 
+**Why:** File headers have their own forms because every file carries one, whatever its shelf or language. The forms of the document header and the source header belong here. The comment syntax of a source header in each language belongs to the project's conventions page.
+
 | Page | Read it when |
 |------|----------------|
 | [document-header.md](document-header.md) | You are creating, moving, or re-purposing a documentation file or a folder door |

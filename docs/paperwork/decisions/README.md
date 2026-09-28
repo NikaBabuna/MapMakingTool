@@ -9,6 +9,8 @@
 
 One file per decision. The index, and the next number, is [../decisions.md](../decisions.md). Write one from the [decision blueprint](../../protocol/blueprints/paperwork/decision-record.md).
 
+**Why:** Each decision is its own file, so it can be cited by its number and superseded without rewriting the others. Only decision records belong here; their list and the next number are kept in the decision index.
+
 Each record holds its date and status, the decision itself, why it was made, what it supersedes or amends, and the Goal it belongs to.
 
 | Page | Read it when |

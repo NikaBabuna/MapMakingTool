@@ -9,6 +9,8 @@
 
 Who did what, and when: the records of how this project has progressed. A record with its own id is one file, and a list read as a sequence is one file, for the reason in [ADR-016](decisions/ADR-016-paperwork-shelf.md).
 
+**Why:** The record of progress is kept apart from the product and the program, so that what was planned, decided, and done can be read without changing what is true now. Goals, Steps, decisions, the roadmap, the backlog, and the changelog belong here. How work is done belongs to the protocol, and what the product and the program are belongs on their own shelves.
+
 Work is organised as Goals, each made of Steps. The Goal index says which Goal is active and what each one set out to do, the Step registry says which Step is in progress and what each one did, and each has a folder holding one record per id. Decisions record why a choice was made, and are indexed the same way. The changelog, the roadmap, and the backlog are single lists: what moved and when, the order of the Goals, and the ideas that are not Goals yet.
 
 | Page | Read it when |

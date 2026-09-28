@@ -9,6 +9,8 @@
 
 Forms for the progress records under `docs/paperwork/`, and the naming rules for Goal, Step, and decision ids.
 
+**Why:** Progress records have their own forms because flows write and search them by exact line formats. The forms of Goal, Step, and decision records, their indexes, the roadmap, the backlog, and the changelog belong here, with the rules for naming ids. When each record is written belongs to the Goal and Step flows.
+
 | Page | Read it when |
 |------|----------------|
 | [goal-index.md](goal-index.md) | You are writing `docs/paperwork/goals.md`, the Active Goal line, or need the next Goal id |

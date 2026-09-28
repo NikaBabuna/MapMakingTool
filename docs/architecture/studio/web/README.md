@@ -9,6 +9,8 @@
 
 The web front is one page, built with Next.js and React, that shows the map and turns a person's clicks and keys into requests to the local [HTTP host](../http.md). It holds no world of its own: every number it shows comes from the host's status, and every picture from the host's raster. The root component orders everything else; its loops and its handlers are [tool.md](tool.md).
 
+**Why:** The web front is its own chapter because it is a separate program, a page in a browser, that reaches the Java side only over HTTP. Its pages cover the page's root and loops, its host client, its canvas and camera, its chrome, its terminal, and its stylesheet. What the host answers belongs to the http page, and how the page looks and what its controls say belong to the style guide.
+
 | Page | Question |
 |------|----------|
 | [tool.md](tool.md) | What does the root component hold, and how do its poll, play, and action loops keep the page current? |

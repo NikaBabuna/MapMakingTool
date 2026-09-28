@@ -9,6 +9,8 @@
 
 What Aethelgard is, for a person: what it promises, what it includes and refuses, what a person does with it, the words it uses, how its screen looks, and the rules its world obeys. These pages never describe the program. How the application is built and how it runs belongs on the [architecture](../architecture/README.md) shelf, for the reason in [ADR-015](../paperwork/decisions/ADR-015-conceptual-product.md).
 
+**Why:** The product is described apart from the program, so that what the world promises a person is settled on its own and does not follow the code. Pages written for a person belong here: the concept, the journeys, the words, the screen, and the world's rules. Types, files, and how a rule is computed do not; they belong on the architecture shelf.
+
 Start with the concept: it says what the product is for and where its edges are. The journeys then walk through what a person actually does, in the words on the screen, which the style guide fixes. The wiki holds the rules of the world itself, one page per part of it. The glossary gives each of those words in a line.
 
 | Page | Read it when |

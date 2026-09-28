@@ -9,6 +9,8 @@
 
 Forms for the pages of the implementation paper under `docs/architecture/`.
 
+**Why:** The implementation paper has its own forms because its pages state concept and mathematics in a fixed order and point to code doors. The forms of the abstract, the level pages, the mechanism pages, the program page, the glossary, the open questions, and the conventions page belong here. The form of a code folder's README belongs with the door blueprints.
+
 | Page | Read it when |
 |------|----------------|
 | [abstract.md](abstract.md) | You are writing `docs/architecture/README.md` |

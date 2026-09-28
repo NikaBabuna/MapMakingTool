@@ -9,6 +9,8 @@
 
 How an agent finds the one thing it needs and reads only that, so its context holds answers instead of files. This room never edits files. The map of this repository is [../../navigation.md](../../navigation.md).
 
+**Why:** Reading has its own rules because an agent keeps everything it reads, so reading the wrong files costs every later turn. The rules for finding one page, reading only the needed part, and stopping belong here. This room never edits files; the map of the repository's own paths is the navigation page at the docs root.
+
 | Page | Read it when |
 |------|----------------|
 | [reading.md](reading.md) | You are about to open, search, or run anything, and need the cheapest way to get only the part you need |

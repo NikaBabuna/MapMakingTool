@@ -38,6 +38,7 @@ How the code of this project is written: the names, the place of each file, the 
 | Acronym inside a name | Written as a word: its first letter capital and the rest lowercase, or all lowercase where it begins a member name | `CliRunner`, `plateId` |
 | Method | lowerCamelCase verb or verb phrase | `emitPath` |
 | Method that only returns a value | A method with no side effect that returns one value may be named after that value, as a lowerCamelCase noun or noun phrase, as a record accessor is. A method with any other effect is named by the Method row | `width`, `statusText` |
+| Method that reports an event | A method that a port or listener declares, called when an event happens, is named after the event: the event as a past-participle phrase, or `on`, then the event | `stepStarted`, `onFinished` |
 | Boolean query | Starts with `is`, `has` or `can`. A verb that already reads as a question (`contains`, `matches`) keeps its form. A record accessor is named after its component. A method that overrides or implements a library method keeps that method's name | `isEmpty`, `hasForeignNeighbor`, `contains` |
 | Field, parameter, local variable | lowerCamelCase noun or noun phrase | `updateCount` |
 | Constant (a `static final` field holding an immutable value) and enum constant | UPPER_SNAKE_CASE | `FIRST_GENERATION_UPDATE`, `COLLIDE` |
@@ -53,6 +54,7 @@ How the code of this project is written: the names, the place of each file, the 
 | Other module file | lowerCamelCase | `host.ts`, `fakeHost.ts` |
 | Function | lowerCamelCase verb or verb phrase | `fetchStatus` |
 | Function that only returns a value | A function with no side effect that returns one value may be named after that value, as a lowerCamelCase noun or noun phrase. A function with any other effect is named by the Function row | `centeredViewport` |
+| Event prop and its handler | A prop that takes a callback is `on`, then the event; the function that handles the event is `handle`, then the event | `onCell`, `handleCell` |
 | Variable, parameter | lowerCamelCase noun | `factor` |
 | Type, interface | PascalCase noun, no `I` prefix | `HostStatus` |
 | Module-level constant | UPPER_SNAKE_CASE | `DEFAULT_HOST` |

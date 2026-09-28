@@ -9,6 +9,8 @@
 
 The complete algorithm for each situation named in Article 3 of [../core-workflow.md](../core-workflow.md). A flow says when to write, which file, and in what order. Every document it writes is shaped by a blueprint under [../blueprints/](../blueprints/README.md), and the page shape is [../blueprints/protocol/flow.md](../blueprints/protocol/flow.md).
 
+**Why:** Flows have their own folder because each is a complete algorithm the agent runs when the core workflow selects it. One file per flow the core workflow names belongs here. The shape of each document a flow writes belongs to the blueprints, and standards belong to the environment.
+
 | Page | Read it when |
 |------|----------------|
 | [reconcile.md](reconcile.md) | A chat starts, or new work needs proof that nothing is torn |
